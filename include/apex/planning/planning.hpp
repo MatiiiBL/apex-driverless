@@ -5,6 +5,8 @@
 #include <span>
 #include <vector>
 
+#include <nlohmann/json_fwd.hpp>
+
 #include "apex/core/messages.hpp"
 #include "apex/core/timing.hpp"
 #include "apex/core/trajectory.hpp"
@@ -18,7 +20,13 @@ namespace apex::planning {
 
 // ---- Speed profiles (shared by the exploration path and the raceline) ----
 
-struct SpeedProfileConfig {};
+struct SpeedProfileConfig {
+    // Safety factor on the nominal tires' friction coefficient: the profile plans with
+    // grip_factor * mu on both axes of the friction ellipse. In (0, 1].
+    double grip_factor = 0.85;
+    // Speed cap (m/s) on top of the car's own gearing limit, VehicleParams::max_speed.
+    double max_speed = 30.0;
+};
 
 // Fills speed and accel along `path` from a g-g-v envelope of the nominal car (friction ellipse
 // with downforce, power and drive-force limits, drag) by forward-backward integration.
@@ -93,5 +101,10 @@ struct Raceline {
 // margin), solved as a sequence of QPs, then given a speed profile.
 [[nodiscard]] Raceline optimize_raceline(const TrackModel& track, const VehicleParams& nominal,
                                          const RacelineConfig& config);
+
+// ---- JSON (missing keys keep their defaults, unknown keys throw std::invalid_argument) ----
+
+void to_json(nlohmann::json& j, const SpeedProfileConfig& config);
+void from_json(const nlohmann::json& j, SpeedProfileConfig& config);
 
 }  // namespace apex::planning
