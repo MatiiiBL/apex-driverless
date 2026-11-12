@@ -1,0 +1,118 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "dev",
+            "displayName": "Development (-O2 -g, assertions on)",
+            "inherits": "base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "-O2 -g",
+                "CMAKE_C_FLAGS_RELWITHDEBINFO": "-O2 -g"
+            }
+        },
+        {
+            "name": "asan",
+            "displayName": "AddressSanitizer + UBSan (-O1 -g, assertions on)",
+            "inherits": "base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "-O1 -g",
+                "CMAKE_C_FLAGS_RELWITHDEBINFO": "-O1 -g",
+                "APEX_SANITIZE": "ON"
+            }
+        },
+        {
+            "name": "tsan",
+            "displayName": "ThreadSanitizer (-O1 -g; can't be combined with ASan)",
+            "inherits": "base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "-O1 -g",
+                "CMAKE_CXX_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer",
+                "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=thread"
+            }
+        },
+        {
+            "name": "release",
+            "displayName": "Release (-O3 -DNDEBUG) with benchmarks",
+            "inherits": "base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "APEX_BUILD_BENCHMARKS": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        { "name": "dev", "configurePreset": "dev" },
+        { "name": "asan", "configurePreset": "asan" },
+        { "name": "tsan", "configurePreset": "tsan" },
+        { "name": "release", "configurePreset": "release" }
+    ],
+    "testPresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "output": { "outputOnFailure": true },
+            "execution": { "noTestsAction": "error" }
+        },
+        { "name": "dev", "inherits": "base", "configurePreset": "dev" },
+        {
+            "name": "asan",
+            "inherits": "base",
+            "configurePreset": "asan",
+            "environment": { "UBSAN_OPTIONS": "print_stacktrace=1" }
+        },
+        {
+            "name": "tsan",
+            "inherits": "base",
+            "configurePreset": "tsan",
+            "environment": { "TSAN_OPTIONS": "halt_on_error=1 second_deadlock_stack=1" }
+        },
+        { "name": "release", "inherits": "base", "configurePreset": "release" }
+    ],
+    "workflowPresets": [
+        {
+            "name": "dev",
+            "steps": [
+                { "type": "configure", "name": "dev" },
+                { "type": "build", "name": "dev" },
+                { "type": "test", "name": "dev" }
+            ]
+        },
+        {
+            "name": "asan",
+            "steps": [
+                { "type": "configure", "name": "asan" },
+                { "type": "build", "name": "asan" },
+                { "type": "test", "name": "asan" }
+            ]
+        },
+        {
+            "name": "tsan",
+            "steps": [
+                { "type": "configure", "name": "tsan" },
+                { "type": "build", "name": "tsan" },
+                { "type": "test", "name": "tsan" }
+            ]
+        },
+        {
+            "name": "release",
+            "steps": [
+                { "type": "configure", "name": "release" },
+                { "type": "build", "name": "release" },
+                { "type": "test", "name": "release" }
+            ]
+        }
+    ]
+}

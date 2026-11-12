@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the run still in progress.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    name: clang-format
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: make format-check
+
+  linux:
+    name: Linux x86-64 · ${{ matrix.compiler.cxx }} · ${{ matrix.preset }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - { cc: gcc-14, cxx: g++-14 }
+          - { cc: clang-18, cxx: clang++-18 }
+        preset: [asan, release]
+    env:
+      CC: ${{ matrix.compiler.cc }}
+      CXX: ${{ matrix.compiler.cxx }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # Recent Ubuntu kernels randomize mmap addresses with more bits than the sanitizer
+      # runtimes expect, which makes ASan crash at startup.
+      - name: Make the kernel sanitizer-compatible
+        if: matrix.preset == 'asan'
+        run: sudo sysctl vm.mmap_rnd_bits=28
+
+      - name: Configure, build and test
+        run: cmake --workflow --preset ${{ matrix.preset }}
+
+  macos:
+    name: macOS arm64 · Apple clang · ${{ matrix.preset }}
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [asan, release]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Configure, build and test
+        run: cmake --workflow --preset ${{ matrix.preset }}
