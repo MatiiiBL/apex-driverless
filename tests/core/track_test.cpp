@@ -21,8 +21,12 @@ TEST(Track, OvalIsValidWithColorsOnTheRightSides) {
     for (const Cone& cone : track.cones) {
         const double lateral = track.centerline.project(cone.position).lateral;
         EXPECT_NEAR(std::abs(lateral), 1.75, 0.02);
-        if (cone.color == ConeColor::Blue) EXPECT_GT(lateral, 0.0);
-        if (cone.color == ConeColor::Yellow) EXPECT_LT(lateral, 0.0);
+        if (cone.color == ConeColor::Blue) {
+            EXPECT_GT(lateral, 0.0);
+        }
+        if (cone.color == ConeColor::Yellow) {
+            EXPECT_LT(lateral, 0.0);
+        }
         if (cone.color == ConeColor::BigOrange) ++big;
     }
     EXPECT_EQ(big, 4);
