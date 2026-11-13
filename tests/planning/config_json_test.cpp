@@ -46,7 +46,7 @@ TEST(PlanningConfigJson, RacelineRoundTripWithNestedSpeedProfile) {
 
     const auto partial = json::parse(R"({"speed": {"max_speed": 20.0}})").get<RacelineConfig>();
     EXPECT_DOUBLE_EQ(partial.speed.max_speed, 20.0);
-    EXPECT_DOUBLE_EQ(partial.speed.grip_factor, SpeedProfileConfig{}.grip_factor);
+    EXPECT_DOUBLE_EQ(partial.speed.grip_factor, RacelineConfig{}.speed.grip_factor);
     EXPECT_DOUBLE_EQ(partial.step, RacelineConfig{}.step);
     EXPECT_THROW(json::parse(R"({"speed": {"grip": 1.0}})").get<RacelineConfig>(),
                  std::invalid_argument);

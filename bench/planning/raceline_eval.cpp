@@ -115,15 +115,21 @@ std::vector<std::vector<double>> points(const std::vector<apex::Vec2>& line) {
 
 }  // namespace
 
+// --config <file> evaluates a RacelineConfig from JSON instead of the defaults.
 int main(int argc, char** argv) {
     std::string out_path;
     std::string example_path;
+    apex::planning::RacelineConfig config;
     for (int i = 1; i + 1 < argc; i += 2) {
         const std::string_view flag = argv[i];
         if (flag == "--out") out_path = argv[i + 1];
         if (flag == "--example") example_path = argv[i + 1];
+        if (flag == "--config") {
+            json config_json;
+            std::ifstream(argv[i + 1]) >> config_json;
+            config = config_json.get<apex::planning::RacelineConfig>();
+        }
     }
-    const apex::planning::RacelineConfig config;
     const apex::VehicleParams car;
     std::vector<Level> levels = {
         {.name = "nominal", .errors = MapErrors{}},

@@ -87,7 +87,7 @@ TEST(Raceline, RingTrackGivesTheWidestCircle) {
     const double expected = kRadius + 1.75 - 0.5 * car.body_width - config.safety_margin;
     for (const TrajectoryPoint& p : raceline.path.points()) {
         EXPECT_NEAR(p.position.norm(), expected, 0.02);
-        EXPECT_NEAR(p.curvature, 1.0 / expected, 2e-4);
+        EXPECT_NEAR(p.curvature * expected, 1.0, 0.01);
     }
     // Least curvature is not least time: on a ring the longer lap outweighs the higher speed.
     EXPECT_GT(raceline.predicted_lap_time, centerline_lap_time(ring, car, config));

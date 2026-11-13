@@ -58,9 +58,9 @@ struct ExplorationConfig {
 
     // Hard limits: the track is min_width to max_width (m) wide where the path crosses an edge
     // (midpoint_search.hpp says how it is measured), and the edge at most max_edge_length long;
-    // the cone line between two crossed edges is at most max_cone_spacing long (three missing
-    // cones); the path turns at most max_turn_deg between consecutive midpoints (and from the
-    // car's heading at the start).
+    // the cone line between two crossed edges is at most max_cone_spacing long (two missing
+    // cones on a straight); the path turns at most max_turn_deg between consecutive midpoints (and
+    // from the car's heading at the start).
     double min_width = 2.0;
     double max_width = 5.5;
     double max_edge_length = 12.0;
@@ -177,8 +177,10 @@ struct RacelineConfig {
     // track at 2.5 m has 200 variables.
     double step = 2.5;
     // Kept from each cone line on top of half the car's body width (m): the cones' own base
-    // radius (0.11 m) plus room for tracking error.
-    double safety_margin = 0.3;
+    // radius (0.11 m), the track model's error (up to 0.3 m with a nominal map), the
+    // controller's tracking error and localization. At 0.5 m the body stays at least 0.2 m from
+    // the true cone lines on racelines optimized on nominal-map models (docs/planning.md).
+    double safety_margin = 0.5;
     // QPs solved, each linearized around the previous one's solution (Heilmeier et al. report
     // two or three to be enough).
     std::size_t iterations = 3;
@@ -192,7 +194,9 @@ struct RacelineConfig {
     std::size_t qp_max_iterations = 60;
     double qp_tolerance = 1e-9;
     double path_spacing = 0.5;  // m, sampling of Raceline::path
-    SpeedProfileConfig speed;
+    // The racing laps' speed profile. In closed loop (both oracles, Stanley, nine tracks) a
+    // grip factor of 0.85 knocked 0.8 cones per run, 0.75 one in nine runs, 0.70 none.
+    SpeedProfileConfig speed{.grip_factor = 0.70, .max_speed = 30.0};
 };
 
 struct Raceline {
