@@ -21,10 +21,10 @@ own *nominal* copy of `VehicleParams`.
 
 **In numbers** (details and the commands that reproduce them below): on eight tracks at 85 % of
 the grip, the MPC tracks the centerline to 1.9 cm RMS (7 cm worst), Stanley to 9 cm and pure
-pursuit to 7 cm, all without a cone or an excursion; the MPC costs 0.56 ms of CPU per call at
-p50 and 0.78 ms at p99, against a 2 ms budget, and never failed a solve in 69,000 calls. Its QP
-solver is 6x faster than OSQP cold and 8-9x faster warm at horizons 20-60, at the same 1e-6
-tolerance.
+pursuit to 7 cm, all without a cone or an excursion; the MPC costs 0.33 ms of CPU per call at
+p50 and 0.68 ms at p99, against a 2 ms budget, and never failed a solve in 69,000 calls. Its QP
+solver is 5-6x faster than OSQP at horizons 20-60, at the same 1e-6 tolerance. In the full
+stack the MPC drives lap 1 of all nine test tracks without a cone ("Lap 1").
 
 ## Shared pieces
 
@@ -189,7 +189,9 @@ With `v_k` the guess's speed and the reference sampled at the guess's station `s
 | horizon | 30 stages of 50 ms (1.5 s) | about two corners ahead at racing speed |
 
 The lateral bounds are the reference's free widths minus half the car's width (0.70 m) and a
-0.15 m margin.
+0.15 m margin, on closed references (the raceline, a track's centerline). Open references, lap
+1's exploration paths, are not bounded unless `bound_open_references` is set: their widths come
+from a partial map and are often wrong near the car (see "Lap 1" below).
 
 Two choices in this formulation are not decoration; without either the MPC did not work:
 
@@ -205,9 +207,12 @@ Two choices in this formulation are not decoration; without either the MPC did n
   monotonically with |a|).
 - **A reachable speed target.** From rest under a 22 m/s reference the speed error is the
   whole cost, and the QP chased it through the linearization's errors far from the guess. The
-  target is now `v_t,k = min(v_ref,k, v_0 + sum a_max,j dt)`, what the car can reach. With
-  both changes the same run has no failed solve, 5-6 interior-point iterations per QP, and
-  lateral errors of 1-4 cm at 12.5 m/s around 12 m corners.
+  target is now the reference speed clamped to what the car can reach from `v_0` at the traction
+  limits, both ways: `v_0 + sum a_min,j dt <= v_t,k <= v_0 + sum a_max,j dt`. The lower clamp
+  came with lap 1: a replanned path's profile can dip in its first metre, which the car cannot
+  follow, and the QP answered with full braking at one call and none at the next. With both
+  changes the oval run has no failed solve, 5-6 interior-point iterations per QP, and lateral
+  errors of 1-4 cm at 12.5 m/s around 12 m corners.
 
 ### Dead-time compensation
 
@@ -228,11 +233,17 @@ below quantifies it).
 The plan is kept in the world frame (pose, velocities and inputs at absolute times), not in
 path coordinates or by stage index (`mpc_plan.hpp`). During lap 1 the exploration planner
 replans every 100 ms, with a new arc-length origin each time; only the world-frame plan means
-the same thing on the new reference. At the next call it is shifted in time and each stage
-re-projected onto the current reference, which gives the stations, error states and inputs
-the QP is linearized around and the solver is warm-started from. A test re-projects a plan onto
-a replanned window of the path with a different origin and recovers the same error states to
-5 mm.
+the same thing on the new reference. At the next call its inputs, shifted in time and clamped
+to the actuator limits, are rolled out through the nonlinear model (RK4, 12.5 ms substeps)
+from the predicted initial state along the current reference: that trajectory is what the QP
+is linearized around and the solver warm-started from. A test rolls a plan out on a replanned
+window of the path with a different origin and gets the same trajectory to 5 mm.
+
+The first version re-projected the plan's own states instead. That was fine on closed tracks,
+where the previous plan stays nearly optimal, but not on lap 1 (below): once the plan's states
+disagreed with a replanned path, the model linearized there could be unstable, the QP's
+optimum about it absurd, and that optimum the next linearization point. A rollout of bounded
+inputs is always a trajectory the car can drive.
 
 Each call linearizes once and solves one QP (a real-time iteration in the sense of M. Diehl,
 H. G. Bock, J. P. Schlöder, "A real-time iteration scheme for nonlinear optimization in optimal
@@ -304,8 +315,16 @@ factorizes once and solves twice (predictor and corrector).
   1e6 the solver checks the normalized certificate and returns `PrimalInfeasible`. Crossed bounds
   (`lower > upper`) are reported without iterating; non-finite data or an empty horizon is
   `InvalidProblem`.
-- Warm start: primal iterate from the warm start's states and inputs; slacks floored at 1e-2,
-  multipliers from the warm start's own when it has them, otherwise `mu / slack`.
+- Warm start: the primal iterate only (states and inputs); slacks and multipliers start
+  centred, as in a cold start. The first version also kept slacks near the previous solution's
+  active bounds (floored at 1e-2) with multipliers `mu / slack`: on lap 1's replanned paths the
+  active set moves with every replan, and with the iterate badly centred the method crossed a
+  weakly penalized input's whole box per iteration (the last stages' acceleration, from one
+  bound to the other) and hit its iteration limit on QPs that a cold start solves in 7
+  iterations (E. A. Yildirim, S. J. Wright, "Warm-start strategies in interior-point methods for
+  linear programming", SIAM J. Optimization 12(3), 2002, on why interior-point warm starts need
+  this care). Centring costs the warm start most of its gain on smooth problems (7.4 iterations
+  against 7.9 cold on the MPC's QPs below) and none of its robustness.
 
 **Correctness** (`tests/control/qp_solver_test.cpp`, `mpc_test.cpp`): solutions match OSQP
 (polished, at 1e-10) on random MPC-structured QPs with 2-6 states and 1-3 inputs over horizons
@@ -327,31 +346,33 @@ whole KKT matrix, whenever the matrices change, which in an LTV MPC is every cal
 solve-only time is listed as the floor it would reach if that came free. Microseconds per QP,
 Release build, one core of an Apple M4 (results/control/qp_bench.md):
 
-| N | IPM cold p50 | iterations | IPM warm p50 | iterations | OSQP cold p50 | iterations | OSQP warm p50 | iterations | OSQP solve-only p50 |
+| N | IPM cold p50 / p99 | iterations | IPM warm p50 / p99 | iterations | OSQP cold p50 / p99 | iterations | OSQP warm p50 / p99 | iterations | OSQP solve-only p50 |
 |---|---|---|---|---|---|---|---|---|---|
-| 20 | 293 | 7.4 | 145 | 3.7 | 1856 | 142 | 1321 | 93 | 1589 |
-| 30 | 465 | 7.9 | 225 | 3.9 | 2747 | 140 | 1990 | 95 | 2382 |
-| 40 | 715 | 8.3 | 363 | 4.1 | 4240 | 149 | 2937 | 96 | 3667 |
-| 50 | 1015 | 8.5 | 493 | 4.3 | 5976 | 149 | 4405 | 100 | 5159 |
-| 60 | 1000 | 8.6 | 533 | 4.6 | 5594 | 152 | 4090 | 101 | 4903 |
+| 20 | 95 / 262 | 7.4 | 93 / 258 | 7.3 | 638 / 1372 | 142 | 487 / 1242 | 93 | 554 |
+| 30 | 185 / 462 | 7.9 | 163 / 422 | 7.4 | 1058 / 2543 | 140 | 813 / 1908 | 95 | 920 |
+| 40 | 281 / 627 | 8.3 | 234 / 585 | 7.5 | 1557 / 3771 | 149 | 1138 / 2482 | 96 | 1375 |
+| 50 | 363 / 824 | 8.5 | 318 / 749 | 7.6 | 1974 / 4916 | 149 | 1505 / 3128 | 100 | 1735 |
+| 60 | 458 / 990 | 8.6 | 398 / 915 | 7.8 | 2513 / 6393 | 152 | 1855 / 3777 | 101 | 2236 |
 
 ![Time per QP against the horizon](img/control-qp-time.png)
 
-- The structure-exploiting method is 6x faster than OSQP cold and 8-9x faster warm, at every
-  horizon, and about 10x faster than OSQP's solve alone, without the factorization. Both grow
-  linearly with the horizon, the Riccati recursion by construction and OSQP's sparse
-  factorization because the KKT matrix of an OCP-QP is banded.
-- The interior-point method needs 8 iterations cold and 4 warm, nearly independent of the
-  horizon; ADMM needs 140-150 cold and 95-100 warm to reach 1e-6, because its convergence is
-  linear and the MPC's QPs are ill-conditioned (weights from 0.02 to 2000).
+- The structure-exploiting method is 5-6x faster than OSQP, cold against cold and warm against
+  warm, at every horizon and at p50 and p99 alike, and about 5x faster than OSQP's solve
+  alone, without the factorization. Both grow linearly with the horizon, the Riccati recursion
+  by construction and OSQP's sparse factorization because the KKT matrix of an OCP-QP is
+  banded.
+- The interior-point method needs 7-9 iterations, nearly independent of the horizon; its warm
+  start, primal only since lap 1 taught that lesson (above), saves half an iteration here. ADMM
+  needs 140-150 iterations cold and 95-100 warm to reach 1e-6, because its convergence is linear
+  and the MPC's QPs are ill-conditioned (weights from 0.02 to 2000).
 - Accuracy: on the same scale (the KKT residuals recomputed from the problem data), the
-  interior-point method's median residual is 4e-13 cold (it overshoots the tolerance on its
-  last step) and 3e-10 to 1e-8 warm, OSQP's 5e-10 to 2e-8; every solve of both met 1e-6. The two
-  solutions differ by at most 6e-3 in some state or input, in the directions the cost barely
-  curves (an acceleration weight of 0.02), where a 1e-6 stationarity allows that much.
-- The p99 columns of results/control/qp_bench.md are dominated by the machine's load (other
-  builds were running, load average 15-55 on 10 cores): a second run gave the same p50s within
-  20 % and p99s up to 10x apart.
+  interior-point method's median residual is 4e-13 (it overshoots the tolerance on its last
+  step), OSQP's 5e-10 to 2e-8; every solve of both met 1e-6. The two solutions differ by at
+  most 5e-3 in some state or input, in the directions the cost barely curves (an acceleration
+  weight of 0.02), where a 1e-6 stationarity allows that much.
+- Measured on a quiet machine (load average 3-5 on 10 cores). An earlier run during other
+  workers' builds (load 15-55) gave p50s 1.5-3x higher and p99s up to 10x higher for both
+  solvers: the ratio between them held.
 
 ## Evaluation
 
@@ -365,9 +386,9 @@ metrics are over the flying second lap. Full tables: `results/control/closed_loo
 
 | Controller | lateral RMS, mean of 8 tracks | worst lateral | flying lap minus the profile's | steering rate RMS | cones, off course | CPU per call p50 / p99 |
 |---|---|---|---|---|---|---|
-| Pure pursuit | 0.069 m | 0.20 m | +0.08 s | 0.23 rad/s | 0, 0 | 31 / 60 us |
-| Stanley | 0.090 m | 0.25 m | -0.00 s | 0.28 rad/s | 0, 0 | 16 / 45 us |
-| MPC | **0.019 m** | **0.07 m** | +0.01 s | 0.22 rad/s | 0, 0 | 0.56 / 0.78 ms |
+| Pure pursuit | 0.069 m | 0.20 m | +0.08 s | 0.23 rad/s | 0, 0 | 17 / 28 us |
+| Stanley | 0.090 m | 0.25 m | -0.00 s | 0.28 rad/s | 0, 0 | 9 / 33 us |
+| MPC | **0.019 m** | **0.07 m** | +0.01 s | 0.22 rad/s | 0, 0 | 0.33 / 0.68 ms |
 
 ![Lateral error on the mixed layout](img/control-tracking.png)
 
@@ -377,15 +398,14 @@ sees the curvature coming over its 1.5 s horizon and starts turning in exactly w
 says, while the geometric laws react to errors they have already made. It never failed a solve
 in these runs.
 
-**Compute.** Over all 69,044 MPC calls of the evaluation (every track and sweep) the CPU time
-per call was 0.53-0.58 ms at p50 and at most 0.78 ms at p99 (the slowest single call 2.4 ms),
-against the 2 ms budget at p99 (docs/design.md, section 6): the QP is about 0.25 ms of it, the
-30 linearizations and the delay prediction most of the rest. Not one solve failed. The
-wall-clock `ControllerStats::compute_time` agrees at p50 (0.59-0.66 ms) but its p99 does not
-measure the controller here: the machine was shared with five other workers' builds and
-benchmarks (load average 30 to 110 on 10 cores during the run), the scheduler preempted single
-calls for up to 15 ms, and the wall-clock p99 ranged from 0.7 ms in a quiet stretch to 15 ms.
-The evaluation therefore reports both (`compute` and `compute_cpu` in closed_loop.json).
+**Compute.** Over all 69,048 MPC calls of the evaluation (every track and sweep) the CPU time
+per call was 0.32-0.35 ms at p50 and at most 0.68 ms at p99 (the slowest single call 1.9 ms),
+against the 2 ms budget at p99 (docs/design.md, section 6): the QP is about half of it, the 30
+linearizations, the rollout and the delay prediction the rest. Not one solve failed. On the
+quiet machine of this run the wall-clock `ControllerStats::compute_time` agrees (p99 0.62-0.68
+ms); during other workers' builds (load average 30 to 110 on 10 cores) the scheduler preempted
+single calls for up to 15 ms and the wall-clock p99 measured the load, not the controller,
+which is why the evaluation reports both (`compute` and `compute_cpu` in closed_loop.json).
 
 **Robustness.** The controllers keep the nominal parameters while the true car changes; means
 over the three reference layouts:
@@ -412,20 +432,80 @@ over the three reference layouts:
 - *Model mismatch.* A heavier car changes little for anyone; softer tires (more slip for the
   same force) cost the MPC 5 cm of RMS, its model now being optimistic.
 
+## Lap 1: the full stack
+
+The evaluation above uses closed references. The stack's lap 1 is different: every 100 ms the
+exploration planner hands over a new open path from the car to 15-30 m ahead, whose speed
+profile ends at rest where the car must be able to stop, with free widths measured against the
+cones mapped so far. The first MPC could not follow those paths in curves: with both oracles
+on, its QP stopped at its iteration limit in every corner, the commands swung between the
+limits (steering 0 to 0.40 rad, acceleration -11 to +11 m/s²), and the car slowed to walking
+pace, knocked cones and stalled. Pure pursuit and Stanley followed the same paths. Recording
+every input of a failing run and replaying it into the controller offline separated four
+causes, each fixed and each checked by a test that reproduces it without the stack:
+
+1. **The solver's warm start** stalled when the active set moved, as it does at every replan:
+   the path's braking end moves forward, so the previous plan's last stages sit on the wrong
+   acceleration bound. A QP the warm-started solver could not finish in 30 iterations solved
+   cold in 7. The warm start is now primal only (see "The QP solver").
+2. **The linearization point** was the previous plan's states re-projected onto the new path.
+   After the first fallback they no longer matched the path, the model linearized there was
+   unstable (spectral radius up to 1.7 per stage), and the QP's optimum about it absurd (90 m/s,
+   35 m/s of sideslip, 13 m off the path; OSQP agreed), which became the next plan. The plan's
+   inputs are now rolled out through the nonlinear model instead (see "Warm start").
+3. **Speed dips the car cannot follow.** Replanned paths often start with a kink back towards
+   the middle of the track (up to 0.8 /m of curvature in their first two metres), and their
+   speed profile dips there. The speed target is now clamped to what braking can reach.
+4. **The free widths of a partial map.** In the first 4 m of each exploration path, 23 % of the
+   widths report less free space than half the car (5th percentile 0.20 m) while the car drives
+   the middle of the track: chords between sparse cones, not cones. As soft bounds they asked the
+   car to leave a path it could have followed, and the slack penalty drove it off; softer
+   penalties, or capping each bound at the path, did not help. Open references are not bounded
+   by default (`bound_open_references`); the raceline, built from the finished map, is.
+
+Apex runs on the default oval with the task's configuration (two laps, 150 s limit): with both
+oracles, 2 laps, lap 1 in 16.8 s, no cone and no excursion, lateral RMS 2.8 cm; with neither
+oracle, lap 1 in 16.6 s, again clean, lateral RMS 3.0 cm. Over generated tracks 1-8 and the
+oval, four laps each (results/control/stack*):
+
+| Configuration | Controller | Completed | Lap 1, mean (s) | Best lap (s) | Cones / run | Off course / run |
+|---|---|---|---|---|---|---|
+| both oracles | MPC | 9/9 | 37.13 | 10.24 | 0.00 | 0.00 |
+| both oracles | Stanley | 9/9 | 35.73 | 10.27 | 0.00 | 0.00 |
+| both oracles | pure pursuit | 9/9 | 41.27 | 10.29 | 5.22 | 0.11 |
+| full stack | MPC | 9/9 | 37.15 | 10.25 | 0.44 | 0.22 |
+| full stack | Stanley | 9/9 | 35.84 | 10.29 | 0.00 | 0.00 |
+| full stack | pure pursuit | 9/9 | 41.80 | 10.31 | 6.11 | 0.00 |
+
+The MPC's lap 1 is now clean on every track, with or without the oracles, 1.4 s slower on
+average than Stanley's (it brakes for the end of each short path the planner hands it). Its
+cones in the full stack all come from one track (generated 7, 4 cones and 2 excursions, all in
+the second after the switch to the raceline), and pure pursuit's from lap 1 at walking pace in
+tight corners; both are open (Limitations).
+
 ## Reproducing
 
     make PRESET=release build
     ./build/release/bench/control/apex_control_qp_bench           # ~1 min, results/control/qp_bench.*
     ./build/release/bench/control/apex_control_closed_loop_eval   # ~1 min, results/control/closed_loop.*
+    ./build/release/apps/apex sweep --config results/control/stack/sweep.json --out results/control/stack
+    ./build/release/apps/apex sweep --config results/control/stack_oracles/sweep.json --out results/control/stack_oracles
     uv run --project tools python tools/control/plot.py           # docs/img/control-*.png
-    ctest --preset dev -L control                                 # the module's tests, ~3 s
+    ctest --preset dev -L control                                 # the module's tests, ~4 s
 
-Both benchmarks are deterministic apart from their timings.
+The benchmarks and sweeps are deterministic apart from their timings.
 
 ## Limitations
 
 - The evaluation uses the true state. Estimation noise and latency, and the 100 ms replanning of
-  lap 1, are exercised only by the stack's closed-loop runs.
+  lap 1, are exercised by the stack's runs ("Lap 1") and by tests with replanned paths.
+- At the switch to the raceline the car can start outside the raceline's bounds; on one
+  generated track without oracles the MPC then knocked 4 cones within a second. The lateral
+  bound's stiff penalty, active from the first stage, is the likely cause; widening the bounds
+  to include the car's position at the start is a candidate fix.
+- Pure pursuit knocks 5-6 cones per run in the stack's lap 1, at walking pace in tight corners
+  where the exploration path is short; not yet understood. Stanley is the safer geometric
+  controller there.
 - The MPC tracks a given path and speed profile. It does not trade path for time (a contouring
   formulation would) and leaves the friction estimate to the planner.
 - Each actuator is approximated as a pure delay of its dead time plus its lag time constant,

@@ -59,7 +59,7 @@ def plot_qp(results: Path, out: Path):
     ax.set_xticks(horizons)
     ax.set_title("MPC QPs at tolerance 1e-6: solve time per QP", color=TEXT, fontsize=11,
                  loc="left")
-    legend = ax.legend(frameon=False, fontsize=8, labelcolor=TEXT)
+    legend = ax.legend(frameon=False, fontsize=8, labelcolor=TEXT, handlelength=4.0)
     legend.set_title(None)
     fig.tight_layout()
     fig.savefig(out / "control-qp-time.png", dpi=150, facecolor=SURFACE)

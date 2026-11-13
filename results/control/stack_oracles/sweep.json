@@ -1,0 +1,78 @@
+{
+  "base": {
+    "dnf": {
+      "time_limit": 300
+    },
+    "oracles": {
+      "perception": true,
+      "state": true
+    },
+    "stack": {
+      "mission": {
+        "laps": 4
+      }
+    }
+  },
+  "name": "Lap 1 and racing, both oracles, three controllers",
+  "oracle_variant": "",
+  "seeds": [],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 2
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 4
+    },
+    {
+      "seed": 5
+    },
+    {
+      "seed": 6
+    },
+    {
+      "seed": 7
+    },
+    {
+      "seed": 8
+    },
+    {
+      "oval": {
+        "radius": 12.0,
+        "straight": 40.0
+      }
+    }
+  ],
+  "variants": [
+    {
+      "name": "mpc",
+      "patch": {}
+    },
+    {
+      "name": "stanley",
+      "patch": {
+        "stack": {
+          "controller": {
+            "kind": "stanley"
+          }
+        }
+      }
+    },
+    {
+      "name": "pure_pursuit",
+      "patch": {
+        "stack": {
+          "controller": {
+            "kind": "pure_pursuit"
+          }
+        }
+      }
+    }
+  ]
+}
