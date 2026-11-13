@@ -18,7 +18,11 @@ def commit() -> str:
         return subprocess.run(["git", *args], capture_output=True, text=True, check=True).stdout
 
     head = git("rev-parse", "--short", "HEAD").strip()
-    dirty = git("status", "--porcelain", "--untracked-files=no").strip()
+    # The evaluation rewrites its outputs and the docs; only changes elsewhere (the code, the
+    # configs, the tools) mean the runs did not come from HEAD.
+    outputs = [":!docs", ":!results/runs/README.md", ":!results/runs/*/runs.json",
+               ":!results/runs/*/summary.*", ":!results/runs/*/sweep.json"]
+    dirty = git("status", "--porcelain", "--untracked-files=no", "--", ".", *outputs).strip()
     return head + (" (with uncommitted changes)" if dirty else "")
 
 
