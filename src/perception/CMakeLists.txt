@@ -2,6 +2,7 @@
 apex_module(perception
     SOURCES
         assignment.cpp
+        camera_fusion.cpp
         clustering.cpp
         cone_model.cpp
         ground.cpp
