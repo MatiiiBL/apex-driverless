@@ -22,5 +22,20 @@ TEST(PlanningConfigJson, SpeedProfileRoundTripAndPartialOverride) {
     EXPECT_THROW(json::parse(R"({"grip": 0.7})").get<SpeedProfileConfig>(), std::invalid_argument);
 }
 
+TEST(PlanningConfigJson, TrackModelRoundTripAndPartialOverride) {
+    TrackModelConfig config;
+    config.max_gap = 20.0;
+    config.passes = 3;
+    const json j = config;
+    const auto back = j.get<TrackModelConfig>();
+    EXPECT_DOUBLE_EQ(back.max_gap, 20.0);
+    EXPECT_EQ(back.passes, 3U);
+
+    const auto partial = json::parse(R"({"fill_spacing": 1.0})").get<TrackModelConfig>();
+    EXPECT_DOUBLE_EQ(partial.fill_spacing, 1.0);
+    EXPECT_DOUBLE_EQ(partial.max_lateral, TrackModelConfig{}.max_lateral);
+    EXPECT_THROW(json::parse(R"({"gap": 1.0})").get<TrackModelConfig>(), std::invalid_argument);
+}
+
 }  // namespace
 }  // namespace apex::planning

@@ -6,7 +6,9 @@ apex_module(planning
         ggv.cpp
         predicates.cpp
         qp_solver.cpp
+        smoothing.cpp
         speed_profile.cpp
+        track_model.cpp
     PUBLIC_DEPS apex::core)
 
 # The exact predicates' expansion arithmetic needs every product and sum rounded separately:
