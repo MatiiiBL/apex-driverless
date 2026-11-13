@@ -301,8 +301,10 @@ and 50 m, occluded or not, so 30+ includes 40–50 m, beyond the clustering rang
 
 **Latency.** `on_lidar` (whole pipeline, including the fusion) in Release on the Apple M4, which
 was shared with five other workers (load average 12 during the run): p50 215 µs, p99 484 µs,
-max 1.2 ms over the 1 204 scans, against a 10 ms budget at p99. The same run with the machine's
-load average above 100 gave p99 2.9 ms and max 7 ms, still inside the budget.
+max 1.2 ms over the 1 204 scans, against a 10 ms budget at p99. Under heavy contention from the
+other workers' builds (load averages of 30 to over 100 on 10 cores) the same run gave p99 2.6 to
+2.9 ms, still well inside the budget, but a worst single scan of up to 10.6 ms: the tail then
+depends on the scheduler, not on the pipeline, whose work per scan is the same.
 
 The module was developed against the tests' own ray caster (`tests/perception/scene.hpp`) before
 the simulator's sensor models existed. The two agree: a test checks the caster point for point
