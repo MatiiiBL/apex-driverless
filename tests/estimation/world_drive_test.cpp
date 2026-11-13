@@ -16,13 +16,14 @@ namespace {
 // A lap of exploration and a racing lap on a generated track, driven by the simulator's vehicle
 // model, with its IMU, wheel and steering models. The racing limits are what the pure-pursuit
 // test driver holds without sliding (10 m/s^2 lateral).
-SyntheticRun simulated_drive(const Track& track, const sim::WorldConfig& config,
-                             ConeSource source) {
+SyntheticRun simulated_drive(const Track& track, const sim::WorldConfig& config, ConeSource source,
+                             double hold_at_start = 1.0) {
     DriveProfile profile;
     profile.laps = 2;
     profile.racing_lateral_accel = 10.0;
     profile.max_brake = 8.0;
     profile.max_accel = 6.0;
+    profile.hold_at_start = hold_at_start;
     return make_world_run(track, config, profile, SyntheticSensors{}, source);
 }
 
@@ -95,24 +96,90 @@ Evaluation evaluate(const SyntheticRun& run, const Track& track, const sim::Worl
     return out;
 }
 
+TEST(StateEstimator, KeepsMappingAtThreeTimesTheSensorNoise) {
+    // At three times the simulator's sensor noise, perception no longer finds the big orange
+    // cones beside the staging position, and only six of the cones within 20 m remain. A car at
+    // rest sees nothing come nearer: when new landmarks were limited to 20 m the map stayed at
+    // those six, and the stack's planner found no path to explore. The far cones must be mapped
+    // too, and over the drive the map must keep growing, with larger errors than at the nominal
+    // noise but no duplicates (docs/estimation.md).
+    const double hold = 3.5;  // s, when the stack gave up
+    const Track track = sim::generate_track(1);
+    sim::WorldConfig config;
+    config.seed = 1;
+    config.noise = sim::scale_noise(sim::SensorNoise{}, 3.0);
+    const SyntheticRun run = simulated_drive(track, config, ConeSource::Perception, hold);
+    ASSERT_TRUE(std::isfinite(run.lap1_end));
+
+    EstimatorConfig near_only;
+    near_only.slam.max_new_landmark_range = 20.0;
+    StateEstimator staged({}, config.vehicle, config.rig, track.start_pose);
+    StateEstimator staged_near(near_only, config.vehicle, config.rig, track.start_pose);
+    for (const TimedMessage& m : run.messages) {
+        if (m.delivery >= hold) break;
+        deliver(staged, m);
+        deliver(staged_near, m);
+    }
+    std::size_t beyond_20m = 0;
+    for (const MapCone& c : staged.map().cones) {
+        if (track.start_pose.to_local(c.position).norm() > 20.0) {
+            ++beyond_20m;
+        }
+    }
+    // 20 landmarks, 14 of them beyond 20 m, against 6 with the 20 m limit, which turned away
+    // the far cones' observations as too far to map.
+    EXPECT_GE(staged.map().cones.size(), 15U);
+    EXPECT_GE(beyond_20m, 10U);
+    const MapMetrics at_rest = evaluate_map(staged.map(), track, {});
+    EXPECT_EQ(at_rest.duplicates, 0U);
+    EXPECT_EQ(at_rest.spurious, 0U);
+    EXPECT_LT(at_rest.rms_error, 0.05);
+    EXPECT_LT(staged_near.map().cones.size(), staged.map().cones.size());
+    EXPECT_GT(staged_near.stats().too_far_to_map, 100U);
+
+    // Map 5 cm rms, lap 1 9 cm, racing 7 cm.
+    const Evaluation e = evaluate(run, track, config);
+    EXPECT_EQ(e.map.duplicates, 0U);
+    EXPECT_EQ(e.map.spurious, 0U);
+    EXPECT_EQ(e.map.missed, 0U);
+    EXPECT_LT(e.map.rms_error, 0.1);
+    EXPECT_LT(e.lap1_position_rms, 0.2);
+    EXPECT_LT(e.racing_position_rms, 0.15);
+}
+
 TEST(StateEstimator, TheYawRateBiasStateKeepsADriftingLapFromDoublingTheMap) {
     // World seed 5 with observations made from the truth: the velocity filter's yaw rate is off
     // by several 1e-4 rad/s for many seconds, and the yaw drifts over lap 1. Without the bias
-    // state the covariance does not follow that drift, and at the timing line the first cones
-    // fall outside even the new-landmark gate and are mapped again (docs/estimation.md).
+    // state the covariance does not follow that drift. With new landmarks limited to 20 m, each
+    // seen over a shorter stretch, the lap drifts so far that at the timing line the first cones
+    // fall outside even the new-landmark gate and are mapped again. At the default 30 m the
+    // drift stays within the gates either way, and the bias state halves it (docs/estimation.md).
     const Track track = sim::generate_track(5);
     sim::WorldConfig config;
     config.seed = 5;
     const SyntheticRun run = simulated_drive(track, config, ConeSource::Synthetic);
+
+    EstimatorConfig near;
+    near.slam.max_new_landmark_range = 20.0;
+    EstimatorConfig near_without = near;
+    near_without.slam.yaw_rate_bias_sigma = 0.0;
+    const Evaluation near_off = evaluate(run, track, config, near_without);
+    const Evaluation near_on = evaluate(run, track, config, near);
+    EXPECT_GT(near_off.map.duplicates, 5U);
+    EXPECT_EQ(near_on.map.duplicates, 0U);
+    EXPECT_EQ(near_on.map.missed, 0U);
+    EXPECT_LT(near_on.map.rms_error, 0.08);
+    EXPECT_LT(near_on.racing_position_rms, 0.1);
+
     EstimatorConfig without;
     without.slam.yaw_rate_bias_sigma = 0.0;
     const Evaluation off = evaluate(run, track, config, without);
     const Evaluation on = evaluate(run, track, config);
-    EXPECT_GT(off.map.duplicates, 5U);
     EXPECT_EQ(on.map.duplicates, 0U);
     EXPECT_EQ(on.map.missed, 0U);
     EXPECT_LT(on.map.rms_error, 0.08);
     EXPECT_LT(on.racing_position_rms, 0.1);
+    EXPECT_LT(on.lap1_position_rms, 0.7 * off.lap1_position_rms);
 }
 
 TEST(StateEstimator, TracksTheSimulatedCarWithThePerceptionInTheLoop) {

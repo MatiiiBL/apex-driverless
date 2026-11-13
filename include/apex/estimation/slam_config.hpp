@@ -32,9 +32,14 @@ struct SlamConfig {
     // Perception's covariances are scaled, then given a noise floor, before use
     // (prepare_observation in observation.hpp).
     double observation_noise_scale = 1.0;
-    double min_observation_std = 0.02;     // m
-    double max_observation_range = 30.0;   // m, observations beyond are ignored
-    double max_new_landmark_range = 20.0;  // m, only nearer ones may start a landmark
+    double min_observation_std = 0.02;    // m
+    double max_observation_range = 30.0;  // m, observations beyond are ignored
+    // m, only nearer ones may start a landmark. As far as observations are fused: cones come into
+    // view at the far end, and a shorter limit throws away their first observations. At 20 m a
+    // car staged at rest mapped only the cones within 20 m (six at three times the sensor noise,
+    // when perception misses the big orange cones), and lap 1 drifted more for the shorter
+    // stretch each landmark was seen over (docs/estimation.md).
+    double max_new_landmark_range = 30.0;
     double min_landmark_separation = 0.5;  // m, no new landmark nearer than this to another
     std::uint32_t confirm_detections = 3;  // scans a new landmark must be seen in
     double tentative_timeout = 0.35;       // s, unconfirmed landmarks unseen this long go
