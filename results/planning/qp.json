@@ -1,0 +1,404 @@
+{
+ "raceline": {
+  "osqp_unsolved": 0,
+  "ours_unsolved": 0,
+  "problems": [
+   {
+    "objective_gap": 1.4911957172648765e-11,
+    "osqp_iterations": 1100,
+    "osqp_ms": 94.49479199999999,
+    "ours_iterations": 12,
+    "ours_ms": 8.176416000000001,
+    "problem": "generated-1 QP 0",
+    "rows": 346,
+    "solution_gap": 5.274487552275886e-08,
+    "variables": 173
+   },
+   {
+    "objective_gap": 2.1240346020204492e-12,
+    "osqp_iterations": 1250,
+    "osqp_ms": 105.829875,
+    "ours_iterations": 13,
+    "ours_ms": 8.847125,
+    "problem": "generated-1 QP 1",
+    "rows": 346,
+    "solution_gap": 2.548630445575739e-09,
+    "variables": 173
+   },
+   {
+    "objective_gap": 1.1785363429832039e-11,
+    "osqp_iterations": 3875,
+    "osqp_ms": 307.39679199999995,
+    "ours_iterations": 13,
+    "ours_ms": 8.819166,
+    "problem": "generated-1 QP 2",
+    "rows": 346,
+    "solution_gap": 1.1096533784654868e-07,
+    "variables": 173
+   },
+   {
+    "objective_gap": 2.548917503403092e-12,
+    "osqp_iterations": 2050,
+    "osqp_ms": 139.16037500000002,
+    "ours_iterations": 13,
+    "ours_ms": 6.759458,
+    "problem": "generated-2 QP 0",
+    "rows": 314,
+    "solution_gap": 1.0171780306933442e-08,
+    "variables": 157
+   },
+   {
+    "objective_gap": 8.23953728362857e-12,
+    "osqp_iterations": 1700,
+    "osqp_ms": 118.87120900000001,
+    "ours_iterations": 13,
+    "ours_ms": 6.823875,
+    "problem": "generated-2 QP 1",
+    "rows": 316,
+    "solution_gap": 3.3852914330112505e-07,
+    "variables": 158
+   },
+   {
+    "objective_gap": 3.835379692581779e-12,
+    "osqp_iterations": 1125,
+    "osqp_ms": 79.173959,
+    "ours_iterations": 13,
+    "ours_ms": 6.769917,
+    "problem": "generated-2 QP 2",
+    "rows": 314,
+    "solution_gap": 1.11804472607141e-08,
+    "variables": 157
+   },
+   {
+    "objective_gap": 9.228663568252977e-12,
+    "osqp_iterations": 1350,
+    "osqp_ms": 32.265125,
+    "ours_iterations": 12,
+    "ours_ms": 1.576958,
+    "problem": "generated-3 QP 0",
+    "rows": 184,
+    "solution_gap": 9.89355153913074e-08,
+    "variables": 92
+   },
+   {
+    "objective_gap": 7.744105742046392e-12,
+    "osqp_iterations": 1000,
+    "osqp_ms": 24.340583,
+    "ours_iterations": 13,
+    "ours_ms": 1.8576249999999999,
+    "problem": "generated-3 QP 1",
+    "rows": 186,
+    "solution_gap": 2.8575629020324844e-07,
+    "variables": 93
+   },
+   {
+    "objective_gap": 1.648105745396129e-11,
+    "osqp_iterations": 3800,
+    "osqp_ms": 86.93683300000001,
+    "ours_iterations": 12,
+    "ours_ms": 1.5699589999999999,
+    "problem": "generated-3 QP 2",
+    "rows": 184,
+    "solution_gap": 9.159135127244367e-08,
+    "variables": 92
+   },
+   {
+    "objective_gap": 5.3667020834252786e-11,
+    "osqp_iterations": 4050,
+    "osqp_ms": 287.734667,
+    "ours_iterations": 13,
+    "ours_ms": 7.631833,
+    "problem": "generated-4 QP 0",
+    "rows": 326,
+    "solution_gap": 7.974936802124244e-05,
+    "variables": 163
+   },
+   {
+    "objective_gap": 1.9470623128925585e-10,
+    "osqp_iterations": 3075,
+    "osqp_ms": 225.009042,
+    "ours_iterations": 13,
+    "ours_ms": 7.788959,
+    "problem": "generated-4 QP 1",
+    "rows": 330,
+    "solution_gap": 0.0003690827172971832,
+    "variables": 165
+   },
+   {
+    "objective_gap": 1.7980973694355406e-12,
+    "osqp_iterations": 2500,
+    "osqp_ms": 184.080042,
+    "ours_iterations": 14,
+    "ours_ms": 7.967416999999999,
+    "problem": "generated-4 QP 2",
+    "rows": 328,
+    "solution_gap": 2.018862276041266e-06,
+    "variables": 164
+   },
+   {
+    "objective_gap": 1.0325636256652346e-12,
+    "osqp_iterations": 1050,
+    "osqp_ms": 75.653375,
+    "ours_iterations": 13,
+    "ours_ms": 6.810499999999999,
+    "problem": "generated-5 QP 0",
+    "rows": 316,
+    "solution_gap": 7.499460558113569e-07,
+    "variables": 158
+   },
+   {
+    "objective_gap": 1.3579701543257865e-11,
+    "osqp_iterations": 1425,
+    "osqp_ms": 101.602792,
+    "ours_iterations": 12,
+    "ours_ms": 6.591125,
+    "problem": "generated-5 QP 1",
+    "rows": 318,
+    "solution_gap": 8.355927020101128e-07,
+    "variables": 159
+   },
+   {
+    "objective_gap": 3.37972582026768e-11,
+    "osqp_iterations": 1175,
+    "osqp_ms": 85.556042,
+    "ours_iterations": 13,
+    "ours_ms": 7.158625,
+    "problem": "generated-5 QP 2",
+    "rows": 318,
+    "solution_gap": 6.734695670654323e-07,
+    "variables": 159
+   },
+   {
+    "objective_gap": 1.3439327896498256e-11,
+    "osqp_iterations": 1500,
+    "osqp_ms": 162.052375,
+    "ours_iterations": 13,
+    "ours_ms": 12.63275,
+    "problem": "generated-6 QP 0",
+    "rows": 390,
+    "solution_gap": 5.32235266115233e-06,
+    "variables": 195
+   },
+   {
+    "objective_gap": 4.971323722380165e-12,
+    "osqp_iterations": 350,
+    "osqp_ms": 46.030209,
+    "ours_iterations": 14,
+    "ours_ms": 12.796083,
+    "problem": "generated-6 QP 1",
+    "rows": 388,
+    "solution_gap": 1.2357269352086808e-06,
+    "variables": 194
+   },
+   {
+    "objective_gap": 2.134415286940209e-11,
+    "osqp_iterations": 1475,
+    "osqp_ms": 152.315375,
+    "ours_iterations": 14,
+    "ours_ms": 12.766708,
+    "problem": "generated-6 QP 2",
+    "rows": 388,
+    "solution_gap": 4.735431264491635e-07,
+    "variables": 194
+   },
+   {
+    "objective_gap": 3.111804582625539e-12,
+    "osqp_iterations": 900,
+    "osqp_ms": 68.82804100000001,
+    "ours_iterations": 12,
+    "ours_ms": 6.692958,
+    "problem": "generated-7 QP 0",
+    "rows": 324,
+    "solution_gap": 6.7648874280124005e-09,
+    "variables": 162
+   },
+   {
+    "objective_gap": 3.514305742634602e-12,
+    "osqp_iterations": 500,
+    "osqp_ms": 42.914292,
+    "ours_iterations": 12,
+    "ours_ms": 6.830959,
+    "problem": "generated-7 QP 1",
+    "rows": 328,
+    "solution_gap": 3.32671965530551e-08,
+    "variables": 164
+   },
+   {
+    "objective_gap": 5.515438954788252e-11,
+    "osqp_iterations": 3050,
+    "osqp_ms": 216.427333,
+    "ours_iterations": 13,
+    "ours_ms": 7.6129999999999995,
+    "problem": "generated-7 QP 2",
+    "rows": 326,
+    "solution_gap": 2.8138365976877744e-06,
+    "variables": 163
+   },
+   {
+    "objective_gap": 1.5852103206187765e-10,
+    "osqp_iterations": 925,
+    "osqp_ms": 27.241834,
+    "ours_iterations": 13,
+    "ours_ms": 2.2279999999999998,
+    "problem": "generated-8 QP 0",
+    "rows": 202,
+    "solution_gap": 2.503224098265866e-05,
+    "variables": 101
+   },
+   {
+    "objective_gap": 1.390113579205982e-10,
+    "osqp_iterations": 725,
+    "osqp_ms": 21.97025,
+    "ours_iterations": 13,
+    "ours_ms": 2.2451250000000003,
+    "problem": "generated-8 QP 1",
+    "rows": 204,
+    "solution_gap": 7.4218311423117356e-06,
+    "variables": 102
+   },
+   {
+    "objective_gap": 1.2978479844444756e-12,
+    "osqp_iterations": 2225,
+    "osqp_ms": 62.055125000000004,
+    "ours_iterations": 13,
+    "ours_ms": 2.247833,
+    "problem": "generated-8 QP 2",
+    "rows": 204,
+    "solution_gap": 5.449514480621552e-10,
+    "variables": 102
+   },
+   {
+    "objective_gap": 6.036949043499164e-13,
+    "osqp_iterations": 1000,
+    "osqp_ms": 83.411792,
+    "ours_iterations": 14,
+    "ours_ms": 8.911999999999999,
+    "problem": "generated-9 QP 0",
+    "rows": 340,
+    "solution_gap": 4.859050495298334e-09,
+    "variables": 170
+   },
+   {
+    "objective_gap": 2.671265927810276e-12,
+    "osqp_iterations": 425,
+    "osqp_ms": 40.439333,
+    "ours_iterations": 13,
+    "ours_ms": 8.301375,
+    "problem": "generated-9 QP 1",
+    "rows": 340,
+    "solution_gap": 1.4310009602697127e-06,
+    "variables": 170
+   },
+   {
+    "objective_gap": 2.05952445142628e-12,
+    "osqp_iterations": 1550,
+    "osqp_ms": 121.514917,
+    "ours_iterations": 13,
+    "ours_ms": 8.258583,
+    "problem": "generated-9 QP 2",
+    "rows": 340,
+    "solution_gap": 6.552850903389362e-09,
+    "variables": 170
+   },
+   {
+    "objective_gap": 4.9824383701758337e-11,
+    "osqp_iterations": 1525,
+    "osqp_ms": 67.59970899999999,
+    "ours_iterations": 12,
+    "ours_ms": 3.4949999999999997,
+    "problem": "generated-10 QP 0",
+    "rows": 252,
+    "solution_gap": 1.968628139115136e-07,
+    "variables": 126
+   },
+   {
+    "objective_gap": 2.1790724249589965e-12,
+    "osqp_iterations": 675,
+    "osqp_ms": 32.292833,
+    "ours_iterations": 13,
+    "ours_ms": 3.8010829999999998,
+    "problem": "generated-10 QP 1",
+    "rows": 252,
+    "solution_gap": 3.5066569356589916e-08,
+    "variables": 126
+   },
+   {
+    "objective_gap": 3.987848046870751e-11,
+    "osqp_iterations": 750,
+    "osqp_ms": 35.49625,
+    "ours_iterations": 13,
+    "ours_ms": 3.807792,
+    "problem": "generated-10 QP 2",
+    "rows": 252,
+    "solution_gap": 1.9346232588354773e-06,
+    "variables": 126
+   }
+  ],
+  "worst_relative_objective_gap": 1.9470623128925585e-10,
+  "worst_solution_gap": 0.0003690827172971832
+ },
+ "random": {
+  "osqp_unsolved": 0,
+  "ours_unsolved": 0,
+  "problems": [
+   {
+    "objective_gap": 3.255266175765609e-10,
+    "osqp_iterations": 100,
+    "osqp_ms": 0.162125,
+    "ours_iterations": 10,
+    "ours_ms": 0.057290999999999995,
+    "problem": "random n=25",
+    "rows": 12,
+    "solution_gap": 5.14240335702798e-07,
+    "variables": 25
+   },
+   {
+    "objective_gap": 8.147922873108467e-12,
+    "osqp_iterations": 100,
+    "osqp_ms": 0.566917,
+    "ours_iterations": 10,
+    "ours_ms": 0.173041,
+    "problem": "random n=50",
+    "rows": 25,
+    "solution_gap": 1.2415417027789033e-09,
+    "variables": 50
+   },
+   {
+    "objective_gap": 1.262614175649517e-10,
+    "osqp_iterations": 275,
+    "osqp_ms": 5.203958,
+    "ours_iterations": 9,
+    "ours_ms": 0.6084579999999999,
+    "problem": "random n=100",
+    "rows": 50,
+    "solution_gap": 4.14086209765685e-10,
+    "variables": 100
+   },
+   {
+    "objective_gap": 2.07901452136012e-10,
+    "osqp_iterations": 325,
+    "osqp_ms": 21.242417,
+    "ours_iterations": 9,
+    "ours_ms": 3.1723329999999996,
+    "problem": "random n=200",
+    "rows": 100,
+    "solution_gap": 4.29973931459493e-09,
+    "variables": 200
+   },
+   {
+    "objective_gap": 1.144544024390563e-10,
+    "osqp_iterations": 125,
+    "osqp_ms": 72.128709,
+    "ours_iterations": 11,
+    "ours_ms": 25.36525,
+    "problem": "random n=400",
+    "rows": 200,
+    "solution_gap": 5.031602272886904e-06,
+    "variables": 400
+   }
+  ],
+  "worst_relative_objective_gap": 3.255266175765609e-10,
+  "worst_solution_gap": 5.031602272886904e-06
+ },
+ "tolerance": 1e-09
+}
