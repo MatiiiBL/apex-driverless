@@ -1,6 +1,7 @@
 # The perception module (docs/design.md, section 5.2; docs/perception.md).
 apex_module(perception
     SOURCES
+        assignment.cpp
         clustering.cpp
         cone_model.cpp
         ground.cpp
