@@ -45,12 +45,9 @@ struct InteriorPointSettings {
     double inaccurate_factor = 100.0;
     double fraction_to_boundary = 0.995;  // keeps slacks and multipliers strictly positive
     double regularization = 1e-10;        // added to the Riccati recursion's R_bar
-    // Cold start: slacks are at least this, multipliers start at 1.
+    // Slacks start at their constraint's distance from the bound but at least this, and
+    // multipliers at 1, whether the start is cold or warm (see solve()).
     double initial_slack = 1.0;
-    // Warm start: slacks are at least this, multipliers start at warm_start_mu / slack (or at
-    // the warm start's own multipliers when it has them, floored at warm_start_mu).
-    double warm_start_slack = 1e-2;
-    double warm_start_mu = 1e-2;
     // Multipliers beyond this trigger the infeasibility certificate check.
     double infeasibility_threshold = 1e6;
     double infeasibility_tolerance = 1e-6;
@@ -74,8 +71,18 @@ public:
 
     // Solves `problem` into `solution` and returns its status (also in solution.status).
     // `warm_start`, if given, seeds the primal iterate with its x and u (it must have the same
-    // horizon) and, when its y are filled, the multipliers. Never throws on numerical trouble;
-    // allocates only when the problem's size changes.
+    // horizon). Never throws on numerical trouble; allocates only when the problem's size
+    // changes.
+    //
+    // The warm start is primal only: slacks and multipliers start centred, as in a cold start.
+    // Interior-point methods are notoriously hard to warm start (E. A. Yildirim, S. J. Wright,
+    // "Warm-start strategies in interior-point methods for linear programming", SIAM J.
+    // Optimization 12(3), 2002): slacks and multipliers taken from the previous solution sit
+    // near its active bounds, and when the active set has moved the iterate is badly centred.
+    // On the MPC's QPs, whose late-stage inputs are weakly penalized, the method then crossed a
+    // whole input box per iteration and stopped at its iteration limit on problems a cold
+    // start solves in 7 iterations; centring costs one or two iterations when the warm start is
+    // good.
     QpStatus solve(const OcpQp<Nx, Nu>& problem, OcpSolution<Nx, Nu>& solution,
                    const OcpSolution<Nx, Nu>* warm_start = nullptr) {
         solution.iterations = 0;
@@ -193,24 +200,11 @@ private:
             }
         }
         for (std::size_t k = 0; k < n; ++k) pi_[k] = StateVector::Zero();
-        const bool warm_duals = use_warm && warm->pi.size() == n && warm->y.size() == n + 1;
-        if (warm_duals) {
-            for (std::size_t k = 0; k < n; ++k) pi_[k] = warm->pi[k];
-        }
         for (std::size_t i = 0; i < inequalities_.size(); ++i) {
             const Inequality& in = inequalities_[i];
             const double distance = in.bound - row_value(problem, in, x_[in.stage], u_[in.stage]);
-            if (!use_warm) {
-                t_[i] = std::max(distance, settings_.initial_slack);
-                lambda_[i] = 1.0;
-                continue;
-            }
-            t_[i] = std::max(distance, settings_.warm_start_slack);
-            lambda_[i] = settings_.warm_start_mu / t_[i];
-            if (warm_duals && in.row < warm->y[in.stage].size()) {
-                const double y = in.sign * warm->y[in.stage][in.row];
-                lambda_[i] = std::max(y, settings_.warm_start_mu);
-            }
+            t_[i] = std::max(distance, settings_.initial_slack);
+            lambda_[i] = 1.0;
         }
     }
 

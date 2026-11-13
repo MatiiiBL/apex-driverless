@@ -148,11 +148,14 @@ TEST(InteriorPoint, WarmStartFromANearbyProblemSavesIterations) {
         OcpSolution<Nx, Nu> warm;
         ASSERT_EQ(solver.solve(problem, cold), QpStatus::Solved);
         ASSERT_EQ(solver.solve(problem, warm, &first), QpStatus::Solved);
-        EXPECT_LT(max_difference(cold, warm), 1e-4);
+        // Both meet the default 1e-6 tolerance, which leaves the weakly curved directions of a
+        // random problem free to ~1e-4; the objectives agree much more closely.
+        EXPECT_LT(max_difference(cold, warm), 1e-3);
+        EXPECT_NEAR(cold.objective, warm.objective, 1e-7 * (1.0 + std::abs(cold.objective)));
         cold_total += cold.iterations;
         warm_total += warm.iterations;
     }
-    EXPECT_LT(warm_total, cold_total);
+    EXPECT_LT(warm_total, cold_total) << warm_total << " vs " << cold_total;
 }
 
 TEST(InteriorPoint, DetectsInfeasibleConstraints) {
