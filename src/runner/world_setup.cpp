@@ -2,6 +2,7 @@
 
 #include "apex/core/track.hpp"
 #include "apex/runner/run.hpp"
+#include "apex/sim/sensors.hpp"
 #include "apex/sim/track_gen.hpp"
 
 namespace apex::runner {
@@ -23,6 +24,7 @@ Track make_track(const TrackSpec& spec) {
 sim::WorldConfig make_world_config(const RunConfig& config) {
     sim::WorldConfig world;
     world.vehicle = config.vehicle;
+    world.noise = sim::scale_noise(world.noise, config.sensor_noise_scale);
     world.friction_scale = config.friction_scale;
     world.seed = config.seed;
     return world;

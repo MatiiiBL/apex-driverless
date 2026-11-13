@@ -1,11 +1,13 @@
 # Tests may link apex::sim to generate realistic data, even for the car's modules.
 apex_tests(runner
     SOURCES
+        centerline_driver.cpp
         config_test.cpp
         delay_queue_test.cpp
         metrics_test.cpp
         oracle_test.cpp
         result_test.cpp
+        run_test.cpp
         summary_test.cpp
         sweep_test.cpp
         world_setup_test.cpp
