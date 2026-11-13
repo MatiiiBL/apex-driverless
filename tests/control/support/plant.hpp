@@ -4,6 +4,7 @@
 
 #include "apex/core/messages.hpp"
 #include "apex/core/vehicle.hpp"
+#include "apex/sim/race.hpp"
 #include "apex/sim/vehicle_model.hpp"
 
 // The car the control tests and evaluations drive: the simulator's vehicle model (dynamic
@@ -27,10 +28,17 @@ public:
     // Reaches the actuators after their dead times.
     void command(const ControlCommand& command) { model_.command(command); }
 
+    // A race monitor to update after every tick, as the World does (it must outlive the
+    // plant's use).
+    void attach(sim::RaceMonitor& monitor) { monitor_ = &monitor; }
+
     // Advances by whole physics ticks.
     void advance(double seconds) {
         const auto ticks = std::lround(seconds / sim::VehicleModel::kStep);
-        for (long i = 0; i < ticks; ++i) model_.step();
+        for (long i = 0; i < ticks; ++i) {
+            model_.step();
+            if (monitor_ != nullptr) monitor_->update(model_.state(), model_.time());
+        }
     }
 
     [[nodiscard]] Time time() const { return model_.time(); }
@@ -51,6 +59,7 @@ public:
 
 private:
     sim::VehicleModel model_;
+    sim::RaceMonitor* monitor_ = nullptr;
 };
 
 }  // namespace apex::control::testing

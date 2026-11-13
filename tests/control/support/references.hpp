@@ -8,6 +8,7 @@
 #include "apex/core/angles.hpp"
 #include "apex/core/geometry.hpp"
 #include "apex/core/trajectory.hpp"
+#include "apex/core/vehicle.hpp"
 
 // Reference trajectories for the control tests and benchmarks: straight lines and circles with
 // exact geometry, and a speed profile for any path. The planning module's speed profile is
@@ -66,9 +67,24 @@ struct SpeedLimits {
     double end = 0.0;
 };
 
+// Limits near the grip of `car`: `fraction` of its peak friction, without the help of
+// downforce, for cornering, and acceleration and braking inside its traction. The profile
+// combines them on a friction ellipse.
+[[nodiscard]] inline SpeedLimits grip_limited(const VehicleParams& car, double fraction = 0.85) {
+    const double grip = std::min(car.front_tire.mu, car.rear_tire.mu) * kGravity;
+    SpeedLimits limits;
+    limits.lateral = fraction * grip;
+    limits.accel = 0.5 * grip;
+    limits.brake = 0.65 * grip;
+    limits.top = car.max_speed - 5.0;
+    return limits;
+}
+
 // Replaces the speed profile of `path` with the fastest one within `limits`: v^2 kappa below
-// the lateral limit, and the forward and backward passes of v^2 = v0^2 + 2 a ds. Curvature is
-// smoothed over a few meters first, since a centerline's sampled curvature is noisy.
+// the lateral limit, and the forward and backward passes of v^2 = v0^2 + 2 a ds, where the
+// acceleration available shrinks with the lateral one on the ellipse
+// (a / a_max)^2 + (v^2 kappa / a_lat)^2 <= 1. Curvature is smoothed over a few meters first,
+// since a centerline's sampled curvature is noisy.
 inline void apply_speed_limits(Trajectory& path, const SpeedLimits& limits) {
     const std::vector<TrajectoryPoint>& pts = path.points();
     const std::size_t n = pts.size();
@@ -78,6 +94,7 @@ inline void apply_speed_limits(Trajectory& path, const SpeedLimits& limits) {
         return i + 1 < n ? pts[i + 1].s - pts[i].s : path.length() - pts[i].s;
     };
     constexpr int kSmoothing = 4;  // points either side
+    std::vector<double> kappa(n);
     std::vector<double> v2(n);
     for (std::size_t i = 0; i < n; ++i) {
         double sum = 0.0;
@@ -89,27 +106,31 @@ inline void apply_speed_limits(Trajectory& path, const SpeedLimits& limits) {
             sum += std::abs(pts[static_cast<std::size_t>(((j % m) + m) % m)].curvature);
             ++used;
         }
-        const double kappa = sum / used;
-        const double corner = kappa > 1e-6 ? limits.lateral / kappa : limits.top * limits.top;
+        kappa[i] = sum / used;
+        const double corner = kappa[i] > 1e-6 ? limits.lateral / kappa[i] : limits.top * limits.top;
         v2[i] = std::min(corner, limits.top * limits.top);
     }
     if (!closed) {
         v2.front() = std::min(v2.front(), limits.start * limits.start);
         v2.back() = std::min(v2.back(), limits.end * limits.end);
     }
+    auto available = [&](double maximum, std::size_t i) {
+        const double used = v2[i] * kappa[i] / limits.lateral;
+        return maximum * std::sqrt(std::max(1.0 - used * used, 0.0));
+    };
     // Closed paths go around twice so the passes carry across the start.
     const std::size_t passes = closed ? 2 * n : n - 1;
     for (std::size_t k = 0; k < passes; ++k) {
         const std::size_t i = k % n;
         if (!closed && i + 1 >= n) continue;
         const std::size_t j = next(i);
-        v2[j] = std::min(v2[j], v2[i] + 2.0 * limits.accel * gap(i));
+        v2[j] = std::min(v2[j], v2[i] + 2.0 * available(limits.accel, i) * gap(i));
     }
     for (std::size_t k = passes; k-- > 0;) {
         const std::size_t i = k % n;
         if (!closed && i + 1 >= n) continue;
         const std::size_t j = next(i);
-        v2[i] = std::min(v2[i], v2[j] + 2.0 * limits.brake * gap(i));
+        v2[i] = std::min(v2[i], v2[j] + 2.0 * available(limits.brake, j) * gap(i));
     }
     std::vector<double> speed(n);
     std::vector<double> accel(n, 0.0);
