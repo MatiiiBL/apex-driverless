@@ -2,5 +2,6 @@
 apex_module(perception
     SOURCES
         clustering.cpp
+        cone_model.cpp
         ground.cpp
     PUBLIC_DEPS apex::core)

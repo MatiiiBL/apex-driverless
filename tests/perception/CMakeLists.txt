@@ -2,6 +2,7 @@
 apex_tests(perception
     SOURCES
         clustering_test.cpp
+        cone_model_test.cpp
         ground_test.cpp
         scene.cpp
     DEPS apex::perception)
