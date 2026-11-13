@@ -115,10 +115,13 @@ double batch_map_rms(const eval::SyntheticRun& run, const Track& track,
 }
 
 // One run: lap 1 mapping, then localization one second into lap 2 (as the stack switches once
-// it has closed the loop).
+// it has closed the loop). `bias` switches the SLAM's yaw-rate bias state.
 json evaluate(const std::string& source, std::uint64_t seed, const Track& track,
-              const eval::SyntheticRun& run, const VehicleParams& nominal) {
-    est::StateEstimator estimator({}, nominal, apex::SensorRig{}, run.truth.front().pose);
+              const eval::SyntheticRun& run, const VehicleParams& nominal, bool bias,
+              double batch_rms) {
+    est::EstimatorConfig config;
+    if (!bias) config.slam.yaw_rate_bias_sigma = 0.0;
+    est::StateEstimator estimator(config, nominal, apex::SensorRig{}, run.truth.front().pose);
     est::VelocityFilter velocity({}, nominal);
     const Time switch_time = run.lap1_end + 1.0;
     PhaseScore lap1;
@@ -173,12 +176,13 @@ json evaluate(const std::string& source, std::uint64_t seed, const Track& track,
     return {
         {"source", source},
         {"seed", seed},
+        {"yaw_rate_bias", bias},
         {"track_length_m", track.centerline.length()},
         {"cones", track.cones.size()},
         {"duration_s", run.truth.back().stamp},
         {"lap1_end_s", run.lap1_end},
         {"map", map_json(map)},
-        {"batch_map_rms_m", batch_map_rms(run, track, nominal, switch_time, mappable)},
+        {"batch_map_rms_m", batch_rms},
         {"lap1", lap1.summary()},
         {"racing", racing.summary()},
         {"association",
@@ -204,6 +208,15 @@ json evaluate(const std::string& source, std::uint64_t seed, const Track& track,
     };
 }
 
+// The same run with the yaw-rate bias state and without it; the batch reference is theirs both.
+json evaluate_both(const std::string& source, std::uint64_t seed, const Track& track,
+                   const eval::SyntheticRun& run, const VehicleParams& nominal) {
+    const double batch_rms = batch_map_rms(run, track, nominal, run.lap1_end + 1.0,
+                                           mappable_by(run, run.lap1_end - 2.0));
+    return json::array({evaluate(source, seed, track, run, nominal, true, batch_rms),
+                        evaluate(source, seed, track, run, nominal, false, batch_rms)});
+}
+
 eval::DriveProfile three_laps() {
     eval::DriveProfile profile;
     profile.laps = 3;
@@ -223,7 +236,7 @@ json world_run(std::uint64_t seed, eval::ConeSource source) {
     profile.max_accel = 6.0;
     const eval::SyntheticRun run = eval::make_world_run(track, config, profile, {}, source);
     const bool real = source == eval::ConeSource::Perception;
-    return evaluate(real ? "world+perception" : "world", seed, track, run, config.vehicle);
+    return evaluate_both(real ? "world+perception" : "world", seed, track, run, config.vehicle);
 }
 
 // The kinematic synthetic drive at full racing speed: 22 m/s, 14 m/s^2 in the corners.
@@ -231,7 +244,7 @@ json synthetic_run(std::uint64_t seed) {
     const Track track = apex::sim::generate_track(seed);
     const eval::SyntheticRun run =
         eval::make_synthetic_run(track, VehicleParams{}, three_laps(), {}, seed);
-    return evaluate("synthetic", seed, track, run, VehicleParams{});
+    return evaluate_both("synthetic", seed, track, run, VehicleParams{});
 }
 
 // Cone update and IMU prediction cost against the landmark count, on an oval long enough for
@@ -290,15 +303,18 @@ std::string summary_markdown(const json& runs, const json& timing) {
         "models, and its LiDAR and camera through ConePerception, with the pure-pursuit test "
         "driver (racing at 10 m/s^2 lateral); `world`: the same, but cone observations made "
         "from the true cones by the synthetic perception model; `synthetic`: the kinematic "
-        "drive at full racing speed (22 m/s, 14 m/s^2) with the synthetic perception.\n\n"
-        "| source | seed | cones | map RMS (m) | batch RMS (m) | dup | missed | pose RMS lap 1 (m) "
-        "| pose RMS racing (m) | yaw RMS racing (deg) | pose NEES lap 1 / racing | assoc. "
-        "precision | recall | velocity NEES | recoveries |\n"
-        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n";
+        "drive at full racing speed (22 m/s, 14 m/s^2) with the synthetic perception. Every "
+        "drive is estimated twice: with the SLAM's yaw-rate bias state (bias on, the default) "
+        "and without it (off).\n\n"
+        "| source | seed | bias | cones | map RMS (m) | batch RMS (m) | dup | missed | pose RMS "
+        "lap 1 (m) | pose RMS racing (m) | yaw RMS racing (deg) | pose NEES lap 1 / racing | "
+        "assoc. precision | recall | velocity NEES | recoveries |\n"
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n";
     for (const json& r : runs) {
         md += "| " + r["source"].get<std::string>() + " | " + std::to_string(r["seed"].get<int>()) +
-              " | " + std::to_string(r["cones"].get<int>()) + " | " +
-              fixed(r["map"]["rms_error_m"], 3) + " | " + fixed(r["batch_map_rms_m"], 3) + " | " +
+              " | " + (r["yaw_rate_bias"].get<bool>() ? "on" : "off") + " | " +
+              std::to_string(r["cones"].get<int>()) + " | " + fixed(r["map"]["rms_error_m"], 3) +
+              " | " + fixed(r["batch_map_rms_m"], 3) + " | " +
               std::to_string(r["map"]["duplicates"].get<int>()) + " | " +
               std::to_string(r["map"]["missed"].get<int>()) + " | " +
               fixed(r["lap1"]["position_rms_m"], 3) + " | " +
@@ -349,18 +365,17 @@ int main(int argc, char** argv) {
     const std::vector<std::uint64_t> seeds =
         quick ? std::vector<std::uint64_t>{1} : std::vector<std::uint64_t>{1, 2, 3, 4, 5};
     json runs = json::array();
+    auto add = [&](const json& pair, const char* name, std::uint64_t seed) {
+        for (const json& r : pair) runs.push_back(r);
+        std::fprintf(stderr, "%s %llu done\n", name, static_cast<unsigned long long>(seed));
+    };
     for (const std::uint64_t seed : seeds) {
-        runs.push_back(world_run(seed, eval::ConeSource::Perception));
-        std::fprintf(stderr, "world+perception %llu done\n", static_cast<unsigned long long>(seed));
+        add(world_run(seed, eval::ConeSource::Perception), "world+perception", seed);
     }
     for (const std::uint64_t seed : seeds) {
-        runs.push_back(world_run(seed, eval::ConeSource::Synthetic));
-        std::fprintf(stderr, "world %llu done\n", static_cast<unsigned long long>(seed));
+        add(world_run(seed, eval::ConeSource::Synthetic), "world", seed);
     }
-    for (const std::uint64_t seed : seeds) {
-        runs.push_back(synthetic_run(seed));
-        std::fprintf(stderr, "synthetic %llu done\n", static_cast<unsigned long long>(seed));
-    }
+    for (const std::uint64_t seed : seeds) add(synthetic_run(seed), "synthetic", seed);
     const json timing = latency();
     std::filesystem::create_directories(out);
     std::ofstream(out / "eval.json") << runs.dump(2) << "\n";

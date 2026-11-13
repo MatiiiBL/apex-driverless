@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 #include <Eigen/Cholesky>
@@ -34,10 +35,19 @@ LandmarkMeasurement measure_landmark(const Pose2& pose, const Vec2& landmark) {
     return m;
 }
 
-EkfSlam::EkfSlam(const Pose2& start, const Mat3& start_covariance) {
-    reserve(3 + 2 * 64);
-    x_.head<3>() << start.x, start.y, wrap_angle(start.yaw);
+EkfSlam::EkfSlam(const Pose2& start, const Mat3& start_covariance, const YawRateBiasModel& bias)
+    : bias_(bias) {
+    if (!(bias.sigma >= 0.0) || !(bias.correlation_time > 0.0)) {
+        throw std::invalid_argument("EkfSlam: invalid yaw-rate bias model");
+    }
+    reserve(kVehicle + 2 * 64);
+    x_.head<4>() << start.x, start.y, wrap_angle(start.yaw), 0.0;
     P_.topLeftCorner<3, 3>() = start_covariance;
+    P_(3, 3) = bias.sigma * bias.sigma;
+}
+
+double EkfSlam::bias_yaw_gain(double t) const {
+    return bias_.correlation_time * -std::expm1(-t / bias_.correlation_time);
 }
 
 void EkfSlam::reserve(Eigen::Index size) {
@@ -71,14 +81,23 @@ void EkfSlam::predict(const RelativeMotion& motion) {
     Mat3 jd = Mat3::Identity();
     jd.topLeftCorner<2, 2>() = rotation(pose.yaw);
     const Pose2 moved = pose.compose(motion.delta);
-    x_.head<3>() << moved.x, moved.y, moved.yaw;
-    const Mat3 ppp = P_.topLeftCorner<3, 3>();
-    P_.topLeftCorner<3, 3>() = jx * ppp * jx.transpose() + jd * motion.covariance * jd.transpose();
-    if (n_ > 3) {
-        const Eigen::Index m = n_ - 3;
-        const Eigen::Matrix<double, 3, Eigen::Dynamic> cross = jx * P_.block(0, 3, 3, m);
-        P_.block(0, 3, 3, m) = cross;
-        P_.block(3, 0, m, 3) = cross.transpose();
+    const double gain = bias_yaw_gain(motion.duration);  // tau (1 - phi)
+    const double phi = 1.0 - gain / bias_.correlation_time;
+    x_.head<4>() << moved.x, moved.y, wrap_angle(moved.yaw - gain * x_[3]), phi * x_[3];
+    Mat4 f = Mat4::Identity();
+    f.topLeftCorner<3, 3>() = jx;
+    f(2, 3) = -gain;
+    f(3, 3) = phi;
+    Mat4 q = Mat4::Zero();
+    q.topLeftCorner<3, 3>() = jd * motion.covariance * jd.transpose();
+    q(3, 3) = bias_.sigma * bias_.sigma * (1.0 - phi * phi);
+    const Mat4 pvv = P_.topLeftCorner<4, 4>();
+    P_.topLeftCorner<4, 4>() = f * pvv * f.transpose() + q;
+    if (n_ > kVehicle) {
+        const Eigen::Index m = n_ - kVehicle;
+        const Eigen::Matrix<double, 4, Eigen::Dynamic> cross = f * P_.block(0, kVehicle, 4, m);
+        P_.block(0, kVehicle, 4, m) = cross;
+        P_.block(kVehicle, 0, m, 4) = cross.transpose();
     }
 }
 
@@ -89,7 +108,8 @@ bool EkfSlam::update(std::span<const Pairing> pairings, bool update_landmarks) {
     const Eigen::Index c = 3 + 2 * k;
     const Pose2 pose = this->pose();
 
-    // H is zero outside the pose and the paired landmarks' columns: work on those c columns.
+    // H is zero outside the pose (x, y, yaw: not beta) and the paired landmarks' columns: work
+    // on those c columns.
     std::vector<Eigen::Index> cols(static_cast<std::size_t>(c));
     Eigen::MatrixXd hc = Eigen::MatrixXd::Zero(m, c);
     Eigen::VectorXd nu(m);
@@ -133,18 +153,20 @@ bool EkfSlam::update(std::span<const Pairing> pairings, bool update_landmarks) {
         P.triangularView<Eigen::Lower>() -= left * right.transpose();
         mirror_lower();
     } else {
-        const Eigen::MatrixXd gain = llt.solve(w.topRows<3>().transpose()).transpose();  // 3 x m
-        x_.head<3>() += gain * nu;
-        const Eigen::MatrixXd mp = P.topRows<3>() - gain * w.transpose();  // rows of (I - K H) P
-        Eigen::MatrixXd apc = -gain * hc;                                  // pose rows of I - K H
-        apc.leftCols<3>() += Mat3::Identity();
-        Eigen::MatrixXd mpc(3, c);
+        // Only the vehicle rows (v) have a gain. With M_v = P_v - K_v W^T, the vehicle rows of
+        // (I - K H) P, the Joseph form's vehicle block is M_v (I - K H)_v^T + K_v R K_v^T
+        // = M_vv - (M_v H^T) K_v^T + K_v R K_v^T, and M_v H^T needs M_v in the paired columns.
+        const Eigen::MatrixXd gain = llt.solve(w.topRows<4>().transpose()).transpose();  // 4 x m
+        x_.head<4>() += gain * nu;
+        const Eigen::MatrixXd mp = P.topRows<4>() - gain * w.transpose();
+        Eigen::MatrixXd mpc(4, c);
         for (Eigen::Index j = 0; j < c; ++j) mpc.col(j) = mp.col(cols[static_cast<std::size_t>(j)]);
-        Mat3 ppp = mpc * apc.transpose() + gain * r * gain.transpose();
-        ppp = 0.5 * (ppp + ppp.transpose()).eval();
-        P.topRows<3>() = mp;
-        P.leftCols<3>() = mp.transpose();
-        P.topLeftCorner<3, 3>() = ppp;
+        Mat4 pvv = mp.leftCols<4>() - (mpc * hc.transpose()) * gain.transpose() +
+                   gain * r * gain.transpose();
+        pvv = 0.5 * (pvv + pvv.transpose()).eval();
+        P.topRows<4>() = mp;
+        P.leftCols<4>() = mp.transpose();
+        P.topLeftCorner<4, 4>() = pvv;
     }
     x_[2] = wrap_angle(x_[2]);
     return true;
@@ -154,11 +176,12 @@ std::size_t EkfSlam::add_landmark(const Vec2& z, const Mat2& R) {
     reserve(n_ + 2);
     const Pose2 pose = this->pose();
     const Mat2 rot = rotation(pose.yaw);
-    Eigen::Matrix<double, 2, 3> gx;
-    gx << 1.0, 0.0, -std::sin(pose.yaw) * z.x() - std::cos(pose.yaw) * z.y(), 0.0, 1.0,
-        std::cos(pose.yaw) * z.x() - std::sin(pose.yaw) * z.y();
-    const Eigen::Matrix<double, 2, Eigen::Dynamic> cross = gx * P_.topRows<3>().leftCols(n_);
-    const Mat2 pll = gx * P_.topLeftCorner<3, 3>() * gx.transpose() + rot * R * rot.transpose();
+    // d l / d (x, y, yaw, beta); beta does not enter.
+    Eigen::Matrix<double, 2, 4> gx;
+    gx << 1.0, 0.0, -std::sin(pose.yaw) * z.x() - std::cos(pose.yaw) * z.y(), 0.0, 0.0, 1.0,
+        std::cos(pose.yaw) * z.x() - std::sin(pose.yaw) * z.y(), 0.0;
+    const Eigen::Matrix<double, 2, Eigen::Dynamic> cross = gx * P_.topRows<4>().leftCols(n_);
+    const Mat2 pll = gx * P_.topLeftCorner<4, 4>() * gx.transpose() + rot * R * rot.transpose();
     x_.segment<2>(n_) = pose.to_parent(z);
     P_.block(n_, 0, 2, n_) = cross;
     P_.block(0, n_, n_, 2) = cross.transpose();

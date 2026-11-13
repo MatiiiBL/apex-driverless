@@ -10,15 +10,18 @@
 namespace apex::estimation {
 
 // A rigid planar motion expressed in the frame of its start pose, with the covariance of
-// (dx, dy, dyaw) in that frame.
+// (dx, dy, dyaw) in that frame, and how long it took (for the yaw-rate bias the SLAM corrects it
+// by, ekf_slam.hpp).
 struct RelativeMotion {
     Pose2 delta;
     Mat3 covariance = Mat3::Zero();
+    double duration = 0.0;  // s
 };
 
 // `first` followed by `second` (expressed in the frame where `first` ends), with first-order
 // covariance propagation of two independent motions:
 //   Sigma = A Sigma1 A^T + B Sigma2 B^T,  A = d(compose)/d(first),  B = d(compose)/d(second).
+// Durations add.
 [[nodiscard]] RelativeMotion compose(const RelativeMotion& first, const RelativeMotion& second);
 
 // The pose reached from the origin by moving with constant body twist (vx, vy, yaw rate) for dt:

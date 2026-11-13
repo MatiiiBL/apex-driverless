@@ -24,6 +24,7 @@ RelativeMotion compose(const RelativeMotion& first, const RelativeMotion& second
     result.delta = first.delta.compose(second.delta);
     result.covariance =
         a * first.covariance * a.transpose() + b * second.covariance * b.transpose();
+    result.duration = first.duration + second.duration;
     return result;
 }
 
@@ -45,7 +46,7 @@ Pose2 integrate_twist(double vx, double vy, double yaw_rate, double dt) {
 
 RelativeMotion OdometryIncrement::motion(Time until) const {
     const double dt = std::clamp(until, start, end) - start;
-    return {integrate_twist(vx, vy, yaw_rate, dt), noise_density * dt};
+    return {integrate_twist(vx, vy, yaw_rate, dt), noise_density * dt, dt};
 }
 
 void OdometryBuffer::reset(Time time) {

@@ -9,6 +9,8 @@ namespace apex::estimation {
 // clang-format off
 #define APEX_SLAM_FIELDS(X) \
     X(velocity_correlation_time) \
+    X(yaw_rate_bias_sigma) \
+    X(yaw_rate_bias_time) \
     X(position_noise_density) \
     X(yaw_noise_density) \
     X(initial_position_std) \

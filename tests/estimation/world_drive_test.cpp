@@ -37,9 +37,10 @@ struct Evaluation {
 
 // The velocity filter alone and the whole estimator on the same messages; mapping is switched
 // off one second into lap 2, as the stack does once it has closed the loop.
-Evaluation evaluate(const SyntheticRun& run, const Track& track, const sim::WorldConfig& config) {
-    VelocityFilter filter({}, config.vehicle);
-    StateEstimator estimator({}, config.vehicle, config.rig, track.start_pose);
+Evaluation evaluate(const SyntheticRun& run, const Track& track, const sim::WorldConfig& config,
+                    const EstimatorConfig& estimator_config = {}) {
+    VelocityFilter filter(estimator_config.velocity, config.vehicle);
+    StateEstimator estimator(estimator_config, config.vehicle, config.rig, track.start_pose);
     NeesAccumulator nees(3);
     Vec3 velocity_sum = Vec3::Zero();
     double samples = 0.0;
@@ -92,6 +93,26 @@ Evaluation evaluate(const SyntheticRun& run, const Track& track, const sim::Worl
     out.racing_position_rms = std::sqrt(racing_sum / racing_scans);
     out.final_landmarks = estimator.map().cones.size();
     return out;
+}
+
+TEST(StateEstimator, TheYawRateBiasStateKeepsADriftingLapFromDoublingTheMap) {
+    // World seed 5 with observations made from the truth: the velocity filter's yaw rate is off
+    // by several 1e-4 rad/s for many seconds, and the yaw drifts over lap 1. Without the bias
+    // state the covariance does not follow that drift, and at the timing line the first cones
+    // fall outside even the new-landmark gate and are mapped again (docs/estimation.md).
+    const Track track = sim::generate_track(5);
+    sim::WorldConfig config;
+    config.seed = 5;
+    const SyntheticRun run = simulated_drive(track, config, ConeSource::Synthetic);
+    EstimatorConfig without;
+    without.slam.yaw_rate_bias_sigma = 0.0;
+    const Evaluation off = evaluate(run, track, config, without);
+    const Evaluation on = evaluate(run, track, config);
+    EXPECT_GT(off.map.duplicates, 5U);
+    EXPECT_EQ(on.map.duplicates, 0U);
+    EXPECT_EQ(on.map.missed, 0U);
+    EXPECT_LT(on.map.rms_error, 0.08);
+    EXPECT_LT(on.racing_position_rms, 0.1);
 }
 
 TEST(StateEstimator, TracksTheSimulatedCarWithThePerceptionInTheLoop) {

@@ -7,6 +7,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include "apex/core/angles.hpp"
 #include "apex/core/json.hpp"
 #include "apex/core/log.hpp"
 #include "apex/estimation/dead_reckoning.hpp"
@@ -78,7 +79,8 @@ struct StateEstimator::Impl {
     Impl(const EstimatorConfig& cfg, const VehicleParams& nominal, const Pose2& start)
         : config(validated(cfg)),
           motion(cfg.velocity, cfg.slam, nominal),
-          slam(start, start_covariance(cfg.slam)),
+          slam(start, start_covariance(cfg.slam),
+               {cfg.slam.yaw_rate_bias_sigma, cfg.slam.yaw_rate_bias_time}),
           associator(cfg.association) {}
 
     void on_imu(const ImuSample& sample) {
@@ -326,14 +328,27 @@ struct StateEstimator::Impl {
 
     [[nodiscard]] StateEstimate estimate() const {
         // The filter's pose (at its own, older time) followed by the pending odometry: a world
-        // pose composed with a relative motion, with the same first-order propagation.
-        const RelativeMotion now =
-            compose({slam.pose(), slam.pose_covariance()}, motion.odometry().pending());
+        // pose composed with a relative motion, with the same first-order propagation, and the
+        // yaw corrected by the bias over the pending motion's duration, as predict() does.
+        const Pose2 pose = slam.pose();
+        const RelativeMotion& pending = motion.odometry().pending();
+        const RelativeMotion now = compose({pose, slam.pose_covariance()}, pending);
+        const double gain = slam.bias_yaw_gain(pending.duration);
+        const double c = std::cos(pose.yaw);
+        const double s = std::sin(pose.yaw);
+        Mat3 a = Mat3::Identity();  // d now / d pose
+        a(0, 2) = -s * pending.delta.x - c * pending.delta.y;
+        a(1, 2) = c * pending.delta.x - s * pending.delta.y;
+        const EkfSlam::Mat4 vehicle = slam.vehicle_covariance();
+        const Vec3 g(0.0, 0.0, -gain);  // d now / d beta
+        const Vec3 cross = a * vehicle.block<3, 1>(0, 3);
         const VelocityFilter& velocity = motion.velocity();
         StateEstimate e;
         e.stamp = motion.odometry().end();
         e.pose = now.delta;
-        e.pose_covariance = now.covariance;
+        e.pose.yaw = wrap_angle(e.pose.yaw - gain * slam.yaw_rate_bias());
+        e.pose_covariance = now.covariance + cross * g.transpose() + g * cross.transpose() +
+                            vehicle(3, 3) * g * g.transpose();
         e.vx = velocity.vx();
         e.vy = velocity.vy();
         e.yaw_rate = velocity.yaw_rate();

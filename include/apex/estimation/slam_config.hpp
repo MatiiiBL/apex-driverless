@@ -17,8 +17,14 @@ struct SlamConfig {
     // velocity error is wheel-noise jitter that averages out within milliseconds; 50 ms leaves a
     // margin for the slower errors of slip.
     double velocity_correlation_time = 0.05;  // s
-    double position_noise_density = 0.01;     // m/sqrt(s)
-    double yaw_noise_density = 0.001;         // rad/sqrt(s)
+    // The slow part of the odometry's yaw-rate error, a state of the SLAM (ekf_slam.hpp): a
+    // Gauss-Markov process with this stationary standard deviation and correlation time. It
+    // lasts for many seconds, so the yaw error it causes grows like T, not like sqrt(T) as the
+    // white noise above does. Sigma 0 leaves it out.
+    double yaw_rate_bias_sigma = 3e-4;     // rad/s
+    double yaw_rate_bias_time = 10.0;      // s
+    double position_noise_density = 0.01;  // m/sqrt(s)
+    double yaw_noise_density = 0.001;      // rad/sqrt(s)
     // The car is told its start pose (the map frame is defined there); this is how well.
     double initial_position_std = 0.005;  // m
     double initial_yaw_std = 0.0005;      // rad
