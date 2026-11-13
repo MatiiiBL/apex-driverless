@@ -1,4 +1,7 @@
+# Tests may link apex::sim to generate realistic data, even for the car's modules.
 apex_tests(estimation
     SOURCES
         chi_square_test.cpp
-    DEPS apex::estimation)
+        consistency_test.cpp
+        synthetic_test.cpp
+    DEPS apex::estimation_eval apex::sim)

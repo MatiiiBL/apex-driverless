@@ -3,3 +3,5 @@ apex_module(estimation
     SOURCES
         chi_square.cpp
     PUBLIC_DEPS apex::core)
+
+add_subdirectory(eval)
