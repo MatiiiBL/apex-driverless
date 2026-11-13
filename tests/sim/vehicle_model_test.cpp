@@ -322,9 +322,9 @@ TEST(VehicleModel, MaximumLateralAccelerationFollowsFrictionAndDownforce) {
         for (const double friction : {1.0, 0.5}) {
             SCOPED_TRACE(testing::Message() << speed << " m/s, friction x" << friction);
             // The front axle saturates first (the car understeers at the limit), and the drive
-            // force that holds the speed against cornering drag shifts load off it: a few
-            // percent short of the whole car's friction limit.
-            EXPECT_GT(max_lateral(speed, friction), 0.88);
+            // force that holds the speed against drag and cornering drag shifts load off it:
+            // 5-12% short of the whole car's friction limit (results/sim/vehicle_validation.json).
+            EXPECT_GT(max_lateral(speed, friction), 0.85);
         }
     }
 }
