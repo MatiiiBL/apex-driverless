@@ -1,0 +1,63 @@
+{
+  "base": {},
+  "name": "Sensor noise at the 30 m new-landmark range",
+  "oracle_variant": "",
+  "seeds": [
+    1,
+    2
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 5
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "noise-2",
+      "patch": {
+        "sensor_noise_scale": 2.0
+      }
+    },
+    {
+      "name": "noise-3",
+      "patch": {
+        "sensor_noise_scale": 3.0
+      }
+    },
+    {
+      "name": "noise-4",
+      "patch": {
+        "sensor_noise_scale": 4.0
+      }
+    },
+    {
+      "name": "noise-3-r20",
+      "patch": {
+        "sensor_noise_scale": 3.0,
+        "stack": {
+          "estimation": {
+            "slam": {
+              "max_new_landmark_range": 20.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "base": {},
+  "name": "New-landmark range: 20 m against 30 m",
+  "oracle_variant": "",
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 2
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 4
+    },
+    {
+      "seed": 5
+    },
+    {
+      "seed": 6
+    },
+    {
+      "seed": 7
+    },
+    {
+      "seed": 8
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "range-20",
+      "patch": {
+        "stack": {
+          "estimation": {
+            "slam": {
+              "max_new_landmark_range": 20.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "range-30",
+      "patch": {
+        "stack": {
+          "estimation": {
+            "slam": {
+              "max_new_landmark_range": 30.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,63 +1,69 @@
 [
   {
     "association": {
-      "matches": 18280,
+      "matches": 21663,
       "precision": 1.0,
-      "recall": 0.9862954569979497
+      "recall": 0.988230463938689
     },
     "batch_map_rms_m": 0.019904622943428773,
     "cones": 203,
     "duration_s": 125.673,
     "lap1": {
-      "pose_nees_mean": 0.8334491149042035,
+      "pose_nees_mean": 0.5863367045560748,
       "pose_nees_samples": 58,
-      "position_max_m": 0.04517241560289307,
-      "position_rms_m": 0.023195516232240254,
-      "yaw_rms_deg": 0.039183941359461946
+      "position_max_m": 0.031086183432349035,
+      "position_rms_m": 0.014526328699338375,
+      "yaw_rms_deg": 0.017642161757761805
     },
     "lap1_end_s": 57.342,
     "map": {
       "duplicates": 0,
       "landmarks": 203,
       "matched_cones": 203,
-      "max_error_m": 0.054113016424863054,
+      "max_error_m": 0.0394080430749057,
       "missed": 0,
-      "rms_error_m": 0.027827091600404915,
+      "rms_error_m": 0.018509712628043906,
       "spurious": 0
     },
     "predict_time": {
       "count": 25134,
-      "max_us": 0.75,
-      "mean_us": 0.12746232195434595,
+      "max_us": 6.083,
+      "mean_us": 0.1290907535609344,
       "p50_us": 0.125,
-      "p90_us": 0.125,
+      "p90_us": 0.166,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 2.5733685466072833,
+      "pose_nees_mean": 2.6040994594576725,
       "pose_nees_samples": 67,
-      "position_max_m": 0.199616887945452,
-      "position_rms_m": 0.03653646042259674,
-      "yaw_rms_deg": 0.021970085975960344
+      "position_max_m": 0.2031481541268404,
+      "position_rms_m": 0.0296794671278591,
+      "yaw_rms_deg": 0.016203429682935946
     },
     "seed": 1,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 38,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 22535,
       "recoveries": 2,
+      "rejected": 872,
       "search_exhausted": 0,
-      "tentatives_dropped": 5,
+      "tentatives_dropped": 1,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 18,
       "wheel_outliers": 29
     },
     "track_length_m": 431.4782339757064,
     "update_time": {
       "count": 1256,
-      "max_us": 950.25,
-      "mean_us": 154.87219904458607,
-      "p50_us": 113.583,
-      "p90_us": 305.708,
-      "p99_us": 768.792
+      "max_us": 968.25,
+      "mean_us": 216.23274522292988,
+      "p50_us": 133.25,
+      "p90_us": 486.70799999999997,
+      "p99_us": 816.792
     },
     "velocity": {
       "nees_bounds": [
@@ -74,63 +80,69 @@
   },
   {
     "association": {
-      "matches": 18281,
+      "matches": 21664,
       "precision": 1.0,
-      "recall": 0.9863494118916586
+      "recall": 0.9882760822955157
     },
     "batch_map_rms_m": 0.019904622943428773,
     "cones": 203,
     "duration_s": 125.673,
     "lap1": {
-      "pose_nees_mean": 1.1054381449224575,
+      "pose_nees_mean": 0.6328676101394922,
       "pose_nees_samples": 58,
-      "position_max_m": 0.11423504858715387,
-      "position_rms_m": 0.041573420208724496,
-      "yaw_rms_deg": 0.07072477518970498
+      "position_max_m": 0.030128130966363503,
+      "position_rms_m": 0.012739909725518929,
+      "yaw_rms_deg": 0.01808485114152388
     },
     "lap1_end_s": 57.342,
     "map": {
       "duplicates": 0,
       "landmarks": 203,
       "matched_cones": 203,
-      "max_error_m": 0.058658828834861496,
+      "max_error_m": 0.041299364889235135,
       "missed": 0,
-      "rms_error_m": 0.03001154407795621,
+      "rms_error_m": 0.01936436770563279,
       "spurious": 0
     },
     "predict_time": {
       "count": 25134,
-      "max_us": 0.875,
-      "mean_us": 0.12722232832022531,
+      "max_us": 5.625,
+      "mean_us": 0.12758196069072006,
       "p50_us": 0.125,
       "p90_us": 0.125,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 2.72270699269171,
+      "pose_nees_mean": 2.7369273298979686,
       "pose_nees_samples": 67,
-      "position_max_m": 0.19639097309731685,
-      "position_rms_m": 0.038112734665457185,
-      "yaw_rms_deg": 0.0202765634227194
+      "position_max_m": 0.20074845380255923,
+      "position_rms_m": 0.030134123269741016,
+      "yaw_rms_deg": 0.01592736990587536
     },
     "seed": 1,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 41,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 22535,
       "recoveries": 2,
+      "rejected": 871,
       "search_exhausted": 0,
-      "tentatives_dropped": 5,
+      "tentatives_dropped": 1,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 18,
       "wheel_outliers": 29
     },
     "track_length_m": 431.4782339757064,
     "update_time": {
       "count": 1256,
-      "max_us": 951.042,
-      "mean_us": 154.24282245222918,
-      "p50_us": 113.5,
-      "p90_us": 305.66700000000003,
-      "p99_us": 768.917
+      "max_us": 975.25,
+      "mean_us": 214.79750796178377,
+      "p50_us": 129.458,
+      "p90_us": 485.75,
+      "p99_us": 817.833
     },
     "velocity": {
       "nees_bounds": [
@@ -147,63 +159,69 @@
   },
   {
     "association": {
-      "matches": 16535,
+      "matches": 19355,
       "precision": 1.0,
-      "recall": 0.9749985258564774
+      "recall": 0.9784641828016784
     },
     "batch_map_rms_m": 0.015536907083441045,
     "cones": 180,
     "duration_s": 112.126,
     "lap1": {
-      "pose_nees_mean": 0.5102452862145285,
+      "pose_nees_mean": 0.5850856310308862,
       "pose_nees_samples": 53,
-      "position_max_m": 0.07860299368702552,
-      "position_rms_m": 0.03289465653269068,
-      "yaw_rms_deg": 0.03774489114847908
+      "position_max_m": 0.031672587861074554,
+      "position_rms_m": 0.014978214057846634,
+      "yaw_rms_deg": 0.020836795966460153
     },
     "lap1_end_s": 52.248,
     "map": {
       "duplicates": 0,
       "landmarks": 180,
       "matched_cones": 180,
-      "max_error_m": 0.017569165093510773,
+      "max_error_m": 0.03548283444351733,
       "missed": 0,
-      "rms_error_m": 0.008019247023753426,
+      "rms_error_m": 0.01662546873656697,
       "spurious": 0
     },
     "predict_time": {
       "count": 22425,
-      "max_us": 0.5419999999999999,
-      "mean_us": 0.12730430323300887,
+      "max_us": 9.917,
+      "mean_us": 0.1283924191750395,
       "p50_us": 0.125,
       "p90_us": 0.125,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 6.102792208811165,
+      "pose_nees_mean": 7.218449208087682,
       "pose_nees_samples": 59,
-      "position_max_m": 0.3114151070220659,
-      "position_rms_m": 0.03701621451174773,
-      "yaw_rms_deg": 0.018083277907195425
+      "position_max_m": 0.3065022052156547,
+      "position_rms_m": 0.03942255465453947,
+      "yaw_rms_deg": 0.022002629355926194
     },
     "seed": 2,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 54,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 20333,
       "recoveries": 4,
+      "rejected": 978,
       "search_exhausted": 0,
-      "tentatives_dropped": 4,
+      "tentatives_dropped": 1,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 37,
       "wheel_outliers": 30
     },
     "track_length_m": 391.3894337024835,
     "update_time": {
       "count": 1120,
-      "max_us": 702.8330000000001,
-      "mean_us": 152.71723214285709,
-      "p50_us": 97.75,
-      "p90_us": 365.66700000000003,
-      "p99_us": 631.333
+      "max_us": 904.208,
+      "mean_us": 200.14517053571421,
+      "p50_us": 112.5,
+      "p90_us": 503.667,
+      "p99_us": 759.2919999999999
     },
     "velocity": {
       "nees_bounds": [
@@ -220,63 +238,69 @@
   },
   {
     "association": {
-      "matches": 16534,
+      "matches": 19355,
       "precision": 1.0,
-      "recall": 0.9749395601155728
+      "recall": 0.9784641828016784
     },
     "batch_map_rms_m": 0.015536907083441045,
     "cones": 180,
     "duration_s": 112.126,
     "lap1": {
-      "pose_nees_mean": 0.6322857010931426,
+      "pose_nees_mean": 0.6236767970240432,
       "pose_nees_samples": 53,
-      "position_max_m": 0.10364179739045117,
-      "position_rms_m": 0.04035294537615897,
-      "yaw_rms_deg": 0.04882552916282746
+      "position_max_m": 0.029578227827804265,
+      "position_rms_m": 0.013566629968989647,
+      "yaw_rms_deg": 0.022813272001512737
     },
     "lap1_end_s": 52.248,
     "map": {
       "duplicates": 0,
       "landmarks": 180,
       "matched_cones": 180,
-      "max_error_m": 0.024214883305449967,
+      "max_error_m": 0.03255574442003464,
       "missed": 0,
-      "rms_error_m": 0.010381856944524908,
+      "rms_error_m": 0.015391577324599934,
       "spurious": 0
     },
     "predict_time": {
       "count": 22425,
-      "max_us": 0.9590000000000001,
-      "mean_us": 0.12714733556299745,
+      "max_us": 12.584,
+      "mean_us": 0.1282114604236452,
       "p50_us": 0.125,
       "p90_us": 0.125,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 6.108083870230018,
+      "pose_nees_mean": 7.193600473118436,
       "pose_nees_samples": 59,
-      "position_max_m": 0.31143323713004045,
-      "position_rms_m": 0.037931543449643015,
-      "yaw_rms_deg": 0.019102917485601056
+      "position_max_m": 0.3065375049313282,
+      "position_rms_m": 0.038937174306870256,
+      "yaw_rms_deg": 0.02228463745057657
     },
     "seed": 2,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 53,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 20333,
       "recoveries": 4,
+      "rejected": 978,
       "search_exhausted": 0,
-      "tentatives_dropped": 4,
+      "tentatives_dropped": 1,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 37,
       "wheel_outliers": 30
     },
     "track_length_m": 391.3894337024835,
     "update_time": {
       "count": 1120,
-      "max_us": 714.7909999999999,
-      "mean_us": 150.12297767857146,
-      "p50_us": 97.25,
-      "p90_us": 363.375,
-      "p99_us": 635.333
+      "max_us": 897.958,
+      "mean_us": 198.81291517857161,
+      "p50_us": 112.084,
+      "p90_us": 502.12499999999994,
+      "p99_us": 752.208
     },
     "velocity": {
       "nees_bounds": [
@@ -293,63 +317,69 @@
   },
   {
     "association": {
-      "matches": 8392,
+      "matches": 9814,
       "precision": 1.0,
-      "recall": 0.9679354094579008
+      "recall": 0.9726461843409316
     },
     "batch_map_rms_m": 0.013760520185870068,
     "cones": 109,
     "duration_s": 68.311,
     "lap1": {
-      "pose_nees_mean": 2.0663950794902775,
+      "pose_nees_mean": 0.7167106271463707,
       "pose_nees_samples": 32,
-      "position_max_m": 0.1794059261967643,
-      "position_rms_m": 0.09159503091670665,
-      "yaw_rms_deg": 0.15355818876559277
+      "position_max_m": 0.04218033552952818,
+      "position_rms_m": 0.013931739762768305,
+      "yaw_rms_deg": 0.025729792631749075
     },
     "lap1_end_s": 31.803,
     "map": {
       "duplicates": 0,
       "landmarks": 109,
       "matched_cones": 109,
-      "max_error_m": 0.045854702675047196,
+      "max_error_m": 0.022387159108484666,
       "missed": 0,
-      "rms_error_m": 0.02715443759079887,
+      "rms_error_m": 0.01343080610335869,
       "spurious": 0
     },
     "predict_time": {
       "count": 13662,
-      "max_us": 2.7920000000000003,
-      "mean_us": 0.12970223978916387,
+      "max_us": 4.082999999999999,
+      "mean_us": 0.13097789489090617,
       "p50_us": 0.125,
       "p90_us": 0.166,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 3.605174341649546,
+      "pose_nees_mean": 2.934854051058275,
       "pose_nees_samples": 36,
-      "position_max_m": 0.3533446100315245,
-      "position_rms_m": 0.05066176298732374,
-      "yaw_rms_deg": 0.041816313281013394
+      "position_max_m": 0.3479171091907026,
+      "position_rms_m": 0.042772944505353884,
+      "yaw_rms_deg": 0.022182779030039946
     },
     "seed": 3,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 21,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 10425,
       "recoveries": 2,
+      "rejected": 611,
       "search_exhausted": 0,
       "tentatives_dropped": 0,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 19,
       "wheel_outliers": 22
     },
     "track_length_m": 231.09807810599398,
     "update_time": {
       "count": 682,
-      "max_us": 332.834,
-      "mean_us": 70.21077712609973,
-      "p50_us": 48.417,
-      "p90_us": 166.875,
-      "p99_us": 286.5
+      "max_us": 531.583,
+      "mean_us": 88.12555278592373,
+      "p50_us": 56.375,
+      "p90_us": 197.458,
+      "p99_us": 391.66700000000003
     },
     "velocity": {
       "nees_bounds": [
@@ -366,63 +396,69 @@
   },
   {
     "association": {
-      "matches": 8396,
+      "matches": 9814,
       "precision": 1.0,
-      "recall": 0.9683967704728951
+      "recall": 0.9726461843409316
     },
     "batch_map_rms_m": 0.013760520185870068,
     "cones": 109,
     "duration_s": 68.311,
     "lap1": {
-      "pose_nees_mean": 2.16185262008364,
+      "pose_nees_mean": 0.7311201207126687,
       "pose_nees_samples": 32,
-      "position_max_m": 0.17823832840049508,
-      "position_rms_m": 0.09123627914408088,
-      "yaw_rms_deg": 0.15185889154502716
+      "position_max_m": 0.043308124158104436,
+      "position_rms_m": 0.014856059963716898,
+      "yaw_rms_deg": 0.027311475188653164
     },
     "lap1_end_s": 31.803,
     "map": {
       "duplicates": 0,
       "landmarks": 109,
       "matched_cones": 109,
-      "max_error_m": 0.04740689635810544,
+      "max_error_m": 0.023154814117353602,
       "missed": 0,
-      "rms_error_m": 0.028015465679171077,
+      "rms_error_m": 0.013842715149230264,
       "spurious": 0
     },
     "predict_time": {
       "count": 13662,
-      "max_us": 0.334,
-      "mean_us": 0.1295128092519064,
+      "max_us": 1.042,
+      "mean_us": 0.13050219587172815,
       "p50_us": 0.125,
       "p90_us": 0.166,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 3.3451566842053344,
+      "pose_nees_mean": 2.965693518496244,
       "pose_nees_samples": 36,
-      "position_max_m": 0.3430331118340767,
-      "position_rms_m": 0.05047487477334836,
-      "yaw_rms_deg": 0.04006861437373093
+      "position_max_m": 0.34784413087348814,
+      "position_rms_m": 0.04293479095680395,
+      "yaw_rms_deg": 0.020903856635467347
     },
     "seed": 3,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 21,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 10425,
       "recoveries": 2,
+      "rejected": 611,
       "search_exhausted": 0,
       "tentatives_dropped": 0,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 19,
       "wheel_outliers": 22
     },
     "track_length_m": 231.09807810599398,
     "update_time": {
       "count": 682,
-      "max_us": 289.5,
-      "mean_us": 67.32637390029335,
-      "p50_us": 47.75,
-      "p90_us": 152.833,
-      "p99_us": 269.334
+      "max_us": 521.291,
+      "mean_us": 87.81767302052793,
+      "p50_us": 54.709,
+      "p90_us": 198.292,
+      "p99_us": 379.041
     },
     "velocity": {
       "nees_bounds": [
@@ -439,136 +475,148 @@
   },
   {
     "association": {
-      "matches": 14535,
+      "matches": 17345,
       "precision": 1.0,
-      "recall": 0.9797775530839231
+      "recall": 0.9829423098719257
     },
     "batch_map_rms_m": 0.009184975272863905,
     "cones": 186,
     "duration_s": 115.7,
     "lap1": {
-      "pose_nees_mean": 0.8723345052456701,
+      "pose_nees_mean": 0.5100714673940668,
       "pose_nees_samples": 55,
-      "position_max_m": 0.14965958958323522,
-      "position_rms_m": 0.061828293853011015,
-      "yaw_rms_deg": 0.057936109122477625
+      "position_max_m": 0.028536242703216846,
+      "position_rms_m": 0.013563876662900298,
+      "yaw_rms_deg": 0.01949008717384376
     },
     "lap1_end_s": 54.174,
     "map": {
       "duplicates": 0,
       "landmarks": 186,
       "matched_cones": 186,
-      "max_error_m": 0.07044466046001585,
+      "max_error_m": 0.01605514950785989,
       "missed": 0,
-      "rms_error_m": 0.03692763879001691,
+      "rms_error_m": 0.008752804615839358,
       "spurious": 0
     },
     "predict_time": {
       "count": 23140,
-      "max_us": 1.375,
-      "mean_us": 0.13225864304236043,
+      "max_us": 10.833,
+      "mean_us": 0.13113474503026618,
       "p50_us": 0.125,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 1.16974655137144,
-      "pose_nees_samples": 60,
-      "position_max_m": 0.3504172925226646,
-      "position_rms_m": 0.03958176302967229,
-      "yaw_rms_deg": 0.02500080901716568
-    },
-    "seed": 4,
-    "source": "world+perception",
-    "stats": {
-      "ambiguous_scans": 1,
-      "failed_updates": 0,
-      "recoveries": 1,
-      "search_exhausted": 0,
-      "tentatives_dropped": 1,
-      "wheel_outliers": 41
-    },
-    "track_length_m": 407.43554687740397,
-    "update_time": {
-      "count": 1156,
-      "max_us": 819.5840000000001,
-      "mean_us": 119.56899221453297,
-      "p50_us": 89.75,
-      "p90_us": 239.0,
-      "p99_us": 567.291
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.3979600857127643,
-        3.668450658990462
-      ],
-      "nees_mean": 2.0849635005454465,
-      "nees_samples": 57,
-      "vx_rms": 0.028713418313760973,
-      "vy_rms": 0.05433497990356828,
-      "yaw_rate_rms": 0.0023822919514201435
-    },
-    "yaw_rate_bias": true
-  },
-  {
-    "association": {
-      "matches": 14535,
-      "precision": 1.0,
-      "recall": 0.9797775530839231
-    },
-    "batch_map_rms_m": 0.009184975272863905,
-    "cones": 186,
-    "duration_s": 115.7,
-    "lap1": {
-      "pose_nees_mean": 1.2161193266141523,
-      "pose_nees_samples": 55,
-      "position_max_m": 0.23569354186156716,
-      "position_rms_m": 0.08632037184816858,
-      "yaw_rms_deg": 0.10867152718428372
-    },
-    "lap1_end_s": 54.174,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 186,
-      "matched_cones": 186,
-      "max_error_m": 0.07573087679025924,
-      "missed": 0,
-      "rms_error_m": 0.039227247098564004,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 23140,
-      "max_us": 5.084,
-      "mean_us": 0.14521114952464306,
-      "p50_us": 0.125,
-      "p90_us": 0.167,
+      "p90_us": 0.166,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 1.2250799245303983,
+      "pose_nees_mean": 0.6686704101782321,
       "pose_nees_samples": 60,
-      "position_max_m": 0.35012848666132956,
-      "position_rms_m": 0.041355140098003174,
-      "yaw_rms_deg": 0.024846076021415045
+      "position_max_m": 0.34789152203143614,
+      "position_rms_m": 0.02308667467878376,
+      "yaw_rms_deg": 0.015267932134417338
     },
     "seed": 4,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 11,
       "ambiguous_scans": 1,
       "failed_updates": 0,
+      "observations": 18215,
       "recoveries": 1,
+      "rejected": 870,
       "search_exhausted": 0,
       "tentatives_dropped": 1,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 6,
       "wheel_outliers": 41
     },
     "track_length_m": 407.43554687740397,
     "update_time": {
       "count": 1156,
-      "max_us": 997.7919999999999,
-      "mean_us": 133.73138927335646,
-      "p50_us": 98.375,
-      "p90_us": 265.875,
-      "p99_us": 630.875
+      "max_us": 858.8330000000001,
+      "mean_us": 167.71543685121074,
+      "p50_us": 106.625,
+      "p90_us": 370.75,
+      "p99_us": 725.041
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3979600857127643,
+        3.668450658990462
+      ],
+      "nees_mean": 2.0849635005454465,
+      "nees_samples": 57,
+      "vx_rms": 0.028713418313760973,
+      "vy_rms": 0.05433497990356828,
+      "yaw_rate_rms": 0.0023822919514201435
+    },
+    "yaw_rate_bias": true
+  },
+  {
+    "association": {
+      "matches": 17345,
+      "precision": 1.0,
+      "recall": 0.9829423098719257
+    },
+    "batch_map_rms_m": 0.009184975272863905,
+    "cones": 186,
+    "duration_s": 115.7,
+    "lap1": {
+      "pose_nees_mean": 0.5902001986104457,
+      "pose_nees_samples": 55,
+      "position_max_m": 0.053147365763046815,
+      "position_rms_m": 0.020001105614974386,
+      "yaw_rms_deg": 0.030629611553472824
+    },
+    "lap1_end_s": 54.174,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 186,
+      "matched_cones": 186,
+      "max_error_m": 0.016618537612769293,
+      "missed": 0,
+      "rms_error_m": 0.008950949289964937,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 23140,
+      "max_us": 2.0829999999999997,
+      "mean_us": 0.13033435609335897,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 0.7321922694825642,
+      "pose_nees_samples": 60,
+      "position_max_m": 0.3475952133389585,
+      "position_rms_m": 0.023070487080021414,
+      "yaw_rms_deg": 0.01810160048479229
+    },
+    "seed": 4,
+    "source": "world+perception",
+    "stats": {
+      "ambiguous": 11,
+      "ambiguous_scans": 1,
+      "failed_updates": 0,
+      "observations": 18215,
+      "recoveries": 1,
+      "rejected": 870,
+      "search_exhausted": 0,
+      "tentatives_dropped": 1,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 6,
+      "wheel_outliers": 41
+    },
+    "track_length_m": 407.43554687740397,
+    "update_time": {
+      "count": 1156,
+      "max_us": 812.625,
+      "mean_us": 162.13328200692038,
+      "p50_us": 104.208,
+      "p90_us": 366.91700000000003,
+      "p99_us": 719.2919999999999
     },
     "velocity": {
       "nees_bounds": [
@@ -585,63 +633,69 @@
   },
   {
     "association": {
-      "matches": 15485,
+      "matches": 18195,
       "precision": 1.0,
-      "recall": 0.9939662366005521
+      "recall": 0.994860298540106
     },
     "batch_map_rms_m": 0.014010365085004804,
     "cones": 183,
     "duration_s": 114.24900000000001,
     "lap1": {
-      "pose_nees_mean": 1.5628776684819368,
+      "pose_nees_mean": 0.46573000365005707,
       "pose_nees_samples": 53,
-      "position_max_m": 0.1921627485965466,
-      "position_rms_m": 0.06630300961304343,
-      "yaw_rms_deg": 0.12319411031228232
+      "position_max_m": 0.02190135687299258,
+      "position_rms_m": 0.011824277468458058,
+      "yaw_rms_deg": 0.015241181213055364
     },
     "lap1_end_s": 52.764,
     "map": {
       "duplicates": 0,
       "landmarks": 183,
       "matched_cones": 183,
-      "max_error_m": 0.029605029562474985,
+      "max_error_m": 0.028504720242292662,
       "missed": 0,
-      "rms_error_m": 0.01568584908232316,
+      "rms_error_m": 0.014060531790490468,
       "spurious": 0
     },
     "predict_time": {
       "count": 22849,
-      "max_us": 5.332999999999999,
-      "mean_us": 0.15600879688389582,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.25
+      "max_us": 5.709,
+      "mean_us": 0.12930994791895964,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 0.9501874188952036,
+      "pose_nees_mean": 0.9210892816038782,
       "pose_nees_samples": 61,
-      "position_max_m": 0.03127781661291482,
-      "position_rms_m": 0.01497995554717992,
-      "yaw_rms_deg": 0.015343984644453322
+      "position_max_m": 0.031122886565045905,
+      "position_rms_m": 0.013200715219345554,
+      "yaw_rms_deg": 0.012476252453742235
     },
     "seed": 5,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 0,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 18856,
       "recoveries": 0,
+      "rejected": 661,
       "search_exhausted": 0,
-      "tentatives_dropped": 1,
+      "tentatives_dropped": 4,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 42
     },
     "track_length_m": 394.5551480479347,
     "update_time": {
       "count": 1141,
-      "max_us": 982.7080000000001,
-      "mean_us": 152.1503400525856,
-      "p50_us": 111.58300000000001,
-      "p90_us": 315.04200000000003,
-      "p99_us": 758.0
+      "max_us": 802.834,
+      "mean_us": 166.39094566170007,
+      "p50_us": 105.29199999999999,
+      "p90_us": 358.75,
+      "p99_us": 673.0
     },
     "velocity": {
       "nees_bounds": [
@@ -658,63 +712,69 @@
   },
   {
     "association": {
-      "matches": 15485,
+      "matches": 18195,
       "precision": 1.0,
-      "recall": 0.9939662366005521
+      "recall": 0.994860298540106
     },
     "batch_map_rms_m": 0.014010365085004804,
     "cones": 183,
     "duration_s": 114.24900000000001,
     "lap1": {
-      "pose_nees_mean": 3.2930169405917327,
+      "pose_nees_mean": 0.7651445787528872,
       "pose_nees_samples": 53,
-      "position_max_m": 0.38946920528064916,
-      "position_rms_m": 0.14593921443054114,
-      "yaw_rms_deg": 0.22188737709106737
+      "position_max_m": 0.07584278215499164,
+      "position_rms_m": 0.028902770713451237,
+      "yaw_rms_deg": 0.04150276265881552
     },
     "lap1_end_s": 52.764,
     "map": {
       "duplicates": 0,
       "landmarks": 183,
       "matched_cones": 183,
-      "max_error_m": 0.03205515097976309,
+      "max_error_m": 0.02885719404840288,
       "missed": 0,
-      "rms_error_m": 0.016123088049782557,
+      "rms_error_m": 0.014060974111013806,
       "spurious": 0
     },
     "predict_time": {
       "count": 22849,
-      "max_us": 1.125,
-      "mean_us": 0.15415654952077615,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
+      "max_us": 10.584000000000001,
+      "mean_us": 0.12960475294325025,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 1.0004366219575758,
+      "pose_nees_mean": 1.0177901379567138,
       "pose_nees_samples": 61,
-      "position_max_m": 0.03174035006670379,
-      "position_rms_m": 0.015116246142641482,
-      "yaw_rms_deg": 0.019735723232879254
+      "position_max_m": 0.0307656839735727,
+      "position_rms_m": 0.013071673128370277,
+      "yaw_rms_deg": 0.015858388565205123
     },
     "seed": 5,
     "source": "world+perception",
     "stats": {
+      "ambiguous": 0,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 18856,
       "recoveries": 0,
+      "rejected": 661,
       "search_exhausted": 0,
-      "tentatives_dropped": 1,
+      "tentatives_dropped": 4,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 42
     },
     "track_length_m": 394.5551480479347,
     "update_time": {
       "count": 1141,
-      "max_us": 971.416,
-      "mean_us": 150.97666257668712,
-      "p50_us": 108.791,
-      "p90_us": 308.5,
-      "p99_us": 790.625
+      "max_us": 809.375,
+      "mean_us": 164.6954233128831,
+      "p50_us": 104.416,
+      "p90_us": 353.542,
+      "p99_us": 680.208
     },
     "velocity": {
       "nees_bounds": [
@@ -731,355 +791,385 @@
   },
   {
     "association": {
-      "matches": 13431,
+      "matches": 14917,
       "precision": 1.0,
-      "recall": 0.9956263899184581
+      "recall": 0.996126878130217
     },
     "batch_map_rms_m": 0.11657323899783195,
     "cones": 203,
     "duration_s": 125.673,
     "lap1": {
-      "pose_nees_mean": 1.6715571906611928,
+      "pose_nees_mean": 2.3120877465990493,
       "pose_nees_samples": 58,
-      "position_max_m": 0.23478406657642228,
-      "position_rms_m": 0.11519354606198842,
-      "yaw_rms_deg": 0.08883059633521809
+      "position_max_m": 0.1345944224036849,
+      "position_rms_m": 0.07598108379986335,
+      "yaw_rms_deg": 0.059156313401163174
     },
     "lap1_end_s": 57.342,
     "map": {
       "duplicates": 0,
       "landmarks": 203,
       "matched_cones": 203,
-      "max_error_m": 0.16962808367029253,
+      "max_error_m": 0.21597282686143246,
       "missed": 0,
-      "rms_error_m": 0.08356808255139175,
+      "rms_error_m": 0.10791299404043707,
       "spurious": 0
     },
     "predict_time": {
       "count": 25134,
+      "max_us": 1.0,
+      "mean_us": 0.12875674385297045,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 4.303306416369945,
+      "pose_nees_samples": 67,
+      "position_max_m": 0.22179759365812526,
+      "position_rms_m": 0.11006330023561256,
+      "yaw_rms_deg": 0.08043190883287353
+    },
+    "seed": 1,
+    "source": "world",
+    "stats": {
+      "ambiguous": 37,
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "observations": 15956,
+      "recoveries": 0,
+      "rejected": 1039,
+      "search_exhausted": 0,
+      "tentatives_dropped": 167,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 18,
+      "wheel_outliers": 29
+    },
+    "track_length_m": 431.4782339757064,
+    "update_time": {
+      "count": 1256,
+      "max_us": 664.3340000000001,
+      "mean_us": 144.73269585987242,
+      "p50_us": 93.70899999999999,
+      "p90_us": 318.25,
+      "p99_us": 501.00000000000006
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.421387184620958,
+        3.639672032312138
+      ],
+      "nees_mean": 2.8216690961031885,
+      "nees_samples": 62,
+      "vx_rms": 0.032497537171967135,
+      "vy_rms": 0.05394099204532351,
+      "yaw_rate_rms": 0.0028280710393868507
+    },
+    "yaw_rate_bias": true
+  },
+  {
+    "association": {
+      "matches": 14918,
+      "precision": 1.0,
+      "recall": 0.9961936560934892
+    },
+    "batch_map_rms_m": 0.11657323899783195,
+    "cones": 203,
+    "duration_s": 125.673,
+    "lap1": {
+      "pose_nees_mean": 2.6358352259498576,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.1445211065868893,
+      "position_rms_m": 0.07616923852381446,
+      "yaw_rms_deg": 0.07515035761777103
+    },
+    "lap1_end_s": 57.342,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 203,
+      "matched_cones": 203,
+      "max_error_m": 0.23472122533043147,
+      "missed": 0,
+      "rms_error_m": 0.11693512443340336,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 25134,
+      "max_us": 8.209,
+      "mean_us": 0.12994724277872713,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 4.952046390944028,
+      "pose_nees_samples": 67,
+      "position_max_m": 0.23952580457770872,
+      "position_rms_m": 0.11854057069761283,
+      "yaw_rms_deg": 0.07118117355259482
+    },
+    "seed": 1,
+    "source": "world",
+    "stats": {
+      "ambiguous": 36,
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "observations": 15956,
+      "recoveries": 0,
+      "rejected": 1038,
+      "search_exhausted": 0,
+      "tentatives_dropped": 167,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 18,
+      "wheel_outliers": 29
+    },
+    "track_length_m": 431.4782339757064,
+    "update_time": {
+      "count": 1256,
+      "max_us": 659.6669999999999,
+      "mean_us": 143.99220541401246,
+      "p50_us": 94.25,
+      "p90_us": 313.291,
+      "p99_us": 510.79200000000003
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.421387184620958,
+        3.639672032312138
+      ],
+      "nees_mean": 2.8216690961031885,
+      "nees_samples": 62,
+      "vx_rms": 0.032497537171967135,
+      "vy_rms": 0.05394099204532351,
+      "yaw_rate_rms": 0.0028280710393868507
+    },
+    "yaw_rate_bias": false
+  },
+  {
+    "association": {
+      "matches": 13460,
+      "precision": 1.0,
+      "recall": 0.9823383447671873
+    },
+    "batch_map_rms_m": 0.03278359776248509,
+    "cones": 180,
+    "duration_s": 112.126,
+    "lap1": {
+      "pose_nees_mean": 1.1684940957825147,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.4159644423937287,
+      "position_rms_m": 0.16739726844319386,
+      "yaw_rms_deg": 0.1811024735567932
+    },
+    "lap1_end_s": 52.248,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.08244601949202089,
+      "missed": 0,
+      "rms_error_m": 0.03253320695715668,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 22425,
+      "max_us": 0.625,
+      "mean_us": 0.12876767001115907,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 6.81783883951543,
+      "pose_nees_samples": 59,
+      "position_max_m": 0.24205049225088432,
+      "position_rms_m": 0.053456661930659566,
+      "yaw_rms_deg": 0.06768820111621142
+    },
+    "seed": 2,
+    "source": "world",
+    "stats": {
+      "ambiguous": 111,
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "observations": 14615,
+      "recoveries": 0,
+      "rejected": 1155,
+      "search_exhausted": 0,
+      "tentatives_dropped": 187,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 55,
+      "wheel_outliers": 30
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1120,
+      "max_us": 752.7919999999999,
+      "mean_us": 137.326480357143,
+      "p50_us": 82.458,
+      "p90_us": 330.458,
+      "p99_us": 533.5
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3929174907066546,
+        3.6746781356166345
+      ],
+      "nees_mean": 1.7190912456620868,
+      "nees_samples": 56,
+      "vx_rms": 0.037750077956446415,
+      "vy_rms": 0.08469030179062195,
+      "yaw_rate_rms": 0.0021703658056484052
+    },
+    "yaw_rate_bias": true
+  },
+  {
+    "association": {
+      "matches": 13460,
+      "precision": 1.0,
+      "recall": 0.9823383447671873
+    },
+    "batch_map_rms_m": 0.03278359776248509,
+    "cones": 180,
+    "duration_s": 112.126,
+    "lap1": {
+      "pose_nees_mean": 1.2906208428625339,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.3992167879212886,
+      "position_rms_m": 0.15758173545277895,
+      "yaw_rms_deg": 0.1775794721698654
+    },
+    "lap1_end_s": 52.248,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.0585583002890598,
+      "missed": 0,
+      "rms_error_m": 0.029727824550473597,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 22425,
+      "max_us": 14.209000000000001,
+      "mean_us": 0.12894550724638867,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 6.549193258787996,
+      "pose_nees_samples": 59,
+      "position_max_m": 0.2417728854125406,
+      "position_rms_m": 0.05237773455666828,
+      "yaw_rms_deg": 0.06153672176631552
+    },
+    "seed": 2,
+    "source": "world",
+    "stats": {
+      "ambiguous": 107,
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "observations": 14615,
+      "recoveries": 0,
+      "rejected": 1155,
+      "search_exhausted": 0,
+      "tentatives_dropped": 187,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 55,
+      "wheel_outliers": 30
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1120,
+      "max_us": 752.7080000000001,
+      "mean_us": 136.9046428571426,
+      "p50_us": 81.167,
+      "p90_us": 328.375,
+      "p99_us": 535.792
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3929174907066546,
+        3.6746781356166345
+      ],
+      "nees_mean": 1.7190912456620868,
+      "nees_samples": 56,
+      "vx_rms": 0.037750077956446415,
+      "vy_rms": 0.08469030179062195,
+      "yaw_rate_rms": 0.0021703658056484052
+    },
+    "yaw_rate_bias": false
+  },
+  {
+    "association": {
+      "matches": 6998,
+      "precision": 0.9998571020291512,
+      "recall": 0.968174899681749
+    },
+    "batch_map_rms_m": 0.03241664085682196,
+    "cones": 109,
+    "duration_s": 68.311,
+    "lap1": {
+      "pose_nees_mean": 1.9830280753137561,
+      "pose_nees_samples": 32,
+      "position_max_m": 0.1048474077067368,
+      "position_rms_m": 0.049572521878189994,
+      "yaw_rms_deg": 0.10167395663623875
+    },
+    "lap1_end_s": 31.803,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 109,
+      "matched_cones": 109,
+      "max_error_m": 0.058091839074285306,
+      "missed": 0,
+      "rms_error_m": 0.03071659727299627,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 13662,
       "max_us": 0.5,
-      "mean_us": 0.15822710272937884,
-      "p50_us": 0.167,
-      "p90_us": 0.167,
-      "p99_us": 0.20900000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 2.9354991174320824,
-      "pose_nees_samples": 67,
-      "position_max_m": 0.17154939670501157,
-      "position_rms_m": 0.08569831134465306,
-      "yaw_rms_deg": 0.06724456386279647
-    },
-    "seed": 1,
-    "source": "world",
-    "stats": {
-      "ambiguous_scans": 2,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 132,
-      "wheel_outliers": 29
-    },
-    "track_length_m": 431.4782339757064,
-    "update_time": {
-      "count": 1256,
-      "max_us": 716.625,
-      "mean_us": 145.36408837579594,
-      "p50_us": 108.375,
-      "p90_us": 279.458,
-      "p99_us": 556.167
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.421387184620958,
-        3.639672032312138
-      ],
-      "nees_mean": 2.8216690961031885,
-      "nees_samples": 62,
-      "vx_rms": 0.032497537171967135,
-      "vy_rms": 0.05394099204532351,
-      "yaw_rate_rms": 0.0028280710393868507
-    },
-    "yaw_rate_bias": true
-  },
-  {
-    "association": {
-      "matches": 13431,
-      "precision": 1.0,
-      "recall": 0.9956263899184581
-    },
-    "batch_map_rms_m": 0.11657323899783195,
-    "cones": 203,
-    "duration_s": 125.673,
-    "lap1": {
-      "pose_nees_mean": 2.060284381027848,
-      "pose_nees_samples": 58,
-      "position_max_m": 0.18381826312252314,
-      "position_rms_m": 0.09902805985892348,
-      "yaw_rms_deg": 0.09567318549650995
-    },
-    "lap1_end_s": 57.342,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 203,
-      "matched_cones": 203,
-      "max_error_m": 0.19503842689719303,
-      "missed": 0,
-      "rms_error_m": 0.09582960971851855,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 25134,
-      "max_us": 5.417,
-      "mean_us": 0.15749705578102272,
-      "p50_us": 0.167,
-      "p90_us": 0.167,
-      "p99_us": 0.20900000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 3.548257250421508,
-      "pose_nees_samples": 67,
-      "position_max_m": 0.1960837976410101,
-      "position_rms_m": 0.09735265789953826,
-      "yaw_rms_deg": 0.06155622647294781
-    },
-    "seed": 1,
-    "source": "world",
-    "stats": {
-      "ambiguous_scans": 2,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 132,
-      "wheel_outliers": 29
-    },
-    "track_length_m": 431.4782339757064,
-    "update_time": {
-      "count": 1256,
-      "max_us": 772.459,
-      "mean_us": 144.41937101910813,
-      "p50_us": 106.125,
-      "p90_us": 287.08299999999997,
-      "p99_us": 561.417
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.421387184620958,
-        3.639672032312138
-      ],
-      "nees_mean": 2.8216690961031885,
-      "nees_samples": 62,
-      "vx_rms": 0.032497537171967135,
-      "vy_rms": 0.05394099204532351,
-      "yaw_rate_rms": 0.0028280710393868507
-    },
-    "yaw_rate_bias": false
-  },
-  {
-    "association": {
-      "matches": 12207,
-      "precision": 1.0,
-      "recall": 0.9802457239219465
-    },
-    "batch_map_rms_m": 0.03278359776248509,
-    "cones": 180,
-    "duration_s": 112.126,
-    "lap1": {
-      "pose_nees_mean": 1.8856745176565797,
-      "pose_nees_samples": 53,
-      "position_max_m": 0.22938656571492816,
-      "position_rms_m": 0.12588456008988316,
-      "yaw_rms_deg": 0.11523716607014144
-    },
-    "lap1_end_s": 52.248,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 180,
-      "matched_cones": 180,
-      "max_error_m": 0.1458755636611547,
-      "missed": 0,
-      "rms_error_m": 0.09339323941369385,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 22425,
-      "max_us": 11.792,
-      "mean_us": 0.15817859531774012,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.29200000000000004
-    },
-    "racing": {
-      "pose_nees_mean": 7.566543751091102,
-      "pose_nees_samples": 59,
-      "position_max_m": 0.2719444903261517,
-      "position_rms_m": 0.10748883812106137,
-      "yaw_rms_deg": 0.09904326387860453
-    },
-    "seed": 2,
-    "source": "world",
-    "stats": {
-      "ambiguous_scans": 0,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 139,
-      "wheel_outliers": 30
-    },
-    "track_length_m": 391.3894337024835,
-    "update_time": {
-      "count": 1120,
-      "max_us": 662.667,
-      "mean_us": 140.38496607142866,
-      "p50_us": 93.792,
-      "p90_us": 330.416,
-      "p99_us": 526.5419999999999
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.3929174907066546,
-        3.6746781356166345
-      ],
-      "nees_mean": 1.7190912456620868,
-      "nees_samples": 56,
-      "vx_rms": 0.037750077956446415,
-      "vy_rms": 0.08469030179062195,
-      "yaw_rate_rms": 0.0021703658056484052
-    },
-    "yaw_rate_bias": true
-  },
-  {
-    "association": {
-      "matches": 12210,
-      "precision": 1.0,
-      "recall": 0.9804866297277764
-    },
-    "batch_map_rms_m": 0.03278359776248509,
-    "cones": 180,
-    "duration_s": 112.126,
-    "lap1": {
-      "pose_nees_mean": 2.1005718235192434,
-      "pose_nees_samples": 53,
-      "position_max_m": 0.2345537808620347,
-      "position_rms_m": 0.12254493697016482,
-      "yaw_rms_deg": 0.11967264856369965
-    },
-    "lap1_end_s": 52.248,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 180,
-      "matched_cones": 180,
-      "max_error_m": 0.17656483210673438,
-      "missed": 0,
-      "rms_error_m": 0.10508378078196615,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 22425,
-      "max_us": 18.666999999999998,
-      "mean_us": 0.16094724637681854,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.33299999999999996
-    },
-    "racing": {
-      "pose_nees_mean": 7.553417048817112,
-      "pose_nees_samples": 59,
-      "position_max_m": 0.29374004470326864,
-      "position_rms_m": 0.11775380108440156,
-      "yaw_rms_deg": 0.10347269946551649
-    },
-    "seed": 2,
-    "source": "world",
-    "stats": {
-      "ambiguous_scans": 0,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 139,
-      "wheel_outliers": 30
-    },
-    "track_length_m": 391.3894337024835,
-    "update_time": {
-      "count": 1120,
-      "max_us": 1720.042,
-      "mean_us": 145.02149821428557,
-      "p50_us": 97.875,
-      "p90_us": 332.666,
-      "p99_us": 598.584
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.3929174907066546,
-        3.6746781356166345
-      ],
-      "nees_mean": 1.7190912456620868,
-      "nees_samples": 56,
-      "vx_rms": 0.037750077956446415,
-      "vy_rms": 0.08469030179062195,
-      "yaw_rate_rms": 0.0021703658056484052
-    },
-    "yaw_rate_bias": false
-  },
-  {
-    "association": {
-      "matches": 6301,
-      "precision": 0.9998412950325345,
-      "recall": 0.9652213880802819
-    },
-    "batch_map_rms_m": 0.03241664085682196,
-    "cones": 109,
-    "duration_s": 68.311,
-    "lap1": {
-      "pose_nees_mean": 1.250583612548852,
-      "pose_nees_samples": 32,
-      "position_max_m": 0.10707008862279546,
-      "position_rms_m": 0.05361754808480348,
-      "yaw_rms_deg": 0.09760363765398727
-    },
-    "lap1_end_s": 31.803,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 109,
-      "matched_cones": 109,
-      "max_error_m": 0.06922852283844413,
-      "missed": 0,
-      "rms_error_m": 0.03635236471416063,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 13662,
-      "max_us": 0.29200000000000004,
-      "mean_us": 0.13542336407550634,
+      "mean_us": 0.12708732250033375,
       "p50_us": 0.125,
-      "p90_us": 0.167,
+      "p90_us": 0.125,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 8.838782126109317,
+      "pose_nees_mean": 9.672600886734369,
       "pose_nees_samples": 36,
-      "position_max_m": 0.3019820654528056,
-      "position_rms_m": 0.07334069672439439,
-      "yaw_rms_deg": 0.09580002933044066
+      "position_max_m": 0.3055601379383003,
+      "position_rms_m": 0.07019534974069123,
+      "yaw_rms_deg": 0.09547943279262001
     },
     "seed": 3,
     "source": "world",
     "stats": {
+      "ambiguous": 86,
       "ambiguous_scans": 1,
       "failed_updates": 0,
+      "observations": 7760,
       "recoveries": 0,
+      "rejected": 762,
       "search_exhausted": 0,
-      "tentatives_dropped": 75,
+      "tentatives_dropped": 93,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 21,
       "wheel_outliers": 22
     },
     "track_length_m": 231.09807810599398,
     "update_time": {
       "count": 682,
-      "max_us": 244.83399999999997,
-      "mean_us": 54.64423460410559,
-      "p50_us": 42.0,
-      "p90_us": 113.709,
-      "p99_us": 195.75
+      "max_us": 367.16700000000003,
+      "mean_us": 58.81495161290327,
+      "p50_us": 39.666000000000004,
+      "p90_us": 134.208,
+      "p99_us": 231.584
     },
     "velocity": {
       "nees_bounds": [
@@ -1096,63 +1186,69 @@
   },
   {
     "association": {
-      "matches": 6299,
-      "precision": 0.9998412446420066,
-      "recall": 0.9649149685920024
+      "matches": 6998,
+      "precision": 0.9998571020291512,
+      "recall": 0.968174899681749
     },
     "batch_map_rms_m": 0.03241664085682196,
     "cones": 109,
     "duration_s": 68.311,
     "lap1": {
-      "pose_nees_mean": 1.3175107235563426,
+      "pose_nees_mean": 2.0536262645170598,
       "pose_nees_samples": 32,
-      "position_max_m": 0.10593761735415343,
-      "position_rms_m": 0.05786388316273277,
-      "yaw_rms_deg": 0.1021866469315277
+      "position_max_m": 0.10572857588537689,
+      "position_rms_m": 0.05124038139060771,
+      "yaw_rms_deg": 0.10337786775255782
     },
     "lap1_end_s": 31.803,
     "map": {
       "duplicates": 0,
       "landmarks": 109,
       "matched_cones": 109,
-      "max_error_m": 0.073983386057644,
+      "max_error_m": 0.059458624637054855,
       "missed": 0,
-      "rms_error_m": 0.03912427006380389,
+      "rms_error_m": 0.032151712095513846,
       "spurious": 0
     },
     "predict_time": {
       "count": 13662,
-      "max_us": 0.29200000000000004,
-      "mean_us": 0.13629270970571875,
+      "max_us": 27.666,
+      "mean_us": 0.1395421607377718,
       "p50_us": 0.125,
-      "p90_us": 0.167,
-      "p99_us": 0.167
+      "p90_us": 0.166,
+      "p99_us": 0.334
     },
     "racing": {
-      "pose_nees_mean": 9.044106842482593,
+      "pose_nees_mean": 9.781592338854042,
       "pose_nees_samples": 36,
-      "position_max_m": 0.3055895613672803,
-      "position_rms_m": 0.07524122330671983,
-      "yaw_rms_deg": 0.09677977289136647
+      "position_max_m": 0.30514984573461684,
+      "position_rms_m": 0.0707799540820688,
+      "yaw_rms_deg": 0.0956889269570734
     },
     "seed": 3,
     "source": "world",
     "stats": {
+      "ambiguous": 87,
       "ambiguous_scans": 1,
       "failed_updates": 0,
+      "observations": 7760,
       "recoveries": 0,
+      "rejected": 762,
       "search_exhausted": 0,
-      "tentatives_dropped": 75,
+      "tentatives_dropped": 93,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 23,
       "wheel_outliers": 22
     },
     "track_length_m": 231.09807810599398,
     "update_time": {
       "count": 682,
-      "max_us": 221.25,
-      "mean_us": 53.75734897360698,
-      "p50_us": 41.666,
-      "p90_us": 114.709,
-      "p99_us": 207.417
+      "max_us": 367.542,
+      "mean_us": 63.052129032258016,
+      "p50_us": 41.667,
+      "p90_us": 138.375,
+      "p99_us": 230.458
     },
     "velocity": {
       "nees_bounds": [
@@ -1169,63 +1265,69 @@
   },
   {
     "association": {
-      "matches": 10996,
+      "matches": 12271,
       "precision": 1.0,
-      "recall": 0.9844225604297224
+      "recall": 0.9857808483290489
     },
     "batch_map_rms_m": 0.03642225160530431,
     "cones": 186,
     "duration_s": 115.7,
     "lap1": {
-      "pose_nees_mean": 1.4029614258951015,
+      "pose_nees_mean": 1.574175171931763,
       "pose_nees_samples": 55,
-      "position_max_m": 0.3086353460285291,
-      "position_rms_m": 0.10105292652808189,
-      "yaw_rms_deg": 0.21211718101950694
+      "position_max_m": 0.2121709589106979,
+      "position_rms_m": 0.06451743149600281,
+      "yaw_rms_deg": 0.12088490925615418
     },
     "lap1_end_s": 54.174,
     "map": {
       "duplicates": 0,
       "landmarks": 186,
       "matched_cones": 186,
-      "max_error_m": 0.04716501343692434,
+      "max_error_m": 0.048730972536429995,
       "missed": 0,
-      "rms_error_m": 0.024728886483718213,
+      "rms_error_m": 0.026995898891432734,
       "spurious": 0
     },
     "predict_time": {
       "count": 23140,
-      "max_us": 5.25,
-      "mean_us": 0.15635665514262476,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20900000000000002
+      "max_us": 7.125,
+      "mean_us": 0.12931892826276292,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 7.25849033681627,
+      "pose_nees_mean": 7.181927859822653,
       "pose_nees_samples": 60,
-      "position_max_m": 0.2857253086480855,
-      "position_rms_m": 0.04725109668294905,
-      "yaw_rms_deg": 0.06139940489019603
+      "position_max_m": 0.27827586371538254,
+      "position_rms_m": 0.046230324982316474,
+      "yaw_rms_deg": 0.05424866823655799
     },
     "seed": 4,
     "source": "world",
     "stats": {
+      "ambiguous": 61,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 13349,
       "recoveries": 0,
+      "rejected": 1078,
       "search_exhausted": 0,
-      "tentatives_dropped": 106,
+      "tentatives_dropped": 153,
+      "too_close_to_map": 2,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 26,
       "wheel_outliers": 41
     },
     "track_length_m": 407.43554687740397,
     "update_time": {
       "count": 1156,
-      "max_us": 687.375,
-      "mean_us": 116.52668944636682,
-      "p50_us": 89.042,
-      "p90_us": 231.625,
-      "p99_us": 433.916
+      "max_us": 563.9580000000001,
+      "mean_us": 113.39545761245675,
+      "p50_us": 77.91600000000001,
+      "p90_us": 250.29099999999997,
+      "p99_us": 455.167
     },
     "velocity": {
       "nees_bounds": [
@@ -1242,63 +1344,69 @@
   },
   {
     "association": {
-      "matches": 10999,
+      "matches": 12273,
       "precision": 1.0,
-      "recall": 0.9846911369740377
+      "recall": 0.9859415167095116
     },
     "batch_map_rms_m": 0.03642225160530431,
     "cones": 186,
     "duration_s": 115.7,
     "lap1": {
-      "pose_nees_mean": 2.4415378610267684,
+      "pose_nees_mean": 2.2176149136487795,
       "pose_nees_samples": 55,
-      "position_max_m": 0.41479499143573473,
-      "position_rms_m": 0.15552012151351619,
-      "yaw_rms_deg": 0.2965103959620266
+      "position_max_m": 0.27671685319724293,
+      "position_rms_m": 0.09032608830797537,
+      "yaw_rms_deg": 0.1725156582792357
     },
     "lap1_end_s": 54.174,
     "map": {
       "duplicates": 0,
       "landmarks": 186,
       "matched_cones": 186,
-      "max_error_m": 0.05462028861840908,
+      "max_error_m": 0.057025802829881914,
       "missed": 0,
-      "rms_error_m": 0.02811437109667267,
+      "rms_error_m": 0.02981261922386853,
       "spurious": 0
     },
     "predict_time": {
       "count": 23140,
-      "max_us": 0.33299999999999996,
-      "mean_us": 0.15483755401902408,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
+      "max_us": 8.208,
+      "mean_us": 0.12911892826276278,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 7.354585979707741,
+      "pose_nees_mean": 7.278983362677796,
       "pose_nees_samples": 60,
-      "position_max_m": 0.28519325723620453,
-      "position_rms_m": 0.048136691148589913,
-      "yaw_rms_deg": 0.06049230256985249
+      "position_max_m": 0.27775686033589075,
+      "position_rms_m": 0.047550250065097145,
+      "yaw_rms_deg": 0.05335287904200111
     },
     "seed": 4,
     "source": "world",
     "stats": {
+      "ambiguous": 58,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 13349,
       "recoveries": 0,
+      "rejected": 1076,
       "search_exhausted": 0,
-      "tentatives_dropped": 106,
+      "tentatives_dropped": 153,
+      "too_close_to_map": 2,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 25,
       "wheel_outliers": 41
     },
     "track_length_m": 407.43554687740397,
     "update_time": {
       "count": 1156,
-      "max_us": 654.125,
-      "mean_us": 114.1856963667818,
-      "p50_us": 90.083,
-      "p90_us": 227.583,
-      "p99_us": 404.04200000000003
+      "max_us": 564.25,
+      "mean_us": 115.23544377162644,
+      "p50_us": 82.125,
+      "p90_us": 249.125,
+      "p99_us": 454.45799999999997
     },
     "velocity": {
       "nees_bounds": [
@@ -1315,63 +1423,69 @@
   },
   {
     "association": {
-      "matches": 11669,
+      "matches": 12853,
       "precision": 1.0,
-      "recall": 0.9998286350783995
+      "recall": 0.9997666459240822
     },
     "batch_map_rms_m": 0.05147745635438043,
     "cones": 183,
     "duration_s": 114.24900000000001,
     "lap1": {
-      "pose_nees_mean": 5.853080906231715,
+      "pose_nees_mean": 2.115760045146359,
       "pose_nees_samples": 53,
-      "position_max_m": 0.9903407370635684,
-      "position_rms_m": 0.3891466774130312,
-      "yaw_rms_deg": 0.49148615097690146
+      "position_max_m": 0.34377884606942993,
+      "position_rms_m": 0.13654101278858258,
+      "yaw_rms_deg": 0.19808382770575939
     },
     "lap1_end_s": 52.764,
     "map": {
       "duplicates": 0,
       "landmarks": 183,
       "matched_cones": 183,
-      "max_error_m": 0.06678113660914158,
+      "max_error_m": 0.09841733024620468,
       "missed": 0,
-      "rms_error_m": 0.03602307893242797,
+      "rms_error_m": 0.05346083299553695,
       "spurious": 0
     },
     "predict_time": {
       "count": 22849,
-      "max_us": 2.7089999999999996,
-      "mean_us": 0.15702560287103093,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
+      "max_us": 9.042000000000002,
+      "mean_us": 0.1288358352663248,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 2.1498834015252406,
+      "pose_nees_mean": 1.7375562546824441,
       "pose_nees_samples": 61,
-      "position_max_m": 0.061052801257725824,
-      "position_rms_m": 0.037310785562636915,
-      "yaw_rms_deg": 0.043409669092511226
+      "position_max_m": 0.09657675590349124,
+      "position_rms_m": 0.05257448445162529,
+      "yaw_rms_deg": 0.04743088153229743
     },
     "seed": 5,
     "source": "world",
     "stats": {
+      "ambiguous": 3,
       "ambiguous_scans": 2,
       "failed_updates": 0,
+      "observations": 13760,
       "recoveries": 0,
+      "rejected": 907,
       "search_exhausted": 0,
-      "tentatives_dropped": 136,
+      "tentatives_dropped": 179,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 2,
       "wheel_outliers": 42
     },
     "track_length_m": 394.5551480479347,
     "update_time": {
       "count": 1141,
-      "max_us": 789.459,
-      "mean_us": 124.80167309377728,
-      "p50_us": 89.25,
-      "p90_us": 290.209,
-      "p99_us": 452.834
+      "max_us": 575.5419999999999,
+      "mean_us": 114.49936809815978,
+      "p50_us": 79.417,
+      "p90_us": 254.58399999999997,
+      "p99_us": 460.41700000000003
     },
     "velocity": {
       "nees_bounds": [
@@ -1388,136 +1502,148 @@
   },
   {
     "association": {
-      "matches": 10725,
-      "precision": 0.9999067599067599,
-      "recall": 0.9188587096221403
+      "matches": 12853,
+      "precision": 1.0,
+      "recall": 0.9997666459240822
     },
     "batch_map_rms_m": 0.05147745635438043,
     "cones": 183,
     "duration_s": 114.24900000000001,
     "lap1": {
-      "pose_nees_mean": 62.022474043686735,
+      "pose_nees_mean": 5.093593536518892,
       "pose_nees_samples": 53,
-      "position_max_m": 2.0256845785262887,
-      "position_rms_m": 0.6813914964745854,
-      "yaw_rms_deg": 0.8821851848174641
+      "position_max_m": 0.671783910352259,
+      "position_rms_m": 0.27165402035079644,
+      "yaw_rms_deg": 0.3577229606899443
     },
     "lap1_end_s": 52.764,
     "map": {
-      "duplicates": 16,
-      "landmarks": 199,
+      "duplicates": 0,
+      "landmarks": 183,
       "matched_cones": 183,
-      "max_error_m": 2.550043436489049,
+      "max_error_m": 0.09959361596005094,
       "missed": 0,
-      "rms_error_m": 0.9418004038235832,
+      "rms_error_m": 0.05378067866675398,
       "spurious": 0
     },
     "predict_time": {
       "count": 22849,
-      "max_us": 1.25,
-      "mean_us": 0.1601247757013474,
-      "p50_us": 0.167,
-      "p90_us": 0.167,
-      "p99_us": 0.20900000000000002
+      "max_us": 0.791,
+      "mean_us": 0.1280680554947827,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 414.6525757479627,
+      "pose_nees_mean": 1.9576672863703724,
       "pose_nees_samples": 61,
-      "position_max_m": 2.669438450112751,
-      "position_rms_m": 1.1333944840670391,
-      "yaw_rms_deg": 1.2989798159721133
+      "position_max_m": 0.09626591287752853,
+      "position_rms_m": 0.05275867041207227,
+      "yaw_rms_deg": 0.05003575259089815
     },
     "seed": 5,
     "source": "world",
     "stats": {
+      "ambiguous": 3,
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "observations": 13760,
+      "recoveries": 0,
+      "rejected": 907,
+      "search_exhausted": 0,
+      "tentatives_dropped": 179,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 2,
+      "wheel_outliers": 42
+    },
+    "track_length_m": 394.5551480479347,
+    "update_time": {
+      "count": 1141,
+      "max_us": 581.75,
+      "mean_us": 114.59928834355826,
+      "p50_us": 79.125,
+      "p90_us": 259.166,
+      "p99_us": 465.75
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3979600857127643,
+        3.668450658990462
+      ],
+      "nees_mean": 2.288743844438556,
+      "nees_samples": 57,
+      "vx_rms": 0.019824338513203928,
+      "vy_rms": 0.02749615987305163,
+      "yaw_rate_rms": 0.0028058614993001513
+    },
+    "yaw_rate_bias": false
+  },
+  {
+    "association": {
+      "matches": 13859,
+      "precision": 1.0,
+      "recall": 0.9997114621654765
+    },
+    "batch_map_rms_m": 0.04691129099905929,
+    "cones": 203,
+    "duration_s": 116.82300000000001,
+    "lap1": {
+      "pose_nees_mean": 0.6246376734282914,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.08956658840748377,
+      "position_rms_m": 0.03681802867171897,
+      "yaw_rms_deg": 0.052193312770606445
+    },
+    "lap1_end_s": 57.505,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 203,
+      "matched_cones": 203,
+      "max_error_m": 0.13543421795823532,
+      "missed": 0,
+      "rms_error_m": 0.05358950801658122,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 23364,
+      "max_us": 0.916,
+      "mean_us": 0.12769581407294697,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 1.7484588000843995,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.1310424621247969,
+      "position_rms_m": 0.05635883177034924,
+      "yaw_rms_deg": 0.07580449339257433
+    },
+    "seed": 1,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous": 4,
       "ambiguous_scans": 3,
       "failed_updates": 0,
-      "recoveries": 2,
-      "search_exhausted": 0,
-      "tentatives_dropped": 134,
-      "wheel_outliers": 42
-    },
-    "track_length_m": 394.5551480479347,
-    "update_time": {
-      "count": 1141,
-      "max_us": 522.292,
-      "mean_us": 123.62905609114813,
-      "p50_us": 102.667,
-      "p90_us": 253.667,
-      "p99_us": 413.458
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.3979600857127643,
-        3.668450658990462
-      ],
-      "nees_mean": 2.288743844438556,
-      "nees_samples": 57,
-      "vx_rms": 0.019824338513203928,
-      "vy_rms": 0.02749615987305163,
-      "yaw_rate_rms": 0.0028058614993001513
-    },
-    "yaw_rate_bias": false
-  },
-  {
-    "association": {
-      "matches": 12370,
-      "precision": 1.0,
-      "recall": 0.9997575365715671
-    },
-    "batch_map_rms_m": 0.04691129099905929,
-    "cones": 203,
-    "duration_s": 116.82300000000001,
-    "lap1": {
-      "pose_nees_mean": 0.8427320009782773,
-      "pose_nees_samples": 58,
-      "position_max_m": 0.33130794281427356,
-      "position_rms_m": 0.13932725977053145,
-      "yaw_rms_deg": 0.12561873019874567
-    },
-    "lap1_end_s": 57.505,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 203,
-      "matched_cones": 203,
-      "max_error_m": 0.12889075992088145,
-      "missed": 0,
-      "rms_error_m": 0.05469129619686365,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 23364,
-      "max_us": 0.334,
-      "mean_us": 0.1586474918678374,
-      "p50_us": 0.167,
-      "p90_us": 0.167,
-      "p99_us": 0.20900000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 1.3872471490035954,
-      "pose_nees_samples": 58,
-      "position_max_m": 0.12317432157942367,
-      "position_rms_m": 0.057775562209803545,
-      "yaw_rms_deg": 0.0706272428618334
-    },
-    "seed": 1,
-    "source": "synthetic",
-    "stats": {
-      "ambiguous_scans": 1,
-      "failed_updates": 0,
+      "observations": 14828,
       "recoveries": 0,
+      "rejected": 969,
       "search_exhausted": 0,
-      "tentatives_dropped": 129,
+      "tentatives_dropped": 169,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 3,
       "wheel_outliers": 5
     },
     "track_length_m": 431.4782339757064,
     "update_time": {
       "count": 1168,
-      "max_us": 712.5830000000001,
-      "mean_us": 150.59160702054814,
-      "p50_us": 112.583,
-      "p90_us": 307.291,
-      "p99_us": 563.333
+      "max_us": 599.625,
+      "mean_us": 146.68760702054814,
+      "p50_us": 94.209,
+      "p90_us": 324.083,
+      "p99_us": 512.875
     },
     "velocity": {
       "nees_bounds": [
@@ -1534,355 +1660,385 @@
   },
   {
     "association": {
-      "matches": 12370,
+      "matches": 13859,
       "precision": 1.0,
-      "recall": 0.9997575365715671
+      "recall": 0.9997114621654765
     },
     "batch_map_rms_m": 0.04691129099905929,
     "cones": 203,
     "duration_s": 116.82300000000001,
     "lap1": {
-      "pose_nees_mean": 0.7482991897050719,
+      "pose_nees_mean": 0.6070794613797263,
       "pose_nees_samples": 58,
-      "position_max_m": 0.24577809376286633,
-      "position_rms_m": 0.10096418133550754,
-      "yaw_rms_deg": 0.09504090938258904
+      "position_max_m": 0.08295660337591898,
+      "position_rms_m": 0.025875249262970548,
+      "yaw_rms_deg": 0.04538320162305389
     },
     "lap1_end_s": 57.505,
     "map": {
       "duplicates": 0,
       "landmarks": 203,
       "matched_cones": 203,
-      "max_error_m": 0.1316103522626091,
+      "max_error_m": 0.1354142874562453,
       "missed": 0,
-      "rms_error_m": 0.056603542078396366,
+      "rms_error_m": 0.05390879965542889,
       "spurious": 0
     },
     "predict_time": {
       "count": 23364,
-      "max_us": 0.334,
-      "mean_us": 0.15829562574902536,
-      "p50_us": 0.167,
-      "p90_us": 0.167,
-      "p99_us": 0.20900000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 1.4357862093065163,
-      "pose_nees_samples": 58,
-      "position_max_m": 0.12695962925769597,
-      "position_rms_m": 0.05964977033167114,
-      "yaw_rms_deg": 0.07273459442828197
-    },
-    "seed": 1,
-    "source": "synthetic",
-    "stats": {
-      "ambiguous_scans": 1,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 129,
-      "wheel_outliers": 5
-    },
-    "track_length_m": 431.4782339757064,
-    "update_time": {
-      "count": 1168,
-      "max_us": 766.4590000000001,
-      "mean_us": 148.77966780821924,
-      "p50_us": 111.208,
-      "p90_us": 300.666,
-      "p99_us": 580.208
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.4028770184765555,
-        3.662389668343
-      ],
-      "nees_mean": 1.8010303553482432,
-      "nees_samples": 58,
-      "vx_rms": 0.02712781644905969,
-      "vy_rms": 0.03873075957147706,
-      "yaw_rate_rms": 0.0020161818949352883
-    },
-    "yaw_rate_bias": false
-  },
-  {
-    "association": {
-      "matches": 11329,
-      "precision": 0.9999117309559538,
-      "recall": 0.9995588105532516
-    },
-    "batch_map_rms_m": 0.018289732337494344,
-    "cones": 180,
-    "duration_s": 103.732,
-    "lap1": {
-      "pose_nees_mean": 2.4910785875236434,
-      "pose_nees_samples": 53,
-      "position_max_m": 0.8340937020485071,
-      "position_rms_m": 0.3504826962954928,
-      "yaw_rms_deg": 0.3549561346976873
-    },
-    "lap1_end_s": 52.331,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 180,
-      "matched_cones": 180,
-      "max_error_m": 0.05449723469461534,
-      "missed": 0,
-      "rms_error_m": 0.0251696538955484,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 20746,
-      "max_us": 9.042000000000002,
-      "mean_us": 0.15206955557698523,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 1.4533441779822684,
-      "pose_nees_samples": 50,
-      "position_max_m": 0.06292855443913166,
-      "position_rms_m": 0.02703360741981,
-      "yaw_rms_deg": 0.047513855661382526
-    },
-    "seed": 2,
-    "source": "synthetic",
-    "stats": {
-      "ambiguous_scans": 2,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 95,
-      "wheel_outliers": 2
-    },
-    "track_length_m": 391.3894337024835,
-    "update_time": {
-      "count": 1037,
-      "max_us": 737.833,
-      "mean_us": 139.11511475409856,
-      "p50_us": 95.667,
-      "p90_us": 322.66700000000003,
-      "p99_us": 493.95799999999997
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.365615060903874,
-        3.7086012978672436
-      ],
-      "nees_mean": 1.4907133625839564,
-      "nees_samples": 51,
-      "vx_rms": 0.025106961003568035,
-      "vy_rms": 0.036908644097832115,
-      "yaw_rate_rms": 0.0020596937544613255
-    },
-    "yaw_rate_bias": true
-  },
-  {
-    "association": {
-      "matches": 11329,
-      "precision": 0.9999117309559538,
-      "recall": 0.9995588105532516
-    },
-    "batch_map_rms_m": 0.018289732337494344,
-    "cones": 180,
-    "duration_s": 103.732,
-    "lap1": {
-      "pose_nees_mean": 3.321707422955181,
-      "pose_nees_samples": 53,
-      "position_max_m": 0.8966445840212475,
-      "position_rms_m": 0.3739625544623074,
-      "yaw_rms_deg": 0.38286891949019636
-    },
-    "lap1_end_s": 52.331,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 180,
-      "matched_cones": 180,
-      "max_error_m": 0.05633770353421503,
-      "missed": 0,
-      "rms_error_m": 0.026621031047971002,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 20746,
-      "max_us": 0.375,
-      "mean_us": 0.15184382531573093,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 1.4665934700743446,
-      "pose_nees_samples": 50,
-      "position_max_m": 0.064249126835609,
-      "position_rms_m": 0.02834625281141687,
-      "yaw_rms_deg": 0.04763251484631109
-    },
-    "seed": 2,
-    "source": "synthetic",
-    "stats": {
-      "ambiguous_scans": 2,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 95,
-      "wheel_outliers": 2
-    },
-    "track_length_m": 391.3894337024835,
-    "update_time": {
-      "count": 1037,
-      "max_us": 704.5830000000001,
-      "mean_us": 137.65605978784956,
-      "p50_us": 92.042,
-      "p90_us": 327.791,
-      "p99_us": 492.542
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.365615060903874,
-        3.7086012978672436
-      ],
-      "nees_mean": 1.4907133625839564,
-      "nees_samples": 51,
-      "vx_rms": 0.025106961003568035,
-      "vy_rms": 0.036908644097832115,
-      "yaw_rate_rms": 0.0020596937544613255
-    },
-    "yaw_rate_bias": false
-  },
-  {
-    "association": {
-      "matches": 6019,
-      "precision": 1.0,
-      "recall": 0.9998338870431893
-    },
-    "batch_map_rms_m": 0.0363671865827837,
-    "cones": 109,
-    "duration_s": 62.988,
-    "lap1": {
-      "pose_nees_mean": 1.0978775328012818,
-      "pose_nees_samples": 32,
-      "position_max_m": 0.09380895281583554,
-      "position_rms_m": 0.03970416094753015,
-      "yaw_rms_deg": 0.058147462766783085
-    },
-    "lap1_end_s": 31.749000000000002,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 109,
-      "matched_cones": 109,
-      "max_error_m": 0.12675031118969338,
-      "missed": 0,
-      "rms_error_m": 0.07843899521284642,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 12597,
-      "max_us": 0.375,
-      "mean_us": 0.15171215368735633,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
-    },
-    "racing": {
-      "pose_nees_mean": 2.3672698365941987,
-      "pose_nees_samples": 30,
-      "position_max_m": 0.14550571936675175,
-      "position_rms_m": 0.07907578976884243,
-      "yaw_rms_deg": 0.11698489512412258
-    },
-    "seed": 3,
-    "source": "synthetic",
-    "stats": {
-      "ambiguous_scans": 0,
-      "failed_updates": 0,
-      "recoveries": 0,
-      "search_exhausted": 0,
-      "tentatives_dropped": 88,
-      "wheel_outliers": 1
-    },
-    "track_length_m": 231.09807810599398,
-    "update_time": {
-      "count": 629,
-      "max_us": 280.20799999999997,
-      "mean_us": 62.311475357710655,
-      "p50_us": 47.416999999999994,
-      "p90_us": 145.375,
-      "p99_us": 215.917
-    },
-    "velocity": {
-      "nees_bounds": [
-        2.2003621112421463,
-        3.921660742845372
-      ],
-      "nees_mean": 1.7821722761472043,
-      "nees_samples": 31,
-      "vx_rms": 0.025987164851728,
-      "vy_rms": 0.04154003868006376,
-      "yaw_rate_rms": 0.0020399255455352963
-    },
-    "yaw_rate_bias": true
-  },
-  {
-    "association": {
-      "matches": 6019,
-      "precision": 1.0,
-      "recall": 0.9998338870431893
-    },
-    "batch_map_rms_m": 0.0363671865827837,
-    "cones": 109,
-    "duration_s": 62.988,
-    "lap1": {
-      "pose_nees_mean": 1.1374074194099197,
-      "pose_nees_samples": 32,
-      "position_max_m": 0.09522625325336412,
-      "position_rms_m": 0.042964247694919945,
-      "yaw_rms_deg": 0.06362847944064295
-    },
-    "lap1_end_s": 31.749000000000002,
-    "map": {
-      "duplicates": 0,
-      "landmarks": 109,
-      "matched_cones": 109,
-      "max_error_m": 0.12403935769166889,
-      "missed": 0,
-      "rms_error_m": 0.07651011428896244,
-      "spurious": 0
-    },
-    "predict_time": {
-      "count": 12597,
-      "max_us": 8.208,
-      "mean_us": 0.1463570691434192,
+      "max_us": 6.667,
+      "mean_us": 0.12884317753810645,
       "p50_us": 0.125,
-      "p90_us": 0.167,
+      "p90_us": 0.166,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 2.2904984675624944,
+      "pose_nees_mean": 1.7849632614687427,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.13154123194314246,
+      "position_rms_m": 0.05670742152697905,
+      "yaw_rms_deg": 0.07649966950462102
+    },
+    "seed": 1,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous": 4,
+      "ambiguous_scans": 3,
+      "failed_updates": 0,
+      "observations": 14828,
+      "recoveries": 0,
+      "rejected": 969,
+      "search_exhausted": 0,
+      "tentatives_dropped": 169,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 3,
+      "wheel_outliers": 5
+    },
+    "track_length_m": 431.4782339757064,
+    "update_time": {
+      "count": 1168,
+      "max_us": 597.75,
+      "mean_us": 146.8988133561641,
+      "p50_us": 95.79100000000001,
+      "p90_us": 323.625,
+      "p99_us": 511.79100000000005
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.4028770184765555,
+        3.662389668343
+      ],
+      "nees_mean": 1.8010303553482432,
+      "nees_samples": 58,
+      "vx_rms": 0.02712781644905969,
+      "vy_rms": 0.03873075957147706,
+      "yaw_rate_rms": 0.0020161818949352883
+    },
+    "yaw_rate_bias": false
+  },
+  {
+    "association": {
+      "matches": 12597,
+      "precision": 0.9999206160196872,
+      "recall": 0.9995238850976036
+    },
+    "batch_map_rms_m": 0.018289732337494344,
+    "cones": 180,
+    "duration_s": 103.732,
+    "lap1": {
+      "pose_nees_mean": 1.5662929850773946,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.3038196546784975,
+      "position_rms_m": 0.11956241847764722,
+      "yaw_rms_deg": 0.15493951312362905
+    },
+    "lap1_end_s": 52.331,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.039757202049129574,
+      "missed": 0,
+      "rms_error_m": 0.019745220839719222,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 20746,
+      "max_us": 13.792,
+      "mean_us": 0.12971869276005119,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 1.0492172055703595,
+      "pose_nees_samples": 50,
+      "position_max_m": 0.045904752418706576,
+      "position_rms_m": 0.020895232742063025,
+      "yaw_rms_deg": 0.04478369628568726
+    },
+    "seed": 2,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous": 5,
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "observations": 13439,
+      "recoveries": 0,
+      "rejected": 842,
+      "search_exhausted": 0,
+      "tentatives_dropped": 143,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 2,
+      "wheel_outliers": 2
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1037,
+      "max_us": 612.833,
+      "mean_us": 138.77785631629715,
+      "p50_us": 84.5,
+      "p90_us": 325.25,
+      "p99_us": 500.333
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.365615060903874,
+        3.7086012978672436
+      ],
+      "nees_mean": 1.4907133625839564,
+      "nees_samples": 51,
+      "vx_rms": 0.025106961003568035,
+      "vy_rms": 0.036908644097832115,
+      "yaw_rate_rms": 0.0020596937544613255
+    },
+    "yaw_rate_bias": true
+  },
+  {
+    "association": {
+      "matches": 12597,
+      "precision": 0.9999206160196872,
+      "recall": 0.9995238850976036
+    },
+    "batch_map_rms_m": 0.018289732337494344,
+    "cones": 180,
+    "duration_s": 103.732,
+    "lap1": {
+      "pose_nees_mean": 2.1138850716556585,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.4096077642083197,
+      "position_rms_m": 0.15987956225788671,
+      "yaw_rms_deg": 0.19557603063678508
+    },
+    "lap1_end_s": 52.331,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.037097476685384934,
+      "missed": 0,
+      "rms_error_m": 0.018585744949585516,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 20746,
+      "max_us": 10.417,
+      "mean_us": 0.13000992962499097,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 1.047296759601592,
+      "pose_nees_samples": 50,
+      "position_max_m": 0.04359768360504237,
+      "position_rms_m": 0.019728428991706126,
+      "yaw_rms_deg": 0.04351931256906934
+    },
+    "seed": 2,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous": 5,
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "observations": 13439,
+      "recoveries": 0,
+      "rejected": 842,
+      "search_exhausted": 0,
+      "tentatives_dropped": 143,
+      "too_close_to_map": 0,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 2,
+      "wheel_outliers": 2
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1037,
+      "max_us": 634.083,
+      "mean_us": 140.97173095467716,
+      "p50_us": 86.417,
+      "p90_us": 335.542,
+      "p99_us": 495.41600000000005
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.365615060903874,
+        3.7086012978672436
+      ],
+      "nees_mean": 1.4907133625839564,
+      "nees_samples": 51,
+      "vx_rms": 0.025106961003568035,
+      "vy_rms": 0.036908644097832115,
+      "yaw_rate_rms": 0.0020596937544613255
+    },
+    "yaw_rate_bias": false
+  },
+  {
+    "association": {
+      "matches": 6711,
+      "precision": 1.0,
+      "recall": 0.9998510131108462
+    },
+    "batch_map_rms_m": 0.0363671865827837,
+    "cones": 109,
+    "duration_s": 62.988,
+    "lap1": {
+      "pose_nees_mean": 0.7173152501143769,
+      "pose_nees_samples": 32,
+      "position_max_m": 0.08837678925389718,
+      "position_rms_m": 0.03836747126137351,
+      "yaw_rms_deg": 0.05833826768351293
+    },
+    "lap1_end_s": 31.749000000000002,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 109,
+      "matched_cones": 109,
+      "max_error_m": 0.06553272467322255,
+      "missed": 0,
+      "rms_error_m": 0.03730114866599449,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 12597,
+      "max_us": 4.583,
+      "mean_us": 0.13049321266965502,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 1.7846477726871606,
       "pose_nees_samples": 30,
-      "position_max_m": 0.14167209228754216,
-      "position_rms_m": 0.07712121313035925,
-      "yaw_rms_deg": 0.11021596032297601
+      "position_max_m": 0.08631067043572176,
+      "position_rms_m": 0.03844919561161637,
+      "yaw_rms_deg": 0.06887761866065921
     },
     "seed": 3,
     "source": "synthetic",
     "stats": {
+      "ambiguous": 3,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 7231,
       "recoveries": 0,
+      "rejected": 520,
       "search_exhausted": 0,
-      "tentatives_dropped": 88,
+      "tentatives_dropped": 111,
+      "too_close_to_map": 2,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 1
     },
     "track_length_m": 231.09807810599398,
     "update_time": {
       "count": 629,
-      "max_us": 253.16599999999997,
-      "mean_us": 59.470399046104944,
-      "p50_us": 45.417,
-      "p90_us": 137.875,
-      "p99_us": 197.875
+      "max_us": 427.125,
+      "mean_us": 63.06826073131955,
+      "p50_us": 42.875,
+      "p90_us": 141.209,
+      "p99_us": 233.0
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.2003621112421463,
+        3.921660742845372
+      ],
+      "nees_mean": 1.7821722761472043,
+      "nees_samples": 31,
+      "vx_rms": 0.025987164851728,
+      "vy_rms": 0.04154003868006376,
+      "yaw_rate_rms": 0.0020399255455352963
+    },
+    "yaw_rate_bias": true
+  },
+  {
+    "association": {
+      "matches": 6711,
+      "precision": 1.0,
+      "recall": 0.9998510131108462
+    },
+    "batch_map_rms_m": 0.0363671865827837,
+    "cones": 109,
+    "duration_s": 62.988,
+    "lap1": {
+      "pose_nees_mean": 0.7110117428125231,
+      "pose_nees_samples": 32,
+      "position_max_m": 0.07027157783478781,
+      "position_rms_m": 0.032595258927752446,
+      "yaw_rms_deg": 0.048055120767241576
+    },
+    "lap1_end_s": 31.749000000000002,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 109,
+      "matched_cones": 109,
+      "max_error_m": 0.06499469789371852,
+      "missed": 0,
+      "rms_error_m": 0.03696259189739389,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 12597,
+      "max_us": 6.292,
+      "mean_us": 0.13088155910134505,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
+    },
+    "racing": {
+      "pose_nees_mean": 1.7492987247339988,
+      "pose_nees_samples": 30,
+      "position_max_m": 0.08502566438705655,
+      "position_rms_m": 0.038035467667149436,
+      "yaw_rms_deg": 0.06522704546463241
+    },
+    "seed": 3,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous": 3,
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "observations": 7231,
+      "recoveries": 0,
+      "rejected": 520,
+      "search_exhausted": 0,
+      "tentatives_dropped": 111,
+      "too_close_to_map": 2,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
+      "wheel_outliers": 1
+    },
+    "track_length_m": 231.09807810599398,
+    "update_time": {
+      "count": 629,
+      "max_us": 435.25,
+      "mean_us": 63.003903020667686,
+      "p50_us": 42.375,
+      "p90_us": 141.666,
+      "p99_us": 228.75
     },
     "velocity": {
       "nees_bounds": [
@@ -1899,63 +2055,69 @@
   },
   {
     "association": {
-      "matches": 10124,
-      "precision": 0.9999012248123271,
-      "recall": 0.999605016293078
+      "matches": 11316,
+      "precision": 0.9999116295510782,
+      "recall": 0.9996466118915098
     },
     "batch_map_rms_m": 0.04323614641596303,
     "cones": 186,
     "duration_s": 107.104,
     "lap1": {
-      "pose_nees_mean": 0.8520435634316675,
+      "pose_nees_mean": 1.1745080691459504,
       "pose_nees_samples": 55,
-      "position_max_m": 0.2190332834805852,
-      "position_rms_m": 0.11237819192730635,
-      "yaw_rms_deg": 0.10769245640438756
+      "position_max_m": 0.12477118937765284,
+      "position_rms_m": 0.0725248665128201,
+      "yaw_rms_deg": 0.06252698252257131
     },
     "lap1_end_s": 54.261,
     "map": {
       "duplicates": 0,
       "landmarks": 186,
       "matched_cones": 186,
-      "max_error_m": 0.1251758356347601,
+      "max_error_m": 0.07409680450435094,
       "missed": 0,
-      "rms_error_m": 0.05814717847588363,
+      "rms_error_m": 0.0424911155208516,
       "spurious": 0
     },
     "predict_time": {
       "count": 21420,
-      "max_us": 0.458,
-      "mean_us": 0.1526264705882433,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
+      "max_us": 1.042,
+      "mean_us": 0.12912408963586153,
+      "p50_us": 0.125,
+      "p90_us": 0.166,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 1.6148862687605525,
+      "pose_nees_mean": 1.5235272770756878,
       "pose_nees_samples": 52,
-      "position_max_m": 0.14841815608623538,
-      "position_rms_m": 0.06483801294667782,
-      "yaw_rms_deg": 0.059314319826854124
+      "position_max_m": 0.09173006010530449,
+      "position_rms_m": 0.04665282971365025,
+      "yaw_rms_deg": 0.05297727350872781
     },
     "seed": 4,
     "source": "synthetic",
     "stats": {
+      "ambiguous": 4,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 12209,
       "recoveries": 0,
+      "rejected": 893,
       "search_exhausted": 0,
-      "tentatives_dropped": 121,
+      "tentatives_dropped": 170,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 1
     },
     "track_length_m": 407.43554687740397,
     "update_time": {
       "count": 1071,
-      "max_us": 671.7090000000001,
-      "mean_us": 123.44756395891689,
-      "p50_us": 97.834,
-      "p90_us": 252.54200000000003,
-      "p99_us": 406.0
+      "max_us": 541.459,
+      "mean_us": 113.43845004668513,
+      "p50_us": 76.042,
+      "p90_us": 250.0,
+      "p99_us": 428.791
     },
     "velocity": {
       "nees_bounds": [
@@ -1972,63 +2134,69 @@
   },
   {
     "association": {
-      "matches": 10124,
-      "precision": 0.9999012248123271,
-      "recall": 0.999605016293078
+      "matches": 11316,
+      "precision": 0.9999116295510782,
+      "recall": 0.9996466118915098
     },
     "batch_map_rms_m": 0.04323614641596303,
     "cones": 186,
     "duration_s": 107.104,
     "lap1": {
-      "pose_nees_mean": 0.8783986718712053,
+      "pose_nees_mean": 1.2040678437933832,
       "pose_nees_samples": 55,
-      "position_max_m": 0.21344278164133457,
-      "position_rms_m": 0.1095161298940643,
-      "yaw_rms_deg": 0.10117215947940914
+      "position_max_m": 0.12779939976579063,
+      "position_rms_m": 0.0761869546288928,
+      "yaw_rms_deg": 0.06316265920717785
     },
     "lap1_end_s": 54.261,
     "map": {
       "duplicates": 0,
       "landmarks": 186,
       "matched_cones": 186,
-      "max_error_m": 0.1281314066220166,
+      "max_error_m": 0.07835625632824325,
       "missed": 0,
-      "rms_error_m": 0.05991866438445966,
+      "rms_error_m": 0.044667431201213886,
       "spurious": 0
     },
     "predict_time": {
       "count": 21420,
-      "max_us": 6.917,
-      "mean_us": 0.15280014005602988,
-      "p50_us": 0.166,
-      "p90_us": 0.167,
-      "p99_us": 0.20800000000000002
+      "max_us": 0.792,
+      "mean_us": 0.1272027077497715,
+      "p50_us": 0.125,
+      "p90_us": 0.125,
+      "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 1.6187644517965967,
+      "pose_nees_mean": 1.5287789131959175,
       "pose_nees_samples": 52,
-      "position_max_m": 0.1470365875152001,
-      "position_rms_m": 0.06572344275031296,
-      "yaw_rms_deg": 0.05956736129894329
+      "position_max_m": 0.09450439291543335,
+      "position_rms_m": 0.0486949228410356,
+      "yaw_rms_deg": 0.0524186256991008
     },
     "seed": 4,
     "source": "synthetic",
     "stats": {
+      "ambiguous": 4,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 12209,
       "recoveries": 0,
+      "rejected": 893,
       "search_exhausted": 0,
-      "tentatives_dropped": 121,
+      "tentatives_dropped": 170,
+      "too_close_to_map": 1,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 1
     },
     "track_length_m": 407.43554687740397,
     "update_time": {
       "count": 1071,
-      "max_us": 652.042,
-      "mean_us": 113.8718963585434,
-      "p50_us": 89.66699999999999,
-      "p90_us": 235.834,
-      "p99_us": 409.125
+      "max_us": 536.166,
+      "mean_us": 112.1544677871151,
+      "p50_us": 76.0,
+      "p90_us": 249.41699999999997,
+      "p99_us": 425.45799999999997
     },
     "velocity": {
       "nees_bounds": [
@@ -2045,63 +2213,69 @@
   },
   {
     "association": {
-      "matches": 10821,
+      "matches": 12013,
       "precision": 1.0,
-      "recall": 0.9996304849884526
+      "recall": 0.9995839573972375
     },
     "batch_map_rms_m": 0.03827167348850534,
     "cones": 183,
     "duration_s": 106.311,
     "lap1": {
-      "pose_nees_mean": 1.1122908340682929,
+      "pose_nees_mean": 0.3606509088822018,
       "pose_nees_samples": 53,
-      "position_max_m": 0.23250527363504084,
-      "position_rms_m": 0.12991025943575762,
-      "yaw_rms_deg": 0.13815966722304143
+      "position_max_m": 0.0877900027437123,
+      "position_rms_m": 0.022931019226607518,
+      "yaw_rms_deg": 0.028948987278200503
     },
     "lap1_end_s": 52.886,
     "map": {
       "duplicates": 0,
       "landmarks": 183,
       "matched_cones": 183,
-      "max_error_m": 0.20659622685336657,
+      "max_error_m": 0.07420673105969079,
       "missed": 0,
-      "rms_error_m": 0.12420388466731205,
+      "rms_error_m": 0.03966980067554777,
       "spurious": 0
     },
     "predict_time": {
       "count": 21262,
-      "max_us": 5.459,
-      "mean_us": 0.14273262157841043,
+      "max_us": 4.0840000000000005,
+      "mean_us": 0.12744332612172463,
       "p50_us": 0.125,
-      "p90_us": 0.167,
+      "p90_us": 0.125,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 2.439006104613812,
+      "pose_nees_mean": 1.5063687540560406,
       "pose_nees_samples": 53,
-      "position_max_m": 0.19892707564432427,
-      "position_rms_m": 0.12473781527484054,
-      "yaw_rms_deg": 0.12416175859698153
+      "position_max_m": 0.08049892721858314,
+      "position_rms_m": 0.03953253962732803,
+      "yaw_rms_deg": 0.0650588620640117
     },
     "seed": 5,
     "source": "synthetic",
     "stats": {
+      "ambiguous": 5,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 12911,
       "recoveries": 0,
+      "rejected": 898,
       "search_exhausted": 0,
-      "tentatives_dropped": 111,
+      "tentatives_dropped": 162,
+      "too_close_to_map": 3,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 8
     },
     "track_length_m": 394.5551480479347,
     "update_time": {
       "count": 1063,
-      "max_us": 754.8340000000001,
-      "mean_us": 113.29075917215438,
-      "p50_us": 84.083,
-      "p90_us": 246.334,
-      "p99_us": 437.54200000000003
+      "max_us": 610.875,
+      "mean_us": 116.78249858889926,
+      "p50_us": 79.709,
+      "p90_us": 261.292,
+      "p99_us": 441.125
     },
     "velocity": {
       "nees_bounds": [
@@ -2118,63 +2292,69 @@
   },
   {
     "association": {
-      "matches": 10821,
+      "matches": 12013,
       "precision": 1.0,
-      "recall": 0.9996304849884526
+      "recall": 0.9995839573972375
     },
     "batch_map_rms_m": 0.03827167348850534,
     "cones": 183,
     "duration_s": 106.311,
     "lap1": {
-      "pose_nees_mean": 1.1740834397757414,
+      "pose_nees_mean": 0.3588441124684351,
       "pose_nees_samples": 53,
-      "position_max_m": 0.26163819728003523,
-      "position_rms_m": 0.13766947512955402,
-      "yaw_rms_deg": 0.14722151755963372
+      "position_max_m": 0.08768736674043259,
+      "position_rms_m": 0.017511237997854232,
+      "yaw_rms_deg": 0.030866814356200867
     },
     "lap1_end_s": 52.886,
     "map": {
       "duplicates": 0,
       "landmarks": 183,
       "matched_cones": 183,
-      "max_error_m": 0.20285930930404075,
+      "max_error_m": 0.07366888457318681,
       "missed": 0,
-      "rms_error_m": 0.12166483682610146,
+      "rms_error_m": 0.039238848222312536,
       "spurious": 0
     },
     "predict_time": {
       "count": 21262,
-      "max_us": 0.375,
-      "mean_us": 0.13850399774247177,
+      "max_us": 1.0839999999999999,
+      "mean_us": 0.12736370049854592,
       "p50_us": 0.125,
-      "p90_us": 0.167,
+      "p90_us": 0.125,
       "p99_us": 0.167
     },
     "racing": {
-      "pose_nees_mean": 2.425899615546624,
+      "pose_nees_mean": 1.4978726372413662,
       "pose_nees_samples": 53,
-      "position_max_m": 0.19584347228208102,
-      "position_rms_m": 0.12215805551504944,
-      "yaw_rms_deg": 0.12358421151925837
+      "position_max_m": 0.07942705092907416,
+      "position_rms_m": 0.03909359375480086,
+      "yaw_rms_deg": 0.06513372814678836
     },
     "seed": 5,
     "source": "synthetic",
     "stats": {
+      "ambiguous": 5,
       "ambiguous_scans": 0,
       "failed_updates": 0,
+      "observations": 12911,
       "recoveries": 0,
+      "rejected": 898,
       "search_exhausted": 0,
-      "tentatives_dropped": 111,
+      "tentatives_dropped": 162,
+      "too_close_to_map": 3,
+      "too_far_to_map": 0,
+      "unpaired_in_gate": 0,
       "wheel_outliers": 8
     },
     "track_length_m": 394.5551480479347,
     "update_time": {
       "count": 1063,
-      "max_us": 717.833,
-      "mean_us": 111.54566792097845,
-      "p50_us": 77.5,
-      "p90_us": 261.125,
-      "p99_us": 446.25
+      "max_us": 613.0,
+      "mean_us": 117.57157008466613,
+      "p50_us": 79.958,
+      "p90_us": 265.708,
+      "p99_us": 441.75
     },
     "velocity": {
       "nees_bounds": [

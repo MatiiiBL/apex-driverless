@@ -1,0 +1,55 @@
+{
+  "base": {
+    "sensor_noise_scale": 3.0,
+    "stack": {
+      "exploration": {
+        "start_radius": 13.0
+      }
+    }
+  },
+  "name": "Noise 3 with a 13 m exploration start radius",
+  "oracle_variant": "",
+  "seeds": [
+    1,
+    2
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 5
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "range-30",
+      "patch": {}
+    },
+    {
+      "name": "range-20",
+      "patch": {
+        "stack": {
+          "estimation": {
+            "slam": {
+              "max_new_landmark_range": 20.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

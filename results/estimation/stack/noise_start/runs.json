@@ -1,0 +1,5729 @@
+[
+ {
+  "result": {
+   "association": {
+    "correct": 4631,
+    "matchable": 4801,
+    "matched": 4631,
+    "observations": 5472,
+    "precision": 1.0,
+    "recall": 0.964590710268694
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 1955,
+     "max_us": 936.417,
+     "mean_us": 316.6016378516627,
+     "p50_us": 311.125,
+     "p90_us": 372.958,
+     "p99_us": 492.417,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 7929,
+     "max_us": 1.375,
+     "mean_us": 0.1737475091436494,
+     "p50_us": 0.167,
+     "p90_us": 0.20800000000000002,
+     "p99_us": 0.25
+    },
+    "estimation_update": {
+     "associated": 4631,
+     "count": 395,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 958.417,
+     "mean_us": 269.2082405063293,
+     "new_landmarks": 203,
+     "observations": 5472,
+     "p50_us": 249.37499999999997,
+     "p90_us": 553.083,
+     "p99_us": 871.75,
+     "rejected": 841,
+     "tentatives_dropped": 3,
+     "tentatives_started": 206
+    },
+    "exploration": {
+     "count": 395,
+     "failures": 4,
+     "max_us": 204.0,
+     "mean_us": 63.025926582278515,
+     "p50_us": 61.75,
+     "p90_us": 81.833,
+     "p99_us": 111.75
+    },
+    "perception": {
+     "cones_reported": 5472,
+     "count": 395,
+     "max_us": 693.542,
+     "mean_us": 227.49811392405053,
+     "p50_us": 223.167,
+     "p90_us": 255.375,
+     "p99_us": 464.541
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 34.614112751500116,
+    "sim_tick": {
+     "count": 39645,
+     "mean_us": 7.264311060663124
+    },
+    "stack_control": {
+     "count": 1982,
+     "max_us": 936.625,
+     "mean_us": 312.4514682139254,
+     "p50_us": 311.167,
+     "p90_us": 372.20899999999995,
+     "p99_us": 492.542
+    },
+    "stack_scan": {
+     "count": 395,
+     "max_us": 1303.042,
+     "mean_us": 562.2082354430383,
+     "p50_us": 524.125,
+     "p90_us": 869.6669999999999,
+     "p99_us": 1197.75
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "exploring",
+   "lap1": null,
+   "laps": [],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 0.9950738916256158,
+    "cones": 203,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 203,
+    "matched": 203,
+    "position": {
+     "max": 0.10373356470236367,
+     "rms": 0.04739673109301637,
+     "samples": 203
+    },
+    "time": 39.645
+   },
+   "max_lateral_true": 6.7512423770664,
+   "name": "range-30/gen1/s1",
+   "penalties": {
+    "cones_hit": 36,
+    "off_course": 6,
+    "seconds": 132.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 39.14599999999947,
+     "lateral": {
+      "max": 0.1409014577427231,
+      "rms": 0.030917933511654422,
+      "samples": 1955
+     },
+     "position": {
+      "max": 0.27644969257238877,
+      "rms": 0.12404964094069028,
+      "samples": 1958
+     },
+     "yaw": {
+      "max": 0.0051372367220356985,
+      "rms": 0.001796913430641586,
+      "samples": 1958
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.017947252788671052,
+      "rms": 0.011092354958128362,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.000754735302191011,
+      "rms": 0.0005386207983056749,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 132.0,
+   "seed": 1,
+   "sim_time": 39.645,
+   "stopped": false,
+   "total_time": 0.0,
+   "track": {
+    "length": 431.4782339757064,
+    "name": "generated-1",
+    "seed": 1
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    }
+   ],
+   "wall_time": 1.145342083
+  },
+  "seed": 1,
+  "track": "gen1",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 9835,
+    "matchable": 10262,
+    "matched": 9835,
+    "observations": 10928,
+    "precision": 1.0,
+    "recall": 0.9583901773533424
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 3975,
+     "max_us": 9894.958,
+     "mean_us": 367.90532276729635,
+     "p50_us": 345.875,
+     "p90_us": 449.79200000000003,
+     "p99_us": 735.5,
+     "solver_failures": 1
+    },
+    "estimation_predict": {
+     "count": 15996,
+     "max_us": 45.291,
+     "mean_us": 0.20617148037006164,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.375
+    },
+    "estimation_update": {
+     "associated": 9835,
+     "count": 799,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 5270.917,
+     "mean_us": 473.68287984981254,
+     "new_landmarks": 203,
+     "observations": 10928,
+     "p50_us": 450.333,
+     "p90_us": 846.5,
+     "p99_us": 1763.7079999999999,
+     "rejected": 1093,
+     "tentatives_dropped": 6,
+     "tentatives_started": 209
+    },
+    "exploration": {
+     "count": 799,
+     "failures": 3,
+     "max_us": 302.125,
+     "mean_us": 75.84480600750942,
+     "p50_us": 72.833,
+     "p90_us": 99.125,
+     "p99_us": 198.5
+    },
+    "perception": {
+     "cones_reported": 10928,
+     "count": 799,
+     "max_us": 4089.291,
+     "mean_us": 263.0184705882353,
+     "p50_us": 254.042,
+     "p90_us": 292.625,
+     "p99_us": 525.541
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 28.347844385989205,
+    "sim_tick": {
+     "count": 79983,
+     "mean_us": 8.283748421540249
+    },
+    "stack_control": {
+     "count": 3999,
+     "max_us": 9895.25,
+     "mean_us": 367.42036334083673,
+     "p50_us": 344.084,
+     "p90_us": 449.791,
+     "p99_us": 737.042
+    },
+    "stack_scan": {
+     "count": 799,
+     "max_us": 9506.875,
+     "mean_us": 816.0558022528163,
+     "p50_us": 792.417,
+     "p90_us": 1224.625,
+     "p99_us": 2356.417
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "exploring",
+   "lap1": 40.47661725051499,
+   "laps": [
+    40.47661725051499
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 203,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 203,
+    "matched": 203,
+    "position": {
+     "max": 0.06321956847559343,
+     "rms": 0.029590766241486204,
+     "samples": 203
+    },
+    "time": 79.983
+   },
+   "max_lateral_true": 6.752808410123267,
+   "name": "range-30/gen1/s2",
+   "penalties": {
+    "cones_hit": 38,
+    "off_course": 12,
+    "seconds": 196.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 79.48400000001547,
+     "lateral": {
+      "max": 0.15785770957913137,
+      "rms": 0.031241852662556052,
+      "samples": 3975
+     },
+     "position": {
+      "max": 0.07035343203745789,
+      "rms": 0.031636096114521686,
+      "samples": 3975
+     },
+     "yaw": {
+      "max": 0.004928282101464454,
+      "rms": 0.0014099394859906317,
+      "samples": 3975
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.8175822702988462e-05,
+      "rms": 1.3319647658892075e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.017334633049300302,
+      "rms": 0.009929501332608613,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0008284768708317767,
+      "rms": 0.00039297162567958257,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 236.476617250515,
+   "seed": 2,
+   "sim_time": 79.983,
+   "stopped": false,
+   "total_time": 40.47661725051499,
+   "track": {
+    "length": 431.4782339757064,
+    "name": "generated-1",
+    "seed": 1
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    }
+   ],
+   "wall_time": 2.821484375
+  },
+  "seed": 2,
+  "track": "gen1",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 15775,
+    "matchable": 16517,
+    "matched": 15775,
+    "observations": 16876,
+    "precision": 1.0,
+    "recall": 0.9550765877580675
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 7724,
+     "max_us": 9040.792000000001,
+     "mean_us": 391.165715950284,
+     "p50_us": 386.084,
+     "p90_us": 450.208,
+     "p99_us": 808.542,
+     "solver_failures": 26
+    },
+    "estimation_predict": {
+     "count": 30995,
+     "max_us": 10.0,
+     "mean_us": 0.20928475560572438,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.33299999999999996
+    },
+    "estimation_update": {
+     "associated": 15775,
+     "count": 1549,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1032.125,
+     "mean_us": 73.06700903808898,
+     "new_landmarks": 109,
+     "observations": 16876,
+     "p50_us": 59.209,
+     "p90_us": 116.25,
+     "p99_us": 285.25,
+     "rejected": 1101,
+     "tentatives_dropped": 1,
+     "tentatives_started": 110
+    },
+    "exploration": {
+     "count": 248,
+     "failures": 3,
+     "max_us": 146.042,
+     "mean_us": 64.69622177419352,
+     "p50_us": 63.958,
+     "p90_us": 78.792,
+     "p99_us": 125.75
+    },
+    "perception": {
+     "cones_reported": 16876,
+     "count": 1549,
+     "max_us": 7404.667,
+     "mean_us": 270.7804725629445,
+     "p50_us": 265.042,
+     "p90_us": 306.125,
+     "p99_us": 463.0
+    },
+    "raceline": {
+     "optimize_s": 0.006843875,
+     "predicted_lap_s": 14.006285559568166
+    },
+    "realtime_factor": 31.101541090763018,
+    "sim_tick": {
+     "count": 154979,
+     "mean_us": 8.519105156180608
+    },
+    "stack_control": {
+     "count": 7748,
+     "max_us": 10331.708,
+     "mean_us": 391.5600733092408,
+     "p50_us": 386.25,
+     "p90_us": 450.375,
+     "p99_us": 810.542
+    },
+    "stack_scan": {
+     "count": 1549,
+     "max_us": 8424.625,
+     "mean_us": 356.30268689477157,
+     "p50_us": 332.83299999999997,
+     "p90_us": 424.584,
+     "p99_us": 698.7080000000001
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 22.096447583751438,
+   "laps": [
+    22.096447583751438,
+    15.997794880495412,
+    14.058203787992134,
+    14.055904852195503,
+    14.044527738192699,
+    14.06760298399358,
+    14.049796885284564,
+    14.055235300178097,
+    14.045853461537249,
+    14.04308942320958
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 109,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 109,
+    "matched": 109,
+    "position": {
+     "max": 0.050028632023812754,
+     "rms": 0.026188370734787254,
+     "samples": 109
+    },
+    "time": 23.94
+   },
+   "max_lateral_true": 5.772170849684861,
+   "name": "range-30/gen3/s1",
+   "penalties": {
+    "cones_hit": 31,
+    "off_course": 13,
+    "seconds": 192.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 23.440000000005664,
+     "lateral": {
+      "max": 0.14184381818009342,
+      "rms": 0.028542092450753107,
+      "samples": 1172
+     },
+     "position": {
+      "max": 0.09860735684623546,
+      "rms": 0.046184739597730465,
+      "samples": 1172
+     },
+     "yaw": {
+      "max": 0.00411520029117618,
+      "rms": 0.0019327707813019085,
+      "samples": 1172
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.08179549908388896,
+      "rms": 0.029183188546974388,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.023701506699507366,
+      "rms": 0.019375124884496858,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0012498899658079932,
+      "rms": 0.000562523736381162,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 127.42000000024436,
+     "lateral": {
+      "max": 2.5760804759221205,
+      "rms": 0.2333365010251781,
+      "samples": 6371
+     },
+     "position": {
+      "max": 0.08399581304331347,
+      "rms": 0.046216242948927753,
+      "samples": 6371
+     },
+     "yaw": {
+      "max": 0.00434371063622363,
+      "rms": 0.0019037529558609862,
+      "samples": 6371
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7496245763282324e-05,
+      "rms": 1.5401044343920134e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.022602086118336407,
+      "rms": 0.013265178940302273,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0006289317154120064,
+      "rms": 0.000313963561593384,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 2.6199999999998225,
+     "lateral": {
+      "max": 0.041332991480326556,
+      "rms": 0.018815572703734983,
+      "samples": 131
+     },
+     "position": {
+      "max": 0.04146402944151555,
+      "rms": 0.02811448757471336,
+      "samples": 131
+     },
+     "yaw": {
+      "max": 0.002613593597506153,
+      "rms": 0.001367794667990467,
+      "samples": 131
+     }
+    }
+   },
+   "racing_best": 14.04308942320958,
+   "racing_mean": 14.268667701453202,
+   "score": 342.5144568968302,
+   "seed": 1,
+   "sim_time": 154.979,
+   "stopped": true,
+   "total_time": 150.51445689683024,
+   "track": {
+    "length": 231.09807810599398,
+    "name": "generated-3",
+    "seed": 3
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 23.94,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 24.94,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 152.36,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 4.983000667
+  },
+  "seed": 1,
+  "track": "gen3",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 2558,
+    "matchable": 3082,
+    "matched": 2558,
+    "observations": 3448,
+    "precision": 1.0,
+    "recall": 0.8299805321219987
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 1856,
+     "max_us": 8349.208999999999,
+     "mean_us": 527.5343125000004,
+     "p50_us": 448.625,
+     "p90_us": 703.958,
+     "p99_us": 1255.2920000000001,
+     "solver_failures": 45
+    },
+    "estimation_predict": {
+     "count": 7520,
+     "max_us": 64.292,
+     "mean_us": 0.2478360372340426,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.7080000000000001
+    },
+    "estimation_update": {
+     "associated": 2558,
+     "count": 375,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1161.25,
+     "mean_us": 105.41011466666669,
+     "new_landmarks": 109,
+     "observations": 3448,
+     "p50_us": 62.0,
+     "p90_us": 221.25,
+     "p99_us": 610.5,
+     "rejected": 890,
+     "tentatives_dropped": 1,
+     "tentatives_started": 110
+    },
+    "exploration": {
+     "count": 249,
+     "failures": 3,
+     "max_us": 985.416,
+     "mean_us": 98.78864658634542,
+     "p50_us": 90.458,
+     "p90_us": 132.208,
+     "p99_us": 245.458
+    },
+    "perception": {
+     "cones_reported": 3448,
+     "count": 375,
+     "max_us": 3613.583,
+     "mean_us": 295.0213626666665,
+     "p50_us": 270.875,
+     "p90_us": 321.709,
+     "p99_us": 776.708
+    },
+    "raceline": {
+     "optimize_s": 0.008925209,
+     "predicted_lap_s": 14.10360394213684
+    },
+    "realtime_factor": 24.449889801299697,
+    "sim_tick": {
+     "count": 37602,
+     "mean_us": 9.287771208979828
+    },
+    "stack_control": {
+     "count": 1880,
+     "max_us": 13157.25,
+     "mean_us": 527.8363606382972,
+     "p50_us": 446.208,
+     "p90_us": 703.083,
+     "p99_us": 1290.917
+    },
+    "stack_scan": {
+     "count": 375,
+     "max_us": 5028.25,
+     "mean_us": 468.27834666666695,
+     "p50_us": 423.29200000000003,
+     "p90_us": 685.0,
+     "p99_us": 1364.709
+    }
+   },
+   "dnf_reason": "stalled for 10 s",
+   "error": "",
+   "final_state": "racing",
+   "lap1": 22.150719250289153,
+   "laps": [
+    22.150719250289153
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 109,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 109,
+    "matched": 109,
+    "position": {
+     "max": 0.03348233777737141,
+     "rms": 0.015958036402938882,
+     "samples": 109
+    },
+    "time": 24.0
+   },
+   "max_lateral_true": 5.202148692247144,
+   "name": "range-30/gen3/s2",
+   "penalties": {
+    "cones_hit": 29,
+    "off_course": 5,
+    "seconds": 108.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 23.500000000005738,
+     "lateral": {
+      "max": 0.1362204881670055,
+      "rms": 0.027964556368208014,
+      "samples": 1175
+     },
+     "position": {
+      "max": 0.22973751928965513,
+      "rms": 0.10064531903734504,
+      "samples": 1175
+     },
+     "yaw": {
+      "max": 0.006679520644269132,
+      "rms": 0.0032958115445658903,
+      "samples": 1175
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.07841947737916123,
+      "rms": 0.03126232017932694,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.017947102559470268,
+      "rms": 0.012577682283700783,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0012069326070078268,
+      "rms": 0.0006125776378824524,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 12.602999999998454,
+     "lateral": {
+      "max": 3.075878168046507,
+      "rms": 1.5260197326260758,
+      "samples": 631
+     },
+     "position": {
+      "max": 0.9588565457318099,
+      "rms": 0.47759340705110764,
+      "samples": 631
+     },
+     "yaw": {
+      "max": 0.8634152640243259,
+      "rms": 0.3803168814828256,
+      "samples": 631
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7836055816138268e-05,
+      "rms": 1.306195712293768e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.021268458648846165,
+      "rms": 0.012139443869886303,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.00040448533240590543,
+      "rms": 0.00017269822661657974,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 130.15071925028914,
+   "seed": 2,
+   "sim_time": 37.602000000000004,
+   "stopped": false,
+   "total_time": 22.150719250289153,
+   "track": {
+    "length": 231.09807810599398,
+    "name": "generated-3",
+    "seed": 3
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 24.0,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 25.0,
+     "to": "racing"
+    }
+   ],
+   "wall_time": 1.537921042
+  },
+  "seed": 2,
+  "track": "gen3",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 30720,
+    "matchable": 32348,
+    "matched": 30720,
+    "observations": 32923,
+    "precision": 1.0,
+    "recall": 0.9496723135897119
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 13081,
+     "max_us": 13952.875,
+     "mean_us": 404.28150538949535,
+     "p50_us": 388.54200000000003,
+     "p90_us": 452.83299999999997,
+     "p99_us": 656.542,
+     "solver_failures": 1
+    },
+    "estimation_predict": {
+     "count": 52476,
+     "max_us": 91.792,
+     "mean_us": 0.2231735460019001,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.334
+    },
+    "estimation_update": {
+     "associated": 30720,
+     "count": 2623,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 2245.625,
+     "mean_us": 214.6409012581019,
+     "new_landmarks": 183,
+     "observations": 32923,
+     "p50_us": 127.79100000000001,
+     "p90_us": 445.334,
+     "p99_us": 1092.75,
+     "rejected": 2203,
+     "tentatives_dropped": 2,
+     "tentatives_started": 185
+    },
+    "exploration": {
+     "count": 786,
+     "failures": 6,
+     "max_us": 245.833,
+     "mean_us": 80.36625318066156,
+     "p50_us": 79.458,
+     "p90_us": 100.125,
+     "p99_us": 162.292
+    },
+    "perception": {
+     "cones_reported": 32923,
+     "count": 2623,
+     "max_us": 1290.7089999999998,
+     "mean_us": 279.5401719405272,
+     "p50_us": 273.08299999999997,
+     "p90_us": 307.125,
+     "p99_us": 455.25
+    },
+    "raceline": {
+     "optimize_s": 0.029663125,
+     "predicted_lap_s": 22.582637027709563
+    },
+    "realtime_factor": 28.46815621409761,
+    "sim_tick": {
+     "count": 262380,
+     "mean_us": 9.055333058913783
+    },
+    "stack_control": {
+     "count": 13119,
+     "max_us": 38037.292,
+     "mean_us": 406.6945653632135,
+     "p50_us": 388.70799999999997,
+     "p90_us": 453.041,
+     "p99_us": 658.666
+    },
+    "stack_scan": {
+     "count": 2623,
+     "max_us": 2634.333,
+     "mean_us": 521.697032786885,
+     "p50_us": 416.625,
+     "p90_us": 824.5830000000001,
+     "p99_us": 1557.667
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "finished",
+   "lap1": 37.92927893160623,
+   "laps": [
+    37.92927893160623,
+    37.663650894931955,
+    23.020968893976473,
+    22.664755376659002,
+    22.648993296665196,
+    22.656124789444902,
+    22.640532004707126,
+    22.640967470050157,
+    22.648281145602283,
+    22.646658606735343
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 183,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 183,
+    "matched": 183,
+    "position": {
+     "max": 0.04641199149743066,
+     "rms": 0.026609183213482285,
+     "samples": 183
+    },
+    "time": 77.7
+   },
+   "max_lateral_true": 6.385324684610601,
+   "name": "range-30/gen5/s1",
+   "penalties": {
+    "cones_hit": 30,
+    "off_course": 33,
+    "seconds": 390.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 77.20000000000456,
+     "lateral": {
+      "max": 0.15357743819534905,
+      "rms": 0.03133324521203389,
+      "samples": 3847
+     },
+     "position": {
+      "max": 0.3944084103286919,
+      "rms": 0.1379756703249964,
+      "samples": 3860
+     },
+     "yaw": {
+      "max": 0.008470133296180293,
+      "rms": 0.002974059754006451,
+      "samples": 3860
+     }
+    },
+    "finished": {
+     "duration": 0.001,
+     "lateral": {
+      "max": 0.013101270232753245,
+      "rms": 0.013101270232753245,
+      "samples": 1
+     },
+     "position": {
+      "max": 0.008135338108475056,
+      "rms": 0.008135338108475056,
+      "samples": 1
+     },
+     "yaw": {
+      "max": 0.0022592533624361533,
+      "rms": 0.0022592533624361533,
+      "samples": 1
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.004818321129761381,
+      "rms": 0.0008413445950370924,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.013595132308381054,
+      "rms": 0.010253970512802782,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0012961624623005173,
+      "rms": 0.0008505864700459573,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 180.5600000004981,
+     "lateral": {
+      "max": 0.5492041041941407,
+      "rms": 0.029445987293797635,
+      "samples": 9028
+     },
+     "position": {
+      "max": 0.09232177777918572,
+      "rms": 0.03831626760117536,
+      "samples": 9028
+     },
+     "yaw": {
+      "max": 0.005502323317226443,
+      "rms": 0.0017944821073877858,
+      "samples": 9028
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.01716995100156642,
+      "rms": 0.010170242050942075,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0006289317154120064,
+      "rms": 0.0003712369674230236,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.1199999999997674,
+     "lateral": {
+      "max": 0.0224678079272168,
+      "rms": 0.012589764288816757,
+      "samples": 156
+     },
+     "position": {
+      "max": 0.0222349227970176,
+      "rms": 0.013253751060704005,
+      "samples": 156
+     },
+     "yaw": {
+      "max": 0.0023099769272592052,
+      "rms": 0.0012535408731488443,
+      "samples": 156
+     }
+    }
+   },
+   "racing_best": 22.640532004707126,
+   "racing_mean": 24.35899249764138,
+   "score": 647.1602114103787,
+   "seed": 1,
+   "sim_time": 262.38,
+   "stopped": true,
+   "total_time": 257.1602114103787,
+   "track": {
+    "length": 394.5551480479347,
+    "name": "generated-5",
+    "seed": 5
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 77.7,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 78.7,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 259.26,
+     "to": "stopping"
+    },
+    {
+     "from": "stopping",
+     "reason": "stopped",
+     "time": 262.38,
+     "to": "finished"
+    }
+   ],
+   "wall_time": 9.21661375
+  },
+  "seed": 1,
+  "track": "gen5",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 1685,
+    "matchable": 1734,
+    "matched": 1685,
+    "observations": 2042,
+    "precision": 1.0,
+    "recall": 0.9717416378316033
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 708,
+     "max_us": 979.4580000000001,
+     "mean_us": 383.03889830508507,
+     "p50_us": 367.125,
+     "p90_us": 458.042,
+     "p99_us": 570.0,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 2929,
+     "max_us": 0.29200000000000004,
+     "mean_us": 0.20500887674974982,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.25
+    },
+    "estimation_update": {
+     "associated": 1685,
+     "count": 145,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 493.917,
+     "mean_us": 125.13476551724139,
+     "new_landmarks": 97,
+     "observations": 2042,
+     "p50_us": 74.83300000000001,
+     "p90_us": 255.708,
+     "p99_us": 456.834,
+     "rejected": 357,
+     "tentatives_dropped": 4,
+     "tentatives_started": 101
+    },
+    "exploration": {
+     "count": 145,
+     "failures": 3,
+     "max_us": 110.208,
+     "mean_us": 69.32500689655174,
+     "p50_us": 69.125,
+     "p90_us": 91.791,
+     "p99_us": 108.917
+    },
+    "perception": {
+     "cones_reported": 2042,
+     "count": 145,
+     "max_us": 327.66700000000003,
+     "mean_us": 269.19075172413795,
+     "p50_us": 263.45799999999997,
+     "p90_us": 298.333,
+     "p99_us": 327.125
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 31.120593739363585,
+    "sim_tick": {
+     "count": 14645,
+     "mean_us": 8.519988187094427
+    },
+    "stack_control": {
+     "count": 732,
+     "max_us": 980.209,
+     "mean_us": 370.6578005464481,
+     "p50_us": 366.875,
+     "p90_us": 457.166,
+     "p99_us": 570.125
+    },
+    "stack_scan": {
+     "count": 145,
+     "max_us": 862.125,
+     "mean_us": 465.39742758620673,
+     "p50_us": 405.375,
+     "p90_us": 631.417,
+     "p99_us": 847.917
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "exploring",
+   "lap1": null,
+   "laps": [],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 0.8041237113402062,
+    "cones": 183,
+    "coverage": 0.5300546448087432,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 97,
+    "matched": 97,
+    "position": {
+     "max": 0.11196230669034206,
+     "rms": 0.06103763582397312,
+     "samples": 97
+    },
+    "time": 14.645
+   },
+   "max_lateral_true": 6.750395324770422,
+   "name": "range-30/gen5/s2",
+   "penalties": {
+    "cones_hit": 11,
+    "off_course": 3,
+    "seconds": 52.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 14.1459999999976,
+     "lateral": {
+      "max": 0.15171647058066048,
+      "rms": 0.037566354941046556,
+      "samples": 708
+     },
+     "position": {
+      "max": 0.09607061638098366,
+      "rms": 0.035820749934378816,
+      "samples": 708
+     },
+     "yaw": {
+      "max": 0.0037528653832079595,
+      "rms": 0.001500801927432697,
+      "samples": 708
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7916343753684246e-05,
+      "rms": 1.31228429361568e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.020500151093688083,
+      "rms": 0.011897817544698052,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0008046810086488242,
+      "rms": 0.0004293727693617084,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 52.0,
+   "seed": 2,
+   "sim_time": 14.645,
+   "stopped": false,
+   "total_time": 0.0,
+   "track": {
+    "length": 394.5551480479347,
+    "name": "generated-5",
+    "seed": 5
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    }
+   ],
+   "wall_time": 0.470588708
+  },
+  "seed": 2,
+  "track": "gen5",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 42137,
+    "matchable": 45035,
+    "matched": 42137,
+    "observations": 45526,
+    "precision": 1.0,
+    "recall": 0.9356500499611413
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 15257,
+     "max_us": 33363.125,
+     "mean_us": 402.4875722619129,
+     "p50_us": 375.584,
+     "p90_us": 483.04100000000005,
+     "p99_us": 682.833,
+     "solver_failures": 2
+    },
+    "estimation_predict": {
+     "count": 61127,
+     "max_us": 61.45799999999999,
+     "mean_us": 0.2180214962290717,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.334
+    },
+    "estimation_update": {
+     "associated": 42137,
+     "count": 3055,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 10721.625,
+     "mean_us": 425.2536635024544,
+     "new_landmarks": 152,
+     "observations": 45526,
+     "p50_us": 380.917,
+     "p90_us": 667.75,
+     "p99_us": 1204.417,
+     "rejected": 3389,
+     "tentatives_dropped": 1,
+     "tentatives_started": 153
+    },
+    "exploration": {
+     "count": 3040,
+     "failures": 3,
+     "max_us": 340.66700000000003,
+     "mean_us": 80.75413815789462,
+     "p50_us": 81.542,
+     "p90_us": 102.25,
+     "p99_us": 157.208
+    },
+    "perception": {
+     "cones_reported": 45526,
+     "count": 3055,
+     "max_us": 1667.625,
+     "mean_us": 281.9750965630116,
+     "p50_us": 276.91700000000003,
+     "p90_us": 314.292,
+     "p99_us": 440.79200000000003
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 26.656275490508783,
+    "sim_tick": {
+     "count": 305636,
+     "mean_us": 8.897514481278431
+    },
+    "stack_control": {
+     "count": 15281,
+     "max_us": 33363.833000000006,
+     "mean_us": 404.2077865977388,
+     "p50_us": 375.625,
+     "p90_us": 483.333,
+     "p99_us": 691.625
+    },
+    "stack_scan": {
+     "count": 3055,
+     "max_us": 12527.333999999999,
+     "mean_us": 790.8779289689031,
+     "p50_us": 735.416,
+     "p90_us": 1058.917,
+     "p99_us": 1827.958
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 29.792296280134774,
+   "laps": [
+    29.792296280134774,
+    30.834607599693044,
+    30.31717661830175,
+    29.95754237559099,
+    29.899725307933025,
+    30.205280452049976,
+    30.31788452093207,
+    30.493946851126537,
+    30.396181188053276,
+    30.038442922893125
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 152,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 152,
+    "matched": 152,
+    "position": {
+     "max": 0.04780185019679944,
+     "rms": 0.030475596603143175,
+     "samples": 152
+    },
+    "time": 305.636
+   },
+   "max_lateral_true": 6.294720085118505,
+   "name": "range-30/technical/s1",
+   "penalties": {
+    "cones_hit": 35,
+    "off_course": 41,
+    "seconds": 480.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 303.5999999997327,
+     "lateral": {
+      "max": 0.18387603540209027,
+      "rms": 0.036558644892012236,
+      "samples": 15180
+     },
+     "position": {
+      "max": 0.12185271157821992,
+      "rms": 0.044316709182407155,
+      "samples": 15180
+     },
+     "yaw": {
+      "max": 0.005377514876365286,
+      "rms": 0.0019180264889061543,
+      "samples": 15180
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7717755054511475e-05,
+      "rms": 1.572692264259822e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.014749875908559203,
+      "rms": 0.009498857402544377,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0006289317154120064,
+      "rms": 0.0003443433089218583,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 1.5369999999999415,
+     "lateral": {
+      "max": 0.033408581665274786,
+      "rms": 0.01703202601213396,
+      "samples": 77
+     },
+     "position": {
+      "max": 0.035486501623419674,
+      "rms": 0.029638257759047104,
+      "samples": 77
+     },
+     "yaw": {
+      "max": 0.0018329999875958342,
+      "rms": 0.0011068052945825083,
+      "samples": 77
+     }
+    }
+   },
+   "racing_best": 29.899725307933025,
+   "racing_mean": 30.27342087073042,
+   "score": 782.2530841167086,
+   "seed": 1,
+   "sim_time": 305.636,
+   "stopped": true,
+   "total_time": 302.2530841167086,
+   "track": {
+    "length": 314.9687196875479,
+    "name": "technical",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "10 laps completed",
+     "time": 304.1,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 11.465817875
+  },
+  "seed": 1,
+  "track": "technical",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 31616,
+    "matchable": 33279,
+    "matched": 31616,
+    "observations": 33786,
+    "precision": 1.0,
+    "recall": 0.9500285465308452
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 11404,
+     "max_us": 13436.625,
+     "mean_us": 401.2087000175386,
+     "p50_us": 388.91700000000003,
+     "p90_us": 448.375,
+     "p99_us": 667.208,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 45716,
+     "max_us": 68.875,
+     "mean_us": 0.2195417796831716,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.334
+    },
+    "estimation_update": {
+     "associated": 31616,
+     "count": 2285,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 2119.25,
+     "mean_us": 197.71689365426747,
+     "new_landmarks": 152,
+     "observations": 33786,
+     "p50_us": 126.74999999999999,
+     "p90_us": 452.709,
+     "p99_us": 910.75,
+     "rejected": 2170,
+     "tentatives_dropped": 2,
+     "tentatives_started": 154
+    },
+    "exploration": {
+     "count": 633,
+     "failures": 3,
+     "max_us": 5091.0,
+     "mean_us": 95.51547551342816,
+     "p50_us": 85.375,
+     "p90_us": 111.042,
+     "p99_us": 219.542
+    },
+    "perception": {
+     "cones_reported": 33786,
+     "count": 2285,
+     "max_us": 5162.667,
+     "mean_us": 288.5545536105035,
+     "p50_us": 279.416,
+     "p90_us": 309.5,
+     "p99_us": 470.54200000000003
+    },
+    "raceline": {
+     "optimize_s": 0.018231417,
+     "predicted_lap_s": 20.26069021774608
+    },
+    "realtime_factor": 28.681875496284643,
+    "sim_tick": {
+     "count": 228580,
+     "mean_us": 9.032475107183938
+    },
+    "stack_control": {
+     "count": 11429,
+     "max_us": 25401.041999999998,
+     "mean_us": 403.23265701286385,
+     "p50_us": 389.08299999999997,
+     "p90_us": 448.45799999999997,
+     "p99_us": 671.958
+    },
+    "stack_scan": {
+     "count": 2285,
+     "max_us": 7102.125,
+     "mean_us": 515.7622301969382,
+     "p50_us": 414.708,
+     "p90_us": 861.583,
+     "p99_us": 1413.167
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "finished",
+   "lap1": 30.10320641528545,
+   "laps": [
+    30.10320641528545,
+    30.402738242696152,
+    20.97418222023326,
+    20.26740570723308,
+    20.261319193003956,
+    20.242881673660477,
+    20.2408536050973,
+    20.220274160008273,
+    20.22499072472388,
+    20.20664727920905
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 152,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 152,
+    "matched": 152,
+    "position": {
+     "max": 0.06501806001062593,
+     "rms": 0.03381630725076454,
+     "samples": 152
+    },
+    "time": 62.36
+   },
+   "max_lateral_true": 5.535718458511033,
+   "name": "range-30/technical/s2",
+   "penalties": {
+    "cones_hit": 37,
+    "off_course": 39,
+    "seconds": 464.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 61.85999999994653,
+     "lateral": {
+      "max": 0.16919112188464874,
+      "rms": 0.03602413755541178,
+      "samples": 3093
+     },
+     "position": {
+      "max": 0.06941422339074745,
+      "rms": 0.03237326175675207,
+      "samples": 3093
+     },
+     "yaw": {
+      "max": 0.002549560657225669,
+      "rms": 0.000840807526587487,
+      "samples": 3093
+     }
+    },
+    "finished": {
+     "duration": 0.001,
+     "lateral": {
+      "max": 0.00027233173276422674,
+      "rms": 0.00027233173276422674,
+      "samples": 1
+     },
+     "position": {
+      "max": 0.03449428027152308,
+      "rms": 0.03449428027152308,
+      "samples": 1
+     },
+     "yaw": {
+      "max": 0.0004970588279200605,
+      "rms": 0.0004970588279200605,
+      "samples": 1
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.021846398723944737,
+      "rms": 0.00632877227889282,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.02543305382992978,
+      "rms": 0.013483066259598551,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0019161664411801033,
+      "rms": 0.00130775872366405,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 161.64000000040775,
+     "lateral": {
+      "max": 0.5140700701428951,
+      "rms": 0.029483472840253964,
+      "samples": 8082
+     },
+     "position": {
+      "max": 0.09630788128840818,
+      "rms": 0.037893868678145995,
+      "samples": 8082
+     },
+     "yaw": {
+      "max": 0.002629116373584095,
+      "rms": 0.0008295094620838908,
+      "samples": 8082
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7693171237415725e-05,
+      "rms": 1.2953612959294073e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.018386549018396797,
+      "rms": 0.011201858847145408,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.000696155894789468,
+      "rms": 0.0003417775986314832,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.5799999999997167,
+     "lateral": {
+      "max": 0.02310485434359262,
+      "rms": 0.008754960658506675,
+      "samples": 179
+     },
+     "position": {
+      "max": 0.059270932230626544,
+      "rms": 0.03422775367623465,
+      "samples": 179
+     },
+     "yaw": {
+      "max": 0.001854620958171127,
+      "rms": 0.00076975365527934,
+      "samples": 179
+     }
+    }
+   },
+   "racing_best": 20.20664727920905,
+   "racing_mean": 21.449032533985047,
+   "score": 687.1444992211509,
+   "seed": 2,
+   "sim_time": 228.58,
+   "stopped": true,
+   "total_time": 223.14449922115088,
+   "track": {
+    "length": 314.9687196875479,
+    "name": "technical",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 62.36,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 63.36,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 225.0,
+     "to": "stopping"
+    },
+    {
+     "from": "stopping",
+     "reason": "stopped",
+     "time": 228.58,
+     "to": "finished"
+    }
+   ],
+   "wall_time": 7.969492791
+  },
+  "seed": 2,
+  "track": "technical",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 20756,
+    "matchable": 21806,
+    "matched": 20756,
+    "observations": 22464,
+    "precision": 1.0,
+    "recall": 0.951848115197652
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 12867,
+     "max_us": 3627.125,
+     "mean_us": 469.58444555840543,
+     "p50_us": 433.584,
+     "p90_us": 686.125,
+     "p99_us": 847.667,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 51576,
+     "max_us": 13.291,
+     "mean_us": 0.2657282844734557,
+     "p50_us": 0.25,
+     "p90_us": 0.334,
+     "p99_us": 0.9169999999999999
+    },
+    "estimation_update": {
+     "associated": 20756,
+     "count": 2578,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1641.0839999999998,
+     "mean_us": 152.0110795190067,
+     "new_landmarks": 201,
+     "observations": 22464,
+     "p50_us": 136.0,
+     "p90_us": 228.666,
+     "p99_us": 442.5,
+     "rejected": 1708,
+     "tentatives_dropped": 3,
+     "tentatives_started": 204
+    },
+    "exploration": {
+     "count": 443,
+     "failures": 4,
+     "max_us": 110.042,
+     "mean_us": 74.28169074492105,
+     "p50_us": 73.375,
+     "p90_us": 88.834,
+     "p99_us": 100.541
+    },
+    "perception": {
+     "cones_reported": 22464,
+     "count": 2578,
+     "max_us": 793.375,
+     "mean_us": 309.0068397982932,
+     "p50_us": 297.791,
+     "p90_us": 444.167,
+     "p99_us": 483.834
+    },
+    "raceline": {
+     "optimize_s": 0.050274042,
+     "predicted_lap_s": 23.274039879598483
+    },
+    "realtime_factor": 25.36590107959358,
+    "sim_tick": {
+     "count": 257882,
+     "mean_us": 10.337729143561369
+    },
+    "stack_control": {
+     "count": 12894,
+     "max_us": 60196.708,
+     "mean_us": 473.71663735070825,
+     "p50_us": 433.75,
+     "p90_us": 686.625,
+     "p99_us": 848.708
+    },
+    "stack_scan": {
+     "count": 2578,
+     "max_us": 2011.6660000000002,
+     "mean_us": 478.59037781225754,
+     "p50_us": 447.416,
+     "p90_us": 659.25,
+     "p99_us": 866.25
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 41.45216354703391,
+   "laps": [
+    41.45216354703391,
+    24.232084406445665,
+    23.346921593468934,
+    23.339914896906123,
+    23.332441771202056,
+    23.356698555477834,
+    23.31237170044568,
+    23.309548744092695,
+    23.32472892901913,
+    23.34390542138226
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 201,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 201,
+    "matched": 201,
+    "position": {
+     "max": 0.31471516165967595,
+     "rms": 0.2055110508177546,
+     "samples": 201
+    },
+    "time": 43.36
+   },
+   "max_lateral_true": 5.555695979230496,
+   "name": "range-30/flowing/s1",
+   "penalties": {
+    "cones_hit": 33,
+    "off_course": 10,
+    "seconds": 166.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 42.85999999999081,
+     "lateral": {
+      "max": 0.1810761735414294,
+      "rms": 0.021919085537039813,
+      "samples": 2140
+     },
+     "position": {
+      "max": 0.9409496674185205,
+      "rms": 0.42677359539088233,
+      "samples": 2143
+     },
+     "yaw": {
+      "max": 0.01284924999212278,
+      "rms": 0.006920440941197758,
+      "samples": 2143
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.04753192450135392,
+      "rms": 0.013350177667682588,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.02365927067975384,
+      "rms": 0.016849617947938916,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0010832433526965475,
+      "rms": 0.00037087269104335243,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 209.9000000006382,
+     "lateral": {
+      "max": 0.16194739769014307,
+      "rms": 0.023340483592549886,
+      "samples": 10495
+     },
+     "position": {
+      "max": 0.29401283200873124,
+      "rms": 0.1941351816773679,
+      "samples": 10495
+     },
+     "yaw": {
+      "max": 0.0032084070146857213,
+      "rms": 0.0009901925518629748,
+      "samples": 10495
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.018489358940703877,
+      "rms": 0.010741855240097256,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0008322725395739753,
+      "rms": 0.0005539599259899042,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.622999999999712,
+     "lateral": {
+      "max": 0.058097180719699056,
+      "rms": 0.02115624259509662,
+      "samples": 182
+     },
+     "position": {
+      "max": 0.09371016773353998,
+      "rms": 0.06494363218268037,
+      "samples": 182
+     },
+     "yaw": {
+      "max": 0.002661370081270986,
+      "rms": 0.0010587882010963353,
+      "samples": 182
+     }
+    }
+   },
+   "racing_best": 23.309548744092695,
+   "racing_mean": 23.433179557604486,
+   "score": 418.3507795654743,
+   "seed": 1,
+   "sim_time": 257.882,
+   "stopped": true,
+   "total_time": 252.35077956547428,
+   "track": {
+    "length": 473.4724008555261,
+    "name": "flowing",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 43.36,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 44.36,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 254.26000000000002,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 10.166482917
+  },
+  "seed": 1,
+  "track": "flowing",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 20803,
+    "matchable": 21718,
+    "matched": 20803,
+    "observations": 22376,
+    "precision": 1.0,
+    "recall": 0.9578690487153513
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 12812,
+     "max_us": 3953.292,
+     "mean_us": 486.8934092257253,
+     "p50_us": 457.33299999999997,
+     "p90_us": 690.875,
+     "p99_us": 847.125,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 51344,
+     "max_us": 11.083,
+     "mean_us": 0.2758612690869771,
+     "p50_us": 0.25,
+     "p90_us": 0.375,
+     "p99_us": 0.958
+    },
+    "estimation_update": {
+     "associated": 20803,
+     "count": 2566,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1200.4170000000001,
+     "mean_us": 154.7237774746686,
+     "new_landmarks": 201,
+     "observations": 22376,
+     "p50_us": 140.917,
+     "p90_us": 226.667,
+     "p99_us": 398.458,
+     "rejected": 1573,
+     "tentatives_dropped": 4,
+     "tentatives_started": 205
+    },
+    "exploration": {
+     "count": 440,
+     "failures": 3,
+     "max_us": 94.458,
+     "mean_us": 65.98918636363636,
+     "p50_us": 65.958,
+     "p90_us": 76.333,
+     "p99_us": 89.75
+    },
+    "perception": {
+     "cones_reported": 22376,
+     "count": 2566,
+     "max_us": 1116.9170000000001,
+     "mean_us": 318.1359185502728,
+     "p50_us": 302.875,
+     "p90_us": 448.209,
+     "p99_us": 490.50000000000006
+    },
+    "raceline": {
+     "optimize_s": 0.049655875,
+     "predicted_lap_s": 23.287212952099207
+    },
+    "realtime_factor": 24.57510556280226,
+    "sim_tick": {
+     "count": 256724,
+     "mean_us": 10.616158271136474
+    },
+    "stack_control": {
+     "count": 12836,
+     "max_us": 59258.125,
+     "mean_us": 491.0449107977575,
+     "p50_us": 456.79200000000003,
+     "p90_us": 691.5,
+     "p99_us": 848.042
+    },
+    "stack_scan": {
+     "count": 2566,
+     "max_us": 1696.2920000000001,
+     "mean_us": 489.6136515978181,
+     "p50_us": 456.75,
+     "p90_us": 658.375,
+     "p99_us": 795.125
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 41.257563103638354,
+   "laps": [
+    41.257563103638354,
+    24.13007647027589,
+    23.298170757646858,
+    23.27235739265177,
+    23.271466811251784,
+    23.267307231562484,
+    23.26078240521548,
+    23.218964657825325,
+    23.22190456450275,
+    23.20980049795338
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 201,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 201,
+    "matched": 201,
+    "position": {
+     "max": 0.2455483200446638,
+     "rms": 0.1432133866710202,
+     "samples": 201
+    },
+    "time": 43.1
+   },
+   "max_lateral_true": 5.361216467656153,
+   "name": "range-30/flowing/s2",
+   "penalties": {
+    "cones_hit": 35,
+    "off_course": 11,
+    "seconds": 180.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 42.59999999999142,
+     "lateral": {
+      "max": 0.17828673797564087,
+      "rms": 0.02170289628849913,
+      "samples": 2130
+     },
+     "position": {
+      "max": 0.37181399947828264,
+      "rms": 0.2070847969022655,
+      "samples": 2130
+     },
+     "yaw": {
+      "max": 0.004813710037072913,
+      "rms": 0.0014305064856032668,
+      "samples": 2130
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.042008982090570635,
+      "rms": 0.011728740258486345,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.039612590946505793,
+      "rms": 0.029968466275437387,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.001931451551802175,
+      "rms": 0.0006705625454704782,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 209.16000000063465,
+     "lateral": {
+      "max": 0.23868537613878807,
+      "rms": 0.01944852370280033,
+      "samples": 10458
+     },
+     "position": {
+      "max": 0.2632125817893731,
+      "rms": 0.15311877145998676,
+      "samples": 10458
+     },
+     "yaw": {
+      "max": 0.0040043002516407245,
+      "rms": 0.0015215607478352804,
+      "samples": 10458
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.8011602048202085e-05,
+      "rms": 1.3195087280850006e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.0227514873672706,
+      "rms": 0.012345264523928324,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0007546140835753344,
+      "rms": 0.0003187438151799173,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.4649999999997294,
+     "lateral": {
+      "max": 0.043482726402530356,
+      "rms": 0.017345549098914666,
+      "samples": 174
+     },
+     "position": {
+      "max": 0.053417643165340034,
+      "rms": 0.024753117276703464,
+      "samples": 174
+     },
+     "yaw": {
+      "max": 0.0023126193771974,
+      "rms": 0.0010330326106865468,
+      "samples": 174
+     }
+    }
+   },
+   "racing_best": 23.20980049795338,
+   "racing_mean": 23.35009230987619,
+   "score": 431.40839389252403,
+   "seed": 2,
+   "sim_time": 256.724,
+   "stopped": true,
+   "total_time": 251.40839389252406,
+   "track": {
+    "length": 473.4724008555261,
+    "name": "flowing",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 43.1,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 44.1,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 253.26000000000002,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 10.4465065
+  },
+  "seed": 2,
+  "track": "flowing",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 9064,
+    "matchable": 9578,
+    "matched": 9064,
+    "observations": 10193,
+    "precision": 1.0,
+    "recall": 0.946335351847985
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 4995,
+     "max_us": 3070.375,
+     "mean_us": 528.3724302302305,
+     "p50_us": 485.29200000000003,
+     "p90_us": 706.25,
+     "p99_us": 1371.666,
+     "solver_failures": 64
+    },
+    "estimation_predict": {
+     "count": 20079,
+     "max_us": 10.5,
+     "mean_us": 0.29978654315454845,
+     "p50_us": 0.25,
+     "p90_us": 0.375,
+     "p99_us": 1.125
+    },
+    "estimation_update": {
+     "associated": 9064,
+     "count": 1003,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 3280.25,
+     "mean_us": 195.11034097706874,
+     "new_landmarks": 186,
+     "observations": 10193,
+     "p50_us": 150.75,
+     "p90_us": 363.791,
+     "p99_us": 840.916,
+     "rejected": 1129,
+     "tentatives_dropped": 3,
+     "tentatives_started": 189
+    },
+    "exploration": {
+     "count": 403,
+     "failures": 3,
+     "max_us": 171.91600000000003,
+     "mean_us": 91.98512655086856,
+     "p50_us": 89.125,
+     "p90_us": 119.5,
+     "p99_us": 165.208
+    },
+    "perception": {
+     "cones_reported": 10193,
+     "count": 1003,
+     "max_us": 829.25,
+     "mean_us": 343.40571286141585,
+     "p50_us": 329.25,
+     "p90_us": 460.79200000000003,
+     "p99_us": 534.084
+    },
+    "raceline": {
+     "optimize_s": 0.048252166,
+     "predicted_lap_s": 23.13641326885839
+    },
+    "realtime_factor": 22.361903377781005,
+    "sim_tick": {
+     "count": 100398,
+     "mean_us": 11.31808727265081
+    },
+    "stack_control": {
+     "count": 5019,
+     "max_us": 61155.709,
+     "mean_us": 538.2828109185092,
+     "p50_us": 485.334,
+     "p90_us": 707.167,
+     "p99_us": 1371.9170000000001
+    },
+    "stack_scan": {
+     "count": 1003,
+     "max_us": 3789.5,
+     "mean_us": 581.3625962113657,
+     "p50_us": 516.083,
+     "p90_us": 800.208,
+     "p99_us": 1282.958
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "racing",
+   "lap1": 37.564852541471794,
+   "laps": [
+    37.564852541471794,
+    25.25399930196481,
+    23.183950052132232
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 186,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 186,
+    "matched": 186,
+    "position": {
+     "max": 0.2627182827344047,
+     "rms": 0.13945996746505765,
+     "samples": 186
+    },
+    "time": 39.42
+   },
+   "max_lateral_true": 6.751414305432461,
+   "name": "range-30/mixed/s1",
+   "penalties": {
+    "cones_hit": 30,
+    "off_course": 13,
+    "seconds": 190.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 38.919999999999995,
+     "lateral": {
+      "max": 0.15314894116931882,
+      "rms": 0.0272265751310752,
+      "samples": 1946
+     },
+     "position": {
+      "max": 0.48645502275092206,
+      "rms": 0.29599514326728604,
+      "samples": 1946
+     },
+     "yaw": {
+      "max": 0.0050179004015675766,
+      "rms": 0.0020242479950392245,
+      "samples": 1946
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.055902100668313845,
+      "rms": 0.024229378981648383,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.024573708556180084,
+      "rms": 0.010411641546107157,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0014864882484484365,
+      "rms": 0.000778054528131392,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 59.978999999950915,
+     "lateral": {
+      "max": 7.192761191037762,
+      "rms": 0.6027342696758463,
+      "samples": 2999
+     },
+     "position": {
+      "max": 1.6136710544003638,
+      "rms": 0.1709860906566374,
+      "samples": 2999
+     },
+     "yaw": {
+      "max": 0.006546978712775098,
+      "rms": 0.0019350031207306612,
+      "samples": 2999
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.745785847990889e-05,
+      "rms": 1.534476944498123e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.01777149035417315,
+      "rms": 0.01072930050327619,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0007785476695419989,
+      "rms": 0.00047624749060586725,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": 23.183950052132232,
+   "racing_mean": 24.21897467704852,
+   "score": 276.00280189556884,
+   "seed": 1,
+   "sim_time": 100.398,
+   "stopped": false,
+   "total_time": 86.00280189556884,
+   "track": {
+    "length": 414.5158755983395,
+    "name": "mixed",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 39.42,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 40.42,
+     "to": "racing"
+    }
+   ],
+   "wall_time": 4.489689375
+  },
+  "seed": 1,
+  "track": "mixed",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 24168,
+    "matchable": 25282,
+    "matched": 24168,
+    "observations": 25899,
+    "precision": 1.0,
+    "recall": 0.9559370302982358
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 12769,
+     "max_us": 5661.4580000000005,
+     "mean_us": 511.5330790978125,
+     "p50_us": 461.834,
+     "p90_us": 686.291,
+     "p99_us": 1132.416,
+     "solver_failures": 84
+    },
+    "estimation_predict": {
+     "count": 51206,
+     "max_us": 119.084,
+     "mean_us": 0.296716185603297,
+     "p50_us": 0.25,
+     "p90_us": 0.375,
+     "p99_us": 1.0
+    },
+    "estimation_update": {
+     "associated": 24168,
+     "count": 2559,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 3323.0,
+     "mean_us": 173.92661742868302,
+     "new_landmarks": 186,
+     "observations": 25899,
+     "p50_us": 136.834,
+     "p90_us": 259.875,
+     "p99_us": 721.5830000000001,
+     "rejected": 1731,
+     "tentatives_dropped": 5,
+     "tentatives_started": 191
+    },
+    "exploration": {
+     "count": 403,
+     "failures": 5,
+     "max_us": 5564.334,
+     "mean_us": 126.3665384615384,
+     "p50_us": 107.375,
+     "p90_us": 150.0,
+     "p99_us": 198.708
+    },
+    "perception": {
+     "cones_reported": 25899,
+     "count": 2559,
+     "max_us": 1229.5,
+     "mean_us": 340.34752012504833,
+     "p50_us": 313.79200000000003,
+     "p90_us": 447.875,
+     "p99_us": 513.458
+    },
+    "raceline": {
+     "optimize_s": 0.050563208,
+     "predicted_lap_s": 23.41779276207099
+    },
+    "realtime_factor": 23.211596095255416,
+    "sim_tick": {
+     "count": 256033,
+     "mean_us": 11.245672690624506
+    },
+    "stack_control": {
+     "count": 12801,
+     "max_us": 62015.459,
+     "mean_us": 515.4934584798095,
+     "p50_us": 461.834,
+     "p90_us": 686.709,
+     "p99_us": 1134.0
+    },
+    "stack_scan": {
+     "count": 2559,
+     "max_us": 6317.0830000000005,
+     "mean_us": 539.5411543571695,
+     "p50_us": 472.58299999999997,
+     "p90_us": 724.583,
+     "p99_us": 1294.334
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 37.40838699775123,
+   "laps": [
+    37.40838699775123,
+    26.861314416341735,
+    23.417458359404733,
+    23.404942217889115,
+    23.391076686465652,
+    23.362686194329484,
+    23.37034708236294,
+    23.361150455954657,
+    23.34148634716169,
+    23.335719262329917
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 186,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 186,
+    "matched": 186,
+    "position": {
+     "max": 0.13160586572784524,
+     "rms": 0.08352754090277532,
+     "samples": 186
+    },
+    "time": 39.42
+   },
+   "max_lateral_true": 5.479169078445832,
+   "name": "range-30/mixed/s2",
+   "penalties": {
+    "cones_hit": 34,
+    "off_course": 32,
+    "seconds": 388.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 38.919999999999995,
+     "lateral": {
+      "max": 0.17094014184529013,
+      "rms": 0.027819068508556945,
+      "samples": 1938
+     },
+     "position": {
+      "max": 0.20417095229278207,
+      "rms": 0.06907713300641587,
+      "samples": 1946
+     },
+     "yaw": {
+      "max": 0.008734824240217431,
+      "rms": 0.003281024413456571,
+      "samples": 1946
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.055702276470314574,
+      "rms": 0.023917973110132367,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.02276612851749344,
+      "rms": 0.01585927921032855,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0020598619101481197,
+      "rms": 0.0011019034377011082,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 212.84000000065222,
+     "lateral": {
+      "max": 5.051503573671885,
+      "rms": 0.3996484003654534,
+      "samples": 10642
+     },
+     "position": {
+      "max": 0.1588484268686604,
+      "rms": 0.07462685583506179,
+      "samples": 10642
+     },
+     "yaw": {
+      "max": 0.00453154717270543,
+      "rms": 0.001642663615138615,
+      "samples": 10642
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.021828093066599014,
+      "rms": 0.012338742554914,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.00035274251789098695,
+      "rms": 0.0001729947829356393,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 2.7739999999998055,
+     "lateral": {
+      "max": 0.024707144845671877,
+      "rms": 0.011050099174059047,
+      "samples": 139
+     },
+     "position": {
+      "max": 0.04292915978100197,
+      "rms": 0.02652131734647322,
+      "samples": 139
+     },
+     "yaw": {
+      "max": 0.00297106976585626,
+      "rms": 0.0018294090114613542,
+      "samples": 139
+     }
+    }
+   },
+   "racing_best": 23.335719262329917,
+   "racing_mean": 23.760686780248882,
+   "score": 639.2545680199912,
+   "seed": 2,
+   "sim_time": 256.033,
+   "stopped": true,
+   "total_time": 251.25456801999115,
+   "track": {
+    "length": 414.5158755983395,
+    "name": "mixed",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 39.42,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 40.42,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 253.26000000000002,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 11.030391833
+  },
+  "seed": 2,
+  "track": "mixed",
+  "variant": "range-30"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 2300,
+    "matchable": 2378,
+    "matched": 2300,
+    "observations": 5477,
+    "precision": 1.0,
+    "recall": 0.9671993271656855
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 1959,
+     "max_us": 1516.0410000000002,
+     "mean_us": 537.612294027565,
+     "p50_us": 490.41700000000003,
+     "p90_us": 704.708,
+     "p99_us": 944.417,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 7945,
+     "max_us": 12.583,
+     "mean_us": 0.3021106356198746,
+     "p50_us": 0.25,
+     "p90_us": 0.375,
+     "p99_us": 1.0410000000000001
+    },
+    "estimation_update": {
+     "associated": 2300,
+     "count": 396,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1535.459,
+     "mean_us": 218.4655782828282,
+     "new_landmarks": 199,
+     "observations": 5477,
+     "p50_us": 139.584,
+     "p90_us": 505.625,
+     "p99_us": 869.541,
+     "rejected": 3177,
+     "tentatives_dropped": 2,
+     "tentatives_started": 201
+    },
+    "exploration": {
+     "count": 396,
+     "failures": 4,
+     "max_us": 163.416,
+     "mean_us": 81.39056313131312,
+     "p50_us": 78.666,
+     "p90_us": 109.916,
+     "p99_us": 150.833
+    },
+    "perception": {
+     "cones_reported": 5477,
+     "count": 396,
+     "max_us": 518.0,
+     "mean_us": 354.7063535353533,
+     "p50_us": 327.291,
+     "p90_us": 448.292,
+     "p99_us": 504.41600000000005
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 22.17488154744399,
+    "sim_tick": {
+     "count": 39726,
+     "mean_us": 11.34410950007661
+    },
+    "stack_control": {
+     "count": 1986,
+     "max_us": 1516.959,
+     "mean_us": 530.6282296072511,
+     "p50_us": 489.91599999999994,
+     "p90_us": 703.208,
+     "p99_us": 944.833
+    },
+    "stack_scan": {
+     "count": 396,
+     "max_us": 2145.4590000000003,
+     "mean_us": 659.1564242424246,
+     "p50_us": 615.3340000000001,
+     "p90_us": 989.5419999999999,
+     "p99_us": 1485.0
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "exploring",
+   "lap1": null,
+   "laps": [],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 203,
+    "coverage": 0.9802955665024631,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 199,
+    "matched": 199,
+    "position": {
+     "max": 0.13230075407123856,
+     "rms": 0.07427155358855378,
+     "samples": 199
+    },
+    "time": 39.726
+   },
+   "max_lateral_true": 6.750277025322256,
+   "name": "range-20/gen1/s1",
+   "penalties": {
+    "cones_hit": 37,
+    "off_course": 7,
+    "seconds": 144.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 39.22699999999928,
+     "lateral": {
+      "max": 0.16627107034807814,
+      "rms": 0.03175269096445982,
+      "samples": 1959
+     },
+     "position": {
+      "max": 0.35864691910408086,
+      "rms": 0.19124172664685515,
+      "samples": 1962
+     },
+     "yaw": {
+      "max": 0.005407155209029457,
+      "rms": 0.002210192809399861,
+      "samples": 1962
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.0226706039917889,
+      "rms": 0.013541601827329924,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0015946685539005969,
+      "rms": 0.0008227339296765978,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 144.0,
+   "seed": 1,
+   "sim_time": 39.726,
+   "stopped": false,
+   "total_time": 0.0,
+   "track": {
+    "length": 431.4782339757064,
+    "name": "generated-1",
+    "seed": 1
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    }
+   ],
+   "wall_time": 1.791486458
+  },
+  "seed": 1,
+  "track": "gen1",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 2317,
+    "matchable": 2369,
+    "matched": 2317,
+    "observations": 5482,
+    "precision": 1.0,
+    "recall": 0.9780498100464331
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 1969,
+     "max_us": 2598.459,
+     "mean_us": 550.2210401218892,
+     "p50_us": 499.125,
+     "p90_us": 742.375,
+     "p99_us": 1032.4589999999998,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 7973,
+     "max_us": 17.334,
+     "mean_us": 0.3106136962247404,
+     "p50_us": 0.25,
+     "p90_us": 0.375,
+     "p99_us": 1.167
+    },
+    "estimation_update": {
+     "associated": 2317,
+     "count": 398,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1390.2910000000002,
+     "mean_us": 217.9395753768846,
+     "new_landmarks": 199,
+     "observations": 5482,
+     "p50_us": 152.541,
+     "p90_us": 469.125,
+     "p99_us": 833.1659999999999,
+     "rejected": 3165,
+     "tentatives_dropped": 4,
+     "tentatives_started": 203
+    },
+    "exploration": {
+     "count": 398,
+     "failures": 3,
+     "max_us": 490.75,
+     "mean_us": 82.15412562814073,
+     "p50_us": 74.291,
+     "p90_us": 113.708,
+     "p99_us": 181.0
+    },
+    "perception": {
+     "cones_reported": 5482,
+     "count": 398,
+     "max_us": 2115.1659999999997,
+     "mean_us": 371.52198994974856,
+     "p50_us": 340.0,
+     "p90_us": 481.83299999999997,
+     "p99_us": 604.667
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 21.578318678677388,
+    "sim_tick": {
+     "count": 39868,
+     "mean_us": 11.723534338317325
+    },
+    "stack_control": {
+     "count": 1993,
+     "max_us": 2598.708,
+     "mean_us": 543.9440722528859,
+     "p50_us": 498.375,
+     "p90_us": 741.2090000000001,
+     "p99_us": 1033.3339999999998
+    },
+    "stack_scan": {
+     "count": 398,
+     "max_us": 2303.416,
+     "mean_us": 676.1157587939697,
+     "p50_us": 622.4159999999999,
+     "p90_us": 983.1250000000001,
+     "p99_us": 1557.5420000000001
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "exploring",
+   "lap1": null,
+   "laps": [],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 0.9949748743718593,
+    "cones": 203,
+    "coverage": 0.9802955665024631,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 199,
+    "matched": 199,
+    "position": {
+     "max": 0.1441975203567173,
+     "rms": 0.05963076912428166,
+     "samples": 199
+    },
+    "time": 39.868
+   },
+   "max_lateral_true": 6.751313917302683,
+   "name": "range-20/gen1/s2",
+   "penalties": {
+    "cones_hit": 35,
+    "off_course": 6,
+    "seconds": 130.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 39.36899999999895,
+     "lateral": {
+      "max": 0.16630138239084774,
+      "rms": 0.03191854961283332,
+      "samples": 1969
+     },
+     "position": {
+      "max": 0.22789598091547594,
+      "rms": 0.10469520302478649,
+      "samples": 1969
+     },
+     "yaw": {
+      "max": 0.008012431129658548,
+      "rms": 0.003004303652507022,
+      "samples": 1969
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.8260310015976755e-05,
+      "rms": 1.3383737860843018e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.020237229069527275,
+      "rms": 0.011611538129419844,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0004498046959478039,
+      "rms": 0.00020290236260846442,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 130.0,
+   "seed": 2,
+   "sim_time": 39.868,
+   "stopped": false,
+   "total_time": 0.0,
+   "track": {
+    "length": 431.4782339757064,
+    "name": "generated-1",
+    "seed": 1
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    }
+   ],
+   "wall_time": 1.847595292
+  },
+  "seed": 2,
+  "track": "gen1",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 14357,
+    "matchable": 15082,
+    "matched": 14357,
+    "observations": 16592,
+    "precision": 1.0,
+    "recall": 0.9519294523272775
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 7617,
+     "max_us": 2756.5,
+     "mean_us": 502.57958028095084,
+     "p50_us": 461.16700000000003,
+     "p90_us": 685.7080000000001,
+     "p99_us": 898.208,
+     "solver_failures": 1
+    },
+    "estimation_predict": {
+     "count": 30567,
+     "max_us": 13.125,
+     "mean_us": 0.2853276409199749,
+     "p50_us": 0.25,
+     "p90_us": 0.334,
+     "p99_us": 1.0
+    },
+    "estimation_update": {
+     "associated": 14357,
+     "count": 1527,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1248.042,
+     "mean_us": 90.45232154551395,
+     "new_landmarks": 109,
+     "observations": 16592,
+     "p50_us": 74.75,
+     "p90_us": 133.042,
+     "p99_us": 343.459,
+     "rejected": 2235,
+     "tentatives_dropped": 1,
+     "tentatives_started": 110
+    },
+    "exploration": {
+     "count": 246,
+     "failures": 3,
+     "max_us": 190.208,
+     "mean_us": 83.72422764227642,
+     "p50_us": 79.0,
+     "p90_us": 121.666,
+     "p99_us": 164.542
+    },
+    "perception": {
+     "cones_reported": 16592,
+     "count": 1527,
+     "max_us": 1618.25,
+     "mean_us": 342.39453634577603,
+     "p50_us": 317.5,
+     "p90_us": 454.334,
+     "p99_us": 542.4590000000001
+    },
+    "raceline": {
+     "optimize_s": 0.013236375,
+     "predicted_lap_s": 13.944027723033548
+    },
+    "realtime_factor": 24.217747875379562,
+    "sim_tick": {
+     "count": 152835,
+     "mean_us": 10.952791016449586
+    },
+    "stack_control": {
+     "count": 7641,
+     "max_us": 19032.459000000003,
+     "mean_us": 503.8877521266854,
+     "p50_us": 461.125,
+     "p90_us": 686.125,
+     "p99_us": 904.458
+    },
+    "stack_scan": {
+     "count": 1527,
+     "max_us": 2107.875,
+     "mean_us": 449.7554656188604,
+     "p50_us": 407.625,
+     "p90_us": 601.875,
+     "p99_us": 902.625
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 21.89837158100445,
+   "laps": [
+    21.89837158100445,
+    14.68204157969738,
+    13.977334480130082,
+    13.986112124602542,
+    13.981917491928229,
+    13.985278472606453,
+    13.97255023202726,
+    13.980119161478456,
+    13.979718439769812,
+    13.982074505308049
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 109,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 109,
+    "matched": 109,
+    "position": {
+     "max": 0.17912921886766736,
+     "rms": 0.10104832061716473,
+     "samples": 109
+    },
+    "time": 23.740000000000002
+   },
+   "max_lateral_true": 6.399573875142643,
+   "name": "range-20/gen3/s1",
+   "penalties": {
+    "cones_hit": 28,
+    "off_course": 11,
+    "seconds": 166.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 23.24000000000542,
+     "lateral": {
+      "max": 0.14385428061525352,
+      "rms": 0.029290345128094097,
+      "samples": 1162
+     },
+     "position": {
+      "max": 0.25184272584783934,
+      "rms": 0.11236797758037513,
+      "samples": 1162
+     },
+     "yaw": {
+      "max": 0.007211940429721064,
+      "rms": 0.003091725080719848,
+      "samples": 1162
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.08157570075580488,
+      "rms": 0.028897646119323682,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.03991849972631167,
+      "rms": 0.03125112336870543,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0015689649610313716,
+      "rms": 0.0010285233811350137,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 125.54000000023538,
+     "lateral": {
+      "max": 1.345978251385186,
+      "rms": 0.09277525501273877,
+      "samples": 6277
+     },
+     "position": {
+      "max": 0.17607324665909999,
+      "rms": 0.08476988460749006,
+      "samples": 6277
+     },
+     "yaw": {
+      "max": 0.003600359865498781,
+      "rms": 0.001266435374189764,
+      "samples": 6277
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7550866772675942e-05,
+      "rms": 1.5481220665127575e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.022791707988630484,
+      "rms": 0.013276498944562216,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0008110550546126936,
+      "rms": 0.0004801032446264807,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 2.5559999999998295,
+     "lateral": {
+      "max": 0.034550993505444966,
+      "rms": 0.017959799799962196,
+      "samples": 128
+     },
+     "position": {
+      "max": 0.08655570932930805,
+      "rms": 0.06310412403228476,
+      "samples": 128
+     },
+     "yaw": {
+      "max": 0.0011619981554278347,
+      "rms": 0.0004504100285345374,
+      "samples": 128
+     }
+    }
+   },
+   "racing_best": 13.97255023202726,
+   "racing_mean": 14.058571831949807,
+   "score": 314.4255180685527,
+   "seed": 1,
+   "sim_time": 152.835,
+   "stopped": true,
+   "total_time": 148.42551806855272,
+   "track": {
+    "length": 231.09807810599398,
+    "name": "generated-3",
+    "seed": 3
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 23.740000000000002,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 24.740000000000002,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 150.28,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 6.310867583
+  },
+  "seed": 1,
+  "track": "gen3",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 14717,
+    "matchable": 18972,
+    "matched": 14717,
+    "observations": 20504,
+    "precision": 1.0,
+    "recall": 0.7757221168037107
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 9332,
+     "max_us": 8379.167,
+     "mean_us": 518.1544691384512,
+     "p50_us": 442.70799999999997,
+     "p90_us": 693.0,
+     "p99_us": 1303.708,
+     "solver_failures": 183
+    },
+    "estimation_predict": {
+     "count": 37428,
+     "max_us": 26.208000000000002,
+     "mean_us": 0.2680270385807654,
+     "p50_us": 0.25,
+     "p90_us": 0.33299999999999996,
+     "p99_us": 0.792
+    },
+    "estimation_update": {
+     "associated": 14717,
+     "count": 1870,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 1494.4579999999999,
+     "mean_us": 140.47439037433145,
+     "new_landmarks": 109,
+     "observations": 20504,
+     "p50_us": 83.5,
+     "p90_us": 277.833,
+     "p99_us": 602.958,
+     "rejected": 5787,
+     "tentatives_dropped": 1,
+     "tentatives_started": 110
+    },
+    "exploration": {
+     "count": 906,
+     "failures": 3,
+     "max_us": 387.08299999999997,
+     "mean_us": 102.97203090507729,
+     "p50_us": 102.292,
+     "p90_us": 140.166,
+     "p99_us": 190.125
+    },
+    "perception": {
+     "cones_reported": 20504,
+     "count": 1870,
+     "max_us": 7081.709,
+     "mean_us": 329.6541133689834,
+     "p50_us": 310.25,
+     "p90_us": 380.0,
+     "p99_us": 514.792
+    },
+    "raceline": {
+     "optimize_s": 0.011777959,
+     "predicted_lap_s": 14.088142088282698
+    },
+    "realtime_factor": 23.644612776275267,
+    "sim_tick": {
+     "count": 187140,
+     "mean_us": 10.444621716355643
+    },
+    "stack_control": {
+     "count": 9357,
+     "max_us": 17466.791999999998,
+     "mean_us": 520.1342709201647,
+     "p50_us": 442.75,
+     "p90_us": 693.792,
+     "p99_us": 1330.5
+    },
+    "stack_scan": {
+     "count": 1870,
+     "max_us": 7268.667,
+     "mean_us": 523.3067716577547,
+     "p50_us": 427.875,
+     "p90_us": 747.292,
+     "p99_us": 1151.917
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "finished",
+   "lap1": 21.975252814696475,
+   "laps": [
+    21.975252814696475,
+    21.888928909604854,
+    21.902957343176517,
+    22.071550979442037,
+    24.69787125786445,
+    14.043705577308288,
+    14.041896549909353,
+    14.045437347025796,
+    14.041567526240271,
+    14.030390762494022
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 109,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 109,
+    "matched": 109,
+    "position": {
+     "max": 0.03202457834386605,
+     "rms": 0.017831600835935116,
+     "samples": 109
+    },
+    "time": 89.68
+   },
+   "max_lateral_true": 5.782311782147857,
+   "name": "range-20/gen3/s2",
+   "penalties": {
+    "cones_hit": 34,
+    "off_course": 17,
+    "seconds": 238.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 89.18000000006177,
+     "lateral": {
+      "max": 0.1486998699324257,
+      "rms": 0.02908762441921251,
+      "samples": 4459
+     },
+     "position": {
+      "max": 0.11390299989725149,
+      "rms": 0.058660956164089735,
+      "samples": 4459
+     },
+     "yaw": {
+      "max": 0.003582898169774751,
+      "rms": 0.001171630839958796,
+      "samples": 4459
+     }
+    },
+    "finished": {
+     "duration": 0.001,
+     "lateral": {
+      "max": 0.015171337773394697,
+      "rms": 0.015171337773394697,
+      "samples": 1
+     },
+     "position": {
+      "max": 0.027215390136793114,
+      "rms": 0.027215390136793114,
+      "samples": 1
+     },
+     "yaw": {
+      "max": 0.0014265060381402073,
+      "rms": 0.0014265060381402073,
+      "samples": 1
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.07536025520716053,
+      "rms": 0.03048260759766733,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.02744387667492683,
+      "rms": 0.017047408557297215,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0012640216114039038,
+      "rms": 0.000746365226041862,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 93.9000000000843,
+     "lateral": {
+      "max": 3.9761398971994266,
+      "rms": 1.1722770473058075,
+      "samples": 4695
+     },
+     "position": {
+      "max": 0.21631919018832402,
+      "rms": 0.07770665698311846,
+      "samples": 4695
+     },
+     "yaw": {
+      "max": 0.04519392722285165,
+      "rms": 0.012780624194068719,
+      "samples": 4695
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7932092832880848e-05,
+      "rms": 1.3134786676320265e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.022074423165413033,
+      "rms": 0.012157504634304808,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0008162178740948172,
+      "rms": 0.0003875358054596045,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 2.559999999999829,
+     "lateral": {
+      "max": 0.04961792807637802,
+      "rms": 0.020850439053366792,
+      "samples": 128
+     },
+     "position": {
+      "max": 0.05624840375361579,
+      "rms": 0.0344202789583911,
+      "samples": 128
+     },
+     "yaw": {
+      "max": 0.004286807887284305,
+      "rms": 0.002646145740860866,
+      "samples": 128
+     }
+    }
+   },
+   "racing_best": 14.030390762494022,
+   "racing_mean": 17.862700694785065,
+   "score": 420.73955906776206,
+   "seed": 2,
+   "sim_time": 187.14000000000001,
+   "stopped": true,
+   "total_time": 182.73955906776206,
+   "track": {
+    "length": 231.09807810599398,
+    "name": "generated-3",
+    "seed": 3
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 89.68,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 90.68,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 184.58,
+     "to": "stopping"
+    },
+    {
+     "from": "stopping",
+     "reason": "stopped",
+     "time": 187.14000000000001,
+     "to": "finished"
+    }
+   ],
+   "wall_time": 7.914699292
+  },
+  "seed": 2,
+  "track": "gen3",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 26785,
+    "matchable": 28462,
+    "matched": 26785,
+    "observations": 31207,
+    "precision": 1.0,
+    "recall": 0.9410793338486403
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 12406,
+     "max_us": 11650.707999999999,
+     "mean_us": 440.13347468966884,
+     "p50_us": 436.875,
+     "p90_us": 499.875,
+     "p99_us": 641.709,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 49776,
+     "max_us": 8.083,
+     "mean_us": 0.2343286925425349,
+     "p50_us": 0.20900000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.375
+    },
+    "estimation_update": {
+     "associated": 26785,
+     "count": 2488,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 9718.459,
+     "mean_us": 155.9530068327979,
+     "new_landmarks": 184,
+     "observations": 31207,
+     "p50_us": 125.33299999999998,
+     "p90_us": 227.208,
+     "p99_us": 572.917,
+     "rejected": 4422,
+     "tentatives_dropped": 1,
+     "tentatives_started": 185
+    },
+    "exploration": {
+     "count": 407,
+     "failures": 6,
+     "max_us": 132.792,
+     "mean_us": 60.60175429975431,
+     "p50_us": 57.458,
+     "p90_us": 80.416,
+     "p99_us": 107.375
+    },
+    "perception": {
+     "cones_reported": 31207,
+     "count": 2488,
+     "max_us": 665.75,
+     "mean_us": 298.67734525723404,
+     "p50_us": 298.58299999999997,
+     "p90_us": 331.75,
+     "p99_us": 433.375
+    },
+    "raceline": {
+     "optimize_s": 0.034567833,
+     "predicted_lap_s": 22.735919804994353
+    },
+    "realtime_factor": 27.046148184097593,
+    "sim_tick": {
+     "count": 248880,
+     "mean_us": 9.608966542105097
+    },
+    "stack_control": {
+     "count": 12444,
+     "max_us": 43335.958,
+     "mean_us": 442.5811324332984,
+     "p50_us": 437.041,
+     "p90_us": 500.083,
+     "p99_us": 643.334
+    },
+    "stack_scan": {
+     "count": 2488,
+     "max_us": 10179.417,
+     "mean_us": 468.2068279742765,
+     "p50_us": 432.75,
+     "p90_us": 583.1659999999999,
+     "p99_us": 967.709
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "finished",
+   "lap1": 37.65488872678274,
+   "laps": [
+    37.65488872678274,
+    23.263116539761505,
+    22.80889107609157,
+    22.8102922367994,
+    22.79354078220183,
+    22.786940813492578,
+    22.794438760322407,
+    22.788588273027273,
+    22.798559154576395,
+    22.784765821366534
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 183,
+    "coverage": 1.0,
+    "duplicates": 1,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 184,
+    "matched": 184,
+    "position": {
+     "max": 0.19622163280386132,
+     "rms": 0.0810937773246319,
+     "samples": 184
+    },
+    "time": 39.76
+   },
+   "max_lateral_true": 6.615375019487196,
+   "name": "range-20/gen5/s1",
+   "penalties": {
+    "cones_hit": 33,
+    "off_course": 32,
+    "seconds": 386.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 39.2599999999992,
+     "lateral": {
+      "max": 0.16042828563850195,
+      "rms": 0.03142691407264823,
+      "samples": 1950
+     },
+     "position": {
+      "max": 1.2568626860034031,
+      "rms": 0.5972980563393697,
+      "samples": 1963
+     },
+     "yaw": {
+      "max": 0.020787019296864884,
+      "rms": 0.01168339669790657,
+      "samples": 1963
+     }
+    },
+    "finished": {
+     "duration": 0.001,
+     "lateral": {
+      "max": 0.012845588456814196,
+      "rms": 0.012845588456814196,
+      "samples": 1
+     },
+     "position": {
+      "max": 0.010874070560602737,
+      "rms": 0.010874070560602737,
+      "samples": 1
+     },
+     "yaw": {
+      "max": 0.0020541063065153686,
+      "rms": 0.0020541063065153686,
+      "samples": 1
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.0019355260977907548,
+      "rms": 0.0008903673889598489,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.03479418724917085,
+      "rms": 0.029054214005970445,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0015432417744832214,
+      "rms": 0.0009349877636156849,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 204.62000000061298,
+     "lateral": {
+      "max": 0.5392525471736699,
+      "rms": 0.030115982276538607,
+      "samples": 10231
+     },
+     "position": {
+      "max": 0.16903505762041504,
+      "rms": 0.07569860353772383,
+      "samples": 10231
+     },
+     "yaw": {
+      "max": 0.004804081705019669,
+      "rms": 0.0019004756452131511,
+      "samples": 10231
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.016999197923324702,
+      "rms": 0.010781756355255136,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0009273560691577451,
+      "rms": 0.0006103938576824273,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.4999999999997256,
+     "lateral": {
+      "max": 0.03525530355548495,
+      "rms": 0.015030306712824652,
+      "samples": 175
+     },
+     "position": {
+      "max": 0.053850264718142575,
+      "rms": 0.0296092212950699,
+      "samples": 175
+     },
+     "yaw": {
+      "max": 0.002671791738299456,
+      "rms": 0.0017356935927112034,
+      "samples": 175
+     }
+    }
+   },
+   "racing_best": 22.784765821366534,
+   "racing_mean": 22.847681495293276,
+   "score": 629.2840221844223,
+   "seed": 1,
+   "sim_time": 248.88,
+   "stopped": true,
+   "total_time": 243.28402218442224,
+   "track": {
+    "length": 394.5551480479347,
+    "name": "generated-5",
+    "seed": 5
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 39.76,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 40.76,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 245.38,
+     "to": "stopping"
+    },
+    {
+     "from": "stopping",
+     "reason": "stopped",
+     "time": 248.88,
+     "to": "finished"
+    }
+   ],
+   "wall_time": 9.202049708
+  },
+  "seed": 1,
+  "track": "gen5",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 5749,
+    "matchable": 5953,
+    "matched": 5749,
+    "observations": 8675,
+    "precision": 1.0,
+    "recall": 0.9657315639173526
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 3553,
+     "max_us": 9069.666000000001,
+     "mean_us": 454.5906172248804,
+     "p50_us": 440.25,
+     "p90_us": 551.875,
+     "p99_us": 814.8330000000001,
+     "solver_failures": 1
+    },
+    "estimation_predict": {
+     "count": 14312,
+     "max_us": 8.542,
+     "mean_us": 0.2520218697595953,
+     "p50_us": 0.25,
+     "p90_us": 0.291,
+     "p99_us": 0.667
+    },
+    "estimation_update": {
+     "associated": 5749,
+     "count": 715,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 3033.5420000000004,
+     "mean_us": 347.55514125874146,
+     "new_landmarks": 183,
+     "observations": 8675,
+     "p50_us": 319.209,
+     "p90_us": 690.584,
+     "p99_us": 1415.2920000000001,
+     "rejected": 2926,
+     "tentatives_dropped": 1,
+     "tentatives_started": 184
+    },
+    "exploration": {
+     "count": 715,
+     "failures": 33,
+     "max_us": 213.5,
+     "mean_us": 74.94841538461536,
+     "p50_us": 67.458,
+     "p90_us": 117.833,
+     "p99_us": 166.958
+    },
+    "perception": {
+     "cones_reported": 8675,
+     "count": 715,
+     "max_us": 11083.167,
+     "mean_us": 327.45275104895103,
+     "p50_us": 306.58299999999997,
+     "p90_us": 345.75,
+     "p99_us": 454.83299999999997
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 24.381078370040196,
+    "sim_tick": {
+     "count": 71560,
+     "mean_us": 10.244715385691656
+    },
+    "stack_control": {
+     "count": 3578,
+     "max_us": 9070.916,
+     "mean_us": 453.13019396310864,
+     "p50_us": 440.334,
+     "p90_us": 552.0409999999999,
+     "p99_us": 815.6669999999999
+    },
+    "stack_scan": {
+     "count": 715,
+     "max_us": 11960.875,
+     "mean_us": 754.2058909090907,
+     "p50_us": 689.084,
+     "p90_us": 1144.875,
+     "p99_us": 1994.375
+    }
+   },
+   "dnf_reason": "mission failed: no exploration path for 3.02 s",
+   "error": "",
+   "final_state": "failed",
+   "lap1": 37.78085007856523,
+   "laps": [
+    37.78085007856523
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 183,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 183,
+    "matched": 183,
+    "position": {
+     "max": 0.26893843469145967,
+     "rms": 0.15104952892173454,
+     "samples": 183
+    },
+    "time": 71.56
+   },
+   "max_lateral_true": 6.301212849047991,
+   "name": "range-20/gen5/s2",
+   "penalties": {
+    "cones_hit": 28,
+    "off_course": 8,
+    "seconds": 136.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 71.05999999997525,
+     "lateral": {
+      "max": 0.1477671986033001,
+      "rms": 0.031852252640577554,
+      "samples": 3553
+     },
+     "position": {
+      "max": 0.4273899321099867,
+      "rms": 0.24731095537365752,
+      "samples": 3553
+     },
+     "yaw": {
+      "max": 0.007437164531479912,
+      "rms": 0.002547511727403915,
+      "samples": 3553
+     }
+    },
+    "failed": {
+     "duration": 0.001,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.2625435593796653,
+      "rms": 0.2625435593796653,
+      "samples": 1
+     },
+     "yaw": {
+      "max": 0.004120173077057476,
+      "rms": 0.004120173077057476,
+      "samples": 1
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7837707154897253e-05,
+      "rms": 1.3063209358505909e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.023564194588739693,
+      "rms": 0.012418801356191984,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.00035277392011083834,
+      "rms": 0.00016991432633069016,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 173.78085007856524,
+   "seed": 2,
+   "sim_time": 71.56,
+   "stopped": false,
+   "total_time": 37.78085007856523,
+   "track": {
+    "length": 394.5551480479347,
+    "name": "generated-5",
+    "seed": 5
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "no exploration path for 3.02 s",
+     "time": 71.56,
+     "to": "failed"
+    }
+   ],
+   "wall_time": 2.935062958
+  },
+  "seed": 2,
+  "track": "gen5",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 40551,
+    "matchable": 43290,
+    "matched": 40551,
+    "observations": 45484,
+    "precision": 1.0,
+    "recall": 0.9367290367290367
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 15317,
+     "max_us": 2183.083,
+     "mean_us": 425.0649458771321,
+     "p50_us": 409.66700000000003,
+     "p90_us": 519.792,
+     "p99_us": 692.166,
+     "solver_failures": 4
+    },
+    "estimation_predict": {
+     "count": 61367,
+     "max_us": 4.9590000000000005,
+     "mean_us": 0.2279443837892814,
+     "p50_us": 0.20900000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.375
+    },
+    "estimation_update": {
+     "associated": 40551,
+     "count": 3067,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 2215.916,
+     "mean_us": 435.63740593413775,
+     "new_landmarks": 152,
+     "observations": 45484,
+     "p50_us": 392.459,
+     "p90_us": 703.458,
+     "p99_us": 1201.208,
+     "rejected": 4933,
+     "tentatives_dropped": 5,
+     "tentatives_started": 157
+    },
+    "exploration": {
+     "count": 3052,
+     "failures": 3,
+     "max_us": 194.709,
+     "mean_us": 83.01775851900413,
+     "p50_us": 83.583,
+     "p90_us": 109.25,
+     "p99_us": 145.917
+    },
+    "perception": {
+     "cones_reported": 45484,
+     "count": 3067,
+     "max_us": 601.208,
+     "mean_us": 298.52601336811256,
+     "p50_us": 295.916,
+     "p90_us": 339.70799999999997,
+     "p99_us": 436.875
+    },
+    "raceline": {
+     "optimize_s": 0.0,
+     "predicted_lap_s": 0.0
+    },
+    "realtime_factor": 25.354696619624438,
+    "sim_tick": {
+     "count": 306838,
+     "mean_us": 9.366727915053946
+    },
+    "stack_control": {
+     "count": 15341,
+     "max_us": 6587.333,
+     "mean_us": 427.04676507398716,
+     "p50_us": 409.875,
+     "p90_us": 520.2909999999999,
+     "p99_us": 696.208
+    },
+    "stack_scan": {
+     "count": 3067,
+     "max_us": 2665.3340000000003,
+     "mean_us": 820.1044972285623,
+     "p50_us": 770.5,
+     "p90_us": 1130.542,
+     "p99_us": 1741.7920000000001
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 30.084433664099524,
+   "laps": [
+    30.084433664099524,
+    30.550241989168427,
+    30.571518783895023,
+    30.139303387124826,
+    30.272311078648343,
+    30.798354682570476,
+    30.90128522326725,
+    29.804998849565237,
+    30.29135096649182,
+    30.026692737652354
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 152,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": false,
+    "landmarks": 152,
+    "matched": 152,
+    "position": {
+     "max": 0.06891263684599626,
+     "rms": 0.03495205821217226,
+     "samples": 152
+    },
+    "time": 306.838
+   },
+   "max_lateral_true": 6.398851888128458,
+   "name": "range-20/technical/s1",
+   "penalties": {
+    "cones_hit": 37,
+    "off_course": 44,
+    "seconds": 514.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 304.7799999997048,
+     "lateral": {
+      "max": 0.18805984215446275,
+      "rms": 0.03636466086723066,
+      "samples": 15239
+     },
+     "position": {
+      "max": 0.13867919126214456,
+      "rms": 0.040463158334239975,
+      "samples": 15239
+     },
+     "yaw": {
+      "max": 0.0056024321352978745,
+      "rms": 0.001503293381907458,
+      "samples": 15239
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7683679990127682e-05,
+      "rms": 1.5676667404652818e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.017986265418734864,
+      "rms": 0.010826935198384445,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0008378210413518914,
+      "rms": 0.0004817717882274672,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 1.558999999999939,
+     "lateral": {
+      "max": 0.024037162176659074,
+      "rms": 0.011593431829574535,
+      "samples": 78
+     },
+     "position": {
+      "max": 0.02933562077230054,
+      "rms": 0.017681963092017063,
+      "samples": 78
+     },
+     "yaw": {
+      "max": 0.001688765084280736,
+      "rms": 0.0005712749895436012,
+      "samples": 78
+     }
+    }
+   },
+   "racing_best": 29.804998849565237,
+   "racing_mean": 30.37289529982042,
+   "score": 817.4404913624833,
+   "seed": 1,
+   "sim_time": 306.838,
+   "stopped": true,
+   "total_time": 303.44049136248327,
+   "track": {
+    "length": 314.9687196875479,
+    "name": "technical",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "10 laps completed",
+     "time": 305.28000000000003,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 12.101821
+  },
+  "seed": 1,
+  "track": "technical",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 32800,
+    "matchable": 34622,
+    "matched": 32800,
+    "observations": 36869,
+    "precision": 1.0,
+    "recall": 0.9473745017618855
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 12366,
+     "max_us": 1259.292,
+     "mean_us": 403.783776322172,
+     "p50_us": 387.08299999999997,
+     "p90_us": 484.083,
+     "p99_us": 633.4580000000001,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 49562,
+     "max_us": 9.625,
+     "mean_us": 0.21730840159790377,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.29200000000000004
+    },
+    "estimation_update": {
+     "associated": 32800,
+     "count": 2477,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 2084.2920000000004,
+     "mean_us": 262.94158417440485,
+     "new_landmarks": 152,
+     "observations": 36869,
+     "p50_us": 156.25,
+     "p90_us": 589.5,
+     "p99_us": 974.959,
+     "rejected": 4069,
+     "tentatives_dropped": 4,
+     "tentatives_started": 156
+    },
+    "exploration": {
+     "count": 1224,
+     "failures": 3,
+     "max_us": 180.25,
+     "mean_us": 80.91886437908508,
+     "p50_us": 81.833,
+     "p90_us": 107.375,
+     "p99_us": 128.5
+    },
+    "perception": {
+     "cones_reported": 36869,
+     "count": 2477,
+     "max_us": 526.166,
+     "mean_us": 287.3980754945496,
+     "p50_us": 280.45799999999997,
+     "p90_us": 328.54200000000003,
+     "p99_us": 371.291
+    },
+    "raceline": {
+     "optimize_s": 0.01768575,
+     "predicted_lap_s": 20.377631074965173
+    },
+    "realtime_factor": 27.948773216042746,
+    "sim_tick": {
+     "count": 247814,
+     "mean_us": 9.031211650675706
+    },
+    "stack_control": {
+     "count": 12390,
+     "max_us": 23610.417,
+     "mean_us": 406.2183922518156,
+     "p50_us": 387.20799999999997,
+     "p90_us": 484.291,
+     "p99_us": 636.333
+    },
+    "stack_scan": {
+     "count": 2477,
+     "max_us": 2506.6670000000004,
+     "mean_us": 593.1823839321771,
+     "p50_us": 470.16700000000003,
+     "p90_us": 992.708,
+     "p99_us": 1409.0
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 29.903413572911173,
+   "laps": [
+    29.903413572911173,
+    30.20528251133727,
+    29.90867285374182,
+    29.67601060712009,
+    21.05779956749238,
+    20.350838426549615,
+    20.335803759060695,
+    20.340876705803424,
+    20.32124161945515,
+    20.32345365394457
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 152,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 152,
+    "matched": 152,
+    "position": {
+     "max": 0.04140146507049247,
+     "rms": 0.021674478342372138,
+     "samples": 152
+    },
+    "time": 121.54
+   },
+   "max_lateral_true": 6.249629293508344,
+   "name": "range-20/technical/s2",
+   "penalties": {
+    "cones_hit": 41,
+    "off_course": 41,
+    "seconds": 492.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 121.0400000002139,
+     "lateral": {
+      "max": 0.18431090283600945,
+      "rms": 0.03696576019142963,
+      "samples": 6052
+     },
+     "position": {
+      "max": 0.26927940522690746,
+      "rms": 0.06569501836126478,
+      "samples": 6052
+     },
+     "yaw": {
+      "max": 0.006772786785745999,
+      "rms": 0.00154864932058899,
+      "samples": 6052
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.020850753253412242,
+      "rms": 0.006092712041896352,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.016225243650546797,
+      "rms": 0.008861704004357773,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0012978589249811809,
+      "rms": 0.0005726657793746533,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 121.74000000021724,
+     "lateral": {
+      "max": 0.5520255177063316,
+      "rms": 0.03433831074756686,
+      "samples": 6087
+     },
+     "position": {
+      "max": 0.08330730090101433,
+      "rms": 0.03176531625677057,
+      "samples": 6087
+     },
+     "yaw": {
+      "max": 0.0026620710573663775,
+      "rms": 0.0008801771479922055,
+      "samples": 6087
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7657962061439215e-05,
+      "rms": 1.2926917398899424e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.0226501463180943,
+      "rms": 0.012553074247532743,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0006059047208187876,
+      "rms": 0.0003138660077222793,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.5349999999997217,
+     "lateral": {
+      "max": 0.01895803961038442,
+      "rms": 0.007248734658350833,
+      "samples": 177
+     },
+     "position": {
+      "max": 0.03434374949347254,
+      "rms": 0.01741889892452878,
+      "samples": 177
+     },
+     "yaw": {
+      "max": 0.0014246829913603237,
+      "rms": 0.0006154761725636987,
+      "samples": 177
+     }
+    }
+   },
+   "racing_best": 20.32124161945515,
+   "racing_mean": 23.613331078278335,
+   "score": 734.4233932774162,
+   "seed": 2,
+   "sim_time": 247.814,
+   "stopped": true,
+   "total_time": 242.42339327741618,
+   "track": {
+    "length": 314.9687196875479,
+    "name": "technical",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 121.54,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 122.54,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 244.28,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 8.866721916
+  },
+  "seed": 2,
+  "track": "technical",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 1295,
+    "matchable": 3127,
+    "matched": 1466,
+    "observations": 5429,
+    "precision": 0.883356070941337,
+    "recall": 0.414134953629677
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 3284,
+     "max_us": 2825.9159999999997,
+     "mean_us": 493.8787128501822,
+     "p50_us": 407.25,
+     "p90_us": 799.375,
+     "p99_us": 1018.5000000000001,
+     "solver_failures": 188
+    },
+    "estimation_predict": {
+     "count": 13245,
+     "max_us": 1.0410000000000001,
+     "mean_us": 0.20173084182708756,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.20900000000000002,
+     "p99_us": 0.25
+    },
+    "estimation_update": {
+     "associated": 1466,
+     "count": 661,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 434.209,
+     "mean_us": 95.16401815431166,
+     "new_landmarks": 205,
+     "observations": 5429,
+     "p50_us": 86.791,
+     "p90_us": 187.70899999999997,
+     "p99_us": 260.209,
+     "rejected": 3963,
+     "tentatives_dropped": 4,
+     "tentatives_started": 209
+    },
+    "exploration": {
+     "count": 445,
+     "failures": 4,
+     "max_us": 97.75,
+     "mean_us": 46.26245168539326,
+     "p50_us": 44.666999999999994,
+     "p90_us": 58.417,
+     "p99_us": 85.042
+    },
+    "perception": {
+     "cones_reported": 5429,
+     "count": 661,
+     "max_us": 299.583,
+     "mean_us": 247.51085173978808,
+     "p50_us": 243.708,
+     "p90_us": 266.667,
+     "p99_us": 288.041
+    },
+    "raceline": {
+     "optimize_s": 0.052839292,
+     "predicted_lap_s": 23.606570751131578
+    },
+    "realtime_factor": 26.337308253913843,
+    "sim_tick": {
+     "count": 66226,
+     "mean_us": 8.304717089964672
+    },
+    "stack_control": {
+     "count": 3311,
+     "max_us": 62913.708,
+     "mean_us": 508.8782678948948,
+     "p50_us": 407.125,
+     "p90_us": 799.0,
+     "p99_us": 1018.666
+    },
+    "stack_scan": {
+     "count": 661,
+     "max_us": 775.3340000000001,
+     "mean_us": 376.24041603630866,
+     "p50_us": 342.083,
+     "p90_us": 489.291,
+     "p99_us": 582.1669999999999
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "racing",
+   "lap1": 41.78833331004046,
+   "laps": [
+    41.78833331004046
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 201,
+    "coverage": 0.9950248756218906,
+    "duplicates": 5,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 205,
+    "matched": 205,
+    "position": {
+     "max": 3.242171543884055,
+     "rms": 0.979617545882664,
+     "samples": 205
+    },
+    "time": 43.6
+   },
+   "max_lateral_true": 6.7543377025336,
+   "name": "range-20/flowing/s1",
+   "penalties": {
+    "cones_hit": 36,
+    "off_course": 5,
+    "seconds": 122.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 43.09999999999025,
+     "lateral": {
+      "max": 0.16172142434736306,
+      "rms": 0.022420510057524615,
+      "samples": 2152
+     },
+     "position": {
+      "max": 2.6794561494580336,
+      "rms": 0.8796029947736282,
+      "samples": 2155
+     },
+     "yaw": {
+      "max": 0.0389577847087678,
+      "rms": 0.01716428382450331,
+      "samples": 2155
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.07245488910204911,
+      "rms": 0.025578431369122186,
+      "samples": 50
+     },
+     "position": {
+      "max": 3.1081635555217764,
+      "rms": 2.8860141919273596,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.04340255600453527,
+      "rms": 0.04089000252835842,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 21.62700000000345,
+     "lateral": {
+      "max": 6.9654930215329065,
+      "rms": 1.6183765599817619,
+      "samples": 1082
+     },
+     "position": {
+      "max": 9.638651212720703,
+      "rms": 5.2570245951346335,
+      "samples": 1082
+     },
+     "yaw": {
+      "max": 0.37302326799073793,
+      "rms": 0.18662055651218967,
+      "samples": 1082
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.019814240111173644,
+      "rms": 0.011872879897392372,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0006895868066421898,
+      "rms": 0.0004894136183130999,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 163.78833331004046,
+   "seed": 1,
+   "sim_time": 66.226,
+   "stopped": false,
+   "total_time": 41.78833331004046,
+   "track": {
+    "length": 473.4724008555261,
+    "name": "flowing",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 43.6,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 44.6,
+     "to": "racing"
+    }
+   ],
+   "wall_time": 2.514531833
+  },
+  "seed": 1,
+  "track": "flowing",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 18283,
+    "matchable": 19817,
+    "matched": 18283,
+    "observations": 22212,
+    "precision": 1.0,
+    "recall": 0.9225917141847908
+   },
+   "completed": true,
+   "compute": {
+    "controller": {
+     "count": 12660,
+     "max_us": 10712.375,
+     "mean_us": 420.16267543443973,
+     "p50_us": 402.0,
+     "p90_us": 506.33299999999997,
+     "p99_us": 815.417,
+     "solver_failures": 0
+    },
+    "estimation_predict": {
+     "count": 50737,
+     "max_us": 81.083,
+     "mean_us": 0.23118844235958616,
+     "p50_us": 0.20800000000000002,
+     "p90_us": 0.25,
+     "p99_us": 0.625
+    },
+    "estimation_update": {
+     "associated": 18283,
+     "count": 2536,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 814.541,
+     "mean_us": 121.96272239747613,
+     "new_landmarks": 200,
+     "observations": 22212,
+     "p50_us": 110.083,
+     "p90_us": 182.208,
+     "p99_us": 389.125,
+     "rejected": 3929,
+     "tentatives_dropped": 2,
+     "tentatives_started": 202
+    },
+    "exploration": {
+     "count": 444,
+     "failures": 3,
+     "max_us": 156.667,
+     "mean_us": 58.234351351351386,
+     "p50_us": 54.333000000000006,
+     "p90_us": 79.958,
+     "p99_us": 107.667
+    },
+    "perception": {
+     "cones_reported": 22212,
+     "count": 2536,
+     "max_us": 2211.666,
+     "mean_us": 271.7445575709775,
+     "p50_us": 262.666,
+     "p90_us": 317.33299999999997,
+     "p99_us": 481.54200000000003
+    },
+    "raceline": {
+     "optimize_s": 0.061483958,
+     "predicted_lap_s": 22.902304205683738
+    },
+    "realtime_factor": 28.58468058947347,
+    "sim_tick": {
+     "count": 253687,
+     "mean_us": 9.102830972806087
+    },
+    "stack_control": {
+     "count": 12684,
+     "max_us": 73410.0,
+     "mean_us": 425.4955468306519,
+     "p50_us": 402.0,
+     "p90_us": 506.54200000000003,
+     "p99_us": 816.375
+    },
+    "stack_scan": {
+     "count": 2536,
+     "max_us": 2368.625,
+     "mean_us": 407.38254968454237,
+     "p50_us": 377.66600000000005,
+     "p90_us": 551.7080000000001,
+     "p99_us": 821.042
+    }
+   },
+   "dnf_reason": "",
+   "error": "",
+   "final_state": "stopping",
+   "lap1": 41.62673818593026,
+   "laps": [
+    41.62673818593026,
+    23.783734090610885,
+    22.912532740763695,
+    22.877756689755145,
+    22.882097268156528,
+    22.877075590601834,
+    22.827603553181717,
+    22.829267553058628,
+    22.818513238953244,
+    22.83191123603214
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 0.995,
+    "cones": 201,
+    "coverage": 0.9950248756218906,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 200,
+    "matched": 200,
+    "position": {
+     "max": 0.6837467293467607,
+     "rms": 0.3819012358368967,
+     "samples": 200
+    },
+    "time": 43.480000000000004
+   },
+   "max_lateral_true": 6.316369077297816,
+   "name": "range-20/flowing/s2",
+   "penalties": {
+    "cones_hit": 31,
+    "off_course": 11,
+    "seconds": 172.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 42.97999999999053,
+     "lateral": {
+      "max": 0.1543039155004117,
+      "rms": 0.021338301097817633,
+      "samples": 2149
+     },
+     "position": {
+      "max": 0.5012333203548717,
+      "rms": 0.2737975207140574,
+      "samples": 2149
+     },
+     "yaw": {
+      "max": 0.010787789269946474,
+      "rms": 0.003365973333936763,
+      "samples": 2149
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.04230662700689689,
+      "rms": 0.01204662492280369,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.030991539835512394,
+      "rms": 0.020522448541191746,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.00115346738878324,
+      "rms": 0.0007454337685150475,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 205.64000000061785,
+     "lateral": {
+      "max": 0.19642467170209113,
+      "rms": 0.02005882313906718,
+      "samples": 10282
+     },
+     "position": {
+      "max": 0.6895306387159109,
+      "rms": 0.3704781230133958,
+      "samples": 10282
+     },
+     "yaw": {
+      "max": 0.0071580006308796795,
+      "rms": 0.003582533123353615,
+      "samples": 10282
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.8092368864494046e-05,
+      "rms": 1.3256346130709176e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.022374458537246532,
+      "rms": 0.012255935272076185,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.00043993832742282845,
+      "rms": 0.00014640289007359012,
+      "samples": 24
+     }
+    },
+    "stopping": {
+     "duration": 3.567999999999718,
+     "lateral": {
+      "max": 0.058626739153720527,
+      "rms": 0.01943411019504748,
+      "samples": 179
+     },
+     "position": {
+      "max": 0.0677060073844104,
+      "rms": 0.0469042050810128,
+      "samples": 179
+     },
+     "yaw": {
+      "max": 0.0039252658454203004,
+      "rms": 0.002262330674647299,
+      "samples": 179
+     }
+    }
+   },
+   "racing_best": 22.818513238953244,
+   "racing_mean": 22.960054662345982,
+   "score": 420.2672301470441,
+   "seed": 2,
+   "sim_time": 253.687,
+   "stopped": true,
+   "total_time": 248.26723014704407,
+   "track": {
+    "length": 473.4724008555261,
+    "name": "flowing",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 43.480000000000004,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 44.480000000000004,
+     "to": "racing"
+    },
+    {
+     "from": "racing",
+     "reason": "10 laps completed",
+     "time": 250.12,
+     "to": "stopping"
+    }
+   ],
+   "wall_time": 8.874928625
+  },
+  "seed": 2,
+  "track": "flowing",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 2241,
+    "matchable": 3002,
+    "matched": 2241,
+    "observations": 5356,
+    "precision": 1.0,
+    "recall": 0.7465023317788141
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 2670,
+     "max_us": 3524.291,
+     "mean_us": 572.8587097378282,
+     "p50_us": 488.83399999999995,
+     "p90_us": 833.542,
+     "p99_us": 1225.125,
+     "solver_failures": 65
+    },
+    "estimation_predict": {
+     "count": 10778,
+     "max_us": 9.125,
+     "mean_us": 0.2537336240489549,
+     "p50_us": 0.25,
+     "p90_us": 0.291,
+     "p99_us": 0.625
+    },
+    "estimation_update": {
+     "associated": 2241,
+     "count": 538,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 520.375,
+     "mean_us": 124.87344237918215,
+     "new_landmarks": 185,
+     "observations": 5356,
+     "p50_us": 104.291,
+     "p90_us": 239.041,
+     "p99_us": 450.208,
+     "rejected": 3115,
+     "tentatives_dropped": 2,
+     "tentatives_started": 187
+    },
+    "exploration": {
+     "count": 403,
+     "failures": 3,
+     "max_us": 318.5,
+     "mean_us": 64.24348138957814,
+     "p50_us": 58.333,
+     "p90_us": 90.208,
+     "p99_us": 118.459
+    },
+    "perception": {
+     "cones_reported": 5356,
+     "count": 538,
+     "max_us": 1626.4579999999999,
+     "mean_us": 307.50595724907083,
+     "p50_us": 301.041,
+     "p90_us": 333.25,
+     "p99_us": 456.375
+    },
+    "raceline": {
+     "optimize_s": 0.044101667,
+     "predicted_lap_s": 23.14478955000405
+    },
+    "realtime_factor": 22.257530879991666,
+    "sim_tick": {
+     "count": 53892,
+     "mean_us": 10.108902842721669
+    },
+    "stack_control": {
+     "count": 2694,
+     "max_us": 54307.666999999994,
+     "mean_us": 588.0114699331843,
+     "p50_us": 488.625,
+     "p90_us": 833.541,
+     "p99_us": 1226.167
+    },
+    "stack_scan": {
+     "count": 538,
+     "max_us": 1742.25,
+     "mean_us": 483.6572973977699,
+     "p50_us": 452.375,
+     "p90_us": 644.5840000000001,
+     "p99_us": 867.166
+    }
+   },
+   "dnf_reason": "stalled for 10 s",
+   "error": "",
+   "final_state": "racing",
+   "lap1": 37.582144347481496,
+   "laps": [
+    37.582144347481496
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 186,
+    "coverage": 0.9946236559139785,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 185,
+    "matched": 185,
+    "position": {
+     "max": 0.3094392661473825,
+     "rms": 0.21115604364603285,
+     "samples": 185
+    },
+    "time": 39.42
+   },
+   "max_lateral_true": 6.043545747896858,
+   "name": "range-20/mixed/s1",
+   "penalties": {
+    "cones_hit": 30,
+    "off_course": 5,
+    "seconds": 110.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 38.919999999999995,
+     "lateral": {
+      "max": 0.15457113178910326,
+      "rms": 0.027027747689018517,
+      "samples": 1946
+     },
+     "position": {
+      "max": 0.769585164516102,
+      "rms": 0.4445159824976711,
+      "samples": 1946
+     },
+     "yaw": {
+      "max": 0.008228008877223303,
+      "rms": 0.004741688084546342,
+      "samples": 1946
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.05476025844256219,
+      "rms": 0.02339835554784067,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.04977736376428547,
+      "rms": 0.03401454212225568,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.000956319504268166,
+      "rms": 0.0004935954720132014,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 13.472999999997972,
+     "lateral": {
+      "max": 5.368457161690765,
+      "rms": 1.8349423864484538,
+      "samples": 674
+     },
+     "position": {
+      "max": 0.11934487802978846,
+      "rms": 0.06240295814808354,
+      "samples": 674
+     },
+     "yaw": {
+      "max": 0.039973088391533906,
+      "rms": 0.012949576856535932,
+      "samples": 674
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 1.7481216811569767e-05,
+      "rms": 1.537900506217371e-05,
+      "samples": 2
+     },
+     "position": {
+      "max": 0.01761397974837689,
+      "rms": 0.010962308002546398,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0007315559930899626,
+      "rms": 0.0004520319862688535,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 147.5821443474815,
+   "seed": 1,
+   "sim_time": 53.892,
+   "stopped": false,
+   "total_time": 37.582144347481496,
+   "track": {
+    "length": 414.5158755983395,
+    "name": "mixed",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 39.42,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 40.42,
+     "to": "racing"
+    }
+   ],
+   "wall_time": 2.421292833
+  },
+  "seed": 1,
+  "track": "mixed",
+  "variant": "range-20"
+ },
+ {
+  "result": {
+   "association": {
+    "correct": 1758,
+    "matchable": 1810,
+    "matched": 1758,
+    "observations": 4135,
+    "precision": 1.0,
+    "recall": 0.9712707182320443
+   },
+   "completed": false,
+   "compute": {
+    "controller": {
+     "count": 2060,
+     "max_us": 1798.041,
+     "mean_us": 491.0575116504855,
+     "p50_us": 453.5,
+     "p90_us": 651.875,
+     "p99_us": 1080.417,
+     "solver_failures": 51
+    },
+    "estimation_predict": {
+     "count": 8368,
+     "max_us": 3.25,
+     "mean_us": 0.24887894359464585,
+     "p50_us": 0.25,
+     "p90_us": 0.29200000000000004,
+     "p99_us": 0.6659999999999999
+    },
+    "estimation_update": {
+     "associated": 1758,
+     "count": 417,
+     "invalid_inputs": 0,
+     "late_dropped": 0,
+     "max_us": 465.95799999999997,
+     "mean_us": 121.5374916067147,
+     "new_landmarks": 186,
+     "observations": 4135,
+     "p50_us": 102.125,
+     "p90_us": 235.792,
+     "p99_us": 398.125,
+     "rejected": 2377,
+     "tentatives_dropped": 0,
+     "tentatives_started": 186
+    },
+    "exploration": {
+     "count": 402,
+     "failures": 5,
+     "max_us": 164.875,
+     "mean_us": 64.99158955223875,
+     "p50_us": 59.667,
+     "p90_us": 93.917,
+     "p99_us": 136.917
+    },
+    "perception": {
+     "cones_reported": 4135,
+     "count": 417,
+     "max_us": 589.7909999999999,
+     "mean_us": 304.9679040767382,
+     "p50_us": 295.95799999999997,
+     "p90_us": 355.33299999999997,
+     "p99_us": 528.4590000000001
+    },
+    "raceline": {
+     "optimize_s": 0.033839833,
+     "predicted_lap_s": 23.21705841999582
+    },
+    "realtime_factor": 24.554567262538956,
+    "sim_tick": {
+     "count": 41841,
+     "mean_us": 10.060567577258155
+    },
+    "stack_control": {
+     "count": 2092,
+     "max_us": 42126.208,
+     "mean_us": 503.7626477055444,
+     "p50_us": 451.29200000000003,
+     "p90_us": 651.208,
+     "p99_us": 1082.666
+    },
+    "stack_scan": {
+     "count": 417,
+     "max_us": 956.25,
+     "mean_us": 492.24479616306957,
+     "p50_us": 469.083,
+     "p90_us": 660.583,
+     "p99_us": 756.583
+    }
+   },
+   "dnf_reason": "off the track by 5.0 m",
+   "error": "",
+   "final_state": "racing",
+   "lap1": 37.33195205242408,
+   "laps": [
+    37.33195205242408
+   ],
+   "laps_target": 10,
+   "map": {
+    "color_accuracy": 1.0,
+    "cones": 186,
+    "coverage": 1.0,
+    "duplicates": 0,
+    "false_landmarks": 0,
+    "finalized": true,
+    "landmarks": 186,
+    "matched": 186,
+    "position": {
+     "max": 0.1008755633368804,
+     "rms": 0.05645795225361227,
+     "samples": 186
+    },
+    "time": 39.34
+   },
+   "max_lateral_true": 6.753460006718798,
+   "name": "range-20/mixed/s2",
+   "penalties": {
+    "cones_hit": 31,
+    "off_course": 5,
+    "seconds": 112.0
+   },
+   "phases": {
+    "exploring": {
+     "duration": 38.84000000000018,
+     "lateral": {
+      "max": 0.15023795457908168,
+      "rms": 0.0276793149126254,
+      "samples": 1934
+     },
+     "position": {
+      "max": 0.8504463728231941,
+      "rms": 0.3724792842152842,
+      "samples": 1942
+     },
+     "yaw": {
+      "max": 0.019556396081542804,
+      "rms": 0.008964211772258968,
+      "samples": 1942
+     }
+    },
+    "map_finalized": {
+     "duration": 1.0000000000000007,
+     "lateral": {
+      "max": 0.05337927124094818,
+      "rms": 0.018973020792388422,
+      "samples": 50
+     },
+     "position": {
+      "max": 0.03590206161449332,
+      "rms": 0.026230395878878144,
+      "samples": 50
+     },
+     "yaw": {
+      "max": 0.0027349333487348138,
+      "rms": 0.002215902313346993,
+      "samples": 50
+     }
+    },
+    "racing": {
+     "duration": 1.5019999999999454,
+     "lateral": {
+      "max": 6.277658503342067,
+      "rms": 2.754898535679472,
+      "samples": 76
+     },
+     "position": {
+      "max": 0.06430187882066418,
+      "rms": 0.03403761969217527,
+      "samples": 76
+     },
+     "yaw": {
+      "max": 0.0028285543769441257,
+      "rms": 0.001662940286461903,
+      "samples": 76
+     }
+    },
+    "staged": {
+     "duration": 0.4990000000000004,
+     "lateral": {
+      "max": 0.0,
+      "rms": 0.0,
+      "samples": 0
+     },
+     "position": {
+      "max": 0.023873518527776926,
+      "rms": 0.013166549097085685,
+      "samples": 24
+     },
+     "yaw": {
+      "max": 0.0010727617418265344,
+      "rms": 0.00041289270707369196,
+      "samples": 24
+     }
+    }
+   },
+   "racing_best": null,
+   "racing_mean": null,
+   "score": 149.33195205242407,
+   "seed": 2,
+   "sim_time": 41.841,
+   "stopped": false,
+   "total_time": 37.33195205242408,
+   "track": {
+    "length": 414.5158755983395,
+    "name": "mixed",
+    "seed": 0
+   },
+   "transitions": [
+    {
+     "from": "staged",
+     "reason": "go",
+     "time": 0.5,
+     "to": "exploring"
+    },
+    {
+     "from": "exploring",
+     "reason": "lap 1 closed, track model built",
+     "time": 39.34,
+     "to": "map_finalized"
+    },
+    {
+     "from": "map_finalized",
+     "reason": "raceline ready",
+     "time": 40.34,
+     "to": "racing"
+    }
+   ],
+   "wall_time": 1.704000708
+  },
+  "seed": 2,
+  "track": "mixed",
+  "variant": "range-20"
+ }
+]

@@ -123,9 +123,11 @@ doubling and a removed landmark is replaced by the last one, so neither copies t
 **The slow yaw-rate error.** The velocity filter's yaw rate is off by a few 1e-4 rad/s for many
 seconds at a time: what its gyro bias estimate and its lateral model leave. Modelled as white
 odometry noise, the yaw error it causes grows like √T; it really grows like T. On World seed 5
-(synthetic observations) that cost the loop closure: the yaw drifted by 0.015 rad over lap 1 while
-the covariance claimed a third of the 0.6 m position error, and at the timing line the first cones
-fell outside even the new-landmark gate and were mapped again, 16 duplicates. β carries it as a
+(synthetic observations, with new landmarks limited to 20 m as they then were) that cost the loop
+closure: the yaw drifted by 0.015 rad over lap 1 while the covariance claimed a third of the 0.6 m
+position error, and at the timing line the first cones fell outside even the new-landmark gate and
+were mapped again, 16 duplicates. At the 30 m range the lap drifts less and closes either way,
+and β halves its lap-1 pose error (0.272 → 0.137 m, section 6). β carries it as a
 first-order Gauss-Markov process, the shaping filter for time-correlated noise (Maybeck 1979,
 section 4.11):
 
@@ -138,7 +140,8 @@ lap. Both the decay and the integral compose exactly, so splitting a motion at a
 changes nothing and late scans still equal on-time ones. `yaw_rate_bias_sigma = 0` leaves β out.
 
 Two designs came first and were rejected on the evaluation below (World seed 1, synthetic
-observations, lap-1 pose RMS; 0.099 m without β):
+observations, lap-1 pose RMS; 0.099 m without β). This comparison and the parameter scan after it
+were made with the 20 m new-landmark range:
 
 | β model | seed 5 fixed | world seed 1 lap 1 | why |
 |---|---|---|---|
@@ -161,13 +164,26 @@ world seed 5; without β: map 0.733 m, lap-1 pose 1.605 m, racing pose 0.874 m):
 about a sequence of corners.
 
 **Landmarks.** An observation that matches nothing and is outside every landmark's new-landmark
-gate (below) starts a tentative landmark, if it is within 20 m and not within 0.5 m of another.
+gate (below) starts a tentative landmark, if it is within 30 m and not within 0.5 m of another.
 Tentative landmarks take part in association and updates like any other, but they are not in the
 published map; a tentative seen in three scans is confirmed and gets the next id, which never
 changes or is reused. Tentatives unseen for 0.35 s are dropped, which removes clutter and false
 positives (a false positive is rarely seen twice in the same place). Each landmark counts color
 votes; its color is the most-voted one, Unknown on a tie. `ConeMap::revision` increments whenever
-the published map changes.
+the published map changes. The stats count why each unmatched observation started nothing:
+left out of the joint hypothesis inside a gate (`unpaired_in_gate`), between the two gates
+(`ambiguous`), beyond the new-landmark range (`too_far_to_map`), or too close to a landmark
+(`too_close_to_map`).
+
+The new-landmark range (`max_new_landmark_range`) is the observation range, 30 m. It was 20 m,
+and that was the cause of two failures (section 6, "The new-landmark range"). Cones come into
+view at the far end of the range, and every observation of a cone before it came within 20 m was
+turned away, because it matched no landmark and was too far to start one. A car staged at rest
+sees nothing come nearer: at three times the simulator's sensor noise, when perception no longer
+finds the big orange cones beside the car, it mapped six cones and the planner found no path. On
+the move the estimator effectively had a 20 m sensor, and lap 1 drifted more. The far
+observations cost no false or duplicate landmarks in any run here: their covariance grows with
+range, and a landmark needs three detections.
 
 **Localization mode.** `set_mapping(false)` drops the tentatives and freezes the landmark set.
 Updates then are Schmidt-Kalman updates (Schmidt 1966): the landmarks are "consider" states whose
@@ -180,13 +196,15 @@ are associated through the full covariance, whose cross terms carry the lap's dr
 update pulls the whole map together, provided the covariance has kept up with the lap's drift
 (the yaw-rate bias state above). On the oval, re-observing the start produces no duplicate
 landmarks (test `ClosesTheLoopOnTheOvalWithoutDuplicates`), nor on the drifting World seed 5
-(`TheYawRateBiasStateKeepsADriftingLapFromDoublingTheMap`, which also checks that it does without
-the state).
+(`TheYawRateBiasStateKeepsADriftingLapFromDoublingTheMap`, which also checks that at the 20 m
+range that loop fails without the state). Nothing re-associates a lap that has drifted beyond the
+new-landmark gate: its first cones are mapped again, as on track 6 at the 20 m range (section 6).
 
 **Recovery.** A slide the velocity filter misjudges can move the pose outside its own gates; then
 no scan associates and the error never returns. When three scans in a row bring at least four
-usable observations, none matches, and at least four landmarks lie ahead within 20 m, the pose
-covariance grows by (0.5 m, 0.05 rad), which lets joint compatibility find the map again. Before
+usable observations, none matches, and at least four landmarks lie ahead within the new-landmark
+range, the pose covariance grows by (0.5 m, 0.05 rad), which lets joint compatibility find the map
+again. Before
 the combined-slip model, a simulator run lost its map this way in a racing lap and drifted past
 0.8 m with no scan matching again; with the recovery, the runs that slid re-acquired the map and
 finished the racing lap at 0.09–0.13 m position RMS.
@@ -251,6 +269,9 @@ inside both gates, left unpaired.
 make PRESET=release build
 ./build/release/bench/estimation/apex_estimation_bench   # ~40 s; writes results/estimation/
 uv run --project tools python tools/estimation/plot_latency.py
+# The stack runs below (~3 min each), e.g.:
+./build/release/apps/apex sweep --config results/estimation/stack/range/sweep.json \
+    --out results/estimation/stack/range --quiet
 ```
 
 Five generated tracks (`generate_track(1..5)`, 109–203 cones), three laps each: lap 1 maps at
@@ -269,47 +290,108 @@ the bias state, in `results/estimation/summary.md`):
 
 | | world+perception | world | synthetic |
 |---|---|---|---|
-| map RMS by truth id, after lap 1 | 0.008–0.037 m | 0.025–0.093 m | 0.025–0.124 m |
+| map RMS by truth id, after lap 1 | 0.009–0.019 m | 0.027–0.108 m | 0.020–0.054 m |
 | batch least-squares map RMS | 0.009–0.020 m | 0.032–0.117 m | 0.018–0.047 m |
 | duplicates / missed (of 861 cones) | 0 / 0 | 0 / 0 | 0 / 0 |
-| pose RMS lap 1 | 0.023–0.092 m | 0.054–0.126 m (seed 5: 0.39 m) | 0.040–0.350 m |
-| pose RMS racing laps | 0.015–0.051 m | 0.037–0.107 m | 0.027–0.125 m |
-| yaw RMS racing laps | 0.02–0.04° | 0.04–0.10° | 0.05–0.12° |
-| pose NEES lap 1 / racing laps (expected 3) | 0.5–2.1 / 1.0–6.1 | 1.3–5.9 / 2.2–8.8 | 0.8–2.5 / 1.4–2.4 |
-| association precision / recall | 1.0000 / 0.968–0.994 | ≥ 0.9998 / 0.965–0.9998 | ≥ 0.9999 / ≥ 0.9996 |
+| pose RMS lap 1 | 0.012–0.015 m | 0.050–0.167 m | 0.023–0.120 m |
+| pose RMS racing laps | 0.013–0.043 m | 0.046–0.110 m | 0.021–0.056 m |
+| yaw RMS racing laps | 0.01–0.02° | 0.05–0.10° | 0.04–0.08° |
+| pose NEES lap 1 / racing laps (expected 3) | 0.5–0.7 / 0.7–7.2 | 1.2–2.3 / 1.7–9.7 | 0.4–1.6 / 1.0–1.8 |
+| association precision / recall | 1.0000 / 0.973–0.995 | ≥ 0.9999 / 0.968–0.9998 | ≥ 0.9999 / ≥ 0.9995 |
 | velocity RMS vx, vy, r | 0.02–0.05 m/s, 0.03–0.09 m/s, 0.003 rad/s | same signals | 0.03, 0.04 m/s, 0.002 rad/s |
 | velocity NEES (expected 3, 95 % bounds ≈ 2.4–3.6) | 1.7–2.8 | same signals | 1.3–1.8 |
 | recoveries | 0–4 per run | 0 | 0 |
 
-**The bias state** fixes world seed 5 (map RMS 0.942 → 0.036 m, 16 duplicates → 0, racing pose
-RMS 1.133 → 0.037 m, no recoveries instead of 2) and is no worse elsewhere on the map and the
-racing laps: over the other 14 runs, map RMS sums to 0.694 m against 0.733 m without it and the
-racing-lap pose RMS to 0.846 m against 0.874 m, with no single run worse by more than 1 cm on
-either. The online pose during lap 1 is better on most runs (sum 1.443 m against 1.605 m;
-world+perception seed 5: 0.146 → 0.066 m) and worse on two: world seed 1 (0.099 → 0.115 m) and
-synthetic seed 1 (0.101 → 0.139 m), whose maps still come out better. It does not bring the
-localization pose NEES closer to 3: in the racing laps it is 1.0–6.1 with the bias state against
-1.0–6.1 without it with the real perception, and 2.2–8.8 against 3.5–9.0 (seed 5 aside) with the
-synthetic observations. That overconfidence has another cause (below).
+**The new-landmark range.** Raising it from 20 m to the observation range, 30 m, took the sums
+over the 15 runs from 0.730 to 0.516 m of map RMS, from 1.833 to 0.853 m of lap-1 pose RMS and from
+0.883 to 0.683 m of racing pose RMS. The largest gains are on lap 1 with the real perception
+(0.023–0.092 → 0.012–0.015 m) and on the drifting runs (world seed 5: 0.389 → 0.137 m; synthetic
+seed 2: 0.350 → 0.120 m). Four runs got worse by more than 2 mm. Three are maps that had been
+below the batch reference and are now at or still below it: world seed 1 (0.084 → 0.108 m, batch
+0.117 m; racing pose 0.086 → 0.110 m), world seed 5 (0.036 → 0.053 m, batch 0.051 m) and
+world+perception seed 2 (0.008 → 0.017 m, batch 0.016 m). The fourth is world seed 2's lap-1 pose
+(0.126 → 0.167 m), whose map improved from 0.093 to 0.033 m. Racing pose NEES rose on three runs
+(world+perception seed 2: 6.1 → 7.2; world seed 1: 2.9 → 4.3; world seed 3: 8.8 → 9.7) and fell
+on the others. The synthetic perception sees 25 m, so on those drives only the 20–25 m band was
+gained; the real perception reports cones beyond 25 m.
+
+The whole stack (`apex sweep` over the baseline's 11 tracks × 3 seeds,
+`results/estimation/stack/range`): at 20 m, 32 of 33 runs finish, and every number is identical to
+main's baseline. At 30 m, 31 finish. Over the 30 runs that finish at both ranges:
+
+| new-landmark range | map RMS, mean (worst) | duplicates | localization RMS lap 1 / racing, mean | racing lap, mean |
+|---|---|---|---|---|
+| 20 m | 0.049 m (0.582 m) | 8 | 0.096 / 0.054 m | 23.39 s |
+| 30 m | 0.019 m (0.060 m) | 0 | 0.040 / 0.024 m | 23.38 s |
+
+The runs that do not finish are all on track 7, at the start of the racing laps. At 20 m, seed 3
+stalls (as on main). At 30 m, seed 3 finishes and seeds 1 and 2 fail: within 1.5 s of the switch
+to racing, the commanded steering (0.2–0.3 rad at 13–15 m/s) spins the car. The estimate stays
+1–4 cm from the truth until the car has stopped. Main's baseline also fails on that track with the
+true state and true cones (the oracle variant: seed 2, off the track in its last lap). The
+weakness is the racing start on that track, and which seed fails changes with centimetres of the
+map.
+
+Both failures the evaluation reported came from the 20 m range:
+
+- **Three times the sensor noise** (`{"track": {"seed": 1}, "seed": 1, "sensor_noise_scale": 3}`):
+  perception no longer finds the four big orange cones at 5.8–6.7 m beside the staged car (none in
+  the first 60 scans; 22–33 of 60 at twice the noise). Within 20 m six small cones remain, while
+  perception reports about 13 cones per scan at 21–29 m. The car is at rest, so none of those come
+  nearer, and the estimator turned away 444 observations as too far to map in 3.5 s. The map stayed
+  at six landmarks and the planner found no path. At 30 m the map has 20 landmarks after 3.5 s, 14
+  of them beyond 20 m, at 1.8 cm RMS, and over two laps at that noise the map has every cone, no
+  duplicates, 5 cm RMS, with the pose at 9 cm RMS on lap 1 and 7 cm racing (test
+  `KeepsMappingAtThreeTimesTheSensorNoise`).
+- **Track 6, World seed 2: 224 landmarks for 216 cones, 58 cm map RMS.** At 20 m the online pose
+  error grew through lap 1 (0.15 m after 26 s, 0.29 m after 36 s, 1.0 m after 46 s) as the yaw
+  error reached 8.6 mrad. At the timing line, eight of the first cones fell outside the
+  new-landmark gate and were mapped again. With the map bent by a metre, the localization lost
+  it at the same place in every racing lap. At 30 m the error peaks at 0.156 m on lap 1, and the
+  map has 216 landmarks at 1.7 cm RMS. The stack's telemetry shows the cause: of about 41,300
+  observations, 3,051–4,273 per run were rejected at 20 m and 1,062–1,078 at 30 m. The difference
+  of about 2,000 is about nine observations per cone: the scans a cone takes on lap 1 to come
+  from 30 m to 20 m. Seeds 1 and 3 on the same track, which closed their loops at 20 m, went from
+  13 and 8 cm of map RMS to 5.5 and 4.1 cm.
+
+At three times the noise and more the stack still stops after 3 s with "no exploration path"
+(`results/estimation/stack/noise`, 6 tracks × 2 seeds; the map's coverage at that point rises from
+0.032 to 0.083 with the range). The planner starts its search from an edge midpoint within 6 m of
+the car (`exploration.start_radius`). With the big orange cones gone, the nearest edge midpoint
+on seed 1 is 11.6 m away. With a 13 m start radius (`results/estimation/stack/noise_start`), 7 of
+12 runs finish at 30 m against 6 at 20 m, with map RMS 0.070 against 0.181 m, lap-1 localization
+0.129 against 0.282 m, racing localization 0.149 against 0.749 m, and no duplicates against 6.
+They still hit 31–33 cones per run, and five runs per range leave the track or stall: that is
+planning and control at that noise. At twice the noise all 12 runs finish at both ranges. Against
+main's noise ablation, map RMS went from 0.060 to 0.038 m, lap-1 localization from 0.169 to
+0.081 m and racing from 0.065 to 0.048 m.
+
+**The bias state** no longer decides world seed 5 at the 30 m range: without it, that run's map
+now closes too (0.054 m, no duplicates; at 20 m it had 16 duplicates and 0.942 m). The bias state
+still halves that run's lap-1 pose error (0.272 → 0.137 m), and world+perception seed 5's
+(0.029 → 0.012 m). Over the 15 runs, map RMS sums to 0.516 m with it against 0.527 m without, the
+lap-1 pose RMS to 0.853 against 1.049 m, and the racing pose RMS to 0.683 against 0.692 m. One run
+is worse with it by more than 1 cm: synthetic seed 1, lap-1 pose 0.026 → 0.037 m. It does not
+bring the localization pose NEES closer to 3. In the racing laps the NEES is 0.7–7.2 with the bias
+state and the same without it with the real perception. With the synthetic observations it is
+1.7–9.7 against 2.0–9.8. That overconfidence has another cause (below).
 
 What the numbers say:
 
 - **With the real perception the map is as good as the measurements allow.** Perception's
-  centers are good to 1–2 cm, and the map comes out at 1–4 cm RMS, within a factor of two of the
-  batch reference on four tracks (four times it on seed 4, 3.9 cm against 0.9 cm); localization on
-  the frozen map holds the car to 1.5–5 cm. Association never
-  paired an observation with the wrong cone (precision 1.0000 over every run); recall is lowest
-  where perception's own recall falls off beyond 20 m.
+  centers are good to 1–2 cm, and the map comes out at 0.9–1.9 cm RMS, within 1 mm of the batch
+  reference on every track; localization on the frozen map holds the car to 1.3–4.3 cm.
+  Association never paired an observation with the wrong cone (precision 1.0000 over every run);
+  recall is lowest where perception's own recall falls off beyond 20 m.
 - **The batch reference is not always better than the filter** on the simulator (world, seeds 1 and
-  4; world+perception, seed 2). It is the maximum-likelihood map under the stated noise models, and
-  those models treat the odometry between scans as independent, which slip and the gyro bias make
-  untrue; on the synthetic drive, whose noise matches the models, the batch map is better on every
-  track, by 0.01–0.08 m.
-- **Every loop closes without duplicates,** including world seed 5, whose lap-1 drift (0.39 m RMS
-  of online pose error with the synthetic observations) is the largest here; without the bias
-  state that drift doubled its map (section 3).
-- **Localization is overconfident** with the synthetic observations (pose NEES up to 8.8 in the
-  racing laps), less so with the real perception (up to 6.1): the Schmidt update treats the map's
+  4). It is the maximum-likelihood map under the stated noise models, and those models treat the
+  odometry between scans as independent, which slip and the gyro bias make untrue; on the
+  synthetic drive, whose noise matches the models, the batch map is better on four tracks, by up
+  to 7 mm, and 1 mm worse on seed 4.
+- **Every loop closes without duplicates,** including world seed 5, whose lap-1 drift doubled its
+  map with the 20 m range and without the bias state (section 3).
+- **Localization is overconfident** with the synthetic observations (pose NEES up to 9.7 in the
+  racing laps), less so with the real perception (up to 7.2): the Schmidt update treats the map's
   error correctly in principle, but the map's own covariance after lap 1 inherits the odometry
   model's optimism, and the yaw-rate error is not the part that matters there.
 - **The velocity filter is slightly conservative** on the simulator's sensors (NEES 1.7–2.8
@@ -318,16 +400,19 @@ What the numbers say:
 
 **Latency** (Release, Apple M4, one core; `results/estimation/latency.json`, figure below). On
 the generated tracks, with up to 203 landmarks, one cone update (association and EKF update)
-has p99 0.20–0.77 ms over whole runs, against the 5 ms budget at 200 landmarks; one IMU
-prediction p99 0.17–0.29 µs against 0.05 ms. The scaling run maps an oval of 388 cones at
+has p99 0.23–0.82 ms over whole runs, against the 5 ms budget at 200 landmarks; one IMU
+prediction p99 0.17 µs against 0.05 ms. The scaling run maps an oval of 388 cones at
 10 m/s (about 9 observations per scan):
 
 | landmarks | 50–100 | 150–200 | 200–250 | 300–350 | 350–400 |
 |---|---|---|---|---|---|
-| update p50 / p99 (ms) | 0.06 / 0.10 | 0.18 / 0.25 | 0.27 / 0.39 | 0.56 / 0.76 | 0.74 / 1.04 |
-| IMU prediction p99 (µs) | 0.21 | 0.21 | 0.21 | 0.21 | 0.21 |
+| update p50 / p99 (ms) | 0.06 / 0.11 | 0.21 / 0.28 | 0.30 / 0.43 | 0.64 / 0.98 | 0.83 / 1.21 |
+| IMU prediction p99 (µs) | 0.17 | 0.21 | 0.21 | 0.25 | 0.25 |
 
-The update grows as n², and the bias state's one extra row costs nothing measurable. Forming
+The update grows as n², and the bias state's one extra row costs nothing measurable. The 30 m
+new-landmark range made it about 20 % slower (0.69 / 0.99 ms at 350–400 landmarks with 20 m,
+measured the same day): it now fuses the observations between 20 and 25 m that were turned
+away before. Forming
 only the lower triangle of the Joseph update (one product of inner dimension 2m instead of two
 full ones) took it at 200–250 landmarks from p50 1.6 ms and p99 4.9 ms to 1.1 ms and 2.8 ms in
 runs on a machine shared with five other builds (load average 40–120 on 10 cores); the table
@@ -338,12 +423,21 @@ car's computer gives the estimator.
 
 ## 7. Limits
 
-- **The yaw-rate bias state is tuned on these five tracks.** σ and τ come from the scan in
-  section 3; a longer track, a worse gyro or a nominal vehicle further from the true one could
-  want other values. It costs two runs a few centimeters of online lap-1 pose error (world and
-  synthetic seed 1). A white-noise term sized for the lap's drift was tried before the state and
-  rejected: at the one-second horizon of local tracking it is twenty times too large, and it made
-  every other run worse (racing pose RMS 0.04 → 0.25 m with perception).
+- **The yaw-rate bias state is tuned on these five tracks,** with the 20 m new-landmark range of
+  the time. σ and τ come from the scan in section 3; a longer track, a worse gyro or a nominal
+  vehicle further from the true one could want other values. At 30 m it costs one run 1.1 cm of
+  online lap-1 pose error (synthetic seed 1). A white-noise term sized for the lap's drift was
+  tried before the state and rejected: at the one-second horizon of local tracking it is twenty
+  times too large, and it made every other run worse (racing pose RMS 0.04 → 0.25 m with
+  perception).
+- **At three times the sensor noise and more the stack still stops at the start** (section 6),
+  though the estimator keeps mapping: the planner's first edge must lie within 6 m, and
+  perception then misses the cones that close. With the planner's start radius at 13 m the stack
+  explores, and at that noise five of twelve runs leave the track or stall.
+- **A lap that drifts beyond the new-landmark gate maps its first cones again,** and nothing
+  merges them later: the estimator has no loop-closure search beyond the gates. In the stack's 33
+  baseline runs at 30 m, the online pose error on lap 1 peaks at 0.34 m (track 6 seed 3, flowing
+  seed 3), against 1.03 m on track 6 seed 2 at 20 m, which mapped eight cones again.
 - **The cone source matters.** The tuning (gates, confirmation count, noise floors) holds for both
   the real perception and the synthetic stand-in, but the stand-in's 3–7 cm noise at range is
   what exposes the drift above; perception's 1–2 cm centers keep the map tight enough to close
