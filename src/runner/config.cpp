@@ -7,6 +7,7 @@
 #include <nlohmann/json.hpp>
 
 #include "apex/core/json.hpp"
+#include "apex/sim/config_json.hpp"
 
 namespace apex::runner {
 
@@ -104,6 +105,7 @@ void to_json(json& j, const RunConfig& c) {
          {"track", c.track},
          {"vehicle", c.vehicle},
          {"nominal", c.nominal},
+         {"noise", c.noise},
          {"sensor_noise_scale", c.sensor_noise_scale},
          {"friction_scale", c.friction_scale},
          {"latency", c.latency},
@@ -117,16 +119,17 @@ void to_json(json& j, const RunConfig& c) {
 }
 
 void from_json(const json& j, RunConfig& c) {
-    reject_unknown_keys(
-        j,
-        {"name", "track", "vehicle", "nominal", "sensor_noise_scale", "friction_scale", "latency",
-         "control_period", "seed", "oracles", "perception_oracle", "stack", "dnf", "log_period"},
-        "run");
+    reject_unknown_keys(j,
+                        {"name", "track", "vehicle", "nominal", "noise", "sensor_noise_scale",
+                         "friction_scale", "latency", "control_period", "seed", "oracles",
+                         "perception_oracle", "stack", "dnf", "log_period"},
+                        "run");
     read_optional(j, "name", c.name);
     read_optional(j, "track", c.track);
     read_optional(j, "vehicle", c.vehicle);
     c.nominal = c.vehicle;
     read_optional(j, "nominal", c.nominal);
+    read_optional(j, "noise", c.noise);
     read_optional(j, "sensor_noise_scale", c.sensor_noise_scale);
     read_optional(j, "friction_scale", c.friction_scale);
     read_optional(j, "latency", c.latency);
@@ -162,6 +165,7 @@ void validate(const RunConfig& c) {
     if (to_ticks(c.control_period, "control_period") == 0) {
         throw std::invalid_argument("control_period must be at least 1 ms");
     }
+    sim::validate_noise(c.noise);
     if (!(c.sensor_noise_scale >= 0.0) || !std::isfinite(c.sensor_noise_scale)) {
         throw std::invalid_argument("sensor_noise_scale must be finite and non-negative");
     }

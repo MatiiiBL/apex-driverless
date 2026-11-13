@@ -60,6 +60,21 @@ TEST(RunConfig, NominalStartsFromTheTrueCar) {
     EXPECT_DOUBLE_EQ(config.vehicle.drag_area, VehicleParams{}.drag_area);
 }
 
+TEST(RunConfig, NoiseModelsFromJson) {
+    const RunConfig config =
+        json{{"noise", {{"imu", {{"gyro_stddev", 0.01}}}}}, {"sensor_noise_scale", 0.5}}
+            .get<RunConfig>();
+    EXPECT_DOUBLE_EQ(config.noise.imu.gyro_stddev, 0.01);
+    EXPECT_DOUBLE_EQ(config.noise.imu.accel_stddev, sim::ImuNoise{}.accel_stddev);
+    EXPECT_DOUBLE_EQ(config.sensor_noise_scale, 0.5);
+    EXPECT_NO_THROW(validate(config));
+
+    RunConfig negative;
+    negative.noise.wheels.stddev = -0.1;
+    EXPECT_THROW(validate(negative), std::invalid_argument);
+    EXPECT_THROW((void)json({{"noise", {{"radar", {}}}}}).get<RunConfig>(), std::invalid_argument);
+}
+
 TEST(RunConfig, RejectsUnknownKeysAtEveryLevel) {
     EXPECT_THROW((void)json({{"lap", 3}}).get<RunConfig>(), std::invalid_argument);
     EXPECT_THROW((void)json({{"latency", {{"radar", 0.1}}}}).get<RunConfig>(),

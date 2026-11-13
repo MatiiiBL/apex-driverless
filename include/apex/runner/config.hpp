@@ -6,6 +6,7 @@
 #include <nlohmann/json_fwd.hpp>
 
 #include "apex/core/vehicle.hpp"
+#include "apex/sim/sensors.hpp"
 #include "apex/stack/driver.hpp"
 #include "apex/stack/stack_config.hpp"
 
@@ -74,10 +75,12 @@ void from_json(const nlohmann::json& j, PerceptionOracleConfig& config);
 struct RunConfig {
     std::string name;  // a label for results and sweeps
     TrackSpec track;
-    VehicleParams vehicle;            // the true car, in the simulator
-    VehicleParams nominal;            // the car's software's model of it
-    double sensor_noise_scale = 1.0;  // multiplies every sensor noise standard deviation
-    double friction_scale = 1.0;      // the track's grip relative to the tires' nominal mu
+    VehicleParams vehicle;   // the true car, in the simulator
+    VehicleParams nominal;   // the car's software's model of it
+    sim::SensorNoise noise;  // the simulator's sensor noise models (docs/sim.md)
+    // Multiplies every noise standard deviation and bias of `noise` (sim::scale_noise).
+    double sensor_noise_scale = 1.0;
+    double friction_scale = 1.0;  // the track's grip relative to the tires' nominal mu
     Latencies latency;
     double control_period = 0.02;  // s, a whole number of ticks
     std::uint64_t seed = 1;        // every random draw of the run derives from it

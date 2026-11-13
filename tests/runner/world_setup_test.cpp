@@ -60,6 +60,7 @@ TEST(MakeWorldConfig, TrueCarFrictionNoiseAndSeed) {
     config.vehicle.mass = 255.0;
     config.nominal.mass = 230.0;
     config.friction_scale = 0.8;
+    config.noise.imu.gyro_stddev = 0.004;
     config.sensor_noise_scale = 2.0;
     config.seed = 42;
     const sim::WorldConfig world = make_world_config(config);
@@ -67,7 +68,7 @@ TEST(MakeWorldConfig, TrueCarFrictionNoiseAndSeed) {
     EXPECT_DOUBLE_EQ(world.friction_scale, 0.8);
     EXPECT_EQ(world.seed, 42U);
     const sim::SensorNoise nominal;
-    EXPECT_DOUBLE_EQ(world.noise.imu.gyro_stddev, 2.0 * nominal.imu.gyro_stddev);
+    EXPECT_DOUBLE_EQ(world.noise.imu.gyro_stddev, 2.0 * 0.004);
     EXPECT_DOUBLE_EQ(world.noise.wheels.stddev, 2.0 * nominal.wheels.stddev);
     EXPECT_DOUBLE_EQ(world.noise.steering.stddev, 2.0 * nominal.steering.stddev);
 }
