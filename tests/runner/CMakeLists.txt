@@ -41,3 +41,22 @@ apex_cli_test(track_bad_seed "non-negative integer" track --seed -3 --out x.json
 apex_cli_test(track_unknown_layout "apex track: .*hairpins" track --layout hairpins --out x.json)
 apex_cli_test(track_unknown_option "unknown option '--sed'" track --sed 3 --out x.json)
 apex_cli_test(track_bad_usage_fails WILL_FAIL track --seed 3)
+
+set(cli_data ${CMAKE_CURRENT_SOURCE_DIR}/data)
+apex_cli_test(run_help "--log PATH" run --help)
+apex_cli_test(run_time_limit "short: DNF after 0 of 10 laps: time limit"
+              run --config ${cli_data}/short_run.json --out ${cli_out}/short.json
+              --log ${cli_out}/short.csv --quiet)
+apex_cli_test(run_missing_config "cannot open .*missing.json"
+              run --config ${cli_data}/missing.json --out ${cli_out}/x.json)
+apex_cli_test(run_unknown_key "bad_key_run.json: .*'lap'"
+              run --config ${cli_data}/bad_key_run.json --out ${cli_out}/x.json)
+apex_cli_test(run_needs_config "--config is required" run --out ${cli_out}/x.json)
+apex_cli_test(sweep_help "--threads N" sweep --help)
+apex_cli_test(sweep_short "Short sweep: 4 runs on 2 threads"
+              sweep --config ${cli_data}/short_sweep.json --out ${cli_out}/sweep --quiet)
+apex_cli_test(sweep_bad_threads "non-negative integer"
+              sweep --config ${cli_data}/short_sweep.json --out ${cli_out}/sweep --threads x)
+apex_cli_test(replay_help "50 ms" replay --help)
+apex_cli_test(replay_short "short: DNF"
+              replay --config ${cli_data}/short_run.json --out ${cli_out}/replay.json --quiet)

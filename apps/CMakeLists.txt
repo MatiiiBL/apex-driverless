@@ -2,5 +2,6 @@
 add_executable(apex
     apex.cpp
     cli.cpp
+    run_commands.cpp
     track_command.cpp)
 target_link_libraries(apex PRIVATE apex::runner apex_warnings)

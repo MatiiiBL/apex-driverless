@@ -17,7 +17,9 @@ namespace {
 
 using apex::cli::Command;
 
-const std::array<const Command*, 1> kCommands = {&apex::cli::kTrackCommand};
+const std::array<const Command*, 4> kCommands = {&apex::cli::kTrackCommand, &apex::cli::kRunCommand,
+                                                 &apex::cli::kSweepCommand,
+                                                 &apex::cli::kReplayCommand};
 
 void print_usage(std::ostream& out) {
     out << "apex: an autonomous Formula Student Driverless stack and its simulator.\n\n"

@@ -16,5 +16,8 @@ struct Command {
 };
 
 extern const Command kTrackCommand;
+extern const Command kRunCommand;
+extern const Command kSweepCommand;
+extern const Command kReplayCommand;
 
 }  // namespace apex::cli

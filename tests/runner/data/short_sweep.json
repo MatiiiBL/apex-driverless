@@ -1,0 +1,10 @@
+{
+  "name": "Short sweep",
+  "base": {"dnf": {"time_limit": 2.0}},
+  "seeds": [1, 2],
+  "variants": [
+    {"name": "mpc"},
+    {"name": "stanley", "patch": {"stack": {"controller": {"kind": "stanley"}}}}
+  ],
+  "threads": 2
+}
