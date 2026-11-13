@@ -1,6 +1,6 @@
 # Perception evaluation
 
-`build/release/bench/perception/apex_perception_eval` (Release) over 1204 scans at poses along 8 generated tracks; synthetic sensors (exact ray caster, 2 cm range noise, 2% dropout). Reproduce and read with docs/perception.md.
+`build/release/bench/perception/apex_perception_eval` (Release) over 1204 scans at poses along 8 generated tracks; sim::simulate_lidar (2 cm range noise, 2% dropout) and sim::simulate_camera with their default noise. Reproduce and read with docs/perception.md.
 
 | Range (m) | Cones in view | Recall | Recall of hit cones | Precision | Position RMS (cm) | Radial RMS (cm) | Tangential RMS (cm) | NEES | NEES > 5.99 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -14,16 +14,16 @@ False positives per scan: 0.0000. NEES average: 1.99 (2 expected), above the chi
 
 | Camera frame | Coverage | Accuracy | Mean confidence, right / wrong |
 |---|---|---|---|
-| 25 ms early, yaw compensated | 0.769 | 0.9416 | 0.59 / 0.61 |
-| at the scan's stamp | 0.790 | 0.9469 | 0.67 / 0.64 |
-| 25 ms early, not compensated | 0.762 | 0.9356 | 0.54 / 0.54 |
-| 50 ms early, yaw compensated | 0.750 | 0.9376 | 0.56 / 0.56 |
-| 50 ms early, not compensated | 0.755 | 0.9341 | 0.50 / 0.48 |
-| 25 ms early, compensated; detector never confuses colors, no false positives | 0.759 | 0.9951 | 0.60 / 0.28 |
+| 25 ms early, yaw compensated | 0.668 | 0.9439 | 0.62 / 0.57 |
+| at the scan's stamp | 0.700 | 0.9507 | 0.78 / 0.67 |
+| 25 ms early, not compensated | 0.662 | 0.9452 | 0.58 / 0.49 |
+| 50 ms early, yaw compensated | 0.654 | 0.9446 | 0.55 / 0.49 |
+| 50 ms early, not compensated | 0.656 | 0.9399 | 0.50 / 0.45 |
+| 25 ms early, compensated; detector never confuses colors, no false positives | 0.662 | 0.9975 | 0.62 / 0.03 |
 
 Big orange cones fitted as big: 565 of 676; small cones fitted as big: 19 of 19325.
 
-`on_lidar` latency: p50 228 us, p99 476 us, max 894 us.
+`on_lidar` latency: p50 215 us, p99 484 us, max 1154 us.
 
 Covariance model fitted to these errors (`fit_variance_model`):
 

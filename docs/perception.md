@@ -117,7 +117,7 @@ elevation e crosses the cone's near face at height z = h + d tan e (h the fitted
 d the horizontal distance to the face); where the threshold < z < H, the cone's section there has
 radius ρ = R (1 − z / H) and subtends 2 asin(ρ / r) at range r, so the channel gives that angle
 divided by the azimuth step, on average over the azimuth phase. Summed over the channels, this
-matches the ray caster's mean count within 15% plus one return from 2 to 30 m, for both sizes
+matches the tests' ray caster's mean count within 15% plus one return from 2 to 30 m, for both sizes
 (test `ExpectedConeReturns`). Because
 the bounds scale with range, a cluster of 3 returns is a plausible cone at 25 m and noise at 8 m.
 
@@ -205,10 +205,11 @@ returns, 14 mm and 13 mm. The hand-set model this replaced was about nine times 
 | Mean NEES (2 expected) | 1.88 | 2.34 | 1.75 | 2.38 | 1.99 |
 | NEES above 5.99 (5% expected) | 2.2% | 8.3% | 4.6% | 8.0% | 5.2% |
 
-The model is calibrated on the synthetic scans described below; it must be recalibrated
-(`apex_perception_eval` prints and saves the fitted coefficients) when the simulator's sensor
-models replace them, and again for a real sensor, whose errors also include calibration and
-motion distortion that this model has no term for.
+The model is calibrated on the simulator's LiDAR (`apex_perception_eval` prints and saves the
+fitted coefficients on every run, so a change of the sensor model shows up as a mismatch
+there). A real sensor must be recalibrated: its errors also include beam divergence, mixed
+returns at cone edges, extrinsic calibration and motion distortion, which the simulated scans
+and so this model have no term for.
 
 ## Camera fusion
 
@@ -246,24 +247,26 @@ with confidence 0.
 
 | Camera frame (evaluation below) | Coverage | Accuracy | Confidence, right / wrong |
 |---|---|---|---|
-| 25 ms early, yaw compensated | 76.9% | 94.2% | 0.59 / 0.61 |
-| At the scan's stamp | 79.0% | 94.7% | 0.67 / 0.64 |
-| 25 ms early, not compensated | 76.2% | 93.6% | 0.54 / 0.54 |
-| 50 ms early, yaw compensated | 75.0% | 93.8% | 0.56 / 0.56 |
-| 50 ms early, not compensated | 75.5% | 93.4% | 0.50 / 0.48 |
-| 25 ms early, compensated; detector without color errors or false positives | 75.9% | 99.5% | 0.60 / 0.28 |
+| 25 ms early, yaw compensated | 66.8% | 94.4% | 0.62 / 0.57 |
+| At the scan's stamp | 70.0% | 95.1% | 0.78 / 0.67 |
+| 25 ms early, not compensated | 66.2% | 94.5% | 0.58 / 0.49 |
+| 50 ms early, yaw compensated | 65.4% | 94.5% | 0.55 / 0.49 |
+| 50 ms early, not compensated | 65.6% | 94.0% | 0.50 / 0.45 |
+| 25 ms early, compensated; detector without color errors or false positives | 66.2% | 99.75% | 0.62 / 0.03 |
 
-Coverage is the share of detected cones inside the camera's view that got a color; it is bounded
-by the simulated detector, which finds a cone with a probability falling from 100% at the camera
-to 60% at 30 m. Accuracy is bounded by the detector's own color confusion (up to 10% at 30 m):
-with a detector that never confuses colors, the fusion's own association errors are 0.5%, and
-their confidence (0.28) is half that of right matches, so the estimator's color votes can weigh
-them down. The yaw compensation raises the match quality, and so the confidence, by about 10%
-at both lags, and accuracy by 0.4–0.6 points, while coverage moves by less than a point (up at
-25 ms, slightly down at 50 ms). At the yaw rates of an exploration lap (up to about 1.3 rad/s in
-hairpins) the uncompensated rotation, at most 0.03 rad at 25 ms, is mostly inside the bearing
-tolerance that the car's untracked translation already requires; the compensation matters more
-for a faster car or a longer gap.
+Coverage is the share of detected cones inside the camera's view that got a color. It is bounded
+by the detector, which finds half the cones at 22 m and hides those behind others. Accuracy is
+bounded by the detector's own color confusion (1% near, 10% at 30 m): with a detector that
+never confuses colors, the fusion's own association errors are 0.25%, and their confidence
+(0.03) is a twentieth of that of right matches, so the estimator's color votes can weigh them
+down. The yaw compensation raises the match quality, and so the confidence, by 7–10% at both
+lags; coverage and accuracy move by less than half a point either way, within this run's noise.
+At the yaw rates of an exploration lap (up to about 1.3 rad/s in hairpins) the uncompensated
+rotation, at most 0.03 rad at 25 ms, stays mostly inside the bearing tolerance that the car's
+untracked translation already requires; the compensation matters more for a faster car or a
+longer gap. The range tolerance (2.7 m at 30 m) is about twice the simulated detector's range
+noise (0.05 m + 0.0015 r², 1.4 m at 30 m): conservative, which costs little because cones at
+similar bearings rarely sit within a few meters of each other's range.
 
 ## Evaluation
 
@@ -276,14 +279,15 @@ uv run --project tools python tools/perception/plot_eval.py    # writes docs/img
 The bench (`bench/perception/`) generates 8 tracks (`sim::generate_track`, seeds 1–8, 231 to
 487 m, 1 393 cones) and scans every 2.5 m along each centerline: 1 204 scans. The car is
 offset from the centerline by up to ±0.3 m and ±0.03 rad (1σ) in heading, driving at up to
-12 m/s and at most 10 m/s² of lateral acceleration, which sets the yaw rate. The LiDAR is the
-default rig's 64 channels, simulated by the exact ray caster of the perception tests
-(`tests/perception/scene.hpp`: rays against right circular cones and the flat ground, nearest
-hit wins, so cones occlude each other) with 2 cm range noise and 2% dropout. The camera detector
-has 0.005 rad bearing noise, 7% range noise, detection probability falling to 60% and color
-confusion rising to 10% at its 30 m range, and 0.5 false positives per frame. A detection is a
-true positive when its truth id names a cone within 0.5 m that no other observation claimed;
-anything else is a false positive. Results: `results/perception/eval.json` and `summary.md`.
+12 m/s and at most 10 m/s² of lateral acceleration, which sets the yaw rate. Scans come from
+`sim::simulate_lidar` with its default noise: the default rig's 64 channels, exact rays against
+the 3D cone bodies and the flat ground (cones occlude each other), 2 cm range noise and 2%
+dropout. Camera frames come from `sim::simulate_camera`: 0.003 rad bearing noise, range noise
+0.05 m + 0.0015 r², detection probability 0.98 / (1 + exp((r − 22 m) / 3 m)) from 2 m out,
+cones hidden behind others not detected, color confusion rising from 1% to 10% over its 30 m
+range, and 0.3 false positives per frame (docs/sim.md). A detection is a true positive when its
+truth id names a cone within 0.5 m that no other observation claimed; anything else is a false
+positive. Results: `results/perception/eval.json` and `summary.md`.
 
 | Range (m) | Cones in view | Recall | Recall of cones with a return | Precision | Position RMS (cm) | NEES |
 |---|---|---|---|---|---|---|
@@ -296,21 +300,22 @@ False positives: 0 in 1 204 scans. "Cones in view" counts every cone inside the 
 and 50 m, occluded or not, so 30+ includes 40–50 m, beyond the clustering range.
 
 **Latency.** `on_lidar` (whole pipeline, including the fusion) in Release on the Apple M4, which
-was shared with five other builds: p50 228 µs, p99 476 µs, max 0.9 ms over the 1 204 scans,
-against a 10 ms budget at p99. Repeated runs under varying machine load gave p99 between 0.5
-and 1.4 ms.
+was shared with five other workers (load average 12 during the run): p50 215 µs, p99 484 µs,
+max 1.2 ms over the 1 204 scans, against a 10 ms budget at p99. The same run with the machine's
+load average above 100 gave p99 2.9 ms and max 7 ms, still inside the budget.
 
-**These numbers are for synthetic sensors.** The simulator's LiDAR and camera models
-(`sim::simulate_lidar`, `simulate_camera`) were not yet available; when they are, the bench
-switches to them, the covariance is recalibrated, and this section is updated. The synthetic
-LiDAR has no beam divergence, no mixed returns at cone edges, and no motion distortion, so the
-real model's errors will be larger and the recall at a given range may differ.
+The module was developed against the tests' own ray caster (`tests/perception/scene.hpp`) before
+the simulator's sensor models existed. The two agree: a test checks the caster point for point
+against the simulator's brute-force reference LiDAR, and with the same seeds the bench's LiDAR
+numbers did not change by a digit when it switched to `simulate_lidar`. The tests keep the
+caster because it can also pitch the sensor and misplace its mount, which the ground-removal
+tests need.
 
-The unit and end-to-end tests (`ctest --preset dev -L perception`, 58 tests, 1.5 s) cover each
-stage on synthetic data with known answers, occluded and half-visible cones, adjacent cones not
-merged, empty scans and bare ground, non-finite returns, camera frames out of order, missing or
-stale, the near/far bearing case, determinism across instances, and independence from truth
-ids.
+The tests (`ctest --preset dev -L perception`, 60 tests, about 2 s) cover each stage on
+synthetic data with known answers, occluded and half-visible cones, adjacent cones not merged,
+empty scans and bare ground, non-finite returns, camera frames out of order, missing or stale,
+the near/far bearing case, the whole pipeline on the simulator's sensor models, determinism
+across instances, and independence from truth ids.
 
 ## Failure cases and limitations
 
