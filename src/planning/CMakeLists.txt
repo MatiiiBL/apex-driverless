@@ -5,6 +5,7 @@ apex_module(planning
         delaunay.cpp
         ggv.cpp
         predicates.cpp
+        qp_solver.cpp
         speed_profile.cpp
     PUBLIC_DEPS apex::core)
 
