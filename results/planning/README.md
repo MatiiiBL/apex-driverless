@@ -19,18 +19,23 @@ the busiest up to five times. docs/planning.md explains the methods and the eval
 ## Exploration (`exploration.json`)
 
 20 generated tracks, a plan every 5 m of the lap from a pose up to 0.4 m and 0.1 rad off the
-centerline, from the landmarks mapped so far (20 m range, front half-plane); 1,442 plans per
+centerline, from the landmarks mapped so far (20 m range, front half-plane; `nominal_30m`
+maps them out to 30 m, the estimator's new-landmark range since 949d860); 1,442 plans per
 level. Nominal maps: 10 cm RMS position error, 10% of cones missing, 5% wrong colors, 33%
 without a color, 2 clutter landmarks per 100 m. Worst case: 15 cm, 20%, 10%, 50%, 4.
 
-| | Nominal | Worst case |
-|---|---|---|
-| Path found | 98.8% | 93.1% |
-| Inside the true cone lines, of the paths found | 98.9% | 96.6% |
-| Mean distance from the true centerline | 0.12 m | 0.19 m |
-| A path's largest distance from it, 95th percentile | 0.61 m | 1.57 m |
-| Mean path length | 16.4 m | 14.3 m |
-| `plan()` latency p50 / p99 / max (budget p99 10 ms) | 60 / 193 / 1,733 us | 49 / 175 / 3,545 us |
+| | Nominal | Worst case | Nominal, 30 m |
+|---|---|---|---|
+| Path found | 99.3% | 97.4% | 99.4% |
+| Inside the true cone lines, of the paths found | 99.0% | 96.2% | 99.0% |
+| Inside, of all plans | 98.3% | 93.7% | 98.3% |
+| Mean distance from the true centerline | 0.12 m | 0.20 m | 0.12 m |
+| A path's largest distance from it, 95th percentile | 0.61 m | 1.60 m | 0.65 m |
+| Mean path length | 16.4 m | 14.3 m | 20.2 m |
+| `plan()` latency p50 / p99 / max (budget p99 10 ms) | 38 / 83 / 128 us | 33 / 69 / 106 us | 49 / 85 / 100 us |
+
+Before the start search beyond 6 m and the 1 m cone clearance, nominal and worst-case maps
+found a path in 98.8% and 93.1% of the plans, 97.6% and 89.9% of all plans inside.
 
 `per_track` lists where each plan failed or left the track (`failed_at_m`, `outside_at_m`, m
 from the staging pose); `--plan <seed> <s> <level> <file>` exports one for plotting, and

@@ -92,7 +92,7 @@ the simulator computes.
    cone strips, grids, collinear sets, duplicates, and 48 integer points on one circle (every
    quadruple cocircular), also shifted far from the origin.
 3. **Search** (`search_midpoint_path`). A path is a walk through adjacent triangles: it crosses
-   an edge ahead of the car (midpoint within 6 m), enters the triangle beyond, and leaves each
+   an edge ahead of the car (midpoint within 6 m, or further, below), enters the triangle beyond, and leaves each
    triangle through one of its two other edges. On a track the crossed edges are the rungs and
    diagonals between the cone lines; the triangle's third edge is a segment of a cone line, and
    which cone is on the left of each crossed edge follows from the triangle's orientation. A beam
@@ -110,7 +110,30 @@ the simulator computes.
    | Length | -1 per meter | a longer path wins unless its extra edges look wrong |
 
    Hard limits prune outright: a width outside 2-5.5 m, an edge longer than 12 m, a cone-line
-   segment longer than 15 m (two missing cones on a straight), a turn above 50 degrees.
+   segment longer than 15 m (two missing cones on a straight), a turn above 50 degrees, and a
+   midpoint, or the segment between two consecutive ones, closer than 1 m to any mapped cone.
+
+   **Start.** The first edges are those with their midpoint ahead of the car within 6 m. When
+   none of them passes the hard limits, the search starts instead from the nearest edge ahead
+   that does, and every edge within 2 m beyond it (the two or three edges of the first pair of
+   cones), out to the 25 m the cones are taken from; the path then runs straight from the car to
+   its first edge, and smoothing turns it. This is the staging case at three or four times the
+   nominal sensor noise: perception loses the big orange cones beside the car, the nearest edge
+   is 11-14 m ahead, and with only the 6 m radius every run failed at 3 s with no path. Widening only when nothing close is usable keeps the nominal behavior, and taking the
+   nearest edge that passes the limits, not the nearest one, matters: in a recorded map the
+   nearest edge, at 12.5 m, ran out to another part of the track.
+
+   **Clearance.** Without colors, a path straight across the infield of a hairpin, between the
+   cones of its inner line, can look like a straight corridor: in a run at four times the noise
+   it scored -7.3 against -7.2 for the path around the hairpin (the hairpin's curvature costs
+   more than its extra length earns), and the car followed it into a cone. The cones it cut
+   past are not those of the edges it crossed, so no width or spacing limit saw them. The 1 m
+   clearance from every mapped cone rules it out. On the evaluation below it also raises the
+   share of paths inside the track (98.7% to 99.0% of those found on nominal maps, 95.8% to
+   96.2% on worst-case ones) and loses one plan in 1,442 per level. The first edge checks only
+   its midpoint: the car may stand close to cones, and a straight run out to a far first edge
+   is not the path the car drives in a curve (checking it rejected the right first edge in a
+   curve and sent one plan 18 m off the track).
 
    **Width.** Each triangle the path traverses has one edge it does not cross, a segment of one
    cone line, and one vertex shared by its entry and exit edges, a cone of the other line; the
@@ -134,9 +157,16 @@ the simulator computes.
    free-space widths are the distances to the two cone lines the search found, extended back
    past the car and a spacing beyond their last cone.
 5. **Speed.** The exploration speed config (grip factor 0.7, 12 m/s cap) from the car's current
-   speed down to 0 m/s a margin (1 m) before the path's end: the car can always stop within the
-   cones it has seen. Without a path, `plan` returns nothing and counts a failure; the stack then
-   brakes on its last path.
+   speed down to 0 m/s a fifth of the path's length (at least 1 m) before its end: the car can
+   always stop within the cones it has seen, with room to spare when the next plan's path ends
+   closer. That happens where the map is sparse: entering a hairpin whose apex is not mapped
+   yet, the path ends at the last cones that look like track, and as the car approaches, the
+   frontier can move back (15 m paths shrank to 6 m in one run, and with the MPC of the time the
+   car hit a cone there). With the current MPC, in closed loop at four times the noise (8
+   tracks, 6 seeds), lap 1 hit no cone with a reserve of 0 or 0.2 and one run hit cones with
+   0.4, which also slows lap 1 by a second (the car crawls on short paths); 0.2 keeps the
+   guard for 0.2 s of lap 1. Without a path, `plan` returns nothing and counts a failure; the
+   stack then brakes on its last path.
 
 ### Evaluation
 
@@ -152,36 +182,65 @@ The imperfect maps (`tests/planning/support/cone_maps.hpp`) are made from a trac
 
 A third of the colors are Unknown because the perception module colors about two thirds of its
 detections (its camera match fails at range). The car drives each track's centerline from its
-staging pose, mapping the landmarks that come within 20 m in its front half-plane, and plans
-every 5 m from a pose up to 0.4 m and 0.1 rad off the centerline at 8 m/s. A path is *inside*
-when every point of it is between the true cone lines. On 20 generated tracks, 1,442 plans per
-level (`apex_planning_exploration_eval`, Release, Apple M4):
+staging pose, mapping the landmarks that come within a sensor range in its front half-plane,
+and plans every 5 m from a pose up to 0.4 m and 0.1 rad off the centerline at 8 m/s. The
+range is 20 m, the estimator's new-landmark range when the evaluation was written: the numbers
+stay comparable, and the shorter range is the sparser case. The estimator now starts landmarks
+out to 30 m (since 949d860); the third column repeats the nominal maps at that range. A path
+is *inside* when every point of it is between the true cone lines. On 20 generated tracks,
+1,442 plans per level (`apex_planning_exploration_eval`, Release, Apple M4):
 
-| | Nominal | Worst case |
-|---|---|---|
-| Path found | 98.8% | 93.1% |
-| Inside the true cone lines, of the paths found | 98.9% | 96.6% |
-| Inside, of all plans | 97.6% | 89.9% |
-| Mean distance from the true centerline | 0.12 m | 0.19 m |
-| A path's largest distance from it, 95th percentile | 0.61 m | 1.57 m |
-| Mean path length | 16.4 m | 14.3 m |
-| `plan()` latency p50 / p99 / max | 60 / 193 / 1,733 us | 49 / 175 / 3,545 us |
+| | Nominal | Worst case | Nominal, 30 m |
+|---|---|---|---|
+| Path found | 99.3% | 97.4% | 99.4% |
+| Inside the true cone lines, of the paths found | 99.0% | 96.2% | 99.0% |
+| Inside, of all plans | 98.3% | 93.7% | 98.3% |
+| Mean distance from the true centerline | 0.12 m | 0.20 m | 0.12 m |
+| A path's largest distance from it, 95th percentile | 0.61 m | 1.60 m | 0.65 m |
+| Mean path length | 16.4 m | 14.3 m | 20.2 m |
+| `plan()` latency p50 / p99 / max | 38 / 83 / 128 us | 33 / 69 / 106 us | 49 / 85 / 100 us |
 
-The latency is well inside the 10 ms budget: p99 0.2 ms here with the machine shared with other
-jobs, 0.07 ms on a quieter run, 1.0 ms on the busiest. Triangulating 40-80 cones and a beam of 12 over at most 24
-edges is little work.
+Before the wider start and the clearance, 98.8% (nominal) and 93.1% (worst case) of the plans
+found a path, and 97.6% and 89.9% of all plans were inside. The wider start finds paths where
+the car stands next to a gap in the map and the 6 m radius found none; on worst-case maps a few
+of them leave the track, as they start where the map is sparsest. At 30 m the paths are 4 m
+longer, the planner taking cones out to 25 m, and as good.
+
+The latency is well inside the 10 ms budget: p99 under 0.1 ms on this run, 0.2 ms with the
+machine shared with other jobs, 1.0 ms on the busiest. Triangulating 40-80 cones and a beam of
+12 over at most 24 edges is little work.
 
 ![An exploration plan](img/planning-exploration.png)
 
 The figure is a worst-case map in a hairpin: half the landmarks gray (no color), several cones
 missing, clutter beyond the lines; the path follows the hairpin from geometry alone and stops a
-meter before the last cones it trusts. The remaining failures have two causes, found by
+fifth of its length before its end. The remaining failures have two causes, found by
 plotting them (`--plan`): a cone line missing for 10-15 m at the edge of what has been seen,
 usually on the outside of a curve, leaves no edge that spans the track (no path: the stack
 brakes on its previous path and the next scan, 100 ms later, usually fills the gap); and a
 wrongly colored or clutter landmark at the frontier pulls the last meters of a path out of the
 track (the car stops before them, and replans long before it gets there). The worst single
 plan of the worst-case level ran 14 m off, onto a neighboring part of the track.
+
+### In closed loop with noisy perception
+
+`apex sweep` with the whole stack (perception, estimation, the MPC), 8 generated tracks and 6
+seeds per noise level, scaling every sensor's noise:
+
+| Sensor noise | Completed | Lap 1 | Cones / run | Off course | Runs with cones |
+|---|---|---|---|---|---|
+| Nominal | 48/48 | 39.9 s | 0 | 0 | none |
+| 3x | 48/48 | 39.8 s | 0.06 | 0 | 2, racing laps |
+| 4x | 48/48 | 39.8 s | 0.12 | 0 | 3, racing laps |
+
+Before, every run at 3x or more failed at 3 s with no exploration path, and a 13 m start
+radius, tried by hand, finished 7 of 12 runs (4 tracks, 3 seeds) with cones hit and the rest
+off the track or stalled. At 3x the estimator's maps are 8-12 cm RMS on average, and lap 1 is
+now clean in every run: the start, the hairpin shortcut and the retreating frontier above are
+what went wrong on it. The remaining cones are on racing laps, on the raceline, and not planning's:
+on two seeds of one track the localization is 0.6-1.1 m RMS over the racing laps (the
+Stanley controller hits cones there too), and on one run (4x) the car is up to 0.7 m off the
+raceline at 9 m/s with the MPC, its localization within 0.3 m, and hits no cone with Stanley.
 
 ## Track model
 
@@ -395,7 +454,10 @@ uv run --project tools python tools/planning/plot_planning.py results/planning d
 - **Exploration** is stateless: each plan is made from scratch, so two consecutive plans can
   differ where the map is ambiguous (the controller sees the switch). Its failure modes are
   above: long one-sided gaps at the edge of the view, and frontier landmarks with the wrong
-  color. The first edge's width uses the car's heading, which a large heading error distorts.
+  color. The first edge's width uses the car's heading, which a large heading error distorts;
+  a first edge beyond 6 m is reached by a straight run that is not checked against cones. The
+  1 m clearance leaves a path 0.5 m of play on a 3 m wide track (the FS minimum), less where
+  noisy cones narrow it.
 - **Track model.** On worst-case maps the centerline can be 0.3-0.4 m off over short stretches.
   It assumes the driven path stayed inside the track and closed the lap within 5 m.
 - **Raceline.** Minimum curvature, not minimum time; three linearizations; the free space is
