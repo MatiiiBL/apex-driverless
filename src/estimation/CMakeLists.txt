@@ -1,6 +1,7 @@
 # The estimation module (docs/design.md, section 5.3; docs/estimation.md).
 apex_module(estimation
     SOURCES
+        association.cpp
         chi_square.cpp
         dead_reckoning.cpp
         ekf_slam.cpp
