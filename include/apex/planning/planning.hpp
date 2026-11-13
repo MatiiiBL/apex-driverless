@@ -60,12 +60,15 @@ struct ExplorationConfig {
     // (midpoint_search.hpp says how it is measured), and the edge at most max_edge_length long;
     // the cone line between two crossed edges is at most max_cone_spacing long (two missing
     // cones on a straight); the path turns at most max_turn_deg between consecutive midpoints (and
-    // from the car's heading at the start).
+    // from the car's heading at the start); every midpoint, and the path between consecutive
+    // ones, stays at least min_cone_clearance (m) from every mapped cone, not only from the
+    // cones of the edges it crosses: closer, the path would run over a cone.
     double min_width = 2.0;
     double max_width = 5.5;
     double max_edge_length = 12.0;
     double max_cone_spacing = 15.0;
     double max_turn_deg = 50.0;
+    double min_cone_clearance = 1.0;
 
     // Scores, per crossed edge, all dimensionless; the path with the lowest total wins.
     // width = width_weight ((w - track_width) / track_width)^2
@@ -85,11 +88,14 @@ struct ExplorationConfig {
     double length_reward = 1.0;  // subtracted per meter of path
 
     // The best midpoint sequence is smoothed (Whittaker, this cutoff wavelength in m), sampled
-    // every path_spacing (m), and given a speed profile that reaches 0 m/s stop_margin (m)
-    // before its end. Shorter paths than min_path_length (m) count as no path.
+    // every path_spacing (m), and given a speed profile that reaches 0 m/s before its end:
+    // stop_margin (m) before it, or stop_reserve times the path's length, whichever is more, so
+    // that the next plan's path may end that much closer and the car can still stop within it.
+    // Shorter paths than min_path_length (m) count as no path.
     double smoothing_wavelength = 8.0;
     double path_spacing = 0.5;
     double stop_margin = 1.0;
+    double stop_reserve = 0.4;
     double min_path_length = 3.0;
     SpeedProfileConfig speed{.grip_factor = 0.7, .max_speed = 12.0};
 };

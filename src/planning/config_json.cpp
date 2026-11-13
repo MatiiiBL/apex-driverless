@@ -40,6 +40,7 @@ void from_json(const json& j, SpeedProfileConfig& c) {
     X(max_edge_length)             \
     X(max_cone_spacing)            \
     X(max_turn_deg)                \
+    X(min_cone_clearance)          \
     X(track_width)                 \
     X(width_weight)                \
     X(curvature_scale)             \
@@ -53,6 +54,7 @@ void from_json(const json& j, SpeedProfileConfig& c) {
     X(smoothing_wavelength)        \
     X(path_spacing)                \
     X(stop_margin)                 \
+    X(stop_reserve)                \
     X(min_path_length)             \
     X(speed)
 

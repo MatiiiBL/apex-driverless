@@ -98,10 +98,14 @@ Trajectory smooth_path(const MidpointPath& found, const Pose2& car,
     return Trajectory::from_waypoints(smooth_polyline(even, options), false, config.path_spacing);
 }
 
-// The speed profile from the car's speed down to a stop stop_margin before the path's end.
+// The speed profile from the car's speed down to a stop before the path's end: stop_margin
+// before it, or stop_reserve of the path's length, whichever is more. The reserve is for the
+// next plan: when the cones ahead turn out to be fewer than they seemed (a hairpin's apex not
+// mapped yet), that plan's path ends closer, and the car must still be able to stop within it.
 void stop_before_the_end(Trajectory& path, double speed_now, const VehicleParams& nominal,
                          const ExplorationConfig& config) {
-    const double stop_s = path.length() - config.stop_margin;
+    const double stop_s =
+        path.length() - std::max(config.stop_margin, config.stop_reserve * path.length());
     std::vector<TrajectoryPoint> head;
     for (const TrajectoryPoint& p : path.points()) {
         if (p.s <= stop_s) head.push_back(p);
@@ -168,10 +172,11 @@ ExplorationPlanner::ExplorationPlanner(const ExplorationConfig& config,
                     config.min_width > 0.0 && config.max_width > config.min_width &&
                     config.max_edge_length > 0.0 && config.max_cone_spacing > 0.0 &&
                     config.max_turn_deg > 0.0 && config.track_width > 0.0 &&
-                    config.curvature_scale > 0.0 && config.cone_spacing > 0.0 &&
-                    config.heading_scale_deg > 0.0 && config.smoothing_wavelength > 0.0 &&
-                    config.path_spacing > 0.0 && config.stop_margin >= 0.0 &&
-                    config.min_path_length > config.stop_margin;
+                    config.min_cone_clearance >= 0.0 && config.curvature_scale > 0.0 &&
+                    config.cone_spacing > 0.0 && config.heading_scale_deg > 0.0 &&
+                    config.smoothing_wavelength > 0.0 && config.path_spacing > 0.0 &&
+                    config.stop_margin >= 0.0 && config.stop_reserve >= 0.0 &&
+                    config.stop_reserve < 1.0 && config.min_path_length > config.stop_margin;
     if (!ok) throw std::invalid_argument("ExplorationPlanner: invalid ExplorationConfig");
     impl_->config = config;
     impl_->nominal = nominal;
