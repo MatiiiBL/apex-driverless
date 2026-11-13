@@ -1,6 +1,8 @@
 # The sim module (docs/design.md, section 5.1): tracks, vehicle dynamics, sensors, the World.
 apex_module(sim
     SOURCES
+        camera.cpp
+        lidar.cpp
         race.cpp
         reference_tracks.cpp
         sensor_noise.cpp

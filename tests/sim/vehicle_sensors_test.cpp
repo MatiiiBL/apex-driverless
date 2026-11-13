@@ -32,10 +32,34 @@ TEST(SensorNoise, ScaleMultipliesEveryStandardDeviationAndBias) {
     const SensorNoise doubled = scale_noise(base, 2.0);
     const SensorNoise none = scale_noise(base, 0.0);
     auto fields = [](const SensorNoise& n) {
-        return std::vector<double>{n.imu.accel_stddev, n.imu.gyro_stddev,     n.imu.accel_bias,
-                                   n.imu.gyro_bias,    n.imu.accel_bias_walk, n.imu.gyro_bias_walk,
-                                   n.wheels.stddev,    n.steering.stddev};
+        return std::vector<double>{n.lidar.range_stddev,
+                                   n.camera.bearing_stddev,
+                                   n.camera.range_stddev,
+                                   n.camera.range_stddev_quadratic,
+                                   n.camera.confidence_stddev,
+                                   n.imu.accel_stddev,
+                                   n.imu.gyro_stddev,
+                                   n.imu.accel_bias,
+                                   n.imu.gyro_bias,
+                                   n.imu.accel_bias_walk,
+                                   n.imu.gyro_bias_walk,
+                                   n.wheels.stddev,
+                                   n.steering.stddev};
     };
+    // Probabilities, rates and physical properties: unchanged at any factor.
+    auto unscaled = [](const SensorNoise& n) {
+        return std::vector<double>{n.lidar.dropout,
+                                   n.camera.min_range,
+                                   n.camera.detection_probability,
+                                   n.camera.detection_half_range,
+                                   n.camera.detection_falloff,
+                                   n.camera.confusion_near,
+                                   n.camera.confusion_far,
+                                   n.camera.false_positives,
+                                   n.wheels.slip_stiffness};
+    };
+    EXPECT_EQ(unscaled(doubled), unscaled(base));
+    EXPECT_EQ(unscaled(none), unscaled(base));
     const std::vector<double> b = fields(base);
     const std::vector<double> s = fields(same);
     const std::vector<double> d = fields(doubled);
@@ -47,9 +71,6 @@ TEST(SensorNoise, ScaleMultipliesEveryStandardDeviationAndBias) {
         EXPECT_EQ(d[i], 2.0 * b[i]);
         EXPECT_EQ(z[i], 0.0);
     }
-    // A tire property, not noise.
-    EXPECT_EQ(doubled.wheels.slip_stiffness, base.wheels.slip_stiffness);
-    EXPECT_EQ(none.wheels.slip_stiffness, base.wheels.slip_stiffness);
     EXPECT_THROW((void)scale_noise(base, -0.5), std::invalid_argument);
     EXPECT_THROW((void)scale_noise(base, std::numeric_limits<double>::quiet_NaN()),
                  std::invalid_argument);

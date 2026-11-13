@@ -136,9 +136,14 @@ std::vector<SensorMessage> World::step() {
     if (w.tick % w.steering_period == 0) {
         messages.emplace_back(simulate_steering(noise.steering, truth, now, w.steering_rng));
     }
-    // The camera and LiDAR models are not wired in yet: their messages carry no detections.
-    if (w.tick % w.camera_period == 0) messages.emplace_back(CameraFrame{now, {}});
-    if (w.tick % w.lidar_period == 0) messages.emplace_back(LidarScan{now, {}});
+    if (w.tick % w.camera_period == 0) {
+        messages.emplace_back(simulate_camera(w.config.rig.camera, noise.camera, truth,
+                                              w.track.cones, now, w.camera_rng));
+    }
+    if (w.tick % w.lidar_period == 0) {
+        messages.emplace_back(simulate_lidar(w.config.rig.lidar, noise.lidar, truth, w.track.cones,
+                                             now, w.lidar_rng));
+    }
     return messages;
 }
 

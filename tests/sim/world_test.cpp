@@ -209,6 +209,32 @@ TEST(World, SensorsDrawFromIndependentStreams) {
     EXPECT_GT(wheels_differ, 25);
 }
 
+// From the staging position the LiDAR and camera see the cones ahead, tagged with real ids.
+TEST(World, LidarAndCameraSeeTheTrack) {
+    const Track track = generate_track(8);
+    World world(track, WorldConfig{});
+    int cone_returns = 0;
+    int detections = 0;
+    for (int i = 0; i < 100; ++i) {
+        for (const SensorMessage& m : world.step()) {
+            if (const auto* scan = std::get_if<LidarScan>(&m)) {
+                for (const LidarPoint& p : scan->points) {
+                    if (p.truth_id < 0) continue;
+                    ASSERT_LT(static_cast<std::size_t>(p.truth_id), track.cones.size());
+                    ++cone_returns;
+                }
+            } else if (const auto* frame = std::get_if<CameraFrame>(&m)) {
+                for (const CameraDetection& d : frame->detections) {
+                    ASSERT_LT(d.truth_id, static_cast<std::int32_t>(track.cones.size()));
+                    if (d.truth_id >= 0) ++detections;
+                }
+            }
+        }
+    }
+    EXPECT_GT(cone_returns, 200);
+    EXPECT_GT(detections, 10);
+}
+
 // Closed loop on the truth: a lap of the oval with a simple tracker, timed by the RaceMonitor,
 // with the proprioceptive sensors agreeing with the truth.
 TEST(World, DrivesALapOfTheOval) {
