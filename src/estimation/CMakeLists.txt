@@ -2,7 +2,10 @@
 apex_module(estimation
     SOURCES
         chi_square.cpp
+        dead_reckoning.cpp
         lateral_model.cpp
+        odometry.cpp
+        slam_config.cpp
         velocity_filter.cpp
     PUBLIC_DEPS apex::core)
 
