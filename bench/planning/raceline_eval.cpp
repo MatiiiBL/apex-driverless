@@ -2,7 +2,7 @@
 // "Raceline"). Release:
 //
 //   make PRESET=release build
-//   ./build/release/bench/planning/apex_planning_raceline_eval \
+//   ./build/release/bench/planning/apex_planning_raceline_eval
 //       --out results/planning/raceline.json --example results/planning/raceline_example.json
 //
 // On 20 generated tracks: the track model built from imperfect maps (two levels) and a lap-1

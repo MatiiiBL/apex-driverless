@@ -1,7 +1,7 @@
 // The exploration planner's evaluation, quoted in docs/planning.md ("Exploration"). Release:
 //
 //   make PRESET=release build
-//   ./build/release/bench/planning/apex_planning_exploration_eval \
+//   ./build/release/bench/planning/apex_planning_exploration_eval
 //       --out results/planning/exploration.json --example results/planning/exploration_example.json
 //
 // On 20 generated tracks, at two levels of map imperfection, the car drives the centerline from
