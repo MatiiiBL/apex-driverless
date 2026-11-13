@@ -31,18 +31,28 @@ apex::planning::Raceline raceline = apex::planning::optimize_raceline(*track, no
 ## Speed profiles
 
 `apply_speed_profile` fills a path's speed and acceleration from a g-g-v envelope of the nominal
-car (`GgvEnvelope`, a point mass):
+car (`GgvEnvelope`), axle by axle, with the forces split as the car splits them:
 
-- **Tires.** Each axle carries its static weight share plus its share of the downforce
-  q v^2 (q = rho ClA / 2 = 2.1 N s^2/m^2, 45% on the front). In steady cornering the axles carry
-  lateral force in proportion to their static load, so the lateral limit is the weaker axle's,
-  a_y,max(v) = min over axles of f mu (g + beta q v^2 / (m w)), with grip factor f (0.85 by
-  default: load transfer and model mismatch). All four wheels drive and brake, so the
-  longitudinal tire limit uses the whole normal load. Combined slip follows the friction
-  ellipse (a_x / a_x,max)^2 + (a_y / a_y,max)^2 <= 1.
+- **Normal loads.** Each axle carries its static weight share w (lr / L front, lf / L rear),
+  its share of the downforce q v^2 (q = rho ClA / 2 = 2.1 N s^2/m^2, 45% on the front), and the
+  longitudinal load transfer h Fx / L (driving loads the rear, braking the front), as in the
+  simulator's vehicle model.
+- **Forces.** The longitudinal force Fx is split by `drive_split_front` (0.4) or
+  `brake_split_front` (0.6); the lateral force m v^2 kappa by the steady-state yaw balance, lr / L
+  to the front and lf / L to the rear. Each axle must stay inside its own friction ellipse
+  scaled by the grip factor f: (s Fx)^2 + Y^2 <= (f mu N)^2. With N linear in Fx this is a
+  quadratic in Fx, and the largest force each axle allows has a closed form.
 - **Powertrain.** Drive force is limited by `max_drive_force` (3 kN) and `max_power / v`
   (80 kW), braking by `max_brake_force`; drag and rolling resistance (on the normal load with
   downforce) cost acceleration and help braking.
+
+The first version had one friction ellipse for the whole car, using all four tires' grip for
+braking. In closed loop the racing profile then asked the rear axle for more than it had: braking
+moves load to the front while the rear still takes 40% of the brake force, and in a corner it also
+carries lf / L of the lateral force. At 25 m/s on a straight the rear limits the tires' braking
+to 17.2 m/s^2 (grip factor 0.85) where the whole-car ellipse allowed 20.8, and corner entries
+slid. At low speed the front limits driving to 2.4 kN of the motors' 3 kN for the same reason.
+Lateral load transfer is still ignored; the grip factor absorbs it.
 
 The profile is the classic forward-backward integration (Velenis and Tsiotras, JOTA 2008): every
 point is capped by its steady cornering speed (the largest v whose lateral demand v^2 kappa
@@ -56,10 +66,14 @@ its slowest point, so one lap of each is exact and periodic; an open path starts
 and ends at another (0 for the exploration path).
 
 Tests compare against closed forms: a circle's speed with downforce solved exactly (to 1e-9),
-sqrt(f mu g r) without downforce, the friction ellipse on a circle with drag, tire-limited and
-brake-force-limited stopping distances, drive-force-limited and power-limited acceleration (to
-0.2% at 0.5 m spacing, the integrator's error), and a generated track's profile staying inside
-the envelope across the periodic seam.
+sqrt(f mu g r) without downforce, a circle with drag where the more loaded axle sits exactly on
+its ellipse, rear-axle-limited and brake-force-limited stopping distances, front-axle-limited,
+drive-force-limited and power-limited acceleration (to 0.2% at 0.5 m spacing, the
+integrator's error), braking in a corner that saturates exactly the rear axle, and a generated
+track's profile staying inside the envelope across the periodic seam. One test checks the
+envelope against the simulator itself: with the grip factor at 1, its largest braking force on
+a straight is where the simulated rear axle reaches traction (to 1e-6), under the normal loads
+the simulator computes.
 
 ## Exploration
 
@@ -96,7 +110,7 @@ the envelope across the periodic seam.
    | Length | -1 per meter | a longer path wins unless its extra edges look wrong |
 
    Hard limits prune outright: a width outside 2-5.5 m, an edge longer than 12 m, a cone-line
-   segment longer than 15 m (three missing cones), a turn above 50 degrees.
+   segment longer than 15 m (two missing cones on a straight), a turn above 50 degrees.
 
    **Width.** Each triangle the path traverses has one edge it does not cross, a segment of one
    cone line, and one vertex shared by its entry and exit edges, a cone of the other line; the
@@ -104,9 +118,9 @@ the envelope across the periodic seam.
    travel. The first version measured the crossed edge's extent across the direction of travel
    instead, which made an edge out to a stray landmark look narrower than it is (measured
    across the direction to its own midpoint) or a long diagonal across a gap in a curve look far
-   wider (measured across the incoming direction). The cone-line width overestimates only in
-   the fan of triangles on the outside of a tight hairpin; taking the smaller of the two
-   measures was worse overall. The first edge, before any cone line, uses its extent across the
+   wider (measured across the incoming direction). The cone-line width overestimates mainly in
+   the fan of triangles on the outside of a tight hairpin, where the inner cone faces several
+   outer ones; taking the smaller of the two measures was worse overall. The first edge, before any cone line, uses its extent across the
    car's heading.
 
    The scheme follows the boundary estimation of Kabzan et al., "AMZ Driverless: The full
@@ -116,9 +130,9 @@ the envelope across the periodic seam.
 4. **Path.** The car's position and the midpoints are resampled every 1 m and smoothed with a
    Whittaker smoother (Whittaker 1923, as penalized least squares in Eilers, Analytical
    Chemistry 75(14), 2003; `smoothing.hpp`) with an 8 m cutoff wavelength, whose first two
-   points are pinned to the car's position and heading, then sampled every 0.5 m. The free-space widths are the distances to
-   the two cone lines the search found, extended back past the car and a spacing beyond their
-   last cone.
+   points are pinned to the car's position and heading, then sampled every 0.5 m. The
+   free-space widths are the distances to the two cone lines the search found, extended back
+   past the car and a spacing beyond their last cone.
 5. **Speed.** The exploration speed config (grip factor 0.7, 12 m/s cap) from the car's current
    speed down to 0 m/s a margin (1 m) before the path's end: the car can always stop within the
    cones it has seen. Without a path, `plan` returns nothing and counts a failure; the stack then
@@ -151,10 +165,10 @@ level (`apex_planning_exploration_eval`, Release, Apple M4):
 | Mean distance from the true centerline | 0.12 m | 0.19 m |
 | A path's largest distance from it, 95th percentile | 0.61 m | 1.57 m |
 | Mean path length | 16.4 m | 14.3 m |
-| `plan()` latency p50 / p99 / max | 35 / 70 / 112 us | 31 / 56 / 79 us |
+| `plan()` latency p50 / p99 / max | 60 / 193 / 1,733 us | 49 / 175 / 3,545 us |
 
-The latency is two orders of magnitude inside the 10 ms budget (p99 1.0 ms in an earlier run
-with the machine heavily shared). Triangulating 40-80 cones and a beam of 12 over at most 24
+The latency is well inside the 10 ms budget: p99 0.2 ms here with the machine shared with other
+jobs, 0.07 ms on a quieter run, 1.0 ms on the busiest. Triangulating 40-80 cones and a beam of 12 over at most 24
 edges is little work.
 
 ![An exploration plan](img/planning-exploration.png)
@@ -246,7 +260,7 @@ and control for an autonomous race car", Vehicle System Dynamics 58(10), 2020:
 - **QP.** Minimize the curvature energy sum w_i kappa_i^2 (w_i the arc length per point) plus
   1e-6 sum w_i alpha_i^2 (unique solution; offsets on straights do not change the curvature):
   P = 2 (M' W M + 1e-6 W), q = 2 M' W kappa_0. Bounds keep the car's body inside both cone lines
-  with a 0.3 m margin: alpha_i between the distances to the cone lines less half the body
+  with a 0.5 m margin: alpha_i between the distances to the cone lines less half the body
   width (0.7 m) and the margin. The curvature is bounded by 0.25 1/m (below the steering limit,
   0.27), as 2n inequality rows. M is dense, so the QP is dense.
 - **Iterations.** Three QPs, each linearized around the previous solution respaced to 2.5 m;
@@ -263,18 +277,45 @@ between the car's body and a true cone line anywhere on the lap:
 
 | Raceline optimized on | Lap time gain, mean (min-max) | Smallest body clearance |
 |---|---|---|
-| The true track | 12.7% (7.1-17.3%) | 0.22 m |
-| The track model of a nominal map | 12.8% (8.4-17.0%) | 0.02 m |
-| The track model of a worst-case map | 13.7% (8.5-18.0%) | 0.03 m |
+| The true track | 9.4% (4.8-13.6%) | 0.43 m |
+| The track model of a nominal map | 10.5% (6.8-14.1%) | 0.21 m |
+| The track model of a worst-case map | 11.5% (7.1-15.1%) | 0.19 m |
 
-Optimization takes 28 ms at the median and 62 ms at most for 92 to 195 points (three QPs,
-splines and the speed profile), against the 2 s budget; an earlier run on a heavily loaded
-machine measured 91 and 202 ms. On the 3.5 m track only 1.5 m of width is free for the car's
-center, yet the gain is large: the centerline brakes for every hairpin and every chicane, and
-the raceline opens the hairpins and runs nearly straight through the chicanes. On the true
-track the body stays at least 0.22 m from the cone lines (the 0.3 m margin less the chord of
-the cone line in corners); on a model, the model's own error (up to 0.28 m) eats into the
-margin, which is what the margin is for.
+The mean predicted lap is 22.6 s on the raceline against 25.0 s on the centerline. On the 3.5 m
+track only 1.1 m of width is free for the car's center, yet the gain is large: the centerline
+brakes for every hairpin and every chicane, and the raceline opens the hairpins and runs nearly
+straight through the chicanes. Optimization takes 32 ms at the median and 97 ms at most for 92
+to 195 points (three QPs, splines and the speed profile), against the 2 s budget.
+
+**Margin.** The margin was 0.3 m at first, and on racelines optimized on track models the body
+then came within 2 cm of a true cone line: the model's own error (up to 0.28 m) ate the margin,
+and in closed loop the controller's tracking error (up to 7 cm) and localization (about 4 cm)
+add to it. A sweep of the margin, smallest body clearance on nominal-map models against the
+lap time gain on the true tracks:
+
+| Margin | 0.3 m | 0.4 m | 0.45 m | 0.5 m | 0.55 m |
+|---|---|---|---|---|---|
+| Smallest clearance, nominal / worst-case models | 0.02 / 0.03 m | 0.14 / 0.11 m | 0.17 / 0.15 m | 0.21 / 0.19 m | 0.26 / 0.23 m |
+| Lap time gain (true track, grip factor 0.85) | 11.3% | | | 9.5% | |
+
+0.5 m is the smallest margin that keeps 0.2 m on nominal maps; it costs 2% of lap time.
+
+**Speed.** The racing laps plan with a grip factor of 0.70. In closed loop (`apex sweep`, both
+oracles, the Stanley controller, four laps on eight generated tracks and the oval), racing laps
+with the per-axle envelope and the 0.5 m margin:
+
+| Grip factor | 0.85 | 0.80 | 0.75 | 0.70 |
+|---|---|---|---|---|
+| Mean racing lap | 20.5 s | 21.1 s | 21.7 s | 22.5 s |
+| Cones per run | 0.78 | 0.44 | 0.11 | 0 |
+| Off-course per run | 0.11 | 0 | 0 | 0 |
+
+With the whole-car envelope integration measured 29 cones per run at 0.85 and needed 0.55 for
+a clean run. Against the first version (whole-car envelope, 0.3 m margin, grip factor 0.85),
+the predicted raceline lap is 5.0% longer from the per-axle envelope, 2.0% from the margin and
+10.4% from the grip factor: the price of laps without penalties, which cost 2 s per cone.
+Pure pursuit still knocks about five cones per run whatever the grip factor, and the MPC drives
+lap 1 poorly; both are left to the control module.
 
 ![Raceline](img/planning-raceline.png)
 
@@ -313,12 +354,13 @@ solution polishing and its setup included, median of repeated solves):
 
 | Problems | Ours | OSQP |
 |---|---|---|
-| Raceline QPs of 10 generated tracks (30; 92-195 variables, twice as many rows) | 6.8 ms median, 12.8 ms max; 13-14 iterations | 84 ms median, 307 ms max; 1,300 iterations median, 4,050 max |
-| Random dense, n = 25 / 50 / 100 / 200 / 400 (n/2 rows) | 0.06 / 0.17 / 0.61 / 3.2 / 25 ms; 9-11 iterations | 0.16 / 0.57 / 5.2 / 21 / 72 ms; 100-325 iterations |
+| Raceline QPs of 10 generated tracks (30; 92-195 variables, twice as many rows) | 10 ms median, 24 ms max; 12-14 iterations | 129 ms median, 423 ms max; 1,500 iterations median, 5,050 max |
+| Random dense, n = 25 / 50 / 100 / 200 / 400 (n/2 rows) | 0.07 / 0.24 / 0.75 / 4.3 / 35 ms; 9-11 iterations | 0.23 / 0.69 / 6.8 / 28 / 97 ms; 100-325 iterations |
 
-The two agree to 2e-10 in relative objective everywhere; the solutions to 5e-6 on the random
-problems and to 3.7e-4 m on the raceline ones, where several offsets sit at bounds with
-near-zero multipliers (degenerate, as in the test above). This is not OSQP's home ground: ADMM
+(The machine was shared with other jobs; a quieter run measured about two thirds of these
+times for both.) The two agree to 8e-10 in relative objective everywhere, and the solutions to
+5e-6 on the random problems and 3e-5 m on the raceline ones, where offsets that sit at bounds
+with near-zero multipliers converge more slowly (degenerate, as in the test above). This is not OSQP's home ground: ADMM
 converges linearly and 1e-9 is far below its default tolerance (1e-3), it is a sparse solver
 given dense matrices, and it is meant for long sequences of related problems where its
 factorization is reused. For one dense, ill-conditioned problem at a time, a dense interior
@@ -332,13 +374,13 @@ Every config has JSON with missing keys keeping their defaults and unknown keys 
 ```json
 {"exploration": {"beam_width": 12, "color_weight": 4.0, "speed": {"grip_factor": 0.7, "max_speed": 12.0}},
  "track_model": {"smoothing_wavelength": 10.0, "max_gap": 30.0},
- "raceline": {"step": 2.5, "safety_margin": 0.3, "iterations": 3, "speed": {"grip_factor": 0.85}}}
+ "raceline": {"step": 2.5, "safety_margin": 0.5, "iterations": 3, "speed": {"grip_factor": 0.70}}}
 ```
 
 ## Reproducing
 
 ```sh
-make check                                   # every test, including planning's (~4 s)
+make check                                   # every test; planning's take a few seconds
 make PRESET=release build
 ./build/release/bench/planning/apex_planning_exploration_eval \
     --out results/planning/exploration.json --example results/planning/exploration_example.json
@@ -358,9 +400,10 @@ uv run --project tools python tools/planning/plot_planning.py results/planning d
   It assumes the driven path stayed inside the track and closed the lap within 5 m.
 - **Raceline.** Minimum curvature, not minimum time; three linearizations; the free space is
   the shortest distance to each cone line, which is conservative in corners. The model's error
-  is absorbed by the 0.3 m margin, not modeled.
-- **QP solver.** Dense: O(n^3) per iteration, 25 ms at 400 variables; the raceline's 2.5 m step
+  is absorbed by the fixed 0.5 m margin, not modeled: a margin that grows where the model is
+  uncertain (long gaps) would give back some of the 2% it costs.
+- **QP solver.** Dense: O(n^3) per iteration, 35 ms at 400 variables; the raceline's 2.5 m step
   keeps a 500 m track at 200.
-- **Speed profile.** A point mass on a g-g-v envelope: no load transfer (the grip factor
-  absorbs it), no yaw dynamics, no actuator lag. The controllers track it; they do not rely on
-  it being exactly achievable.
+- **Speed profile.** Two axles on a g-g-v envelope: no lateral load transfer (the grip factor
+  absorbs it), no yaw dynamics, no actuator lag. The grip factor of 0.70 was found in closed
+  loop with perfect perception and state; real estimation may want more margin.
