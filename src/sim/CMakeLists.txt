@@ -5,4 +5,5 @@ apex_module(sim
         track_gen.cpp
         track_layout.cpp
         track_rules.cpp
+        vehicle_model.cpp
     PUBLIC_DEPS apex::core)
