@@ -21,8 +21,8 @@ own *nominal* copy of `VehicleParams`.
 
 **In numbers** (details and the commands that reproduce them below): on eight tracks at 85 % of
 the grip, the MPC tracks the centerline to 1.9 cm RMS (7 cm worst), Stanley to 9 cm and pure
-pursuit to 7 cm, all without a cone or an excursion; the MPC costs 0.33 ms of CPU per call at
-p50 and 0.68 ms at p99, against a 2 ms budget, and never failed a solve in 69,000 calls. Its QP
+pursuit to 10 cm, all without a cone or an excursion; the MPC costs 0.25 ms of CPU per call at
+p50 and 0.31 ms at p99, against a 2 ms budget, and never failed a solve in 69,000 calls. Its QP
 solver is 5-6x faster than OSQP at horizons 20-60, at the same 1e-6 tolerance. In the full
 stack the MPC drives lap 1 of all nine test tracks without a cone ("Lap 1").
 
@@ -70,7 +70,7 @@ positive acceleration there and is not held.
 
 R. C. Coulter, "Implementation of the pure pursuit path tracking algorithm", CMU-RI-TR-92-01,
 1992. From the rear axle (where a kinematic car's velocity is along its heading), the goal is
-the reference point one lookahead `l = clamp(1.5 + 0.15 v, 1.5, 10)` metres ahead of the rear
+the reference point one lookahead `l = clamp(2 + 0.15 v, 2, 10)` metres ahead of the rear
 axle's projection, measured along the path. With the goal at `(x, y)` in the rear-axle frame
 and `d` its distance, the arc through the rear axle tangent to its velocity has curvature
 `kappa = 2 y / d^2` and the kinematic steering for it is `atan(L kappa)`. Growing the lookahead
@@ -99,6 +99,13 @@ lateral RMS over the flying laps, cones knocked in total):
 A long lookahead cuts every corner by about its own length's worth of path and dominates the
 error; once it is short, the slip offset is what remains, and the slip frame halves it. Pure
 pursuit tolerates extra delay well (it then turns in later, which offsets the cutting).
+
+The minimum lookahead is 2 m rather than the 1.5 m that tracks best here, because of lap 1 in
+the full stack: at walking pace in tight corners, where the planner hands over short paths,
+1.5 m put the goal barely ahead of the front axle and the car weaved into the cones, 5-6 per
+run. Over the nine stack tracks with both oracles a 2.0 m minimum knocked 7 cones in all, 2.5 m
+14 and 3.0 m 23 (longer ones cut the hairpins again); it costs 3 cm of RMS at racing speed in
+the evaluation below (0.098 against 0.069 m).
 
 ## Stanley
 
@@ -386,9 +393,9 @@ metrics are over the flying second lap. Full tables: `results/control/closed_loo
 
 | Controller | lateral RMS, mean of 8 tracks | worst lateral | flying lap minus the profile's | steering rate RMS | cones, off course | CPU per call p50 / p99 |
 |---|---|---|---|---|---|---|
-| Pure pursuit | 0.069 m | 0.20 m | +0.08 s | 0.23 rad/s | 0, 0 | 17 / 28 us |
-| Stanley | 0.090 m | 0.25 m | -0.00 s | 0.28 rad/s | 0, 0 | 9 / 33 us |
-| MPC | **0.019 m** | **0.07 m** | +0.01 s | 0.22 rad/s | 0, 0 | 0.33 / 0.68 ms |
+| Pure pursuit | 0.098 m | 0.28 m | +0.06 s | 0.22 rad/s | 0, 0 | 14 / 16 us |
+| Stanley | 0.090 m | 0.25 m | -0.00 s | 0.28 rad/s | 0, 0 | 7 / 13 us |
+| MPC | **0.019 m** | **0.07 m** | +0.01 s | 0.22 rad/s | 0, 0 | 0.25 / 0.31 ms |
 
 ![Lateral error on the mixed layout](img/control-tracking.png)
 
@@ -399,10 +406,10 @@ says, while the geometric laws react to errors they have already made. It never 
 in these runs.
 
 **Compute.** Over all 69,048 MPC calls of the evaluation (every track and sweep) the CPU time
-per call was 0.32-0.35 ms at p50 and at most 0.68 ms at p99 (the slowest single call 1.9 ms),
+per call was 0.25 ms at p50 and at most 0.31 ms at p99 (the slowest single call 0.86 ms),
 against the 2 ms budget at p99 (docs/design.md, section 6): the QP is about half of it, the 30
 linearizations, the rollout and the delay prediction the rest. Not one solve failed. On the
-quiet machine of this run the wall-clock `ControllerStats::compute_time` agrees (p99 0.62-0.68
+quiet machine of this run the wall-clock `ControllerStats::compute_time` agrees (p99 0.29-0.31
 ms); during other workers' builds (load average 30 to 110 on 10 cores) the scheduler preempted
 single calls for up to 15 ms and the wall-clock p99 measured the load, not the controller,
 which is why the evaluation reports both (`compute` and `compute_cpu` in closed_loop.json).
@@ -412,13 +419,13 @@ over the three reference layouts:
 
 | Change to the true car | Pure pursuit RMS / worst | Stanley RMS / worst | MPC RMS / worst |
 |---|---|---|---|
-| none | 0.068 / 0.16 m | 0.091 / 0.25 m | 0.018 / 0.07 m |
-| steering dead time 60 ms (nominal 30) | 0.050 / 0.16 m | 0.067 / 0.20 m | 0.056 / 0.15 m |
-| steering dead time 90 ms | 0.042 / 0.17 m | 0.076 / 0.44 m; left the track on "flowing" | 0.124 / 0.35 m |
-| friction x0.9 | 0.081 / 0.33 m | 0.095 / 0.23 m | 0.055 / 0.12 m |
-| friction x0.8 | 0.284 / 2.79 m, 34 s of penalties | 0.156 / 0.48 m | 0.193 / 0.57 m |
-| mass and yaw inertia +20 % | 0.069 / 0.18 m | 0.091 / 0.25 m | 0.021 / 0.07 m |
-| tire stiffness B -25 % | 0.082 / 0.31 m | 0.107 / 0.27 m | 0.066 / 0.14 m |
+| none | 0.097 / 0.24 m | 0.091 / 0.25 m | 0.018 / 0.07 m |
+| steering dead time 60 ms (nominal 30) | 0.075 / 0.23 m | 0.067 / 0.20 m | 0.056 / 0.15 m |
+| steering dead time 90 ms | 0.055 / 0.26 m | 0.076 / 0.44 m; left the track on "flowing" | 0.124 / 0.35 m |
+| friction x0.9 | 0.112 / 0.41 m | 0.095 / 0.23 m | 0.055 / 0.12 m |
+| friction x0.8 | 0.165 / 0.39 m; left the track on "flowing" | 0.156 / 0.48 m | 0.191 / 0.54 m |
+| mass and yaw inertia +20 % | 0.099 / 0.25 m | 0.091 / 0.25 m | 0.021 / 0.07 m |
+| tire stiffness B -25 % | 0.113 / 0.40 m | 0.107 / 0.27 m | 0.067 / 0.14 m |
 
 - *Dead time.* This is the MPC's weak spot. It predicts through the nominal 60 ms of steering
   delay and plans on it, so 30 or 60 ms more, unmodelled, cost it accuracy roughly in
@@ -427,8 +434,9 @@ over the three reference layouts:
   Stanley, whose heading term reacts fastest, leaves the track once at 90 ms. A real car's
   delays would be identified, not guessed; the MPC is the one that rewards it.
 - *Friction.* With 20 % less grip than the profile assumes, every controller is asked for more
-  than the tires give; the MPC and Stanley slide wide by half a metre, pure pursuit by almost
-  three and knocks cones. A speed profile from the estimated friction is the planner's job.
+  than the tires give; the MPC and Stanley slide wide by half a metre, and pure pursuit leaves
+  the track on the fast "flowing" layout (with the 1.5 m minimum lookahead it went 2.8 m wide
+  and knocked 7 cones there). A speed profile from the estimated friction is the planner's job.
 - *Model mismatch.* A heavier car changes little for anyone; softer tires (more slip for the
   same force) cost the MPC 5 cm of RMS, its model now being optimistic.
 
@@ -472,16 +480,17 @@ oval, four laps each (results/control/stack*):
 |---|---|---|---|---|---|---|
 | both oracles | MPC | 9/9 | 37.13 | 10.24 | 0.00 | 0.00 |
 | both oracles | Stanley | 9/9 | 35.73 | 10.27 | 0.00 | 0.00 |
-| both oracles | pure pursuit | 9/9 | 41.27 | 10.29 | 5.22 | 0.11 |
+| both oracles | pure pursuit | 9/9 | 38.48 | 10.29 | 0.67 | 0.11 |
 | full stack | MPC | 9/9 | 37.15 | 10.25 | 0.44 | 0.22 |
 | full stack | Stanley | 9/9 | 35.84 | 10.29 | 0.00 | 0.00 |
-| full stack | pure pursuit | 9/9 | 41.80 | 10.31 | 6.11 | 0.00 |
+| full stack | pure pursuit | 9/9 | 38.55 | 10.31 | 0.44 | 0.00 |
 
 The MPC's lap 1 is now clean on every track, with or without the oracles, 1.4 s slower on
 average than Stanley's (it brakes for the end of each short path the planner hands it). Its
 cones in the full stack all come from one track (generated 7, 4 cones and 2 excursions, all in
-the second after the switch to the raceline), and pure pursuit's from lap 1 at walking pace in
-tight corners; both are open (Limitations).
+the second after the switch to the raceline; see Limitations). Pure pursuit knocked 5-6 cones
+per run in lap 1 with a 1.5 m minimum lookahead, all at walking pace in tight corners; the 2 m
+minimum ("Pure pursuit") brings that to under one.
 
 ## Reproducing
 
@@ -503,9 +512,9 @@ The benchmarks and sweeps are deterministic apart from their timings.
   generated track without oracles the MPC then knocked 4 cones within a second. The lateral
   bound's stiff penalty, active from the first stage, is the likely cause; widening the bounds
   to include the car's position at the start is a candidate fix.
-- Pure pursuit knocks 5-6 cones per run in the stack's lap 1, at walking pace in tight corners
-  where the exploration path is short; not yet understood. Stanley is the safer geometric
-  controller there.
+- Pure pursuit still knocks a cone every two or three runs in the stack's lap 1, at walking
+  pace in tight corners; Stanley, which steers on the front axle's errors rather than a point
+  ahead, is the safer geometric controller there.
 - The MPC tracks a given path and speed profile. It does not trade path for time (a contouring
   formulation would) and leaves the friction estimate to the planner.
 - Each actuator is approximated as a pure delay of its dead time plus its lag time constant,
