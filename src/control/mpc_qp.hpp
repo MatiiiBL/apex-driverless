@@ -20,11 +20,12 @@
 //         |delta| <= max_steer                                                   k >= 1
 //         -w_right,k - sigma <= e_y <= w_left,k + sigma,  sigma >= 0            k >= 1
 //
-// where the lateral bounds are the reference's free widths less half the car's width and a
-// margin. e_psi + v_y / v_x is the course error: the direction of travel, not the heading, has
-// to follow the path once the car slides. The slack's linear penalty makes it exact (zero
-// whenever the hard bounds are feasible, for a penalty above the bound's multiplier), the
-// quadratic one keeps the QP strictly convex in it.
+// where the traction limits leave the lateral acceleration v_k^2 kappa_k of the path (at stage
+// 0, or the car's v_x r if more), and the lateral bounds are the reference's free widths less
+// half the car's width and a margin. e_psi + v_y / v_x is the course error: the direction of
+// travel, not the heading, has to follow the path once the car slides. The slack's linear
+// penalty makes it exact (zero whenever the hard bounds are feasible, for a penalty above the
+// bound's multiplier), the quadratic one keeps the QP strictly convex in it.
 namespace apex::control::mpc {
 
 // Fills `problem` (horizon guess.size() - 1) linearized along `guess`; guess[0].x is x0. The

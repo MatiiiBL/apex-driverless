@@ -1,6 +1,7 @@
 #include "mpc_qp.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 #include "apex/control/mpc_model.hpp"
 #include "apex/control/reference.hpp"
@@ -43,8 +44,14 @@ void build_qp(const MpcConfig& config, const NominalModel& model,
         const StagePoint& point = guess[k];
         const TrajectoryPoint& ref = point.reference;
         const double speed = std::max(point.x(kVx), 0.0);
-        const AccelRange accel =
-            model.traction_limits(speed, point.x(kVx) * point.x(kYawRate), config.grip_fraction);
+        // The traction limits leave the tires the lateral acceleration the path asks for at the
+        // stage's speed, not the guess's own v_x r: a guess that slides or yaws off the path
+        // (a rollout from an unsettled state) would otherwise take the grip it wastes from the
+        // braking, which then falls short of the reference and leaves the car faster into the
+        // next corner. Stage 0 is the car itself: there its own yaw rate counts if it is more.
+        double lateral_demand = std::abs(speed * speed * ref.curvature);
+        if (k == 0) lateral_demand = std::max(lateral_demand, std::abs(speed * point.x(kYawRate)));
+        const AccelRange accel = model.traction_limits(speed, lateral_demand, config.grip_fraction);
         const double target_speed = std::clamp(ref.speed, slowest, fastest);
         fastest += accel.max * dt;
         slowest = std::max(slowest + accel.min * dt, 0.0);
