@@ -5,4 +5,5 @@ apex_tests(stack
         known_pose_mapper_test.cpp
         lap_counter_test.cpp
         mission_test.cpp
+        stack_config_test.cpp
     DEPS apex::stack)

@@ -7,20 +7,23 @@
 namespace apex::stack {
 
 void to_json(nlohmann::json& j, const StackConfig& c) {
-    j = {{"mission", c.mission},
-         {"lap_counter", c.lap_counter},
-         {"known_pose_mapper", c.known_pose_mapper},
-         {"stop_decel", c.stop_decel},
-         {"hold_brake", c.hold_brake},
-         {"emergency_brake", c.emergency_brake},
-         {"driven_path_spacing", c.driven_path_spacing}};
+    j = nlohmann::json::object();
+    j["perception"] = c.perception;
+    j["mission"] = c.mission;
+    j["lap_counter"] = c.lap_counter;
+    j["known_pose_mapper"] = c.known_pose_mapper;
+    j["stop_decel"] = c.stop_decel;
+    j["hold_brake"] = c.hold_brake;
+    j["emergency_brake"] = c.emergency_brake;
+    j["driven_path_spacing"] = c.driven_path_spacing;
 }
 
 void from_json(const nlohmann::json& j, StackConfig& c) {
     reject_unknown_keys(j,
-                        {"mission", "lap_counter", "known_pose_mapper", "stop_decel", "hold_brake",
-                         "emergency_brake", "driven_path_spacing"},
+                        {"perception", "mission", "lap_counter", "known_pose_mapper", "stop_decel",
+                         "hold_brake", "emergency_brake", "driven_path_spacing"},
                         "stack");
+    read_optional(j, "perception", c.perception);
     read_optional(j, "mission", c.mission);
     read_optional(j, "lap_counter", c.lap_counter);
     read_optional(j, "known_pose_mapper", c.known_pose_mapper);
