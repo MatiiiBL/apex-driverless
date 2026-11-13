@@ -1,5 +1,6 @@
 #include "scene.hpp"
 
+#include <array>
 #include <cmath>
 #include <limits>
 #include <optional>
@@ -104,13 +105,19 @@ LidarScan cast_lidar(const LidarGeometry& geometry, const Pose2& sensor_pose,
 CameraFrame detect_cones(const CameraGeometry& geometry, const Pose2& body_pose,
                          std::span<const Cone> cones, const CameraSimOptions& options, Rng& rng,
                          Time stamp) {
+    constexpr std::array<ConeColor, 4> kColors = {ConeColor::Blue, ConeColor::Yellow,
+                                                  ConeColor::Orange, ConeColor::BigOrange};
+    const double half_fov = 0.5 * geometry.horizontal_fov;
     CameraFrame frame;
     frame.stamp = stamp;
     for (const Cone& cone : cones) {
         const Vec2 rel = body_pose.to_local(cone.position) - geometry.mount.head<2>();
         const double bearing = std::atan2(rel.y(), rel.x());
         const double range = rel.norm();
-        if (std::abs(bearing) > 0.5 * geometry.horizontal_fov || range > geometry.max_range) {
+        if (std::abs(bearing) > half_fov || range > geometry.max_range) continue;
+        const double fraction = range / geometry.max_range;
+        if (options.detect_at_max_range < 1.0 &&
+            !rng.bernoulli(1.0 - (1.0 - options.detect_at_max_range) * fraction)) {
             continue;
         }
         CameraDetection d;
@@ -120,8 +127,23 @@ CameraFrame detect_cones(const CameraGeometry& geometry, const Pose2& body_pose,
                                       ? rng.normal(0.0, options.range_sigma_fraction)
                                       : 0.0));
         d.color = cone.color;
+        if (options.confusion_at_max_range > 0.0 &&
+            rng.bernoulli(options.confusion_at_max_range * fraction)) {
+            // Another of the four colors, uniformly.
+            while (d.color == cone.color) d.color = kColors[rng.index(kColors.size())];
+        }
         d.confidence = options.confidence;
         d.truth_id = cone.id;
+        frame.detections.push_back(d);
+    }
+    const std::uint32_t false_positives =
+        options.false_positives > 0.0 ? rng.poisson(options.false_positives) : 0U;
+    for (std::uint32_t i = 0; i < false_positives; ++i) {
+        CameraDetection d;
+        d.bearing = rng.uniform(-half_fov, half_fov);
+        d.range = rng.uniform(2.0, geometry.max_range);
+        d.color = kColors[rng.index(kColors.size())];
+        d.confidence = options.confidence;
         frame.detections.push_back(d);
     }
     return frame;

@@ -29,10 +29,16 @@ struct CameraSimOptions {
     double bearing_sigma = 0.0;         // rad
     double range_sigma_fraction = 0.0;  // relative range noise
     double confidence = 0.9;
+    // Detection probability, falling linearly from 1 at the camera to this at its max range.
+    double detect_at_max_range = 1.0;
+    // Probability of reporting another color, rising linearly from 0 at the camera to this at
+    // its max range.
+    double confusion_at_max_range = 0.0;
+    double false_positives = 0.0;  // mean per frame (Poisson), anywhere in the field of view
 };
 
-// Every cone in the camera's field of view and range, seen from a car at `body_pose`, with
-// its true color (no occlusion, no misses).
+// The cones in the camera's field of view and range, seen from a car at `body_pose` (no
+// occlusion), with misses, color confusion and false positives as `options` asks.
 [[nodiscard]] CameraFrame detect_cones(const CameraGeometry& geometry, const Pose2& body_pose,
                                        std::span<const Cone> cones, const CameraSimOptions& options,
                                        Rng& rng, Time stamp);
