@@ -208,7 +208,8 @@ TEST_P(ControllerBehaviour, IsDeterministicAndResetsCleanly) {
 }
 
 INSTANTIATE_TEST_SUITE_P(Controllers, ControllerBehaviour,
-                         ::testing::Values(ControllerKind::PurePursuit, ControllerKind::Stanley),
+                         ::testing::Values(ControllerKind::PurePursuit, ControllerKind::Stanley,
+                                           ControllerKind::Mpc),
                          kind_name);
 
 }  // namespace

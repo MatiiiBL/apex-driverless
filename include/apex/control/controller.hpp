@@ -75,6 +75,9 @@ struct MpcConfig {
     double lateral_margin = 0.15;  // m
     double slack_linear = 200.0;
     double slack_quadratic = 2000.0;
+    // Acceleration bounds per stage: each axle's longitudinal force within this share of its
+    // grip after the lateral force the plan needs (NominalModel::traction_limits).
+    double grip_fraction = 0.9;
     // Dead-time compensation: the initial state is predicted through the commands in flight,
     // over the steering's dead time, plus its first-order lag time constant when compensate_lag.
     bool compensate_dead_time = true;

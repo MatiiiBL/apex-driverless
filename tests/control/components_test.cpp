@@ -140,6 +140,31 @@ TEST(NominalModel, IsKinematicAtLowSpeed) {
     EXPECT_NEAR(rates.vx_dot, v_dot, 1e-12);
 }
 
+TEST(NominalModel, TractionLimitsShrinkWithLateralDemand) {
+    const VehicleParams params;
+    const NominalModel model(params);
+    const AccelRange straight = model.traction_limits(10.0, 0.0, 1.0);
+    // On a straight the front axle, with 40% of the drive and unloaded by the transfer, limits
+    // the drive below the motors' 12.5 m/s^2; the brakes are traction-limited too.
+    EXPECT_LT(straight.max, model.max_drive_accel(10.0));
+    EXPECT_GT(straight.max, 8.0);
+    EXPECT_GT(straight.min, -model.max_brake_decel());
+    // The front axle's drive force fits its grip exactly at the limit.
+    const double transfer = params.mass * params.cg_height / params.wheelbase();
+    const double front_load = params.mass * kGravity * params.lr / params.wheelbase() +
+                              params.aero_balance_front * params.downforce(10.0);
+    EXPECT_NEAR(params.drive_split_front * params.mass * straight.max,
+                params.front_tire.mu * (front_load - transfer * straight.max), 1e-6);
+    // Cornering at 12 m/s^2 leaves less, but never nothing.
+    const AccelRange corner = model.traction_limits(10.0, 12.0, 1.0);
+    EXPECT_LT(corner.max, 0.6 * straight.max);
+    EXPECT_GT(corner.min, 0.6 * straight.min);
+    EXPECT_GT(corner.max, 0.0);
+    EXPECT_LT(corner.min, 0.0);
+    // A smaller grip fraction is more conservative.
+    EXPECT_LT(model.traction_limits(10.0, 0.0, 0.8).max, straight.max);
+}
+
 TEST(NominalModel, ResistanceAndLimits) {
     const VehicleParams params;
     const NominalModel model(params);

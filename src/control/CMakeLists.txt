@@ -4,6 +4,11 @@ apex_module(control
         common.cpp
         config_json.cpp
         controller.cpp
+        delay_prediction.cpp
+        mpc_controller.cpp
+        mpc_model.cpp
+        mpc_plan.cpp
+        mpc_qp.cpp
         path_follower.cpp
         pure_pursuit.cpp
         reference.cpp

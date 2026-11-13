@@ -48,6 +48,48 @@ double bisect(F&& increasing, double target, double lo, double hi) {
 
 }  // namespace
 
+AccelRange NominalModel::traction_limits(double speed, double lateral_accel,
+                                         double grip_fraction) const {
+    constexpr double kMinLongitudinalShare = 1.0 / 3.0;
+    const VehicleParams& p = params_;
+    const double v = std::max(speed, 0.0);
+    const double downforce = p.downforce(v);
+    const double front_load = static_front_ + p.aero_balance_front * downforce;
+    const double rear_load = static_rear_ + (1.0 - p.aero_balance_front) * downforce;
+    const double transfer = p.mass * p.cg_height / p.wheelbase();  // N per m/s^2
+    const double lateral = p.mass * std::abs(lateral_accel);
+    const double front_lateral = lateral * p.lr / p.wheelbase();
+    const double rear_lateral = lateral * p.lf / p.wheelbase();
+    auto fits = [&](double fx, double fz, double fy, const TireParams& tire) {
+        const double cap = grip_fraction * tire.mu * std::max(fz, 0.0);
+        const double room = std::max(cap * cap - fy * fy,
+                                     kMinLongitudinalShare * kMinLongitudinalShare * cap * cap);
+        return fx * fx <= room;
+    };
+    auto feasible = [&](double a) {
+        const double split = a >= 0.0 ? p.drive_split_front : p.brake_split_front;
+        const double fx = p.mass * a;
+        return fits(split * fx, front_load - transfer * a, front_lateral, p.front_tire) &&
+               fits((1.0 - split) * fx, rear_load + transfer * a, rear_lateral, p.rear_tire);
+    };
+    // Each axle's margin shrinks monotonically with |a|, so the limits are found by bisection.
+    auto largest = [&](double limit, double sign) {
+        if (feasible(sign * limit)) return limit;
+        double lo = 0.0;
+        double hi = limit;
+        for (int i = 0; i < 40; ++i) {
+            const double mid = 0.5 * (lo + hi);
+            if (feasible(sign * mid)) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
+    };
+    return {-largest(max_brake_decel(), -1.0), largest(max_drive_accel(v), 1.0)};
+}
+
 double NominalModel::inverse_lateral_force(double fy, double fz, const TireParams& tire) const {
     const double peak = tire.mu * std::max(fz, 0.0);
     if (!(peak > 0.0) || fy == 0.0) return 0.0;

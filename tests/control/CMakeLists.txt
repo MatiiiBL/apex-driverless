@@ -8,6 +8,7 @@ if(TARGET osqpstatic)
             components_test.cpp
             config_test.cpp
             controller_test.cpp
+            mpc_test.cpp
             qp_solver_test.cpp
         DEPS apex_control_support)
 endif()

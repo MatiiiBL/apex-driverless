@@ -29,6 +29,12 @@ struct SlipAngles {
     double rear = 0.0;
 };
 
+// A range of commanded accelerations (total tire force over mass, m/s^2).
+struct AccelRange {
+    double min = 0.0;  // negative: braking
+    double max = 0.0;
+};
+
 class NominalModel {
 public:
     // Below kinematic_below the model is the kinematic bicycle, above dynamic_above the dynamic
@@ -47,6 +53,17 @@ public:
     // braking deceleration, both as total tire force over mass (m/s^2, positive).
     [[nodiscard]] double max_drive_accel(double speed) const;
     [[nodiscard]] double max_brake_decel() const;
+
+    // The accelerations at `speed` that leave each axle the lateral force of steady cornering
+    // at `lateral_accel` (m/s^2): the axle's longitudinal share (drive or brake split) must fit
+    // in the friction ellipse of `grip_fraction` times its grip, with normal loads from static
+    // weight, downforce and longitudinal load transfer. Beyond that the model's lateral force
+    // collapses (the friction ellipse leaves nothing), the car stops steering, and a
+    // linearization there couples acceleration into lateral force, which an optimizer
+    // exploits. A third of the grip stays usable longitudinally even when the lateral demand
+    // exceeds it, so the car can always brake. Within the drive and brake limits.
+    [[nodiscard]] AccelRange traction_limits(double speed, double lateral_accel,
+                                             double grip_fraction) const;
 
     // Slip angles of steady cornering on curvature `curvature` (1/m, positive left) at
     // `speed`, where each axle carries its share m v^2 kappa of the centripetal force. Beyond an
