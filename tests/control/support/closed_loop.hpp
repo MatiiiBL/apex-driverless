@@ -7,9 +7,9 @@
 #include "apex/control/controller.hpp"
 #include "apex/core/trajectory.hpp"
 
-#include "test_plant.hpp"
+#include "plant.hpp"
 
-// A controller and the test plant in a loop at the stack's 50 Hz, with the true state as the
+// A controller and the simulated car in a loop at the stack's 50 Hz, with the true state as the
 // estimate: the tests' closed-loop harness.
 namespace apex::control::testing {
 
@@ -25,7 +25,7 @@ struct LoopSample {
 
 // Runs for `duration` seconds. `reference_at` gives the reference for each call, so a test can
 // replan it.
-inline std::vector<LoopSample> run_loop(Controller& controller, TestPlant& plant,
+inline std::vector<LoopSample> run_loop(Controller& controller, Plant& plant,
                                         const std::function<const Trajectory&(Time)>& reference_at,
                                         double duration) {
     std::vector<LoopSample> samples;
@@ -49,7 +49,7 @@ inline std::vector<LoopSample> run_loop(Controller& controller, TestPlant& plant
     return samples;
 }
 
-inline std::vector<LoopSample> run_loop(Controller& controller, TestPlant& plant,
+inline std::vector<LoopSample> run_loop(Controller& controller, Plant& plant,
                                         const Trajectory& reference, double duration) {
     return run_loop(
         controller, plant, [&reference](Time) -> const Trajectory& { return reference; }, duration);

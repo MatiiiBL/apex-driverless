@@ -15,8 +15,8 @@
 #include "apex/core/track.hpp"
 
 #include "closed_loop.hpp"
+#include "plant.hpp"
 #include "references.hpp"
-#include "test_plant.hpp"
 
 // Behaviour every controller must show, whatever its law: it converges onto a line and a
 // circle, respects the actuator limits, survives replanned references and the end of an open
@@ -25,7 +25,7 @@ namespace apex::control {
 namespace {
 
 using testing::LoopSample;
-using testing::TestPlant;
+using testing::Plant;
 
 class ControllerBehaviour : public ::testing::TestWithParam<ControllerKind> {
 protected:
@@ -44,7 +44,7 @@ std::string kind_name(const ::testing::TestParamInfo<ControllerKind>& info) {
 
 TEST_P(ControllerBehaviour, ConvergesOntoAStraightLine) {
     const Trajectory line = testing::straight_reference({0.0, 0.0}, 0.0, 300.0, 10.0);
-    TestPlant plant(params_, {5.0, 1.0, 0.0}, 10.0);
+    Plant plant(params_, {5.0, 1.0, 0.0}, 10.0);
     const auto controller = make();
     const std::vector<LoopSample> samples = testing::run_loop(*controller, plant, line, 6.0);
     EXPECT_LT(testing::max_lateral_after(samples, 4.0), 0.05);
@@ -55,7 +55,7 @@ TEST_P(ControllerBehaviour, ConvergesOntoAStraightLine) {
 TEST_P(ControllerBehaviour, ConvergesOntoACircle) {
     // 20 m radius at 9 m/s: 4 m/s^2 of lateral acceleration, a quarter of the grip.
     const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 9.0);
-    TestPlant plant(params_, {0.0, -0.6, 0.0}, 9.0);
+    Plant plant(params_, {0.0, -0.6, 0.0}, 9.0);
     const auto controller = make();
     const std::vector<LoopSample> samples = testing::run_loop(*controller, plant, circle, 8.0);
     EXPECT_LT(testing::max_lateral_after(samples, 5.0), 0.15);
@@ -70,7 +70,7 @@ TEST_P(ControllerBehaviour, RespectsActuatorLimitsNearTheGripLimit) {
     limits.brake = 12.0;
     testing::apply_speed_limits(centerline, limits);
     const Pose2 start{centerline[0].position.x(), centerline[0].position.y(), centerline[0].yaw};
-    TestPlant plant(params_, start, 0.0);
+    Plant plant(params_, start, 0.0);
     const auto controller = make();
     const NominalModel model(params_);
     const std::vector<LoopSample> samples = testing::run_loop(*controller, plant, centerline, 12.0);
@@ -99,7 +99,7 @@ TEST_P(ControllerBehaviour, RespectsActuatorLimitsNearTheGripLimit) {
 // behind the car, with its own arc-length origin and length. Tracking must not notice.
 TEST_P(ControllerBehaviour, FollowsAReferenceReplannedEvery100Ms) {
     const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 8.0);
-    TestPlant plant(params_, {0.0, 0.0, 0.0}, 8.0);
+    Plant plant(params_, {0.0, 0.0, 0.0}, 8.0);
     const auto controller = make();
     Trajectory window;
     Time planned = -1.0;
@@ -137,7 +137,7 @@ TEST_P(ControllerBehaviour, StopsAtTheEndOfAnOpenReference) {
     limits.start = 8.0;
     limits.end = 0.0;
     testing::apply_speed_limits(line, limits);
-    TestPlant plant(params_, {0.0, 0.3, 0.0}, 8.0);
+    Plant plant(params_, {0.0, 0.3, 0.0}, 8.0);
     const auto controller = make();
     const std::vector<LoopSample> samples = testing::run_loop(*controller, plant, line, 16.0);
     const VehicleState& end = samples.back().truth;
@@ -186,7 +186,7 @@ TEST_P(ControllerBehaviour, NeverReturnsNonFiniteCommands) {
 TEST_P(ControllerBehaviour, IsDeterministicAndResetsCleanly) {
     const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 9.0);
     auto run = [&](Controller& controller) {
-        TestPlant plant(params_, {0.0, -0.4, 0.05}, 7.0);
+        Plant plant(params_, {0.0, -0.4, 0.05}, 7.0);
         return testing::run_loop(controller, plant, circle, 2.0);
     };
     const auto first = make();

@@ -16,8 +16,8 @@
 
 #include "closed_loop.hpp"
 #include "osqp_reference.hpp"
+#include "plant.hpp"
 #include "references.hpp"
-#include "test_plant.hpp"
 
 namespace apex::control {
 namespace {
@@ -155,8 +155,7 @@ TEST(Mpc, ItsQpsMatchOsqp) {
     Trajectory oval = make_oval_track(40.0, 12.0).centerline;
     testing::apply_speed_limits(oval, {});
     MpcController mpc(MpcConfig{}, params);
-    testing::TestPlant plant(params, {oval[0].position.x(), oval[0].position.y(), oval[0].yaw},
-                             0.0);
+    testing::Plant plant(params, {oval[0].position.x(), oval[0].position.y(), oval[0].yaw}, 0.0);
     int compared = 0;
     for (int i = 0; i < 400; ++i) {
         const ControlCommand c = mpc.compute(plant.estimate(), oval, plant.time());
@@ -200,7 +199,7 @@ TEST(Mpc, FallsBackSafelyWhenTheSolverFails) {
     config.max_qp_iterations = 1;  // no QP can converge
     MpcController mpc(config, params);
     const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 9.0);
-    testing::TestPlant plant(params, {0.0, -0.3, 0.0}, 9.0);
+    testing::Plant plant(params, {0.0, -0.3, 0.0}, 9.0);
     const std::vector<testing::LoopSample> samples = testing::run_loop(mpc, plant, circle, 3.0);
     EXPECT_EQ(mpc.stats().solver_failures, mpc.stats().calls);
     EXPECT_TRUE(mpc.plan().empty());
@@ -222,8 +221,8 @@ TEST(Mpc, DeadTimeCompensationReducesTrackingError) {
         MpcConfig config;
         config.compensate_dead_time = compensate;
         MpcController mpc(config, params);
-        testing::TestPlant plant(params, {oval[0].position.x(), oval[0].position.y(), oval[0].yaw},
-                                 0.0);
+        testing::Plant plant(params, {oval[0].position.x(), oval[0].position.y(), oval[0].yaw},
+                             0.0);
         const std::vector<testing::LoopSample> samples = testing::run_loop(mpc, plant, oval, 10.0);
         double sum = 0.0;
         for (const testing::LoopSample& s : samples) sum += s.lateral * s.lateral;
