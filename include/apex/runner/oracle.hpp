@@ -13,9 +13,13 @@
 namespace apex::runner {
 
 // Perfect perception: what an ideal cone detector would report for a LiDAR scan stamped
-// `stamp`, with the car in `truth`. Every cone within `config.max_range` of the LiDAR and
-// inside its azimuth limits, occluded or not, with its true color (confidence 1) and truth id,
-// at the true body-frame position plus N(0, sigma(r)^2 I), sigma(r) = sigma + sigma_per_meter r.
+// `stamp`, with the car in `truth`. Every cone inside the LiDAR's azimuth limits and within
+// `config.max_range` that would give at least `config.min_points` returns if unoccluded
+// (perception::expected_cone_returns: the range at which perception can see a cone at all), with
+// its true color (confidence 1) and truth id. Occlusion is ignored. The position is the true
+// body-frame center plus noise drawn from perception's nominal covariance model for that range
+// and that expected return count, N(0, S) with S = perception::observation_covariance, and S is
+// the covariance reported.
 [[nodiscard]] ConeObservations oracle_observations(std::span<const Cone> cones,
                                                    const VehicleState& truth,
                                                    const LidarGeometry& lidar,

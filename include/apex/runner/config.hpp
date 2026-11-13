@@ -6,6 +6,7 @@
 #include <nlohmann/json_fwd.hpp>
 
 #include "apex/core/vehicle.hpp"
+#include "apex/perception/cone_model.hpp"
 #include "apex/sim/sensors.hpp"
 #include "apex/stack/driver.hpp"
 #include "apex/stack/stack_config.hpp"
@@ -57,13 +58,17 @@ struct DnfRules {
 void to_json(nlohmann::json& j, const DnfRules& rules);
 void from_json(const nlohmann::json& j, DnfRules& rules);
 
-// The perfect-perception oracle's observations: every true cone within range and the LiDAR's
-// field of view, no occlusion, true colors, with isotropic Gaussian noise of standard deviation
-// sigma + sigma_per_meter * range, which is also the covariance reported.
+// The perfect-perception oracle (runner/oracle.hpp): what perception would report from a scan
+// if it never missed, never merged, never misplaced a cone beyond its own noise model and never
+// got a color wrong. The visibility test and the noise are perception's own nominal models
+// (docs/perception.md, "Covariance"), so the estimator sees the noise it is tuned for.
 struct PerceptionOracleConfig {
-    double max_range = 25.0;         // m from the LiDAR
-    double sigma = 0.03;             // m
-    double sigma_per_meter = 0.004;  // m per m of range
+    double max_range = 40.0;  // m from the LiDAR: perception's clustering range
+    // A cone is seen if an unoccluded one at its range would give at least this many returns
+    // above the ground threshold: perception's minimum cluster size.
+    std::size_t min_points = 3;
+    double ground_threshold = 0.04;  // m, perception's ground removal threshold
+    perception::CovarianceModel covariance;
 };
 
 void to_json(nlohmann::json& j, const PerceptionOracleConfig& config);

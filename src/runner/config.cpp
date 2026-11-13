@@ -90,14 +90,19 @@ void from_json(const json& j, DnfRules& r) {
 }
 
 void to_json(json& j, const PerceptionOracleConfig& c) {
-    j = {{"max_range", c.max_range}, {"sigma", c.sigma}, {"sigma_per_meter", c.sigma_per_meter}};
+    j = {{"max_range", c.max_range},
+         {"min_points", c.min_points},
+         {"ground_threshold", c.ground_threshold},
+         {"covariance", c.covariance}};
 }
 
 void from_json(const json& j, PerceptionOracleConfig& c) {
-    reject_unknown_keys(j, {"max_range", "sigma", "sigma_per_meter"}, "perception_oracle");
+    reject_unknown_keys(j, {"max_range", "min_points", "ground_threshold", "covariance"},
+                        "perception_oracle");
     read_optional(j, "max_range", c.max_range);
-    read_optional(j, "sigma", c.sigma);
-    read_optional(j, "sigma_per_meter", c.sigma_per_meter);
+    read_optional(j, "min_points", c.min_points);
+    read_optional(j, "ground_threshold", c.ground_threshold);
+    read_optional(j, "covariance", c.covariance);
 }
 
 void to_json(json& j, const RunConfig& c) {
@@ -176,9 +181,11 @@ void validate(const RunConfig& c) {
         !(c.dnf.time_limit > 0.0) || !(c.dnf.stop_timeout > 0.0)) {
         throw std::invalid_argument("dnf: thresholds must be positive");
     }
-    if (!(c.perception_oracle.max_range > 0.0) || !(c.perception_oracle.sigma >= 0.0) ||
-        !(c.perception_oracle.sigma_per_meter >= 0.0)) {
-        throw std::invalid_argument("perception_oracle: range and noise must be non-negative");
+    if (!(c.perception_oracle.max_range > 0.0) || c.perception_oracle.min_points == 0 ||
+        !(c.perception_oracle.ground_threshold >= 0.0)) {
+        throw std::invalid_argument(
+            "perception_oracle: max_range and min_points must be positive and the ground "
+            "threshold non-negative");
     }
     if (!(c.log_period > 0.0)) throw std::invalid_argument("log_period must be positive");
     if (c.track.source == TrackSpec::Source::Oval &&
