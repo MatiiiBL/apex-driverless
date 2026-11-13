@@ -83,16 +83,23 @@ int run_run(std::span<const std::string_view> args) {
 }
 
 int run_sweep(std::span<const std::string_view> args) {
-    const Options options(args, {"config", "out", "threads"}, {"quiet"});
+    const Options options(args, {"config", "out", "threads"}, {"quiet", "list"});
     const std::filesystem::path config_path = options.required("config");
-    const std::filesystem::path out = options.required("out");
     runner::SweepConfig sweep;
+    std::vector<runner::SweepRun> runs;
     try {
         sweep = read_json(config_path).get<runner::SweepConfig>();
+        runs = runner::expand_sweep(sweep);
     } catch (const std::exception& e) {
         throw std::runtime_error(config_path.string() + ": " + e.what());
     }
-    const std::vector<runner::SweepRun> runs = runner::expand_sweep(sweep);
+    if (options.has("list")) {
+        for (const runner::SweepRun& run : runs) std::cout << run.config.name << "\n";
+        std::cout << std::format("{}: {} runs\n", sweep.name.empty() ? "sweep" : sweep.name,
+                                 runs.size());
+        return 0;
+    }
+    const std::filesystem::path out = options.required("out");
     unsigned threads = sweep.threads;
     if (const auto requested = options.get_unsigned("threads")) {
         threads = static_cast<unsigned>(*requested);
@@ -174,6 +181,7 @@ const Command kSweepCommand{"sweep", "run an experiment: many runs in parallel, 
 
 Usage:
   apex sweep --config sweep.json --out DIR [--threads N] [--quiet]
+  apex sweep --config sweep.json --list
 
 Options:
   --config PATH   the sweep: a base run, the tracks and seeds to cross it with, and the
@@ -183,6 +191,7 @@ Options:
   --threads N     runs at a time (default: the config's "threads", else one per core); each
                   run is single-threaded and its result does not depend on N
   --quiet         do not print a line per finished run
+  --list          validate the sweep and print its runs without running them
 )",
                             run_sweep};
 

@@ -1,0 +1,19 @@
+{
+  "name": "Ablation: processing and actuator latency",
+  "base": {},
+  "tracks": [
+    {"seed": 1}, {"seed": 3}, {"seed": 5},
+    {"layout": "technical"}, {"layout": "flowing"}, {"layout": "mixed"}
+  ],
+  "seeds": [1, 2],
+  "variants": [
+    {"name": "nominal"},
+    {"name": "processing-2x", "patch": {"latency": {"lidar": 0.100, "camera": 0.080}}},
+    {"name": "processing-4x", "patch": {"latency": {"lidar": 0.200, "camera": 0.160}}},
+    {"name": "actuators-2x", "patch": {"vehicle": {"steer_dead_time": 0.06, "drive_dead_time": 0.04}}},
+    {"name": "actuators-2x-unmodeled", "patch": {
+      "vehicle": {"steer_dead_time": 0.06, "drive_dead_time": 0.04},
+      "nominal": {"steer_dead_time": 0.03, "drive_dead_time": 0.02}}}
+  ],
+  "threads": 3
+}

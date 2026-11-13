@@ -1,0 +1,17 @@
+{
+  "name": "Ablation: friction mismatch (the planner keeps the nominal tires' mu)",
+  "base": {},
+  "tracks": [
+    {"seed": 1}, {"seed": 3}, {"seed": 5},
+    {"layout": "technical"}, {"layout": "flowing"}, {"layout": "mixed"}
+  ],
+  "seeds": [1, 2],
+  "variants": [
+    {"name": "grip-110", "patch": {"friction_scale": 1.1}},
+    {"name": "grip-100", "patch": {"friction_scale": 1.0}},
+    {"name": "grip-90", "patch": {"friction_scale": 0.9}},
+    {"name": "grip-80", "patch": {"friction_scale": 0.8}},
+    {"name": "grip-70", "patch": {"friction_scale": 0.7}}
+  ],
+  "threads": 3
+}

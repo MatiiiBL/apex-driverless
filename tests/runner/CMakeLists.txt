@@ -59,6 +59,19 @@ apex_cli_test(sweep_short "Short sweep: 4 runs on 2 threads"
               sweep --config ${cli_data}/short_sweep.json --out ${cli_out}/sweep --quiet)
 apex_cli_test(sweep_bad_threads "non-negative integer"
               sweep --config ${cli_data}/short_sweep.json --out ${cli_out}/sweep --threads x)
+apex_cli_test(sweep_list "stanley/oval/s2.*Short sweep: 4 runs"
+              sweep --config ${cli_data}/short_sweep.json --list)
+
+# Every evaluation sweep (docs/evaluation.md) must parse and validate, run for run.
+set(evaluation_configs ${PROJECT_SOURCE_DIR}/results/runs/configs)
+foreach(experiment_runs baseline:66 controllers:36 oracles:48 noise:60 latency:60 friction:60)
+    string(REPLACE ":" ";" pair ${experiment_runs})
+    list(GET pair 0 experiment)
+    list(GET pair 1 count)
+    apex_cli_test(evaluation_${experiment} ": ${count} runs\n$"
+                  sweep --config ${evaluation_configs}/${experiment}.json --list)
+endforeach()
+
 apex_cli_test(replay_help "50 ms" replay --help)
 apex_cli_test(replay_short "short: DNF"
               replay --config ${cli_data}/short_run.json --out ${cli_out}/replay.json --quiet)

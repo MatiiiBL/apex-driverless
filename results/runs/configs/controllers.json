@@ -1,0 +1,15 @@
+{
+  "name": "Ablation: the path-tracking controller",
+  "base": {},
+  "tracks": [
+    {"seed": 1}, {"seed": 3}, {"seed": 5},
+    {"layout": "technical"}, {"layout": "flowing"}, {"layout": "mixed"}
+  ],
+  "seeds": [1, 2],
+  "variants": [
+    {"name": "pure_pursuit", "patch": {"stack": {"controller": {"kind": "pure_pursuit"}}}},
+    {"name": "stanley", "patch": {"stack": {"controller": {"kind": "stanley"}}}},
+    {"name": "mpc", "patch": {"stack": {"controller": {"kind": "mpc"}}}}
+  ],
+  "threads": 3
+}
