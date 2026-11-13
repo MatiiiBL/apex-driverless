@@ -98,7 +98,18 @@ void expect_clean_mission(const RunResult& r) {
 }
 
 TEST(FullStack, FinishesTheOvalCleanly) {
-    expect_clean_mission(run_stack(mission(oval(), 2)));
+    const RunResult r = run_stack(mission(oval(), 2));
+    expect_clean_mission(r);
+    // Telemetry: every module's compute time, with the estimator's and perception's counts.
+    for (const char* module : {"perception", "estimation_predict", "estimation_update",
+                               "exploration", "controller", "stack_scan", "stack_control"}) {
+        EXPECT_GT(r.compute.at(module).at("count").get<std::size_t>(), 0U) << module;
+    }
+    const nlohmann::json& update = r.compute.at("estimation_update");
+    EXPECT_EQ(update.at("observations"), r.compute.at("perception").at("cones_reported"));
+    EXPECT_GT(update.at("new_landmarks").get<std::size_t>(), 50U);
+    EXPECT_GT(update.at("associated").get<std::size_t>(), update.at("new_landmarks"));
+    EXPECT_GT(r.compute.at("raceline").at("optimize_s").get<double>(), 0.0);
 }
 
 TEST(FullStack, FinishesAGeneratedTrackCleanly) {

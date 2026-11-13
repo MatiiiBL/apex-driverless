@@ -413,8 +413,17 @@ nlohmann::json Stack::compute_summary() const {
         j["perception"]["cones_reported"] = s.perception.stats().cones_reported;
     }
     if (!s.oracles.state) {
-        j["estimation_predict"] = s.estimator.stats().predict_time.summary();
-        j["estimation_update"] = s.estimator.stats().update_time.summary();
+        const estimation::EstimatorStats& e = s.estimator.stats();
+        j["estimation_predict"] = e.predict_time.summary();
+        j["estimation_update"] = e.update_time.summary();
+        j["estimation_update"]["observations"] = e.observations;
+        j["estimation_update"]["associated"] = e.associated;
+        j["estimation_update"]["new_landmarks"] = e.new_landmarks;
+        j["estimation_update"]["rejected"] = e.rejected;
+        j["estimation_update"]["tentatives_started"] = e.tentatives_started;
+        j["estimation_update"]["tentatives_dropped"] = e.tentatives_dropped;
+        j["estimation_update"]["late_dropped"] = e.late_dropped;
+        j["estimation_update"]["invalid_inputs"] = e.invalid_inputs;
     }
     j["exploration"] = s.explorer.stats().plan_time.summary();
     j["exploration"]["failures"] = s.explorer.stats().failures;
