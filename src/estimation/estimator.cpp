@@ -199,7 +199,13 @@ struct StateEstimator::Impl {
         for (std::size_t k = 0; k < models.size(); ++k) {
             if (handled[k]) continue;
             ++stats.rejected;
-            if (mapping && association.min_distance2[k] > associator.new_landmark_gate() &&
+            const double d2 = association.min_distance2[k];
+            if (d2 < associator.gate()) {
+                ++stats.unpaired_in_gate;
+            } else if (d2 <= associator.new_landmark_gate()) {
+                ++stats.ambiguous;
+            }
+            if (mapping && d2 > associator.new_landmark_gate() &&
                 start_tentative(models[k], observations.cones[source[k]], observations.stamp)) {
                 map_changed = map_changed || records.back().confirmed;
             }
@@ -256,12 +262,18 @@ struct StateEstimator::Impl {
     // A new, unconfirmed landmark from an observation that matched nothing, if it is near
     // enough and not on top of an existing landmark.
     bool start_tentative(const ObservationModel& model, const ConeObservation& cone, Time stamp) {
-        if (model.z.norm() > config.slam.max_new_landmark_range) return false;
+        if (model.z.norm() > config.slam.max_new_landmark_range) {
+            ++stats.too_far_to_map;
+            return false;
+        }
         if (slam.landmark_count() >= config.slam.max_landmarks) return false;
         const Vec2 world = slam.pose().to_parent(model.z);
         const double separation = config.slam.min_landmark_separation;
         for (std::size_t j = 0; j < slam.landmark_count(); ++j) {
-            if ((slam.landmark(j) - world).squaredNorm() < separation * separation) return false;
+            if ((slam.landmark(j) - world).squaredNorm() < separation * separation) {
+                ++stats.too_close_to_map;
+                return false;
+            }
         }
         slam.add_landmark(model.z, model.R);
         LandmarkRecord record;

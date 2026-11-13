@@ -47,6 +47,12 @@ struct EstimatorStats {
     std::size_t wheel_outliers = 0;      // wheel samples down-weighted as slipping
     std::size_t failed_updates = 0;      // updates refused for a singular innovation covariance
     std::size_t recoveries = 0;          // pose covariance inflated after losing the map
+    // Why the other rejected observations (all but the tentative matches) matched nothing and
+    // started no landmark; the rest started one or came while mapping was off.
+    std::size_t unpaired_in_gate = 0;  // inside a gate, but left out of the joint hypothesis
+    std::size_t ambiguous = 0;         // between the gate and the new-landmark gate
+    std::size_t too_far_to_map = 0;    // beyond every gate, but beyond max_new_landmark_range
+    std::size_t too_close_to_map = 0;  // beyond every gate, but within min_landmark_separation
 };
 
 // Velocity estimation and cone SLAM behind one interface.
