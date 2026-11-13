@@ -68,11 +68,12 @@ struct VarianceModel {
 };
 
 // Covariance of a cone center, diagonal along (radial) and across (tangential) the line of
-// sight from the LiDAR. Defaults calibrated on simulated scans (docs/perception.md,
-// "Covariance"), so the normalized estimation error squared averages 2.
+// sight from the LiDAR. The defaults are fit_variance_model's result on the errors of the
+// evaluation's simulated scans (bench/perception/, docs/perception.md, "Covariance"), so the
+// normalized estimation error squared averages 2 there.
 struct CovarianceModel {
-    VarianceModel radial{1.4e-4, 0.0, 6.0e-3, 0.0};
-    VarianceModel tangential{2.5e-5, 0.0, 1.0e-3, 3.0e-5};
+    VarianceModel radial{2.1e-5, 1.4e-7, 3.7e-4, 0.0};
+    VarianceModel tangential{1.1e-5, 1.1e-7, 0.0, 6.2e-7};
 };
 
 void to_json(nlohmann::json& j, const VarianceModel& model);
