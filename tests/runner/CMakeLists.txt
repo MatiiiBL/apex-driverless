@@ -6,5 +6,7 @@ apex_tests(runner
         metrics_test.cpp
         oracle_test.cpp
         result_test.cpp
+        summary_test.cpp
+        sweep_test.cpp
         world_setup_test.cpp
     DEPS apex::runner)
