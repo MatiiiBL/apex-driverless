@@ -253,6 +253,11 @@ between t_scan and t_now before updating (or an equivalent, documented, approach
 or be fixed, documented) for the racing laps. The estimator must stay real-time with the 200+
 landmarks of a long track: report the update cost against landmark count.
 
+`last_associations()` gives, for the most recent `on_cones` call, the id of the confirmed landmark
+each observation was associated to, or -1 if it was rejected, gated out, initialized a new
+landmark, or fed a tentative one. It exists for the evaluation (association precision and recall)
+and reflects the estimator's decisions, never drives them.
+
 Evaluation tools (the module's own): a batch least-squares SLAM over a whole run's odometry and
 observations with ground-truth associations, as the reference for the online map error, and the
 NEES consistency check.

@@ -4,5 +4,6 @@
 apex_module(estimation_eval
     SOURCES
         consistency.cpp
+        map_metrics.cpp
         synthetic.cpp
     PUBLIC_DEPS apex::estimation)

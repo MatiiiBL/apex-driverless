@@ -1,18 +1,33 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
+#include <vector>
+
+#include <nlohmann/json_fwd.hpp>
 
 #include "apex/core/messages.hpp"
 #include "apex/core/sensor_rig.hpp"
 #include "apex/core/timing.hpp"
 #include "apex/core/types.hpp"
 #include "apex/core/vehicle.hpp"
+#include "apex/estimation/association.hpp"
+#include "apex/estimation/slam_config.hpp"
+#include "apex/estimation/velocity_filter.hpp"
 
 namespace apex::estimation {
 
 // Tunables of the velocity filter and the SLAM back end. The estimation module owns the fields
 // and their defaults (docs/estimation.md).
-struct EstimatorConfig {};
+struct EstimatorConfig {
+    VelocityFilterConfig velocity;
+    SlamConfig slam;
+    AssociationConfig association;
+};
+
+// {"velocity": {...}, "slam": {...}, "association": {...}}; missing keys keep their defaults.
+void to_json(nlohmann::json& j, const EstimatorConfig& config);
+void from_json(const nlohmann::json& j, EstimatorConfig& config);
 
 struct EstimatorStats {
     LatencyStats predict_time;  // wall-clock time per IMU-driven prediction
@@ -21,6 +36,16 @@ struct EstimatorStats {
     std::size_t associated = 0;  // matched to an existing landmark
     std::size_t new_landmarks = 0;
     std::size_t rejected = 0;  // gated out or pending confirmation
+
+    std::size_t tentative_matches = 0;  // of the rejected: matched to an unconfirmed landmark
+    std::size_t tentatives_started = 0;
+    std::size_t tentatives_dropped = 0;  // unconfirmed landmarks that timed out
+    std::size_t late_dropped = 0;        // observations older than the odometry history
+    std::size_t invalid_inputs = 0;      // non-finite or out-of-order messages ignored
+    std::size_t ambiguous_scans = 0;     // scans where observations competed for landmarks
+    std::size_t search_exhausted = 0;    // scans where the JCBB node budget ran out
+    std::size_t wheel_outliers = 0;      // wheel samples down-weighted as slipping
+    std::size_t failed_updates = 0;      // updates refused for a singular innovation covariance
 };
 
 // Velocity estimation and cone SLAM behind one interface.
@@ -56,6 +81,11 @@ public:
     [[nodiscard]] bool mapping() const;
 
     [[nodiscard]] const EstimatorStats& stats() const;
+
+    // For the most recent on_cones call, element i is the id of the confirmed landmark that
+    // observation i was associated to, or -1 if it was rejected, gated out, initialized a new
+    // landmark, or fed a tentative one. Evaluation only: it reflects decisions, never drives them.
+    [[nodiscard]] const std::vector<std::int32_t>& last_associations() const;
 
 private:
     struct Impl;

@@ -5,6 +5,8 @@ apex_module(estimation
         chi_square.cpp
         dead_reckoning.cpp
         ekf_slam.cpp
+        estimator.cpp
+        landmark_records.cpp
         lateral_model.cpp
         odometry.cpp
         slam_config.cpp

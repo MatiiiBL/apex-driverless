@@ -10,15 +10,18 @@ namespace apex::estimation {
 // Tunables of the SLAM back end: motion noise, observation handling and landmark management.
 // docs/estimation.md derives the defaults.
 struct SlamConfig {
-    // The pose moves by the velocity filter's estimate. Its error is not white: it is modelled
-    // as a Gauss-Markov process with this correlation time, whose integral grows like white
-    // noise of density 2 tau Sigma_v, plus the floors below for what the filter does not model.
-    double velocity_correlation_time = 0.2;  // s
-    double position_noise_density = 0.02;    // m/sqrt(s)
-    double yaw_noise_density = 0.002;        // rad/sqrt(s)
-    // The car is told its start pose; this is how well.
-    double initial_position_std = 0.01;  // m
-    double initial_yaw_std = 0.002;      // rad
+    // The pose moves by the velocity filter's estimate. Its error is modelled as a Gauss-Markov
+    // process with this correlation time, whose integral grows like white noise of density
+    // 2 tau Sigma_v, plus the floors below for what the filter does not model (accelerometer
+    // bias, the IMU's offset from the CoG, the bias error's slow yaw drift). Most of the
+    // velocity error is wheel-noise jitter that averages out within milliseconds; 50 ms leaves a
+    // margin for the slower errors of slip.
+    double velocity_correlation_time = 0.05;  // s
+    double position_noise_density = 0.01;     // m/sqrt(s)
+    double yaw_noise_density = 0.001;         // rad/sqrt(s)
+    // The car is told its start pose (the map frame is defined there); this is how well.
+    double initial_position_std = 0.005;  // m
+    double initial_yaw_std = 0.0005;      // rad
 
     // Perception's covariances are scaled, then floored, before use.
     double observation_noise_scale = 1.0;
