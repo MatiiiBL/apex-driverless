@@ -185,8 +185,10 @@ VehicleModel::Evaluation VehicleModel::evaluate(const Vector& x) const {
     }
     f.fx_front = fx_front;
     f.fx_rear = fx_rear;
+    // Rolling resistance also acts at rest, as static friction (see the hold below), so a drive
+    // force smaller than it does not make the car creep.
     const double resistance =
-        vx > 0.0 ? p.drag(vx) + p.rolling_resistance * (p.mass * kGravity + downforce) : 0.0;
+        p.drag(v_air) + p.rolling_resistance * (p.mass * kGravity + downforce);
 
     // Dynamic model.
     f.slip_front = std::atan2(vy + p.lf * r, vx) - steer;
