@@ -22,14 +22,15 @@ namespace apex::planning {
 
 struct SpeedProfileConfig {
     // Safety factor on the nominal tires' friction coefficient: the profile plans with
-    // grip_factor * mu on both axes of the friction ellipse. In (0, 1].
+    // grip_factor * mu on each axle's friction ellipse. In (0, 1].
     double grip_factor = 0.85;
     // Speed cap (m/s) on top of the car's own gearing limit, VehicleParams::max_speed.
     double max_speed = 30.0;
 };
 
-// Fills speed and accel along `path` from a g-g-v envelope of the nominal car (friction ellipse
-// with downforce, power and drive-force limits, drag) by forward-backward integration.
+// Fills speed and accel along `path` from a g-g-v envelope of the nominal car (each axle's
+// friction ellipse with its share of the forces, downforce and load transfer; power and
+// drive-force limits; drag) by forward-backward integration (apex/planning/ggv.hpp).
 // An open path starts at `start_speed` and ends at `end_speed`; a closed path is periodic and
 // ignores both.
 void apply_speed_profile(Trajectory& path, const VehicleParams& nominal,

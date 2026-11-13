@@ -7,8 +7,10 @@
 
 #include "apex/core/angles.hpp"
 #include "apex/core/track.hpp"
+#include "apex/core/vehicle.hpp"
 #include "apex/planning/ggv.hpp"
 #include "apex/planning/planning.hpp"
+#include "apex/sim/vehicle_model.hpp"
 
 namespace apex::planning {
 namespace {
@@ -49,6 +51,32 @@ SpeedProfileConfig uncapped(double grip = 0.85) {
 // Downforce per v^2 (N s^2 / m^2).
 double downforce_coefficient(const VehicleParams& car) {
     return 0.5 * car.air_density * car.downforce_area;
+}
+
+// How much of each axle's friction ellipse the car uses at speed v with a total lateral tire
+// force `lateral` and longitudinal tire force `fx` (positive driving), worked out from the
+// vehicle parameters independently of GgvEnvelope: normal loads with downforce and load
+// transfer, the longitudinal split of the drive or the brakes, the lateral split of steady
+// cornering. 1 is the ellipse's edge.
+struct AxleUse {
+    double front;
+    double rear;
+};
+AxleUse axle_use(const VehicleParams& car, double grip_factor, double v, double lateral,
+                 double fx) {
+    const double length = car.wheelbase();
+    const double q = downforce_coefficient(car);
+    const double transfer = car.cg_height * fx / length;
+    const double load_front =
+        car.mass * kGravity * car.lr / length + car.aero_balance_front * q * v * v - transfer;
+    const double load_rear = car.mass * kGravity * car.lf / length +
+                             (1.0 - car.aero_balance_front) * q * v * v + transfer;
+    const double split = fx >= 0.0 ? car.drive_split_front : car.brake_split_front;
+    const auto use = [&](double longitudinal, double side, double mu, double load) {
+        return std::hypot(longitudinal, side) / (grip_factor * mu * load);
+    };
+    return {use(split * fx, car.lr / length * lateral, car.front_tire.mu, load_front),
+            use((1.0 - split) * fx, car.lf / length * lateral, car.rear_tire.mu, load_rear)};
 }
 
 TEST(SpeedProfile, CircleMatchesTheClosedFormWithDownforce) {
@@ -92,22 +120,14 @@ TEST(SpeedProfile, CircleWithDragSitsOnTheFrictionEllipse) {
     const double v = path[0].speed;
     for (const TrajectoryPoint& p : path.points()) EXPECT_NEAR(p.speed, v, 1e-9);
 
-    // Steady state: the tires carry v^2 / r sideways and the drive force that balances drag
-    // and rolling resistance, exactly at the ellipse's edge.
+    // Steady state: the tires carry m v^2 / r sideways and the drive force that balances drag
+    // and rolling resistance; the more loaded of the two axles is exactly at its ellipse's edge.
     const double q = downforce_coefficient(car);
-    const double load = car.mass * kGravity + q * v * v;
-    const double resistance = car.drag(v) + car.rolling_resistance * load;
-    const double f = config.grip_factor;
-    const double long_limit = f * car.front_tire.mu * load;
-    const double w_front = car.lr / car.wheelbase();
-    const double lateral_limit =
-        f * car.front_tire.mu *
-        (car.mass * kGravity * w_front + car.aero_balance_front * q * v * v) /
-        w_front;  // front axle limits this car
-    const double lateral = car.mass * v * v / 15.0;
-    const double ellipse =
-        std::pow(resistance / long_limit, 2) + std::pow(lateral / lateral_limit, 2);
-    EXPECT_NEAR(ellipse, 1.0, 1e-9);
+    const double resistance =
+        car.drag(v) + car.rolling_resistance * (car.mass * kGravity + q * v * v);
+    const AxleUse use = axle_use(car, config.grip_factor, v, car.mass * v * v / 15.0, resistance);
+    EXPECT_NEAR(std::max(use.front, use.rear), 1.0, 1e-9);
+    EXPECT_LT(std::min(use.front, use.rear), 1.0);
 
     // Slower than without drag.
     Trajectory frictionless = circle(15.0);
@@ -115,9 +135,12 @@ TEST(SpeedProfile, CircleWithDragSitsOnTheFrictionEllipse) {
     EXPECT_LT(v, frictionless[0].speed);
 }
 
-// Straight-line braking with tire-limited deceleration b(v) = a0 + a2 v^2 (downforce adds grip,
-// drag and rolling resistance help): u = v^2 obeys du/dsigma = 2 (a0 + a2 u) going back from
-// the stop, so v(sigma) = sqrt(a0 / a2 (exp(2 a2 sigma) - 1)).
+// Straight-line braking, tire-limited. Braking B moves h B / L of load from the rear to the
+// front, and the rear takes 40% of B, so the rear runs out first: (1 - s) B <= k (N_r - h B / L)
+// gives B = k N_r / (1 - s + k h / L), with N_r = m g lf / L + (1 - beta) q v^2. With drag and
+// rolling resistance helping, the deceleration is b(v) = a0 + a2 v^2, and u = v^2 obeys
+// du/dsigma = 2 (a0 + a2 u) going back from the stop, so v(sigma) = sqrt(a0 / a2 (exp(2 a2
+// sigma) - 1)).
 TEST(SpeedProfile, TireLimitedBrakingMatchesClosedForm) {
     VehicleParams car;
     car.max_speed = 100.0;
@@ -127,10 +150,23 @@ TEST(SpeedProfile, TireLimitedBrakingMatchesClosedForm) {
     apply_speed_profile(path, car, config, 30.0, 0.0);
 
     const double q = downforce_coefficient(car);
-    const double f_mu = config.grip_factor * car.front_tire.mu;
-    const double a0 = f_mu * kGravity + car.rolling_resistance * kGravity;
-    const double a2 =
-        (f_mu * q + 0.5 * car.air_density * car.drag_area + car.rolling_resistance * q) / car.mass;
+    const double k = config.grip_factor * car.rear_tire.mu;
+    const double denominator = 1.0 - car.brake_split_front + k * car.cg_height / car.wheelbase();
+    const double a0 =
+        k * kGravity * car.lf / car.wheelbase() / denominator + car.rolling_resistance * kGravity;
+    const double a2 = (k * (1.0 - car.aero_balance_front) * q / denominator +
+                       0.5 * car.air_density * car.drag_area + car.rolling_resistance * q) /
+                      car.mass;
+    // The front, which gains the load, could brake harder at every speed.
+    for (const double v : {0.0, 30.0}) {
+        const AxleUse use = axle_use(car, config.grip_factor, v, 0.0,
+                                     -k *
+                                         (car.mass * kGravity * car.lf / car.wheelbase() +
+                                          (1.0 - car.aero_balance_front) * q * v * v) /
+                                         denominator);
+        EXPECT_NEAR(use.rear, 1.0, 1e-12);
+        EXPECT_LT(use.front, 1.0);
+    }
     for (const TrajectoryPoint& p : path.points()) {
         const double sigma = path.length() - p.s;
         if (sigma > 15.0) continue;
@@ -166,11 +202,13 @@ TEST(SpeedProfile, BrakeForceLimitedBrakingMatchesClosedForm) {
 }
 
 // Drive-force-limited acceleration from rest: du/ds = 2 (F / m - c_rr g - c2 u), so
-// u(s) = (c0 / c2) (1 - exp(-2 c2 s)).
+// u(s) = (c0 / c2) (1 - exp(-2 c2 s)). The drive force is set below the front axle's traction
+// (2.4 kN at rest, next test).
 TEST(SpeedProfile, DriveForceLimitedAccelerationMatchesClosedForm) {
     VehicleParams car;
     car.max_speed = 100.0;
     car.max_power = 1e9;
+    car.max_drive_force = 2000.0;
     Trajectory path = straight(200.0);
     apply_speed_profile(path, car, uncapped(), 0.0, 0.0);
 
@@ -182,6 +220,77 @@ TEST(SpeedProfile, DriveForceLimitedAccelerationMatchesClosedForm) {
         if (p.s > 40.0) break;
         const double expected = std::sqrt(c0 / c2 * (1.0 - std::exp(-2.0 * c2 * p.s)));
         EXPECT_NEAR(p.speed, expected, 2e-3 * expected + 1e-9) << "s = " << p.s;
+    }
+}
+
+// Traction-limited acceleration from rest. Driving moves load to the rear, and the front takes
+// 40% of the force: s F <= k (N_f - h F / L) gives F = k N_f / (s + k h / L), at rest 2.4 kN
+// of the motors' 3 kN. With resistance, du/ds = 2 (c0 + c2 u), so u(s) = (c0 / c2)
+// (exp(2 c2 s) - 1).
+TEST(SpeedProfile, TractionLimitedAccelerationIsTheFrontAxles) {
+    VehicleParams car;
+    car.max_speed = 100.0;
+    car.max_power = 1e9;
+    car.max_drive_force = 1e6;
+    const SpeedProfileConfig config = uncapped();
+    Trajectory path = straight(200.0);
+    apply_speed_profile(path, car, config, 0.0, 0.0);
+
+    const double q = downforce_coefficient(car);
+    const double k = config.grip_factor * car.front_tire.mu;
+    const double denominator = car.drive_split_front + k * car.cg_height / car.wheelbase();
+    const double c0 =
+        k * kGravity * car.lr / car.wheelbase() / denominator - car.rolling_resistance * kGravity;
+    const double c2 = (k * car.aero_balance_front * q / denominator -
+                       0.5 * car.air_density * car.drag_area - car.rolling_resistance * q) /
+                      car.mass;
+    for (const TrajectoryPoint& p : path.points()) {
+        if (p.s > 40.0) break;
+        const double expected = std::sqrt(c0 / c2 * (std::exp(2.0 * c2 * p.s) - 1.0));
+        EXPECT_NEAR(p.speed, expected, 2e-3 * expected + 1e-9) << "s = " << p.s;
+    }
+}
+
+// Braking into a corner: the envelope's braking force leaves exactly one axle at the edge of
+// its friction ellipse, the rear (it loses load and still carries lf / L of the cornering
+// force), and asks no axle for more.
+TEST(SpeedProfile, BrakingInACornerSaturatesTheRearAxleExactly) {
+    const VehicleParams car;
+    const SpeedProfileConfig config;
+    const GgvEnvelope ggv(car, config);
+    for (const double v : {10.0, 18.0, 25.0}) {
+        const double curvature = 0.5 * ggv.lateral_limit(v) / (v * v);  // half the grip sideways
+        const double brake = ggv.tire_brake_force(v, curvature);
+        const AxleUse use =
+            axle_use(car, config.grip_factor, v, car.mass * v * v * curvature, -brake);
+        EXPECT_NEAR(use.rear, 1.0, 1e-9) << "v = " << v;
+        EXPECT_LT(use.front, 1.0) << "v = " << v;
+        // Less than the whole car's ellipse would allow.
+        const double whole_car = std::sqrt(1.0 - 0.25) * config.grip_factor * car.front_tire.mu *
+                                 (car.mass * kGravity + downforce_coefficient(car) * v * v);
+        EXPECT_LT(brake, 0.9 * whole_car) << "v = " << v;
+    }
+}
+
+// Against the simulator's own tire forces: with the grip factor at 1, the envelope's largest
+// braking force on a straight is exactly where the simulated rear axle reaches traction, under
+// the normal loads the simulator computes.
+TEST(SpeedProfile, BrakingLimitIsTheSimulatorsRearTraction) {
+    VehicleParams car;
+    car.max_brake_force = 1e6;
+    const GgvEnvelope ggv(car, {.grip_factor = 1.0, .max_speed = 100.0});
+    for (const double v : {5.0, 15.0, 25.0}) {
+        const double brake = ggv.tire_brake_force(v, 0.0);
+        sim::VehicleModel model(car);
+        VehicleState state;
+        state.vx = v;
+        state.force = -brake;
+        model.reset(state);
+        const sim::TireForces& forces = model.tire_forces();
+        EXPECT_NEAR(-forces.fx_rear, car.rear_tire.mu * forces.fz_rear, 1e-6 * brake)
+            << "v = " << v;
+        EXPECT_LT(-forces.fx_front, car.front_tire.mu * forces.fz_front) << "v = " << v;
+        EXPECT_NEAR(forces.fx_front + forces.fx_rear, -brake, 1e-6 * brake) << "v = " << v;
     }
 }
 
