@@ -481,16 +481,15 @@ oval, four laps each (results/control/stack*):
 | both oracles | MPC | 9/9 | 37.13 | 10.24 | 0.00 | 0.00 |
 | both oracles | Stanley | 9/9 | 35.73 | 10.27 | 0.00 | 0.00 |
 | both oracles | pure pursuit | 9/9 | 38.48 | 10.29 | 0.67 | 0.11 |
-| full stack | MPC | 9/9 | 37.15 | 10.25 | 0.44 | 0.22 |
-| full stack | Stanley | 9/9 | 35.84 | 10.29 | 0.00 | 0.00 |
-| full stack | pure pursuit | 9/9 | 38.55 | 10.31 | 0.44 | 0.00 |
+| full stack | MPC | 9/9 | 37.13 | 10.25 | 0.00 | 0.00 |
+| full stack | Stanley | 9/9 | 35.79 | 10.29 | 0.00 | 0.00 |
+| full stack | pure pursuit | 9/9 | 38.52 | 10.30 | 0.44 | 0.00 |
 
-The MPC's lap 1 is now clean on every track, with or without the oracles, 1.4 s slower on
-average than Stanley's (it brakes for the end of each short path the planner hands it). Its
-cones in the full stack all come from one track (generated 7, 4 cones and 2 excursions, all in
-the second after the switch to the raceline; see Limitations). Pure pursuit knocked 5-6 cones
-per run in lap 1 with a 1.5 m minimum lookahead, all at walking pace in tight corners; the 2 m
-minimum ("Pure pursuit") brings that to under one.
+The MPC now runs all four laps of every track without a cone or an excursion, with or without
+the oracles; its lap 1 is 1.3 s slower on average than Stanley's (it brakes for the end of each
+short path the planner hands it). Pure pursuit knocked 5-6 cones per run in lap 1 with a 1.5 m
+minimum lookahead, all at walking pace in tight corners; the 2 m minimum ("Pure pursuit") brings
+that to under one.
 
 ## Reproducing
 
@@ -508,10 +507,11 @@ The benchmarks and sweeps are deterministic apart from their timings.
 
 - The evaluation uses the true state. Estimation noise and latency, and the 100 ms replanning of
   lap 1, are exercised by the stack's runs ("Lap 1") and by tests with replanned paths.
-- At the switch to the raceline the car can start outside the raceline's bounds; on one
-  generated track without oracles the MPC then knocked 4 cones within a second. The lateral
-  bound's stiff penalty, active from the first stage, is the likely cause; widening the bounds
-  to include the car's position at the start is a candidate fix.
+- At the switch to the raceline the car can start outside the raceline's bounds, and the
+  lateral bound's stiff penalty is then active from the first stage. Before the estimator's
+  yaw-rate bias state reached main, that cost one generated track 4 cones within a second of
+  the switch, without oracles; it no longer shows, but widening the bounds to include the car's
+  position at the start would remove the mechanism.
 - Pure pursuit still knocks a cone every two or three runs in the stack's lap 1, at walking
   pace in tight corners; Stanley, which steers on the front axle's errors rather than a point
   ahead, is the safer geometric controller there.

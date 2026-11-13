@@ -1,91 +1,36 @@
 [
   {
     "association_precision": 1.0,
-    "association_recall": 0.9906376788859337,
+    "association_recall": 0.9906099926282717,
     "completed": 9,
     "compute": {
       "controller": {
-        "p50_us": 273.52777777777777,
-        "p99_us": 719.791
+        "p50_us": 307.94888888888886,
+        "p99_us": 454.125
       },
       "estimation_predict": {
-        "p50_us": 0.15233333333333332,
-        "p99_us": 0.29200000000000004
+        "p50_us": 0.167,
+        "p99_us": 0.25
       },
       "estimation_update": {
-        "p50_us": 92.39799999999998,
-        "p99_us": 633.5419999999999
+        "p50_us": 100.17133333333334,
+        "p99_us": 721.0
       },
       "exploration": {
-        "p50_us": 38.666666666666664,
-        "p99_us": 102.08399999999999
+        "p50_us": 42.120444444444445,
+        "p99_us": 110.083
       },
       "perception": {
-        "p50_us": 212.13422222222223,
-        "p99_us": 370.375
+        "p50_us": 235.75922222222223,
+        "p99_us": 303.375
       },
       "stack_control": {
-        "p50_us": 273.55100000000004,
-        "p99_us": 720.0419999999999
+        "p50_us": 307.98133333333334,
+        "p99_us": 463.917
       },
       "stack_scan": {
-        "p50_us": 319.199,
-        "p99_us": 899.666
-      }
-    },
-    "cones_hit": 0.4444444444444444,
-    "dnf_reasons": {},
-    "errors": 0,
-    "gap_pairs": 0,
-    "gap_to_oracle": null,
-    "lap1": 37.15412723798906,
-    "localization_lap1": 0.0803225287923626,
-    "localization_racing": 0.04011943529087279,
-    "map_coverage": 1.0,
-    "map_rms": 0.03373710653692445,
-    "max_lateral_true": 2.998676237986559,
-    "off_course": 0.2222222222222222,
-    "penalty_seconds": 3.111111111111111,
-    "racing_best": 10.252820368503606,
-    "racing_mean": 22.59890983044425,
-    "runs": 9,
-    "stopped": 9,
-    "tracking_racing": 0.07032809486698229,
-    "variant": "mpc",
-    "yaw_racing": 0.0005212632937325786
-  },
-  {
-    "association_precision": 1.0,
-    "association_recall": 0.9908082110417361,
-    "completed": 9,
-    "compute": {
-      "controller": {
-        "p50_us": 7.657666666666667,
-        "p99_us": 9.458
-      },
-      "estimation_predict": {
-        "p50_us": 0.16611111111111113,
-        "p99_us": 0.20900000000000002
-      },
-      "estimation_update": {
-        "p50_us": 97.25455555555556,
-        "p99_us": 680.375
-      },
-      "exploration": {
-        "p50_us": 40.111111111111114,
-        "p99_us": 109.417
-      },
-      "perception": {
-        "p50_us": 224.34255555555555,
-        "p99_us": 302.459
-      },
-      "stack_control": {
-        "p50_us": 7.777555555555556,
-        "p99_us": 9.666
-      },
-      "stack_scan": {
-        "p50_us": 336.2916666666667,
-        "p99_us": 982.791
+        "p50_us": 351.4675555555555,
+        "p99_us": 1005.958
       }
     },
     "cones_hit": 0.0,
@@ -93,54 +38,109 @@
     "errors": 0,
     "gap_pairs": 0,
     "gap_to_oracle": null,
-    "lap1": 35.837977326687245,
-    "localization_lap1": 0.08474885066520085,
-    "localization_racing": 0.04269187356458587,
+    "lap1": 37.12599492708938,
+    "localization_lap1": 0.07316646813279637,
+    "localization_racing": 0.04033019872458989,
     "map_coverage": 1.0,
-    "map_rms": 0.03714426703008022,
-    "max_lateral_true": 0.8994490226522467,
+    "map_rms": 0.033886258590482346,
+    "max_lateral_true": 0.7739597806792009,
     "off_course": 0.0,
     "penalty_seconds": 0.0,
-    "racing_best": 10.285455040566344,
-    "racing_mean": 22.52828749865798,
+    "racing_best": 10.252374078666577,
+    "racing_mean": 22.521817256423393,
     "runs": 9,
     "stopped": 9,
-    "tracking_racing": 0.10901418123195708,
-    "variant": "stanley",
-    "yaw_racing": 0.000558540421140172
+    "tracking_racing": 0.03942503924444027,
+    "variant": "mpc",
+    "yaw_racing": 0.0005556755518404519
   },
   {
     "association_precision": 1.0,
-    "association_recall": 0.9899021415402071,
+    "association_recall": 0.9909642264522814,
     "completed": 9,
     "compute": {
       "controller": {
-        "p50_us": 14.870444444444445,
-        "p99_us": 20.291
+        "p50_us": 8.115777777777778,
+        "p99_us": 10.625
       },
       "estimation_predict": {
-        "p50_us": 0.16644444444444445,
+        "p50_us": 0.167,
         "p99_us": 0.20900000000000002
       },
       "estimation_update": {
-        "p50_us": 98.11577777777778,
-        "p99_us": 677.375
+        "p50_us": 102.31022222222222,
+        "p99_us": 769.9169999999999
       },
       "exploration": {
-        "p50_us": 41.27311111111111,
-        "p99_us": 132.625
+        "p50_us": 43.24066666666666,
+        "p99_us": 127.33300000000001
       },
       "perception": {
-        "p50_us": 226.0557777777778,
-        "p99_us": 322.917
+        "p50_us": 241.824,
+        "p99_us": 332.04200000000003
       },
       "stack_control": {
-        "p50_us": 14.985999999999999,
-        "p99_us": 20.458
+        "p50_us": 8.245333333333333,
+        "p99_us": 10.792
       },
       "stack_scan": {
-        "p50_us": 340.31466666666665,
-        "p99_us": 960.667
+        "p50_us": 360.30111111111114,
+        "p99_us": 1067.75
+      }
+    },
+    "cones_hit": 0.0,
+    "dnf_reasons": {},
+    "errors": 0,
+    "gap_pairs": 0,
+    "gap_to_oracle": null,
+    "lap1": 35.79417877999711,
+    "localization_lap1": 0.07105405830976141,
+    "localization_racing": 0.04053268501438272,
+    "map_coverage": 1.0,
+    "map_rms": 0.03413301039416834,
+    "max_lateral_true": 0.8780593997267953,
+    "off_course": 0.0,
+    "penalty_seconds": 0.0,
+    "racing_best": 10.286221509783726,
+    "racing_mean": 22.527645721028968,
+    "runs": 9,
+    "stopped": 9,
+    "tracking_racing": 0.10902801193871454,
+    "variant": "stanley",
+    "yaw_racing": 0.0006080958858245675
+  },
+  {
+    "association_precision": 1.0,
+    "association_recall": 0.9900943028049585,
+    "completed": 9,
+    "compute": {
+      "controller": {
+        "p50_us": 15.782333333333334,
+        "p99_us": 20.417
+      },
+      "estimation_predict": {
+        "p50_us": 0.167,
+        "p99_us": 0.20900000000000002
+      },
+      "estimation_update": {
+        "p50_us": 101.51833333333333,
+        "p99_us": 759.75
+      },
+      "exploration": {
+        "p50_us": 44.282666666666664,
+        "p99_us": 114.25
+      },
+      "perception": {
+        "p50_us": 240.28699999999995,
+        "p99_us": 325.625
+      },
+      "stack_control": {
+        "p50_us": 15.911888888888889,
+        "p99_us": 20.583
+      },
+      "stack_scan": {
+        "p50_us": 358.1574444444444,
+        "p99_us": 1072.25
       }
     },
     "cones_hit": 0.4444444444444444,
@@ -148,20 +148,20 @@
     "errors": 0,
     "gap_pairs": 0,
     "gap_to_oracle": null,
-    "lap1": 38.54519469864426,
-    "localization_lap1": 0.08111376531876562,
-    "localization_racing": 0.041889699771520794,
+    "lap1": 38.523584613594416,
+    "localization_lap1": 0.05803955117336698,
+    "localization_racing": 0.03674083668801363,
     "map_coverage": 1.0,
-    "map_rms": 0.035147825743920905,
-    "max_lateral_true": 1.6987884170979877,
+    "map_rms": 0.029818468513672796,
+    "max_lateral_true": 1.5390128484731134,
     "off_course": 0.0,
     "penalty_seconds": 0.8888888888888888,
-    "racing_best": 10.30670740566875,
-    "racing_mean": 22.58776010660036,
+    "racing_best": 10.304365706589053,
+    "racing_mean": 22.58674663433106,
     "runs": 9,
     "stopped": 9,
-    "tracking_racing": 0.11138065803962152,
+    "tracking_racing": 0.11154040828240139,
     "variant": "pure_pursuit",
-    "yaw_racing": 0.0005216979909878723
+    "yaw_racing": 0.0005130737728159861
   }
 ]

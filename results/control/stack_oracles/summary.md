@@ -16,7 +16,7 @@ Compute time per call, p50 / worst p99 (µs):
 
 | Module | mpc | stanley | pure_pursuit |
 |---|---|---|---|
-| controller | 287 / 438 | 8 / 12 | 15 / 22 |
-| exploration | 57 / 116 | 60 / 147 | 60 / 123 |
-| stack_control | 287 / 439 | 8 / 12 | 15 / 22 |
-| stack_scan | 6 / 116 | 6 / 141 | 6 / 120 |
+| controller | 302 / 446 | 8 / 15 | 16 / 21 |
+| exploration | 61 / 127 | 63 / 144 | 64 / 132 |
+| stack_control | 302 / 448 | 8 / 15 | 16 / 21 |
+| stack_scan | 6 / 121 | 6 / 121 | 6 / 124 |
