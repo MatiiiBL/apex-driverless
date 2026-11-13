@@ -41,11 +41,56 @@ void apply_speed_profile(Trajectory& path, const VehicleParams& nominal,
 
 // ---- Lap 1: exploration ----
 
-struct ExplorationConfig {};
+struct ExplorationConfig {
+    // Cones triangulated: within cone_range (m) of the car and at most behind_distance (m)
+    // behind it, the closest max_cones of them.
+    double cone_range = 25.0;
+    double behind_distance = 4.0;
+    std::size_t max_cones = 80;
+
+    // Beam search over sequences of triangulation edges, from an edge whose midpoint is ahead
+    // of the car within start_radius (m).
+    std::size_t beam_width = 12;
+    std::size_t max_edges = 24;
+    double max_path_length = 30.0;  // m along the midpoints
+    double start_radius = 6.0;
+
+    // Hard limits: an edge the path crosses spans the track, min_width to max_width (m)
+    // measured across the direction the path arrives from, and at most max_edge_length long; the
+    // cone line between two crossed edges is at most max_cone_spacing long; the path turns at most
+    // max_turn_deg between consecutive midpoints (and from the car's heading at the start).
+    double min_width = 2.0;
+    double max_width = 6.5;
+    double max_edge_length = 10.5;
+    double max_cone_spacing = 11.0;
+    double max_turn_deg = 45.0;
+
+    // Scores, per crossed edge, all dimensionless; the path with the lowest total wins.
+    double track_width = 3.5;  // m: width = width_weight ((w - track_width) / track_width)^2
+    double width_weight = 2.0;
+    double curvature_scale = 0.15;  // 1/m: curvature = curvature_weight (kappa / scale)^2
+    double curvature_weight = 0.5;
+    double color_weight = 2.5;  // per cone on the wrong side, times its color confidence
+    double cone_spacing =
+        5.0;  // m: spacing = spacing_weight ((l - cone_spacing)+ / cone_spacing)^2
+    double spacing_weight = 1.0;
+    double heading_scale_deg = 30.0;  // heading = heading_weight (turn from the car / scale)^2
+    double heading_weight = 1.0;
+    double length_reward = 1.0;  // subtracted per meter of path
+
+    // The best midpoint sequence is smoothed (Whittaker, this cutoff wavelength in m), sampled
+    // every path_spacing (m), and given a speed profile that reaches 0 m/s stop_margin (m)
+    // before its end. Shorter paths than min_path_length (m) count as no path.
+    double smoothing_wavelength = 8.0;
+    double path_spacing = 0.5;
+    double stop_margin = 1.0;
+    double min_path_length = 3.0;
+    SpeedProfileConfig speed{.grip_factor = 0.7, .max_speed = 12.0};
+};
 
 struct ExplorationStats {
     LatencyStats plan_time;
-    std::size_t plans = 0;
+    std::size_t plans = 0;     // plan() calls
     std::size_t failures = 0;  // plan() found no path
 };
 
@@ -159,6 +204,8 @@ struct Raceline {
 
 void to_json(nlohmann::json& j, const SpeedProfileConfig& config);
 void from_json(const nlohmann::json& j, SpeedProfileConfig& config);
+void to_json(nlohmann::json& j, const ExplorationConfig& config);
+void from_json(const nlohmann::json& j, ExplorationConfig& config);
 void to_json(nlohmann::json& j, const TrackModelConfig& config);
 void from_json(const nlohmann::json& j, TrackModelConfig& config);
 void to_json(nlohmann::json& j, const RacelineConfig& config);

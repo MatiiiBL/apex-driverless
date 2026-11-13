@@ -3,7 +3,9 @@ apex_module(planning
     SOURCES
         config_json.cpp
         delaunay.cpp
+        exploration.cpp
         ggv.cpp
+        midpoint_search.cpp
         predicates.cpp
         qp_solver.cpp
         raceline.cpp

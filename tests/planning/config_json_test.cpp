@@ -22,6 +22,20 @@ TEST(PlanningConfigJson, SpeedProfileRoundTripAndPartialOverride) {
     EXPECT_THROW(json::parse(R"({"grip": 0.7})").get<SpeedProfileConfig>(), std::invalid_argument);
 }
 
+TEST(PlanningConfigJson, ExplorationRoundTripAndPartialOverride) {
+    ExplorationConfig config;
+    config.beam_width = 20;
+    config.speed.max_speed = 9.0;
+    const auto back = json(config).get<ExplorationConfig>();
+    EXPECT_EQ(back.beam_width, 20U);
+    EXPECT_DOUBLE_EQ(back.speed.max_speed, 9.0);
+
+    const auto partial = json::parse(R"({"color_weight": 8.0})").get<ExplorationConfig>();
+    EXPECT_DOUBLE_EQ(partial.color_weight, 8.0);
+    EXPECT_DOUBLE_EQ(partial.speed.grip_factor, ExplorationConfig{}.speed.grip_factor);
+    EXPECT_THROW(json::parse(R"({"beam": 3})").get<ExplorationConfig>(), std::invalid_argument);
+}
+
 TEST(PlanningConfigJson, RacelineRoundTripWithNestedSpeedProfile) {
     RacelineConfig config;
     config.iterations = 5;

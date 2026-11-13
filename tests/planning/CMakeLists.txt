@@ -1,14 +1,15 @@
 # Tests may link apex::sim to generate realistic data, even for the car's modules.
 
-# Imperfect cone maps and lap-1 drives made from a track's true cones; the evaluations in
-# bench/planning use them too.
-add_library(apex_planning_test_support STATIC support/cone_maps.cpp)
+# Imperfect cone maps and lap-1 drives made from a track's true cones, and the exploration
+# planner's evaluation on them; the evaluations in bench/planning use them too.
+add_library(apex_planning_test_support STATIC support/cone_maps.cpp support/exploration_eval.cpp)
 target_include_directories(apex_planning_test_support PUBLIC support)
-target_link_libraries(apex_planning_test_support PUBLIC apex::core PRIVATE apex_warnings)
+target_link_libraries(apex_planning_test_support PUBLIC apex::planning PRIVATE apex_warnings)
 
 set(planning_test_sources
     config_json_test.cpp
     delaunay_test.cpp
+    exploration_test.cpp
     predicates_test.cpp
     qp_solver_test.cpp
     raceline_test.cpp

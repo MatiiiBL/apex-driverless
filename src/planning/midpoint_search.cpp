@@ -1,0 +1,247 @@
+#include "apex/planning/midpoint_search.hpp"
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <utility>
+#include <vector>
+
+#include "apex/core/angles.hpp"
+#include "apex/core/geometry.hpp"
+#include "apex/planning/delaunay.hpp"
+#include "apex/planning/predicates.hpp"
+
+namespace apex::planning {
+
+namespace {
+
+using Index = std::int32_t;
+
+// Steps between midpoints shorter than this (m) keep the previous direction: their own
+// direction is mostly cone noise.
+constexpr double kMinStep = 0.5;
+
+double square(double x) {
+    return x * x;
+}
+
+// A candidate path, as its last crossed edge and a link to the rest.
+struct Node {
+    Index triangle = -1;  // entered by crossing the edge; -1 beyond the convex hull
+    Index entry = -1;     // that edge's index in `triangle` (the vertex opposite it)
+    Index parent = -1;    // index into the search's nodes, -1 for the first edge
+    Index left = -1;
+    Index right = -1;
+    Vec2 point = Vec2::Zero();      // the edge's midpoint
+    Vec2 direction = Vec2::Zero();  // of travel, unit
+    double step = 0.0;              // from the previous point (m)
+    double length = 0.0;
+    double cost = 0.0;
+};
+
+class Search {
+public:
+    Search(std::span<const SearchCone> cones, const Pose2& car, const ExplorationConfig& config)
+        : cones_(cones), config_(config), car_(car) {
+        std::vector<Vec2> points;
+        points.reserve(cones.size());
+        for (const SearchCone& cone : cones) points.push_back(cone.position);
+        mesh_ = delaunay_triangulation(points);
+        best_entry_.assign(3 * mesh_.triangles.size(), std::numeric_limits<double>::infinity());
+        max_turn_ = deg_to_rad(config.max_turn_deg);
+        heading_scale_ = deg_to_rad(config.heading_scale_deg);
+    }
+
+    std::optional<MidpointPath> run() {
+        std::vector<Index> frontier = start();
+        for (std::size_t depth = 1; depth < config_.max_edges && !frontier.empty(); ++depth) {
+            std::vector<Index> candidates;
+            for (const Index n : frontier) expand(n, candidates);
+            keep_best(candidates);
+            frontier = std::move(candidates);
+        }
+        if (nodes_.empty()) return std::nullopt;
+        Index best = 0;
+        for (Index n = 1; n < static_cast<Index>(nodes_.size()); ++n) {
+            if (node(n).cost < node(best).cost) best = n;
+        }
+        return backtrack(best);
+    }
+
+private:
+    [[nodiscard]] const Node& node(Index n) const { return nodes_[static_cast<std::size_t>(n)]; }
+    [[nodiscard]] const Vec2& cone(Index i) const {
+        return cones_[static_cast<std::size_t>(i)].position;
+    }
+    [[nodiscard]] const std::array<Index, 3>& vertices(Index t) const {
+        return mesh_.triangles[static_cast<std::size_t>(t)];
+    }
+
+    // The car as the path's origin: a node with no edge, heading where the car heads.
+    [[nodiscard]] Node origin() const {
+        Node n;
+        n.point = car_.position();
+        n.direction = heading_vector(car_.yaw);
+        return n;
+    }
+
+    // First edges: every edge with its midpoint ahead of the car within start_radius, crossed
+    // away from the car. A triangle's edge u -> v (counter-clockwise, so the triangle is on its
+    // left) with the car strictly on its right is crossed into the triangle, with u on the
+    // path's left; a hull edge with the car on its inner side is crossed out of the hull.
+    std::vector<Index> start() {
+        const Node from = origin();
+        std::vector<Index> created;
+        for (std::size_t t = 0; t < mesh_.triangles.size(); ++t) {
+            const auto& v = mesh_.triangles[t];
+            for (std::size_t i = 0; i < 3; ++i) {
+                const Index u = v[(i + 1) % 3];
+                const Index w = v[(i + 2) % 3];
+                const Vec2 middle = 0.5 * (cone(u) + cone(w));
+                const Vec2 local = car_.to_local(middle);
+                if (local.x() <= 0.0 || local.norm() > config_.start_radius) continue;
+                const int side = orientation(cone(u), cone(w), car_.position());
+                const auto ti = static_cast<Index>(t);
+                const auto ii = static_cast<Index>(i);
+                if (side < 0) {
+                    add(from, -1, u, w, 0.0, ti, ii, created);
+                } else if (side > 0 && mesh_.neighbors[t][i] < 0) {
+                    add(from, -1, w, u, 0.0, -1, -1, created);
+                }
+            }
+        }
+        keep_best(created);
+        return created;
+    }
+
+    // Children of node n: out of its triangle through either other edge.
+    void expand(Index n, std::vector<Index>& created) {
+        const Node from = node(n);
+        if (from.triangle < 0 || from.length >= config_.max_path_length) return;
+        const auto& v = vertices(from.triangle);
+        const auto& neighbors = mesh_.neighbors[static_cast<std::size_t>(from.triangle)];
+        const auto entry = static_cast<std::size_t>(from.entry);
+        for (const std::size_t exit : {(entry + 1) % 3, (entry + 2) % 3}) {
+            const Index beyond = neighbors[exit];
+            if (beyond >= 0 && visited(n, beyond)) continue;
+            // Leaving through the edge opposite vertex `exit`: v[exit + 2] is on the left. The
+            // edge not crossed joins the vertex opposite the entry to the one opposite the exit.
+            const double spacing = (cone(v[entry]) - cone(v[exit])).norm();
+            Index beyond_entry = -1;
+            if (beyond >= 0) {
+                const auto& back = mesh_.neighbors[static_cast<std::size_t>(beyond)];
+                beyond_entry = static_cast<Index>(std::distance(
+                    back.begin(), std::find(back.begin(), back.end(), from.triangle)));
+            }
+            add(from, n, v[(exit + 2) % 3], v[(exit + 1) % 3], spacing, beyond, beyond_entry,
+                created);
+        }
+    }
+
+    [[nodiscard]] bool visited(Index n, Index triangle) const {
+        for (Index k = n; k >= 0; k = node(k).parent) {
+            if (node(k).triangle == triangle) return true;
+        }
+        return false;
+    }
+
+    // Scores crossing the edge (left, right) after `from`, and records it unless a hard limit
+    // or a cheaper path into the same triangle edge rules it out.
+    void add(const Node& from, Index parent, Index left, Index right, double spacing,
+             Index triangle, Index entry, std::vector<Index>& created) {
+        Node child;
+        child.triangle = triangle;
+        child.entry = entry;
+        child.parent = parent;
+        child.left = left;
+        child.right = right;
+        child.point = 0.5 * (cone(left) + cone(right));
+        const Vec2 delta = child.point - from.point;
+        child.step = delta.norm();
+        child.direction = child.step >= kMinStep ? Vec2(delta / child.step) : from.direction;
+        child.length = from.length + child.step;
+
+        // Width across the direction the path arrives from: the direction to this edge's own
+        // midpoint would make an edge out to a stray cone look narrower than it is.
+        const Vec2 across = cone(left) - cone(right);
+        const double width = std::abs(cross(from.direction, across));
+        if (across.norm() > config_.max_edge_length || width < config_.min_width ||
+            width > config_.max_width) {
+            return;
+        }
+        const bool first = parent < 0;
+        if (!first && spacing > config_.max_cone_spacing) return;
+        double cost = from.cost - config_.length_reward * child.step;
+        cost += config_.width_weight * square((width - config_.track_width) / config_.track_width);
+        const double wrong_left = std::max(0.0, -cones_[static_cast<std::size_t>(left)].side);
+        const double wrong_right = std::max(0.0, cones_[static_cast<std::size_t>(right)].side);
+        cost += config_.color_weight * (wrong_left + wrong_right);
+        if (!first) {
+            cost += config_.spacing_weight *
+                    square(std::max(0.0, spacing - config_.cone_spacing) / config_.cone_spacing);
+        }
+        if (child.step >= kMinStep) {
+            const double turn = std::abs(std::atan2(cross(from.direction, child.direction),
+                                                    from.direction.dot(child.direction)));
+            if (turn > max_turn_) return;
+            if (first) {
+                cost += config_.heading_weight * square(turn / heading_scale_);
+            } else {
+                const double curvature = turn / std::max(kMinStep, 0.5 * (child.step + from.step));
+                cost += config_.curvature_weight * square(curvature / config_.curvature_scale);
+            }
+        }
+        child.cost = cost;
+
+        if (triangle >= 0) {
+            double& best = best_entry_[static_cast<std::size_t>(3 * triangle + entry)];
+            if (cost >= best) return;
+            best = cost;
+        }
+        created.push_back(static_cast<Index>(nodes_.size()));
+        nodes_.push_back(child);
+    }
+
+    // The beam: the cheapest beam_width candidates, ties in creation order.
+    void keep_best(std::vector<Index>& candidates) const {
+        std::stable_sort(candidates.begin(), candidates.end(),
+                         [this](Index a, Index b) { return node(a).cost < node(b).cost; });
+        if (candidates.size() > config_.beam_width) candidates.resize(config_.beam_width);
+    }
+
+    [[nodiscard]] MidpointPath backtrack(Index best) const {
+        MidpointPath path;
+        path.length = node(best).length;
+        path.cost = node(best).cost;
+        for (Index k = best; k >= 0; k = node(k).parent) {
+            path.midpoints.push_back(node(k).point);
+            path.left.push_back(node(k).left);
+            path.right.push_back(node(k).right);
+        }
+        std::reverse(path.midpoints.begin(), path.midpoints.end());
+        std::reverse(path.left.begin(), path.left.end());
+        std::reverse(path.right.begin(), path.right.end());
+        return path;
+    }
+
+    std::span<const SearchCone> cones_;
+    const ExplorationConfig& config_;
+    Pose2 car_;
+    Triangulation mesh_;
+    std::vector<Node> nodes_;
+    std::vector<double> best_entry_;  // cheapest cost into each (triangle, edge)
+    double max_turn_ = 0.0;
+    double heading_scale_ = 1.0;
+};
+
+}  // namespace
+
+std::optional<MidpointPath> search_midpoint_path(std::span<const SearchCone> cones,
+                                                 const Pose2& car,
+                                                 const ExplorationConfig& config) {
+    if (cones.size() < 3) return std::nullopt;
+    return Search(cones, car, config).run();
+}
+
+}  // namespace apex::planning

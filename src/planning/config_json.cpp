@@ -27,6 +27,47 @@ void from_json(const json& j, SpeedProfileConfig& c) {
     APEX_SPEED_FIELDS(APEX_READ)
 }
 
+#define APEX_EXPLORATION_FIELDS(X) \
+    X(cone_range)                  \
+    X(behind_distance)             \
+    X(max_cones)                   \
+    X(beam_width)                  \
+    X(max_edges)                   \
+    X(max_path_length)             \
+    X(start_radius)                \
+    X(min_width)                   \
+    X(max_width)                   \
+    X(max_edge_length)             \
+    X(max_cone_spacing)            \
+    X(max_turn_deg)                \
+    X(track_width)                 \
+    X(width_weight)                \
+    X(curvature_scale)             \
+    X(curvature_weight)            \
+    X(color_weight)                \
+    X(cone_spacing)                \
+    X(spacing_weight)              \
+    X(heading_scale_deg)           \
+    X(heading_weight)              \
+    X(length_reward)               \
+    X(smoothing_wavelength)        \
+    X(path_spacing)                \
+    X(stop_margin)                 \
+    X(min_path_length)             \
+    X(speed)
+
+void to_json(json& j, const ExplorationConfig& c) {
+    j = json::object();
+    APEX_EXPLORATION_FIELDS(APEX_WRITE)
+}
+
+void from_json(const json& j, ExplorationConfig& c) {
+    reject_unknown_keys(j, {APEX_EXPLORATION_FIELDS(APEX_NAME)}, "exploration config");
+    APEX_EXPLORATION_FIELDS(APEX_READ)
+}
+
+#undef APEX_EXPLORATION_FIELDS
+
 #define APEX_TRACK_MODEL_FIELDS(X) \
     X(reference_spacing)           \
     X(min_lateral)                 \
