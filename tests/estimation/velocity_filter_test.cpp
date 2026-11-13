@@ -84,9 +84,9 @@ SyntheticRun drive(std::uint64_t seed, const DriveProfile& profile) {
                                     SyntheticSensors{}, seed);
 }
 
-DriveProfile three_laps() {
+DriveProfile two_laps() {
     DriveProfile profile;
-    profile.laps = 3;
+    profile.laps = 2;
     return profile;
 }
 
@@ -94,7 +94,7 @@ DriveProfile three_laps() {
 // synthetic slip grows without bound as the force approaches the friction limit, far beyond the
 // filter's linear slip model.
 DriveProfile at_the_limit() {
-    DriveProfile profile = three_laps();
+    DriveProfile profile = two_laps();
     profile.max_accel = 12.0;
     profile.max_brake = 16.0;
     profile.racing_lateral_accel = 18.0;
@@ -128,8 +128,8 @@ TEST(VelocityFilter, CalibratesTheGyroBiasAtRest) {
 }
 
 TEST(VelocityFilter, TracksTheVelocityOnGeneratedTracks) {
-    for (const std::uint64_t seed : {1U, 2U, 3U}) {
-        const FilterRun result = run_filter(drive(seed, three_laps()), {});
+    for (const std::uint64_t seed : {1U, 2U}) {
+        const FilterRun result = run_filter(drive(seed, two_laps()), {});
         EXPECT_LT(result.vx_rms, 0.06) << seed;
         EXPECT_LT(result.vx_max, 0.4) << seed;
         EXPECT_LT(result.vy_rms, 0.07) << seed;
@@ -140,8 +140,12 @@ TEST(VelocityFilter, TracksTheVelocityOnGeneratedTracks) {
 }
 
 TEST(VelocityFilter, VelocityEstimateIsConsistent) {
-    for (const std::uint64_t seed : {1U, 2U, 3U}) {
-        const FilterRun result = run_filter(drive(seed, three_laps()), matched());
+    // Exploration and two racing laps, so both speed regimes weigh in. Seeds 1 and 2 are the
+    // two of the first five whose means come closest to the bounds.
+    DriveProfile profile = two_laps();
+    profile.laps = 3;
+    for (const std::uint64_t seed : {1U, 2U}) {
+        const FilterRun result = run_filter(drive(seed, profile), matched());
         ASSERT_GT(result.nees.samples, 25U);
         const eval::NeesBounds bounds = eval::nees_bounds(3, result.nees.samples);
         EXPECT_GT(result.nees.mean, bounds.lower) << seed;

@@ -44,7 +44,7 @@ public:
         if (u < peak_ratio_) {
             double lo = 0.0;
             double hi = peak_;
-            for (int i = 0; i < 60; ++i) {
+            while (hi - lo > 1e-10) {  // rad: far below any effect on the drive
                 const double mid = 0.5 * (lo + hi);
                 (force_ratio(tire_, mid) < u ? lo : hi) = mid;
             }
