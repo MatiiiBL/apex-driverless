@@ -316,6 +316,19 @@ TEST(Mpc, FallsBackSafelyWhenTheSolverFails) {
     EXPECT_LT(samples.back().truth.vx, 9.0 - 0.8 * config.fallback_decel * 2.0);
 }
 
+// After a spin the car can face back along its path, still rolling. The reference there still
+// asks for speed, and the MPC used to drive on, backwards along the path and off the track; it
+// must brake to a stop instead.
+TEST(Mpc, BrakesWhenFacingAwayFromThePath) {
+    const VehicleParams params;
+    MpcController mpc(MpcConfig{}, params);
+    const Trajectory line = testing::straight_reference({0.0, 0.0}, 0.0, 80.0, 8.0);
+    testing::Plant plant(params, {30.0, 0.5, kPi - 0.1}, 1.0);
+    const std::vector<testing::LoopSample> samples = testing::run_loop(mpc, plant, line, 2.0);
+    for (const testing::LoopSample& s : samples) EXPECT_LE(s.command.accel, 0.0) << s.time;
+    EXPECT_LT(samples.back().truth.vx, 0.05);
+}
+
 // Near the grip limit the 60 ms of steering delay matter: predicting through them must help.
 TEST(Mpc, DeadTimeCompensationReducesTrackingError) {
     VehicleParams params;

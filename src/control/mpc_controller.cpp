@@ -188,6 +188,14 @@ ControlCommand MpcController::Impl::compute(const StateEstimate& state, const Tr
         return safe_command(dt, speed, now);
     }
 
+    // Facing away from the path (after a spin) the path coordinates no longer describe the car:
+    // driving on would run the path backwards, away from where the reference goes. Brake to a
+    // stop with the steering held, as the fallback does.
+    if (std::abs(x0(kHeading)) > 0.5 * kPi) {
+        plan.clear();
+        return limit_command(previous_steer, -config.fallback_decel, last, dt, speed, model, now);
+    }
+
     // A profile that starts from rest has a zero speed but a positive acceleration: no hold.
     if (here.speed < kStandstillSpeed && here.accel <= 0.0 && predicted.vx < kStandstillSpeed) {
         plan.clear();
