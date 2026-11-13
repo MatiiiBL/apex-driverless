@@ -1,0 +1,2965 @@
+{
+  "runs": [
+    {
+      "calls": 2370,
+      "compute": {
+        "count": 2370,
+        "max_us": 3710.75,
+        "mean_us": 51.978981434599255,
+        "p50_us": 31.458000000000002,
+        "p90_us": 47.583,
+        "p99_us": 408.292
+      },
+      "compute_cpu": {
+        "count": 2370,
+        "max_us": 79.0,
+        "mean_us": 33.7181434599161,
+        "p50_us": 32.0,
+        "p90_us": 41.0,
+        "p99_us": 58.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.23938478659311,
+        23.080649399279
+      ],
+      "lateral_max": 0.15236647734540712,
+      "lateral_rms": 0.07167914603861533,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.23695182824378858,
+      "sweep": "base",
+      "track": "technical",
+      "value": 0.0
+    },
+    {
+      "calls": 2783,
+      "compute": {
+        "count": 2783,
+        "max_us": 5498.875,
+        "mean_us": 54.539242903341936,
+        "p50_us": 31.374999999999996,
+        "p90_us": 38.958000000000006,
+        "p99_us": 418.417
+      },
+      "compute_cpu": {
+        "count": 2783,
+        "max_us": 69.0,
+        "mean_us": 33.20086237872853,
+        "p50_us": 32.0,
+        "p90_us": 39.0,
+        "p99_us": 53.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.388248445392918,
+        27.191992617222326
+      ],
+      "lateral_max": 0.15882180094523343,
+      "lateral_rms": 0.06469296962613241,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.19943393230478468,
+      "sweep": "base",
+      "track": "flowing",
+      "value": 0.0
+    },
+    {
+      "calls": 2811,
+      "compute": {
+        "count": 2811,
+        "max_us": 865.25,
+        "mean_us": 35.99598790466025,
+        "p50_us": 31.167,
+        "p90_us": 36.708,
+        "p99_us": 133.583
+      },
+      "compute_cpu": {
+        "count": 2811,
+        "max_us": 76.0,
+        "mean_us": 32.74955531839285,
+        "p50_us": 32.0,
+        "p90_us": 38.0,
+        "p99_us": 52.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.60164321582862,
+        27.519102884490547
+      ],
+      "lateral_max": 0.16064557630381388,
+      "lateral_rms": 0.06725123585650125,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.21033676404925622,
+      "sweep": "base",
+      "track": "mixed",
+      "value": 0.0
+    },
+    {
+      "calls": 3117,
+      "compute": {
+        "count": 3117,
+        "max_us": 10325.208,
+        "mean_us": 45.68396791786984,
+        "p50_us": 31.5,
+        "p90_us": 41.958,
+        "p99_us": 294.5
+      },
+      "compute_cpu": {
+        "count": 3117,
+        "max_us": 102.0,
+        "mean_us": 34.060314404877055,
+        "p50_us": 32.0,
+        "p90_us": 41.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        30.681079779369547,
+        30.568091303712247
+      ],
+      "lateral_max": 0.1650436826608838,
+      "lateral_rms": 0.0759247856395904,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 30.483837423562978,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.26333001110050447,
+      "sweep": "base",
+      "track": "seed 1",
+      "value": 0.0
+    },
+    {
+      "calls": 2710,
+      "compute": {
+        "count": 2710,
+        "max_us": 15329.0,
+        "mean_us": 61.90672546125487,
+        "p50_us": 31.209,
+        "p90_us": 44.708,
+        "p99_us": 537.417
+      },
+      "compute_cpu": {
+        "count": 2710,
+        "max_us": 78.0,
+        "mean_us": 33.63357933579385,
+        "p50_us": 32.0,
+        "p90_us": 41.0,
+        "p99_us": 56.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        26.627909936071685,
+        26.49279946541552
+      ],
+      "lateral_max": 0.15697622809975006,
+      "lateral_rms": 0.06780273485590023,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 26.395653231180543,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24098834079771783,
+      "sweep": "base",
+      "track": "seed 2",
+      "value": 0.0
+    },
+    {
+      "calls": 1657,
+      "compute": {
+        "count": 1657,
+        "max_us": 3030.5409999999997,
+        "mean_us": 49.74655461677728,
+        "p50_us": 31.583,
+        "p90_us": 42.125,
+        "p99_us": 376.66700000000003
+      },
+      "compute_cpu": {
+        "count": 1657,
+        "max_us": 77.0,
+        "mean_us": 33.83524441762228,
+        "p50_us": 32.0,
+        "p90_us": 40.0,
+        "p99_us": 52.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        16.075095821530436,
+        15.966265467848526
+      ],
+      "lateral_max": 0.20489942609931217,
+      "lateral_rms": 0.07322344988515961,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 15.926730196908101,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2620702562489389,
+      "sweep": "base",
+      "track": "seed 3",
+      "value": 0.0
+    },
+    {
+      "calls": 2776,
+      "compute": {
+        "count": 2776,
+        "max_us": 4655.375,
+        "mean_us": 51.47629719020187,
+        "p50_us": 31.417,
+        "p90_us": 40.708,
+        "p99_us": 491.79200000000003
+      },
+      "compute_cpu": {
+        "count": 2776,
+        "max_us": 84.0,
+        "mean_us": 33.434798270893836,
+        "p50_us": 32.0,
+        "p90_us": 40.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.288862197840963,
+        27.14375785060808
+      ],
+      "lateral_max": 0.16030150124862574,
+      "lateral_rms": 0.06102923946727953,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.051621701770525,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.19528911025958454,
+      "sweep": "base",
+      "track": "seed 4",
+      "value": 0.0
+    },
+    {
+      "calls": 2810,
+      "compute": {
+        "count": 2810,
+        "max_us": 14559.292,
+        "mean_us": 57.84802028469761,
+        "p50_us": 31.417,
+        "p90_us": 39.042,
+        "p99_us": 403.54200000000003
+      },
+      "compute_cpu": {
+        "count": 2810,
+        "max_us": 77.0,
+        "mean_us": 33.30106761565939,
+        "p50_us": 32.0,
+        "p90_us": 40.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.61843610060176,
+        27.493280814032275
+      ],
+      "lateral_max": 0.1899143719770084,
+      "lateral_rms": 0.06835970916744954,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.41348383462286,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24480394177989723,
+      "sweep": "base",
+      "track": "seed 5",
+      "value": 0.0
+    },
+    {
+      "calls": 2372,
+      "compute": {
+        "count": 2372,
+        "max_us": 5381.6669999999995,
+        "mean_us": 50.400447301855095,
+        "p50_us": 31.417,
+        "p90_us": 44.125,
+        "p99_us": 307.583
+      },
+      "compute_cpu": {
+        "count": 2372,
+        "max_us": 91.0,
+        "mean_us": 33.64881956155204,
+        "p50_us": 32.0,
+        "p90_us": 41.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.257231652978195,
+        23.096402194682998
+      ],
+      "lateral_max": 0.11177908955222651,
+      "lateral_rms": 0.050970872063654964,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2672743241634173,
+      "sweep": "steer dead time (s)",
+      "track": "technical",
+      "value": 0.06
+    },
+    {
+      "calls": 2374,
+      "compute": {
+        "count": 2374,
+        "max_us": 8231.459,
+        "mean_us": 52.307502948610015,
+        "p50_us": 31.25,
+        "p90_us": 41.167,
+        "p99_us": 369.458
+      },
+      "compute_cpu": {
+        "count": 2374,
+        "max_us": 102.0,
+        "mean_us": 33.363942712721794,
+        "p50_us": 32.0,
+        "p90_us": 40.0,
+        "p99_us": 59.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.276930176477215,
+        23.112727763631774
+      ],
+      "lateral_max": 0.08796803220168091,
+      "lateral_rms": 0.03678911746547941,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2989022057276072,
+      "sweep": "steer dead time (s)",
+      "track": "technical",
+      "value": 0.09
+    },
+    {
+      "calls": 2378,
+      "compute": {
+        "count": 2378,
+        "max_us": 2657.5829999999996,
+        "mean_us": 42.716271656854566,
+        "p50_us": 31.417,
+        "p90_us": 37.625,
+        "p99_us": 260.875
+      },
+      "compute_cpu": {
+        "count": 2378,
+        "max_us": 73.0,
+        "mean_us": 33.27165685450001,
+        "p50_us": 32.0,
+        "p90_us": 39.0,
+        "p99_us": 54.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.320344239824287,
+        23.135623229109623
+      ],
+      "lateral_max": 0.17069328247603183,
+      "lateral_rms": 0.07852071649862992,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24576156157697968,
+      "sweep": "friction scale",
+      "track": "technical",
+      "value": 0.9
+    },
+    {
+      "calls": 2397,
+      "compute": {
+        "count": 2397,
+        "max_us": 6378.25,
+        "mean_us": 50.736675010429714,
+        "p50_us": 31.416,
+        "p90_us": 42.959,
+        "p99_us": 356.041
+      },
+      "compute_cpu": {
+        "count": 2397,
+        "max_us": 87.0,
+        "mean_us": 32.83354192740979,
+        "p50_us": 32.0,
+        "p90_us": 40.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.550680372669394,
+        23.27055778943356
+      ],
+      "lateral_max": 0.2843675110320308,
+      "lateral_rms": 0.12935168024929586,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2831201514059768,
+      "sweep": "friction scale",
+      "track": "technical",
+      "value": 0.8
+    },
+    {
+      "calls": 2377,
+      "compute": {
+        "count": 2377,
+        "max_us": 4940.959,
+        "mean_us": 50.85305931846876,
+        "p50_us": 31.458000000000002,
+        "p90_us": 47.041,
+        "p99_us": 439.375
+      },
+      "compute_cpu": {
+        "count": 2377,
+        "max_us": 81.0,
+        "mean_us": 33.96255784602477,
+        "p50_us": 32.0,
+        "p90_us": 41.0,
+        "p99_us": 56.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.275576670095337,
+        23.09778630135237
+      ],
+      "lateral_max": 0.15017207494787954,
+      "lateral_rms": 0.07191262070138006,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2377469425874924,
+      "sweep": "model mismatch",
+      "track": "technical",
+      "value": 1.0
+    },
+    {
+      "calls": 2379,
+      "compute": {
+        "count": 2379,
+        "max_us": 26997.333,
+        "mean_us": 64.28892139554442,
+        "p50_us": 31.417,
+        "p90_us": 44.083,
+        "p99_us": 307.95799999999997
+      },
+      "compute_cpu": {
+        "count": 2379,
+        "max_us": 82.0,
+        "mean_us": 33.61370323665456,
+        "p50_us": 32.0,
+        "p90_us": 41.0,
+        "p99_us": 56.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.33275448448142,
+        23.15669129589871
+      ],
+      "lateral_max": 0.17649435868318034,
+      "lateral_rms": 0.07906997432142183,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24785392639958034,
+      "sweep": "model mismatch",
+      "track": "technical",
+      "value": 2.0
+    },
+    {
+      "calls": 2784,
+      "compute": {
+        "count": 2784,
+        "max_us": 32533.833,
+        "mean_us": 69.4139683908046,
+        "p50_us": 30.083,
+        "p90_us": 61.12499999999999,
+        "p99_us": 617.417
+      },
+      "compute_cpu": {
+        "count": 2784,
+        "max_us": 101.0,
+        "mean_us": 33.095545977012144,
+        "p50_us": 31.0,
+        "p90_us": 42.0,
+        "p99_us": 60.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.40112180370953,
+        27.202569567135377
+      ],
+      "lateral_max": 0.16273988506631396,
+      "lateral_rms": 0.05032692590054997,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2255091802988314,
+      "sweep": "steer dead time (s)",
+      "track": "flowing",
+      "value": 0.06
+    },
+    {
+      "calls": 2786,
+      "compute": {
+        "count": 2786,
+        "max_us": 3017.208,
+        "mean_us": 45.90926022972002,
+        "p50_us": 29.708000000000002,
+        "p90_us": 45.708999999999996,
+        "p99_us": 346.41700000000003
+      },
+      "compute_cpu": {
+        "count": 2786,
+        "max_us": 95.0,
+        "mean_us": 31.78499641062532,
+        "p50_us": 31.0,
+        "p90_us": 39.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.419925275420066,
+        27.214817041126313
+      ],
+      "lateral_max": 0.17417522019296325,
+      "lateral_rms": 0.05134376076888257,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.30600559233799474,
+      "sweep": "steer dead time (s)",
+      "track": "flowing",
+      "value": 0.09
+    },
+    {
+      "calls": 2788,
+      "compute": {
+        "count": 2788,
+        "max_us": 7184.875,
+        "mean_us": 46.62153263988514,
+        "p50_us": 29.666999999999998,
+        "p90_us": 38.458,
+        "p99_us": 404.70799999999997
+      },
+      "compute_cpu": {
+        "count": 2788,
+        "max_us": 77.0,
+        "mean_us": 31.369081779053875,
+        "p50_us": 30.0,
+        "p90_us": 38.0,
+        "p99_us": 54.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.44176887382959,
+        27.229805683571193
+      ],
+      "lateral_max": 0.3255752534502789,
+      "lateral_rms": 0.09027421628694851,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22537036617508172,
+      "sweep": "friction scale",
+      "track": "flowing",
+      "value": 0.9
+    },
+    {
+      "calls": 2816,
+      "compute": {
+        "count": 2816,
+        "max_us": 8225.332999999999,
+        "mean_us": 53.186940340909324,
+        "p50_us": 29.791999999999998,
+        "p90_us": 39.625,
+        "p99_us": 455.791
+      },
+      "compute_cpu": {
+        "count": 2816,
+        "max_us": 84.0,
+        "mean_us": 30.289062500000487,
+        "p50_us": 30.0,
+        "p90_us": 38.0,
+        "p99_us": 54.0
+      },
+      "cones": 7,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.746792859722063,
+        27.451537104742492
+      ],
+      "lateral_max": 2.789428324015331,
+      "lateral_rms": 0.606213388549169,
+      "off_course": 2,
+      "outside_bounds_s": 2.1800000000000015,
+      "penalty_s": 34.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3469010966169013,
+      "sweep": "friction scale",
+      "track": "flowing",
+      "value": 0.8
+    },
+    {
+      "calls": 2790,
+      "compute": {
+        "count": 2790,
+        "max_us": 12577.542000000001,
+        "mean_us": 58.780483512545004,
+        "p50_us": 30.0,
+        "p90_us": 44.291,
+        "p99_us": 566.0
+      },
+      "compute_cpu": {
+        "count": 2790,
+        "max_us": 85.0,
+        "mean_us": 32.41075268817271,
+        "p50_us": 31.0,
+        "p90_us": 40.0,
+        "p99_us": 57.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.416735942989064,
+        27.210178092557108
+      ],
+      "lateral_max": 0.18400269576873737,
+      "lateral_rms": 0.0679142411785366,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.207151293088668,
+      "sweep": "model mismatch",
+      "track": "flowing",
+      "value": 1.0
+    },
+    {
+      "calls": 2790,
+      "compute": {
+        "count": 2790,
+        "max_us": 6813.125,
+        "mean_us": 50.442434408602146,
+        "p50_us": 29.75,
+        "p90_us": 41.833,
+        "p99_us": 429.916
+      },
+      "compute_cpu": {
+        "count": 2790,
+        "max_us": 76.0,
+        "mean_us": 31.70609318996479,
+        "p50_us": 31.0,
+        "p90_us": 38.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.460009051659434,
+        27.24560096265875
+      ],
+      "lateral_max": 0.3076283747150705,
+      "lateral_rms": 0.09148281540421373,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.23594175126709227,
+      "sweep": "model mismatch",
+      "track": "flowing",
+      "value": 2.0
+    },
+    {
+      "calls": 2813,
+      "compute": {
+        "count": 2813,
+        "max_us": 5490.7080000000005,
+        "mean_us": 54.3058190543904,
+        "p50_us": 29.916999999999998,
+        "p90_us": 41.083,
+        "p99_us": 632.25
+      },
+      "compute_cpu": {
+        "count": 2813,
+        "max_us": 93.0,
+        "mean_us": 32.280483469606224,
+        "p50_us": 31.0,
+        "p90_us": 38.0,
+        "p99_us": 57.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.617880308889724,
+        27.53467151611249
+      ],
+      "lateral_max": 0.11947043593906584,
+      "lateral_rms": 0.047908516493630565,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2354901566828166,
+      "sweep": "steer dead time (s)",
+      "track": "mixed",
+      "value": 0.06
+    },
+    {
+      "calls": 2814,
+      "compute": {
+        "count": 2814,
+        "max_us": 45328.875,
+        "mean_us": 77.18596943852182,
+        "p50_us": 29.584,
+        "p90_us": 41.667,
+        "p99_us": 680.791
+      },
+      "compute_cpu": {
+        "count": 2814,
+        "max_us": 85.0,
+        "mean_us": 30.99964463397359,
+        "p50_us": 30.0,
+        "p90_us": 37.0,
+        "p99_us": 53.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.639208660390977,
+        27.551058057285957
+      ],
+      "lateral_max": 0.13465387894183675,
+      "lateral_rms": 0.037962639141196686,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3036412663196218,
+      "sweep": "steer dead time (s)",
+      "track": "mixed",
+      "value": 0.09
+    },
+    {
+      "calls": 2817,
+      "compute": {
+        "count": 2817,
+        "max_us": 46045.416,
+        "mean_us": 68.05934149804766,
+        "p50_us": 30.167,
+        "p90_us": 44.292,
+        "p99_us": 465.042
+      },
+      "compute_cpu": {
+        "count": 2817,
+        "max_us": 78.0,
+        "mean_us": 32.61093361732416,
+        "p50_us": 31.0,
+        "p90_us": 40.0,
+        "p99_us": 56.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.65971107529715,
+        27.562111124840843
+      ],
+      "lateral_max": 0.19228638828018302,
+      "lateral_rms": 0.07397574560531482,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2179317044446503,
+      "sweep": "friction scale",
+      "track": "mixed",
+      "value": 0.9
+    },
+    {
+      "calls": 2830,
+      "compute": {
+        "count": 2830,
+        "max_us": 12648.416000000001,
+        "mean_us": 55.624928621908204,
+        "p50_us": 29.875,
+        "p90_us": 40.958000000000006,
+        "p99_us": 466.458
+      },
+      "compute_cpu": {
+        "count": 2830,
+        "max_us": 89.0,
+        "mean_us": 31.918727915195117,
+        "p50_us": 31.0,
+        "p90_us": 39.0,
+        "p99_us": 58.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.822097481976254,
+        27.663871820192842
+      ],
+      "lateral_max": 0.3116599012792357,
+      "lateral_rms": 0.11562023198287959,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.23605639122132377,
+      "sweep": "friction scale",
+      "track": "mixed",
+      "value": 0.8
+    },
+    {
+      "calls": 2816,
+      "compute": {
+        "count": 2816,
+        "max_us": 7785.334,
+        "mean_us": 50.90431356534113,
+        "p50_us": 30.5,
+        "p90_us": 40.125,
+        "p99_us": 254.084
+      },
+      "compute_cpu": {
+        "count": 2816,
+        "max_us": 78.0,
+        "mean_us": 32.48330965909161,
+        "p50_us": 31.0,
+        "p90_us": 39.0,
+        "p99_us": 55.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.60567227357293,
+        27.537580030308693
+      ],
+      "lateral_max": 0.1578706479163288,
+      "lateral_rms": 0.06752733197589736,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.21029357788131744,
+      "sweep": "model mismatch",
+      "track": "mixed",
+      "value": 1.0
+    },
+    {
+      "calls": 2818,
+      "compute": {
+        "count": 2818,
+        "max_us": 12430.75,
+        "mean_us": 56.666449609652645,
+        "p50_us": 30.083,
+        "p90_us": 43.708999999999996,
+        "p99_us": 463.042
+      },
+      "compute_cpu": {
+        "count": 2818,
+        "max_us": 90.0,
+        "mean_us": 32.29382540809164,
+        "p50_us": 31.0,
+        "p90_us": 40.0,
+        "p99_us": 53.0
+      },
+      "cones": 0,
+      "controller": "pure_pursuit",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.678312187136683,
+        27.580047665333304
+      ],
+      "lateral_max": 0.19121512055945408,
+      "lateral_rms": 0.07474786466910832,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22043764861904394,
+      "sweep": "model mismatch",
+      "track": "mixed",
+      "value": 2.0
+    },
+    {
+      "calls": 2358,
+      "compute": {
+        "count": 2358,
+        "max_us": 9853.125,
+        "mean_us": 27.94213994910938,
+        "p50_us": 16.333000000000002,
+        "p90_us": 19.292,
+        "p99_us": 143.833
+      },
+      "compute_cpu": {
+        "count": 2358,
+        "max_us": 58.0,
+        "mean_us": 18.06276505513173,
+        "p50_us": 17.0,
+        "p90_us": 23.0,
+        "p99_us": 37.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.11893954043779,
+        22.959372392579215
+      ],
+      "lateral_max": 0.2465047656528995,
+      "lateral_rms": 0.10540776105729172,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.28122523051145065,
+      "sweep": "base",
+      "track": "technical",
+      "value": 0.0
+    },
+    {
+      "calls": 2778,
+      "compute": {
+        "count": 2778,
+        "max_us": 1572.7079999999999,
+        "mean_us": 20.96439452843761,
+        "p50_us": 15.583999999999998,
+        "p90_us": 18.416,
+        "p99_us": 121.625
+      },
+      "compute_cpu": {
+        "count": 2778,
+        "max_us": 57.0,
+        "mean_us": 17.189344852412106,
+        "p50_us": 16.0,
+        "p90_us": 22.0,
+        "p99_us": 34.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.339887135244332,
+        27.143352113966834
+      ],
+      "lateral_max": 0.19252892674249636,
+      "lateral_rms": 0.07609139657669843,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22945842598416205,
+      "sweep": "base",
+      "track": "flowing",
+      "value": 0.0
+    },
+    {
+      "calls": 2802,
+      "compute": {
+        "count": 2802,
+        "max_us": 11364.042,
+        "mean_us": 29.93776302640973,
+        "p50_us": 16.208000000000002,
+        "p90_us": 18.791,
+        "p99_us": 145.33300000000003
+      },
+      "compute_cpu": {
+        "count": 2802,
+        "max_us": 52.0,
+        "mean_us": 17.67701641684547,
+        "p50_us": 17.0,
+        "p90_us": 22.0,
+        "p99_us": 35.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.510029128518088,
+        27.426508581112177
+      ],
+      "lateral_max": 0.22233540876797547,
+      "lateral_rms": 0.09029070352644156,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2673952828482648,
+      "sweep": "base",
+      "track": "mixed",
+      "value": 0.0
+    },
+    {
+      "calls": 3106,
+      "compute": {
+        "count": 3106,
+        "max_us": 3617.083,
+        "mean_us": 25.789728267868746,
+        "p50_us": 16.333000000000002,
+        "p90_us": 19.916,
+        "p99_us": 151.125
+      },
+      "compute_cpu": {
+        "count": 3106,
+        "max_us": 58.0,
+        "mean_us": 18.25144880875755,
+        "p50_us": 17.0,
+        "p90_us": 23.0,
+        "p99_us": 37.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        30.57244494385088,
+        30.459402382686612
+      ],
+      "lateral_max": 0.21952188490699587,
+      "lateral_rms": 0.09643981533071622,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 30.483837423562978,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3265754739825831,
+      "sweep": "base",
+      "track": "seed 1",
+      "value": 0.0
+    },
+    {
+      "calls": 2702,
+      "compute": {
+        "count": 2702,
+        "max_us": 10148.792,
+        "mean_us": 30.756098075499526,
+        "p50_us": 16.375,
+        "p90_us": 20.084,
+        "p99_us": 195.334
+      },
+      "compute_cpu": {
+        "count": 2702,
+        "max_us": 54.0,
+        "mean_us": 18.485566247224384,
+        "p50_us": 17.0,
+        "p90_us": 24.0,
+        "p99_us": 37.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        26.544699542257987,
+        26.40993094051035
+      ],
+      "lateral_max": 0.21613498714131105,
+      "lateral_rms": 0.08616443361062538,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 26.395653231180543,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2584659555162699,
+      "sweep": "base",
+      "track": "seed 2",
+      "value": 0.0
+    },
+    {
+      "calls": 1653,
+      "compute": {
+        "count": 1653,
+        "max_us": 1954.292,
+        "mean_us": 23.644736237144574,
+        "p50_us": 16.334,
+        "p90_us": 20.541,
+        "p99_us": 141.5
+      },
+      "compute_cpu": {
+        "count": 1653,
+        "max_us": 87.0,
+        "mean_us": 18.50514216575923,
+        "p50_us": 17.0,
+        "p90_us": 24.0,
+        "p99_us": 38.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        16.030481220686838,
+        15.923287459665701
+      ],
+      "lateral_max": 0.19551611691299184,
+      "lateral_rms": 0.08955364000652324,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 15.926730196908101,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3363484738567694,
+      "sweep": "base",
+      "track": "seed 3",
+      "value": 0.0
+    },
+    {
+      "calls": 2767,
+      "compute": {
+        "count": 2767,
+        "max_us": 8775.875,
+        "mean_us": 25.359581496205138,
+        "p50_us": 15.832999999999998,
+        "p90_us": 18.541,
+        "p99_us": 90.95899999999999
+      },
+      "compute_cpu": {
+        "count": 2767,
+        "max_us": 53.0,
+        "mean_us": 17.125406577521165,
+        "p50_us": 16.0,
+        "p90_us": 21.0,
+        "p99_us": 32.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.20760479701893,
+        27.056217055374272
+      ],
+      "lateral_max": 0.20796852481328393,
+      "lateral_rms": 0.08785878732748557,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.051621701770525,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.21691090150201525,
+      "sweep": "base",
+      "track": "seed 4",
+      "value": 0.0
+    },
+    {
+      "calls": 2802,
+      "compute": {
+        "count": 2802,
+        "max_us": 13167.333,
+        "mean_us": 24.992197002141342,
+        "p50_us": 16.375,
+        "p90_us": 19.167,
+        "p99_us": 85.0
+      },
+      "compute_cpu": {
+        "count": 2802,
+        "max_us": 49.0,
+        "mean_us": 17.935403283369297,
+        "p50_us": 17.0,
+        "p90_us": 22.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.540393302927768,
+        27.404790495946127
+      ],
+      "lateral_max": 0.21823527109941182,
+      "lateral_rms": 0.08960645011719798,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.41348383462286,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3333683674222711,
+      "sweep": "base",
+      "track": "seed 5",
+      "value": 0.0
+    },
+    {
+      "calls": 2362,
+      "compute": {
+        "count": 2362,
+        "max_us": 34475.708,
+        "mean_us": 55.93679254868773,
+        "p50_us": 16.208000000000002,
+        "p90_us": 18.834,
+        "p99_us": 203.542
+      },
+      "compute_cpu": {
+        "count": 2362,
+        "max_us": 74.0,
+        "mean_us": 17.933954276037536,
+        "p50_us": 17.0,
+        "p90_us": 22.0,
+        "p99_us": 38.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.15775075025208,
+        22.992648181705245
+      ],
+      "lateral_max": 0.19636033548042797,
+      "lateral_rms": 0.0787567658653229,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.35253774754347517,
+      "sweep": "steer dead time (s)",
+      "track": "technical",
+      "value": 0.06
+    },
+    {
+      "calls": 2368,
+      "compute": {
+        "count": 2368,
+        "max_us": 4267.458,
+        "mean_us": 27.381741976351297,
+        "p50_us": 16.166999999999998,
+        "p90_us": 18.75,
+        "p99_us": 219.667
+      },
+      "compute_cpu": {
+        "count": 2368,
+        "max_us": 56.0,
+        "mean_us": 17.75126689189212,
+        "p50_us": 17.0,
+        "p90_us": 22.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.23124104637361,
+        23.050777644023434
+      ],
+      "lateral_max": 0.14257006126445934,
+      "lateral_rms": 0.05171778274428664,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.5406023967007012,
+      "sweep": "steer dead time (s)",
+      "track": "technical",
+      "value": 0.09
+    },
+    {
+      "calls": 2368,
+      "compute": {
+        "count": 2368,
+        "max_us": 9072.666,
+        "mean_us": 29.6726157094594,
+        "p50_us": 16.125,
+        "p90_us": 18.833000000000002,
+        "p99_us": 139.5
+      },
+      "compute_cpu": {
+        "count": 2368,
+        "max_us": 64.0,
+        "mean_us": 17.676942567567746,
+        "p50_us": 17.0,
+        "p90_us": 21.0,
+        "p99_us": 34.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.224705231554903,
+        23.035838537326576
+      ],
+      "lateral_max": 0.23070336267650315,
+      "lateral_rms": 0.10277841213227137,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.29223197799076955,
+      "sweep": "friction scale",
+      "track": "technical",
+      "value": 0.9
+    },
+    {
+      "calls": 2388,
+      "compute": {
+        "count": 2388,
+        "max_us": 2600.875,
+        "mean_us": 20.441019262981545,
+        "p50_us": 16.333000000000002,
+        "p90_us": 18.0,
+        "p99_us": 88.834
+      },
+      "compute_cpu": {
+        "count": 2388,
+        "max_us": 53.0,
+        "mean_us": 17.603852596315118,
+        "p50_us": 17.0,
+        "p90_us": 21.0,
+        "p99_us": 33.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.46059133438162,
+        23.188671615751407
+      ],
+      "lateral_max": 0.3535186145413899,
+      "lateral_rms": 0.16264842037836877,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3127310595183722,
+      "sweep": "friction scale",
+      "track": "technical",
+      "value": 0.8
+    },
+    {
+      "calls": 2365,
+      "compute": {
+        "count": 2365,
+        "max_us": 3208.458,
+        "mean_us": 23.783828329809584,
+        "p50_us": 16.25,
+        "p90_us": 19.125,
+        "p99_us": 143.5
+      },
+      "compute_cpu": {
+        "count": 2365,
+        "max_us": 60.0,
+        "mean_us": 17.906553911205386,
+        "p50_us": 17.0,
+        "p90_us": 22.0,
+        "p99_us": 35.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.159081931676745,
+        22.978833766779136
+      ],
+      "lateral_max": 0.2460345989471255,
+      "lateral_rms": 0.1041320216923856,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2815841856600463,
+      "sweep": "model mismatch",
+      "track": "technical",
+      "value": 1.0
+    },
+    {
+      "calls": 2370,
+      "compute": {
+        "count": 2370,
+        "max_us": 4886.125,
+        "mean_us": 31.62644852320662,
+        "p50_us": 16.208000000000002,
+        "p90_us": 19.084,
+        "p99_us": 228.125
+      },
+      "compute_cpu": {
+        "count": 2370,
+        "max_us": 63.0,
+        "mean_us": 17.925316455696365,
+        "p50_us": 17.0,
+        "p90_us": 23.0,
+        "p99_us": 38.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.25015191172079,
+        23.072997049306952
+      ],
+      "lateral_max": 0.2250193101195204,
+      "lateral_rms": 0.10888672384708512,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2950866068968074,
+      "sweep": "model mismatch",
+      "track": "technical",
+      "value": 2.0
+    },
+    {
+      "calls": 2781,
+      "compute": {
+        "count": 2781,
+        "max_us": 1206.458,
+        "mean_us": 21.98986695433285,
+        "p50_us": 15.709000000000001,
+        "p90_us": 19.375,
+        "p99_us": 163.792
+      },
+      "compute_cpu": {
+        "count": 2781,
+        "max_us": 69.0,
+        "mean_us": 17.604099244876306,
+        "p50_us": 16.0,
+        "p90_us": 23.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.364053719388394,
+        27.16578850775884
+      ],
+      "lateral_max": 0.15661283875487841,
+      "lateral_rms": 0.05648423702494444,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3293283940590574,
+      "sweep": "steer dead time (s)",
+      "track": "flowing",
+      "value": 0.06
+    },
+    {
+      "calls": 657,
+      "compute": {
+        "count": 657,
+        "max_us": 3578.125,
+        "mean_us": 25.87530898021308,
+        "p50_us": 15.375000000000002,
+        "p90_us": 17.625,
+        "p99_us": 94.75
+      },
+      "compute_cpu": {
+        "count": 657,
+        "max_us": 56.0,
+        "mean_us": 16.884322678843297,
+        "p50_us": 16.0,
+        "p90_us": 21.0,
+        "p99_us": 45.0
+      },
+      "cones": 2,
+      "controller": "stanley",
+      "dnf": "left the track",
+      "finished": false,
+      "laps": [],
+      "lateral_max": 0.0,
+      "lateral_rms": 0.0,
+      "off_course": 1,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 14.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.0,
+      "sweep": "steer dead time (s)",
+      "track": "flowing",
+      "value": 0.09
+    },
+    {
+      "calls": 2784,
+      "compute": {
+        "count": 2784,
+        "max_us": 3304.834,
+        "mean_us": 22.837803160919325,
+        "p50_us": 15.542000000000002,
+        "p90_us": 18.541999999999998,
+        "p99_us": 117.292
+      },
+      "compute_cpu": {
+        "count": 2784,
+        "max_us": 54.0,
+        "mean_us": 17.131465517241622,
+        "p50_us": 16.0,
+        "p90_us": 21.0,
+        "p99_us": 33.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.399732382258573,
+        27.189753533481834
+      ],
+      "lateral_max": 0.23469770846519178,
+      "lateral_rms": 0.0941635647557549,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24048460133037836,
+      "sweep": "friction scale",
+      "track": "flowing",
+      "value": 0.9
+    },
+    {
+      "calls": 2794,
+      "compute": {
+        "count": 2794,
+        "max_us": 1395.5829999999999,
+        "mean_us": 18.848326413743617,
+        "p50_us": 15.667000000000002,
+        "p90_us": 18.416,
+        "p99_us": 76.209
+      },
+      "compute_cpu": {
+        "count": 2794,
+        "max_us": 56.0,
+        "mean_us": 17.23049391553366,
+        "p50_us": 16.0,
+        "p90_us": 21.0,
+        "p99_us": 33.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.50266110712903,
+        27.26904462928971
+      ],
+      "lateral_max": 0.48299504705332136,
+      "lateral_rms": 0.17606601361653204,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.26190307479533986,
+      "sweep": "friction scale",
+      "track": "flowing",
+      "value": 0.8
+    },
+    {
+      "calls": 2785,
+      "compute": {
+        "count": 2785,
+        "max_us": 21352.959000000003,
+        "mean_us": 37.611816876122006,
+        "p50_us": 15.792,
+        "p90_us": 19.958000000000002,
+        "p99_us": 262.25
+      },
+      "compute_cpu": {
+        "count": 2785,
+        "max_us": 68.0,
+        "mean_us": 17.90017953321396,
+        "p50_us": 17.0,
+        "p90_us": 24.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.370571793057596,
+        27.16647749139224
+      ],
+      "lateral_max": 0.19506900293186943,
+      "lateral_rms": 0.07854668275440198,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22994473552351372,
+      "sweep": "model mismatch",
+      "track": "flowing",
+      "value": 1.0
+    },
+    {
+      "calls": 2787,
+      "compute": {
+        "count": 2787,
+        "max_us": 3159.3329999999996,
+        "mean_us": 23.458488697524103,
+        "p50_us": 15.542000000000002,
+        "p90_us": 18.625,
+        "p99_us": 209.417
+      },
+      "compute_cpu": {
+        "count": 2787,
+        "max_us": 77.0,
+        "mean_us": 17.356297093649392,
+        "p50_us": 16.0,
+        "p90_us": 22.0,
+        "p99_us": 38.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.432921690968637,
+        27.221655561213904
+      ],
+      "lateral_max": 0.26728807625276524,
+      "lateral_rms": 0.11661831161786827,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24526404433715437,
+      "sweep": "model mismatch",
+      "track": "flowing",
+      "value": 2.0
+    },
+    {
+      "calls": 2805,
+      "compute": {
+        "count": 2805,
+        "max_us": 3105.125,
+        "mean_us": 25.527497326203086,
+        "p50_us": 16.333000000000002,
+        "p90_us": 19.541,
+        "p99_us": 126.625
+      },
+      "compute_cpu": {
+        "count": 2805,
+        "max_us": 67.0,
+        "mean_us": 18.022816399287382,
+        "p50_us": 17.0,
+        "p90_us": 23.0,
+        "p99_us": 34.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.54321228884206,
+        27.456277285364433
+      ],
+      "lateral_max": 0.17744654802477722,
+      "lateral_rms": 0.06687158156965564,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.34623955659990363,
+      "sweep": "steer dead time (s)",
+      "track": "mixed",
+      "value": 0.06
+    },
+    {
+      "calls": 2814,
+      "compute": {
+        "count": 2814,
+        "max_us": 3136.2920000000004,
+        "mean_us": 23.790088486140597,
+        "p50_us": 16.208000000000002,
+        "p90_us": 19.083,
+        "p99_us": 152.792
+      },
+      "compute_cpu": {
+        "count": 2814,
+        "max_us": 53.0,
+        "mean_us": 17.722814498934266,
+        "p50_us": 17.0,
+        "p90_us": 22.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.649640869772085,
+        27.53599622330902
+      ],
+      "lateral_max": 0.44091208630533074,
+      "lateral_rms": 0.10067479555811527,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.5762260161708198,
+      "sweep": "steer dead time (s)",
+      "track": "mixed",
+      "value": 0.09
+    },
+    {
+      "calls": 2809,
+      "compute": {
+        "count": 2809,
+        "max_us": 5447.0830000000005,
+        "mean_us": 28.290638305446688,
+        "p50_us": 16.25,
+        "p90_us": 19.916999999999998,
+        "p99_us": 174.5
+      },
+      "compute_cpu": {
+        "count": 2809,
+        "max_us": 60.0,
+        "mean_us": 18.09754360982586,
+        "p50_us": 17.0,
+        "p90_us": 24.0,
+        "p99_us": 38.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.5845460178759,
+        27.487621448977187
+      ],
+      "lateral_max": 0.18562455355907767,
+      "lateral_rms": 0.08868362275481059,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.27508473770279623,
+      "sweep": "friction scale",
+      "track": "mixed",
+      "value": 0.9
+    },
+    {
+      "calls": 2822,
+      "compute": {
+        "count": 2822,
+        "max_us": 9205.458,
+        "mean_us": 31.454779588943957,
+        "p50_us": 15.832999999999998,
+        "p90_us": 19.458,
+        "p99_us": 205.5
+      },
+      "compute_cpu": {
+        "count": 2822,
+        "max_us": 75.0,
+        "mean_us": 17.685683912119377,
+        "p50_us": 17.0,
+        "p90_us": 23.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.729385686479166,
+        27.595972606931863
+      ],
+      "lateral_max": 0.3074181727747637,
+      "lateral_rms": 0.13066880912367673,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2870332853785064,
+      "sweep": "friction scale",
+      "track": "mixed",
+      "value": 0.8
+    },
+    {
+      "calls": 2807,
+      "compute": {
+        "count": 2807,
+        "max_us": 8858.833999999999,
+        "mean_us": 30.625328108300693,
+        "p50_us": 15.375000000000002,
+        "p90_us": 18.625,
+        "p99_us": 173.833
+      },
+      "compute_cpu": {
+        "count": 2807,
+        "max_us": 71.0,
+        "mean_us": 17.043462771642655,
+        "p50_us": 16.0,
+        "p90_us": 22.0,
+        "p99_us": 36.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.517739175382488,
+        27.449105170348894
+      ],
+      "lateral_max": 0.21683789040937151,
+      "lateral_rms": 0.08918082202371737,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.26822922160984203,
+      "sweep": "model mismatch",
+      "track": "mixed",
+      "value": 1.0
+    },
+    {
+      "calls": 2812,
+      "compute": {
+        "count": 2812,
+        "max_us": 2878.916,
+        "mean_us": 23.189602062588964,
+        "p50_us": 15.375000000000002,
+        "p90_us": 17.958,
+        "p99_us": 156.0
+      },
+      "compute_cpu": {
+        "count": 2812,
+        "max_us": 55.0,
+        "mean_us": 16.901849217639004,
+        "p50_us": 16.0,
+        "p90_us": 22.0,
+        "p99_us": 35.0
+      },
+      "cones": 0,
+      "controller": "stanley",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.617631905447823,
+        27.519372906103932
+      ],
+      "lateral_max": 0.2060718699121205,
+      "lateral_rms": 0.09611267589228818,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.28129516830753415,
+      "sweep": "model mismatch",
+      "track": "mixed",
+      "value": 2.0
+    },
+    {
+      "calls": 2372,
+      "compute": {
+        "count": 2372,
+        "max_us": 17095.875,
+        "mean_us": 792.7984021922439,
+        "p50_us": 591.667,
+        "p90_us": 1137.25,
+        "p99_us": 5315.916
+      },
+      "compute_cpu": {
+        "count": 2372,
+        "max_us": 2147.0,
+        "mean_us": 529.6391231028675,
+        "p50_us": 530.0,
+        "p90_us": 649.0,
+        "p99_us": 741.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.26766785594877,
+        23.01629772023898
+      ],
+      "lateral_max": 0.06991256802760659,
+      "lateral_rms": 0.019592705956940706,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22392627301015156,
+      "sweep": "base",
+      "track": "technical",
+      "value": 0.0
+    },
+    {
+      "calls": 2781,
+      "compute": {
+        "count": 2781,
+        "max_us": 19600.916999999998,
+        "mean_us": 851.9015152822715,
+        "p50_us": 618.666,
+        "p90_us": 1257.9170000000001,
+        "p99_us": 4916.4580000000005
+      },
+      "compute_cpu": {
+        "count": 2781,
+        "max_us": 2378.0,
+        "mean_us": 552.1646889608056,
+        "p50_us": 576.0,
+        "p90_us": 664.0,
+        "p99_us": 744.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.346603739812405,
+        27.11410610062753
+      ],
+      "lateral_max": 0.04896130154036139,
+      "lateral_rms": 0.016929701052478083,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.1777131418146889,
+      "sweep": "base",
+      "track": "flowing",
+      "value": 0.0
+    },
+    {
+      "calls": 2807,
+      "compute": {
+        "count": 2807,
+        "max_us": 41430.208000000006,
+        "mean_us": 968.5609828998932,
+        "p50_us": 614.292,
+        "p90_us": 1495.625,
+        "p99_us": 6879.75
+      },
+      "compute_cpu": {
+        "count": 2807,
+        "max_us": 1557.0,
+        "mean_us": 539.9166369789823,
+        "p50_us": 552.0,
+        "p90_us": 666.0,
+        "p99_us": 751.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.559771671364462,
+        27.430255531676018
+      ],
+      "lateral_max": 0.06005630068428998,
+      "lateral_rms": 0.01774656583841162,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2102556491972282,
+      "sweep": "base",
+      "track": "mixed",
+      "value": 0.0
+    },
+    {
+      "calls": 3113,
+      "compute": {
+        "count": 3113,
+        "max_us": 52454.875,
+        "mean_us": 1057.4623128814656,
+        "p50_us": 653.458,
+        "p90_us": 1647.792,
+        "p99_us": 7784.125
+      },
+      "compute_cpu": {
+        "count": 3113,
+        "max_us": 1803.0,
+        "mean_us": 552.6935432059116,
+        "p50_us": 574.0,
+        "p90_us": 677.0,
+        "p99_us": 767.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        30.61790942063549,
+        30.498148505200614
+      ],
+      "lateral_max": 0.06129496996016375,
+      "lateral_rms": 0.01933746904143279,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 30.483837423562978,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24243826412197642,
+      "sweep": "base",
+      "track": "seed 1",
+      "value": 0.0
+    },
+    {
+      "calls": 2705,
+      "compute": {
+        "count": 2705,
+        "max_us": 29245.084000000003,
+        "mean_us": 997.2819279112739,
+        "p50_us": 632.7909999999999,
+        "p90_us": 1516.2920000000001,
+        "p99_us": 7099.6669999999995
+      },
+      "compute_cpu": {
+        "count": 2705,
+        "max_us": 2347.0,
+        "mean_us": 552.3637707948253,
+        "p50_us": 574.0,
+        "p90_us": 670.0,
+        "p99_us": 762.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        26.53726787137721,
+        26.40368791775885
+      ],
+      "lateral_max": 0.06084016782253716,
+      "lateral_rms": 0.0190383938249507,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 26.395653231180543,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2130779145619558,
+      "sweep": "base",
+      "track": "seed 2",
+      "value": 0.0
+    },
+    {
+      "calls": 1656,
+      "compute": {
+        "count": 1656,
+        "max_us": 31949.75,
+        "mean_us": 968.158763285025,
+        "p50_us": 637.75,
+        "p90_us": 1436.875,
+        "p99_us": 6878.9580000000005
+      },
+      "compute_cpu": {
+        "count": 1656,
+        "max_us": 2305.0,
+        "mean_us": 563.6304347826091,
+        "p50_us": 584.0,
+        "p90_us": 675.0,
+        "p99_us": 776.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        16.036737581924935,
+        15.931833358651648
+      ],
+      "lateral_max": 0.05561762155705474,
+      "lateral_rms": 0.02146645556409187,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 15.926730196908101,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.25115669742415536,
+      "sweep": "base",
+      "track": "seed 3",
+      "value": 0.0
+    },
+    {
+      "calls": 2778,
+      "compute": {
+        "count": 2778,
+        "max_us": 50880.666,
+        "mean_us": 1062.7499863210944,
+        "p50_us": 640.125,
+        "p90_us": 1588.125,
+        "p99_us": 9065.416
+      },
+      "compute_cpu": {
+        "count": 2778,
+        "max_us": 1854.0,
+        "mean_us": 557.2343412526997,
+        "p50_us": 583.0,
+        "p90_us": 675.0,
+        "p99_us": 753.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.339405301881,
+        27.06061133980146
+      ],
+      "lateral_max": 0.052980749319147695,
+      "lateral_rms": 0.016376875589513902,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.051621701770525,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.1899656906031671,
+      "sweep": "base",
+      "track": "seed 4",
+      "value": 0.0
+    },
+    {
+      "calls": 2811,
+      "compute": {
+        "count": 2811,
+        "max_us": 50546.792,
+        "mean_us": 1103.2063987904655,
+        "p50_us": 656.667,
+        "p90_us": 1824.459,
+        "p99_us": 8617.875
+      },
+      "compute_cpu": {
+        "count": 2811,
+        "max_us": 1704.0,
+        "mean_us": 554.173959445037,
+        "p50_us": 575.0,
+        "p90_us": 673.0,
+        "p99_us": 779.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.640890465425848,
+        27.4190608225341
+      ],
+      "lateral_max": 0.06963964437306953,
+      "lateral_rms": 0.01892374527636452,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.41348383462286,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2255234603193299,
+      "sweep": "base",
+      "track": "seed 5",
+      "value": 0.0
+    },
+    {
+      "calls": 2377,
+      "compute": {
+        "count": 2377,
+        "max_us": 10887.707999999999,
+        "mean_us": 891.0944938998729,
+        "p50_us": 636.75,
+        "p90_us": 1405.625,
+        "p99_us": 5713.9169999999995
+      },
+      "compute_cpu": {
+        "count": 2377,
+        "max_us": 2051.0,
+        "mean_us": 549.5250315523757,
+        "p50_us": 568.0,
+        "p90_us": 670.0,
+        "p99_us": 756.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.320754014686646,
+        23.069389940857658
+      ],
+      "lateral_max": 0.15170732969196066,
+      "lateral_rms": 0.059499298844366014,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24920750325703145,
+      "sweep": "steer dead time (s)",
+      "track": "technical",
+      "value": 0.06
+    },
+    {
+      "calls": 2386,
+      "compute": {
+        "count": 2386,
+        "max_us": 42646.625,
+        "mean_us": 1207.5078579212075,
+        "p50_us": 641.75,
+        "p90_us": 1866.167,
+        "p99_us": 14677.333
+      },
+      "compute_cpu": {
+        "count": 2386,
+        "max_us": 1451.0,
+        "mean_us": 535.9597652975694,
+        "p50_us": 534.0,
+        "p90_us": 657.0,
+        "p99_us": 757.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.407724004694582,
+        23.15529474380911
+      ],
+      "lateral_max": 0.2831372927505078,
+      "lateral_rms": 0.11875909176277533,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2940835077100148,
+      "sweep": "steer dead time (s)",
+      "track": "technical",
+      "value": 0.09
+    },
+    {
+      "calls": 2385,
+      "compute": {
+        "count": 2385,
+        "max_us": 36823.125,
+        "mean_us": 999.2852088050303,
+        "p50_us": 613.25,
+        "p90_us": 1542.417,
+        "p99_us": 7599.334
+      },
+      "compute_cpu": {
+        "count": 2385,
+        "max_us": 1902.0,
+        "mean_us": 547.336687631026,
+        "p50_us": 562.0,
+        "p90_us": 666.0,
+        "p99_us": 770.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.401798892948356,
+        23.15083448756351
+      ],
+      "lateral_max": 0.12387419371614311,
+      "lateral_rms": 0.060707362149372515,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.23836093200429342,
+      "sweep": "friction scale",
+      "track": "technical",
+      "value": 0.9
+    },
+    {
+      "calls": 2433,
+      "compute": {
+        "count": 2433,
+        "max_us": 48008.833,
+        "mean_us": 1052.0307801068639,
+        "p50_us": 626.2919999999999,
+        "p90_us": 1525.0839999999998,
+        "p99_us": 9530.583
+      },
+      "compute_cpu": {
+        "count": 2433,
+        "max_us": 1939.0,
+        "mean_us": 549.3789560213731,
+        "p50_us": 567.0,
+        "p90_us": 672.0,
+        "p99_us": 768.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.87706543654409,
+        23.613808642095265
+      ],
+      "lateral_max": 0.5650992602424865,
+      "lateral_rms": 0.2279117326771587,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2861030615695953,
+      "sweep": "friction scale",
+      "track": "technical",
+      "value": 0.8
+    },
+    {
+      "calls": 2371,
+      "compute": {
+        "count": 2371,
+        "max_us": 65439.708,
+        "mean_us": 905.8534027836348,
+        "p50_us": 612.875,
+        "p90_us": 1343.667,
+        "p99_us": 6026.541
+      },
+      "compute_cpu": {
+        "count": 2371,
+        "max_us": 1568.0,
+        "mean_us": 539.7549557148885,
+        "p50_us": 553.0,
+        "p90_us": 654.0,
+        "p99_us": 748.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.27126684166875,
+        22.988532372161036
+      ],
+      "lateral_max": 0.06855015799462076,
+      "lateral_rms": 0.021847977413644217,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22510787203869553,
+      "sweep": "model mismatch",
+      "track": "technical",
+      "value": 1.0
+    },
+    {
+      "calls": 2388,
+      "compute": {
+        "count": 2388,
+        "max_us": 12414.875,
+        "mean_us": 851.1089074539362,
+        "p50_us": 627.541,
+        "p90_us": 1326.8329999999999,
+        "p99_us": 5458.084
+      },
+      "compute_cpu": {
+        "count": 2388,
+        "max_us": 1476.0,
+        "mean_us": 550.1930485762141,
+        "p50_us": 576.0,
+        "p90_us": 665.0,
+        "p99_us": 754.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        23.42533958487712,
+        23.173872780946674
+      ],
+      "lateral_max": 0.12995960163183004,
+      "lateral_rms": 0.06909076458817373,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 23.009050306996436,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.23810122810065945,
+      "sweep": "model mismatch",
+      "track": "technical",
+      "value": 2.0
+    },
+    {
+      "calls": 2785,
+      "compute": {
+        "count": 2785,
+        "max_us": 20333.0,
+        "mean_us": 770.4074538599643,
+        "p50_us": 599.625,
+        "p90_us": 1093.667,
+        "p99_us": 4370.875
+      },
+      "compute_cpu": {
+        "count": 2785,
+        "max_us": 2189.0,
+        "mean_us": 539.5073608617599,
+        "p50_us": 561.0,
+        "p90_us": 662.0,
+        "p99_us": 745.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.38836561182687,
+        27.155549439607395
+      ],
+      "lateral_max": 0.1412463142300407,
+      "lateral_rms": 0.05428027235419554,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.209005042481461,
+      "sweep": "steer dead time (s)",
+      "track": "flowing",
+      "value": 0.06
+    },
+    {
+      "calls": 2795,
+      "compute": {
+        "count": 2795,
+        "max_us": 17768.584,
+        "mean_us": 811.4599227191401,
+        "p50_us": 611.9590000000001,
+        "p90_us": 1139.125,
+        "p99_us": 5032.333
+      },
+      "compute_cpu": {
+        "count": 2795,
+        "max_us": 2056.0,
+        "mean_us": 551.1796064400711,
+        "p50_us": 578.0,
+        "p90_us": 669.0,
+        "p99_us": 758.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.49392198470588,
+        27.264875451380412
+      ],
+      "lateral_max": 0.3472134729392323,
+      "lateral_rms": 0.12081764028848099,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.27119529250476054,
+      "sweep": "steer dead time (s)",
+      "track": "flowing",
+      "value": 0.09
+    },
+    {
+      "calls": 2788,
+      "compute": {
+        "count": 2788,
+        "max_us": 39718.125,
+        "mean_us": 982.5122826398859,
+        "p50_us": 609.375,
+        "p90_us": 1533.6670000000001,
+        "p99_us": 7200.375
+      },
+      "compute_cpu": {
+        "count": 2788,
+        "max_us": 2365.0,
+        "mean_us": 536.6771879483495,
+        "p50_us": 540.0,
+        "p90_us": 663.0,
+        "p99_us": 758.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.42316574946794,
+        27.189596505250744
+      ],
+      "lateral_max": 0.11994773406899908,
+      "lateral_rms": 0.05179878252599837,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.19222715360691664,
+      "sweep": "friction scale",
+      "track": "flowing",
+      "value": 0.9
+    },
+    {
+      "calls": 2811,
+      "compute": {
+        "count": 2811,
+        "max_us": 33343.541999999994,
+        "mean_us": 1039.839525435788,
+        "p50_us": 625.542,
+        "p90_us": 1497.292,
+        "p99_us": 9416.541000000001
+      },
+      "compute_cpu": {
+        "count": 2811,
+        "max_us": 2239.0,
+        "mean_us": 548.2365706154396,
+        "p50_us": 571.0,
+        "p90_us": 669.0,
+        "p99_us": 772.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.64552003828276,
+        27.399965713101704
+      ],
+      "lateral_max": 0.40503427153937865,
+      "lateral_rms": 0.17268109314866256,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22696482921670796,
+      "sweep": "friction scale",
+      "track": "flowing",
+      "value": 0.8
+    },
+    {
+      "calls": 2777,
+      "compute": {
+        "count": 2777,
+        "max_us": 92448.083,
+        "mean_us": 1088.0975703997121,
+        "p50_us": 625.042,
+        "p90_us": 1546.958,
+        "p99_us": 9291.0
+      },
+      "compute_cpu": {
+        "count": 2777,
+        "max_us": 2078.0,
+        "mean_us": 547.037090385308,
+        "p50_us": 564.0,
+        "p90_us": 669.0,
+        "p99_us": 772.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.32256536647385,
+        27.061883912005104
+      ],
+      "lateral_max": 0.05124524080038071,
+      "lateral_rms": 0.02134195218551307,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.1797506534972878,
+      "sweep": "model mismatch",
+      "track": "flowing",
+      "value": 1.0
+    },
+    {
+      "calls": 2791,
+      "compute": {
+        "count": 2791,
+        "max_us": 16432.833000000002,
+        "mean_us": 817.3944654245779,
+        "p50_us": 607.5409999999999,
+        "p90_us": 1283.416,
+        "p99_us": 4375.5
+      },
+      "compute_cpu": {
+        "count": 2791,
+        "max_us": 1927.0,
+        "mean_us": 540.3694016481551,
+        "p50_us": 562.0,
+        "p90_us": 660.0,
+        "p99_us": 746.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.450873808657107,
+        27.217889196376966
+      ],
+      "lateral_max": 0.13256032273050036,
+      "lateral_rms": 0.06810886454315108,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.108352063388036,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.19580880261767347,
+      "sweep": "model mismatch",
+      "track": "flowing",
+      "value": 2.0
+    },
+    {
+      "calls": 2813,
+      "compute": {
+        "count": 2813,
+        "max_us": 18918.334,
+        "mean_us": 771.7517998578044,
+        "p50_us": 595.4159999999999,
+        "p90_us": 1045.666,
+        "p99_us": 4304.125
+      },
+      "compute_cpu": {
+        "count": 2813,
+        "max_us": 1597.0,
+        "mean_us": 538.2723071453968,
+        "p50_us": 559.0,
+        "p90_us": 652.0,
+        "p99_us": 737.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.620353981356025,
+        27.491902721257997
+      ],
+      "lateral_max": 0.148274638398168,
+      "lateral_rms": 0.0556173595072585,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.24972378773504056,
+      "sweep": "steer dead time (s)",
+      "track": "mixed",
+      "value": 0.06
+    },
+    {
+      "calls": 2829,
+      "compute": {
+        "count": 2829,
+        "max_us": 71726.584,
+        "mean_us": 995.1027811947663,
+        "p50_us": 623.6669999999999,
+        "p90_us": 1413.667,
+        "p99_us": 8172.2919999999995
+      },
+      "compute_cpu": {
+        "count": 2829,
+        "max_us": 1524.0,
+        "mean_us": 546.0858960763517,
+        "p50_us": 568.0,
+        "p90_us": 671.0,
+        "p99_us": 767.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.77787857867909,
+        27.64531905058205
+      ],
+      "lateral_max": 0.3117396777290176,
+      "lateral_rms": 0.13195430596323732,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.3338329707273705,
+      "sweep": "steer dead time (s)",
+      "track": "mixed",
+      "value": 0.09
+    },
+    {
+      "calls": 2818,
+      "compute": {
+        "count": 2818,
+        "max_us": 30405.5,
+        "mean_us": 949.5283914123477,
+        "p50_us": 611.708,
+        "p90_us": 1381.833,
+        "p99_us": 7476.0
+      },
+      "compute_cpu": {
+        "count": 2818,
+        "max_us": 1689.0,
+        "mean_us": 539.7572746628815,
+        "p50_us": 554.0,
+        "p90_us": 660.0,
+        "p99_us": 754.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.66773481484403,
+        27.53890743224423
+      ],
+      "lateral_max": 0.12358030561825935,
+      "lateral_rms": 0.0530645886642417,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.22587872668628428,
+      "sweep": "friction scale",
+      "track": "mixed",
+      "value": 0.9
+    },
+    {
+      "calls": 2850,
+      "compute": {
+        "count": 2850,
+        "max_us": 51294.375,
+        "mean_us": 1043.671243859649,
+        "p50_us": 627.583,
+        "p90_us": 1545.7920000000001,
+        "p99_us": 9007.042
+      },
+      "compute_cpu": {
+        "count": 2850,
+        "max_us": 1565.0,
+        "mean_us": 539.5101754385962,
+        "p50_us": 542.0,
+        "p90_us": 657.0,
+        "p99_us": 740.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.986286219429548,
+        27.85309379974973
+      ],
+      "lateral_max": 0.41475678617726425,
+      "lateral_rms": 0.1779615110894066,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2578676143718174,
+      "sweep": "friction scale",
+      "track": "mixed",
+      "value": 0.8
+    },
+    {
+      "calls": 2804,
+      "compute": {
+        "count": 2804,
+        "max_us": 32458.874999999996,
+        "mean_us": 964.5266048502112,
+        "p50_us": 628.417,
+        "p90_us": 1439.375,
+        "p99_us": 7020.833
+      },
+      "compute_cpu": {
+        "count": 2804,
+        "max_us": 2438.0,
+        "mean_us": 543.5142653352351,
+        "p50_us": 553.0,
+        "p90_us": 662.0,
+        "p99_us": 754.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.525333985036475,
+        27.386580702176047
+      ],
+      "lateral_max": 0.0566526371493155,
+      "lateral_rms": 0.020066484857363804,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.21151789542598276,
+      "sweep": "model mismatch",
+      "track": "mixed",
+      "value": 1.0
+    },
+    {
+      "calls": 2820,
+      "compute": {
+        "count": 2820,
+        "max_us": 29737.083000000002,
+        "mean_us": 964.4952407801406,
+        "p50_us": 605.833,
+        "p90_us": 1552.541,
+        "p99_us": 7172.6669999999995
+      },
+      "compute_cpu": {
+        "count": 2820,
+        "max_us": 1692.0,
+        "mean_us": 535.1549645390076,
+        "p50_us": 538.0,
+        "p90_us": 654.0,
+        "p99_us": 755.0
+      },
+      "cones": 0,
+      "controller": "mpc",
+      "dnf": "",
+      "finished": true,
+      "laps": [
+        27.69021090971839,
+        27.561564135528656
+      ],
+      "lateral_max": 0.1389449458868568,
+      "lateral_rms": 0.06220523650788006,
+      "off_course": 0,
+      "outside_bounds_s": 0.0,
+      "penalty_s": 0.0,
+      "profile_lap_time": 27.426404633933288,
+      "solver_failures": 0,
+      "steer_rate_rms": 0.2275446345672742,
+      "sweep": "model mismatch",
+      "track": "mixed",
+      "value": 2.0
+    }
+  ]
+}
