@@ -7,4 +7,5 @@ apex_module(stack
         known_pose_mapper.cpp
         lap_counter.cpp
         mission.cpp
+        stack_config.cpp
     PUBLIC_DEPS apex::core apex::perception apex::estimation apex::planning apex::control)
