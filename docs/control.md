@@ -209,9 +209,12 @@ Two choices in this formulation are not decoration; without either the MPC did n
   and the QP used the acceleration to steer: bang-bang commands, plans that ended at 45 m/s
   with 28 m/s of sideslip, and 153 failed solves in the first 4 s of a lap of a small oval.
   The bounds now come from `NominalModel::traction_limits`: each axle's longitudinal share must
-  fit in the friction ellipse of 90 % of its grip after the lateral force of the guess's
-  `a_lat = v_x r`, with downforce and load transfer (bisection, as each axle's margin shrinks
-  monotonically with |a|).
+  fit in the friction ellipse of 90 % of its grip after the lateral force of
+  `a_lat,k = v_k^2 kappa_k`, what the path asks for at the stage's speed (at stage 0 the car's
+  own `v_x r` if that is more), with downforce and load transfer (bisection, as each axle's
+  margin shrinks monotonically with |a|). The lateral demand used to be the guess's own
+  `v_x r`; a guess that yawed off the path then took the grip it wasted from the braking (see
+  "The stop and the switch at speed").
 - **A reachable speed target.** From rest under a 22 m/s reference the speed error is the
   whole cost, and the QP chased it through the linearization's errors far from the guess. The
   target is now the reference speed clamped to what the car can reach from `v_0` at the traction
@@ -240,11 +243,14 @@ below quantifies it).
 The plan is kept in the world frame (pose, velocities and inputs at absolute times), not in
 path coordinates or by stage index (`mpc_plan.hpp`). During lap 1 the exploration planner
 replans every 100 ms, with a new arc-length origin each time; only the world-frame plan means
-the same thing on the new reference. At the next call its inputs, shifted in time and clamped
-to the actuator limits, are rolled out through the nonlinear model (RK4, 12.5 ms substeps)
-from the predicted initial state along the current reference: that trajectory is what the QP
-is linearized around and the solver warm-started from. A test rolls a plan out on a replanned
-window of the path with a different origin and gets the same trajectory to 5 mm.
+the same thing on the new reference. At the next call its accelerations, shifted in time and
+clamped to the drive and brake limits, are rolled out through the nonlinear model (RK4,
+12.5 ms substeps) from the predicted initial state along the current reference, steered along
+it by the fallback's law: the kinematic angle for the path's curvature plus Stanley's law on
+the front axle's errors and the Stanley controller's yaw damping, within the steering's rate
+and angle limits. That trajectory is what the QP is linearized around and the solver
+warm-started from. A test rolls a plan out on a replanned window of the path with a different
+origin and gets the same trajectory to 5 mm.
 
 The first version re-projected the plan's own states instead. That was fine on closed tracks,
 where the previous plan stays nearly optimal, but not on lap 1 (below): once the plan's states
@@ -252,11 +258,23 @@ disagreed with a replanned path, the model linearized there could be unstable, t
 optimum about it absurd, and that optimum the next linearization point. A rollout of bounded
 inputs is always a trajectory the car can drive.
 
+The second version replayed the plan's steering rates too, open loop, and that rollout did not
+stay one the car drives near an axle's limit: under hard braking the unloaded rear axle, and
+at full drive the driven one, leave the car unstable in yaw, and small differences between the
+car and the plan grew into a spin within the horizon
+(`MpcPlan.RolloutHoldsThePathUnderHardBraking`; see "The stop and the switch at speed"). The
+plan's own QP feedback gains, tried first, do not cure it: the interior-point method's are
+frozen near zero by the barrier terms of inputs near a bound and spike where one comes free,
+and the LQ gains of the QP's model come from the same linearization they are meant to correct,
+which past the tires' peak slip has the steering's sign reversed. Stanley's law depends on
+neither, and it holds the car on these references even with the plant's delays.
+
 Each call linearizes once and solves one QP (a real-time iteration in the sense of M. Diehl,
 H. G. Bock, J. P. Schlöder, "A real-time iteration scheme for nonlinear optimization in optimal
 feedback control", SIAM J. Control and Optimization 43(5), 2005); the first call after a reset,
 with only a guess built from the reference (speed following the profile, errors decaying,
-kinematic steering), does three, re-linearizing around each solution.
+kinematic steering), does three, re-linearizing around a rollout of each solution's
+accelerations.
 
 ### Fallback
 
@@ -266,6 +284,11 @@ comes from the previous plan while it is younger than 0.3 s; after that, Stanley
 predicted pose with the path's kinematic steering as feed-forward, and 4 m/s² of braking. A
 test makes every solve fail (one iteration allowed) and checks that the car stays within
 0.5 m of a circle while it brakes.
+
+A car facing more than 90 degrees away from the path (after a spin) is not given to the QP:
+the path coordinates no longer describe it, and driving on would run the path backwards. It
+brakes at 4 m/s² to a stop with the steering held (`Mpc.BrakesWhenFacingAwayFromThePath`;
+before this the MPC accelerated there whenever the car faced nearly straight back).
 
 ## The QP solver
 
@@ -393,43 +416,55 @@ metrics are over the flying second lap. Full tables: `results/control/closed_loo
 
 | Controller | lateral RMS, mean of 8 tracks | worst lateral | flying lap minus the profile's | steering rate RMS | cones, off course | CPU per call p50 / p99 |
 |---|---|---|---|---|---|---|
-| Pure pursuit | 0.098 m | 0.28 m | +0.06 s | 0.22 rad/s | 0, 0 | 14 / 16 us |
-| Stanley | 0.090 m | 0.25 m | -0.00 s | 0.28 rad/s | 0, 0 | 7 / 13 us |
-| MPC | **0.019 m** | **0.07 m** | +0.01 s | 0.22 rad/s | 0, 0 | 0.25 / 0.31 ms |
+| Pure pursuit | 0.098 m | 0.28 m | +0.06 s | 0.22 rad/s | 0, 0 | 23 / 36 us |
+| Stanley | 0.090 m | 0.25 m | -0.00 s | 0.28 rad/s | 0, 0 | 10 / 25 us |
+| MPC | **0.026 m** | **0.15 m** | +0.04 s | 0.21 rad/s | 0, 0 | 0.26 / 0.52 ms |
 
 ![Lateral error on the mixed layout](img/control-tracking.png)
 
 All three hold the profile's lap time to within 0.1 s (the profile, not the controller, sets
-the pace here). The MPC tracks four to five times more tightly with the smoothest steering. It
-sees the curvature coming over its 1.5 s horizon and starts turning in exactly when the model
-says, while the geometric laws react to errors they have already made. It never failed a solve
-in these runs.
+the pace here). The MPC tracks three to four times more tightly with the smoothest steering. It
+sees the curvature coming over its 1.5 s horizon and starts turning in when the model says,
+while the geometric laws react to errors they have already made. It never failed a solve on the
+nominal car.
 
-**Compute.** Over all 69,048 MPC calls of the evaluation (every track and sweep) the CPU time
-per call was 0.25 ms at p50 and at most 0.31 ms at p99 (the slowest single call 0.86 ms),
-against the 2 ms budget at p99 (docs/design.md, section 6): the QP is about half of it, the 30
-linearizations, the rollout and the delay prediction the rest. Not one solve failed. On the
-quiet machine of this run the wall-clock `ControllerStats::compute_time` agrees (p99 0.29-0.31
-ms); during other workers' builds (load average 30 to 110 on 10 cores) the scheduler preempted
-single calls for up to 15 ms and the wall-clock p99 measured the load, not the controller,
-which is why the evaluation reports both (`compute` and `compute_cpu` in closed_loop.json).
+Before the rollout was steered along the path ("Warm start") the MPC tracked at 0.019 m (worst
+0.07 m): its linearization point then followed its own plan, where the steered rollout follows
+the path and lags the curvature changes the plan anticipates. A rollout that steers by the
+plan's angle plus Stanley's correction towards the plan kept the 0.019 m, but in the stack's
+stops it failed 2.3 times as many solves and tracked the worst stop to 0.25 m instead of 0.08 m:
+it follows the plan, so a plan gone wrong again moves the linearization point with it. The
+robust one is kept.
+
+**Compute.** Over all 69,164 MPC calls of the evaluation (every track and sweep) the CPU time
+per call was 0.26 ms at p50 on the nominal car and at most 0.52 ms at p99 (the slowest single
+call 1.0 ms), against the 2 ms budget at p99 (docs/design.md, section 6): the QP is about half
+of it, the 30 linearizations, the rollout and the delay prediction the rest. This run shared the
+machine with other evaluation sweeps: the geometric controllers, whose code did not change,
+measured 1.5-2 times slower than on the previous, quiet run (13 / 16 and 7 / 13 us), and the
+MPC's p99 there was 0.31 ms. 13 solves failed, all with the true car well off the nominal one
+(90 ms of steering dead time on "technical" and "mixed", 20 % less friction on "mixed"), and
+the fallback covered them. During other workers' builds (load average 30 to 110 on 10 cores)
+the scheduler has preempted single calls for up to 15 ms and the wall-clock p99 measured the
+load, not the controller, which is why the evaluation reports both (`compute` and
+`compute_cpu` in closed_loop.json).
 
 **Robustness.** The controllers keep the nominal parameters while the true car changes; means
 over the three reference layouts:
 
 | Change to the true car | Pure pursuit RMS / worst | Stanley RMS / worst | MPC RMS / worst |
 |---|---|---|---|
-| none | 0.097 / 0.24 m | 0.091 / 0.25 m | 0.018 / 0.07 m |
-| steering dead time 60 ms (nominal 30) | 0.075 / 0.23 m | 0.067 / 0.20 m | 0.056 / 0.15 m |
-| steering dead time 90 ms | 0.055 / 0.26 m | 0.076 / 0.44 m; left the track on "flowing" | 0.124 / 0.35 m |
-| friction x0.9 | 0.112 / 0.41 m | 0.095 / 0.23 m | 0.055 / 0.12 m |
-| friction x0.8 | 0.165 / 0.39 m; left the track on "flowing" | 0.156 / 0.48 m | 0.191 / 0.54 m |
-| mass and yaw inertia +20 % | 0.099 / 0.25 m | 0.091 / 0.25 m | 0.021 / 0.07 m |
-| tire stiffness B -25 % | 0.113 / 0.40 m | 0.107 / 0.27 m | 0.067 / 0.14 m |
+| none | 0.097 / 0.24 m | 0.091 / 0.25 m | 0.027 / 0.09 m |
+| steering dead time 60 ms (nominal 30) | 0.075 / 0.23 m | 0.067 / 0.20 m | 0.061 / 0.16 m |
+| steering dead time 90 ms | 0.055 / 0.26 m | 0.076 / 0.44 m; left the track on "flowing" | 0.133 / 0.40 m |
+| friction x0.9 | 0.112 / 0.41 m | 0.095 / 0.23 m | 0.072 / 0.20 m |
+| friction x0.8 | 0.165 / 0.39 m; left the track on "flowing" | 0.156 / 0.48 m | 0.194 / 0.56 m |
+| mass and yaw inertia +20 % | 0.099 / 0.25 m | 0.091 / 0.25 m | 0.032 / 0.10 m |
+| tire stiffness B -25 % | 0.113 / 0.40 m | 0.107 / 0.27 m | 0.082 / 0.21 m |
 
 - *Dead time.* This is the MPC's weak spot. It predicts through the nominal 60 ms of steering
   delay and plans on it, so 30 or 60 ms more, unmodelled, cost it accuracy roughly in
-  proportion (0.018, 0.056, 0.124 m): at 90 ms pure pursuit tracks better. Pure pursuit even
+  proportion (0.027, 0.061, 0.133 m): at 90 ms pure pursuit tracks better. Pure pursuit even
   *improves* with delay, which makes it turn in later and offsets its residual tendency to cut.
   Stanley, whose heading term reacts fastest, leaves the track once at 90 ms. A real car's
   delays would be identified, not guessed; the MPC is the one that rewards it.
@@ -438,7 +473,7 @@ over the three reference layouts:
   the track on the fast "flowing" layout (with the 1.5 m minimum lookahead it went 2.8 m wide
   and knocked 7 cones there). A speed profile from the estimated friction is the planner's job.
 - *Model mismatch.* A heavier car changes little for anyone; softer tires (more slip for the
-  same force) cost the MPC 5 cm of RMS, its model now being optimistic.
+  same force) cost the MPC 5-6 cm of RMS, its model now being optimistic.
 
 ## Lap 1: the full stack
 
@@ -472,24 +507,89 @@ causes, each fixed and each checked by a test that reproduces it without the sta
    by default (`bound_open_references`); the raceline, built from the finished map, is.
 
 Apex runs on the default oval with the task's configuration (two laps, 150 s limit): with both
-oracles, 2 laps, lap 1 in 16.8 s, no cone and no excursion, lateral RMS 2.8 cm; with neither
-oracle, lap 1 in 16.6 s, again clean, lateral RMS 3.0 cm. Over generated tracks 1-8 and the
-oval, four laps each (results/control/stack*):
+oracles, 2 laps, lap 1 in 17.6 s, no cone, no excursion and no failed solve, lateral RMS
+2.8 cm; with neither oracle, lap 1 in 17.4 s, again clean, lateral RMS 3.0 cm. Over generated
+tracks 1-8 and the oval, four laps each (results/control/stack*):
 
 | Configuration | Controller | Completed | Lap 1, mean (s) | Best lap (s) | Cones / run | Off course / run |
 |---|---|---|---|---|---|---|
-| both oracles | MPC | 9/9 | 37.13 | 10.24 | 0.00 | 0.00 |
+| both oracles | MPC | 9/9 | 37.43 | 10.24 | 0.00 | 0.00 |
 | both oracles | Stanley | 9/9 | 35.73 | 10.27 | 0.00 | 0.00 |
 | both oracles | pure pursuit | 9/9 | 38.48 | 10.29 | 0.67 | 0.11 |
-| full stack | MPC | 9/9 | 37.13 | 10.25 | 0.00 | 0.00 |
+| full stack | MPC | 9/9 | 37.31 | 10.26 | 0.00 | 0.00 |
 | full stack | Stanley | 9/9 | 35.79 | 10.29 | 0.00 | 0.00 |
 | full stack | pure pursuit | 9/9 | 38.52 | 10.30 | 0.44 | 0.00 |
 
 The MPC now runs all four laps of every track without a cone or an excursion, with or without
-the oracles; its lap 1 is 1.3 s slower on average than Stanley's (it brakes for the end of each
-short path the planner hands it). Pure pursuit knocked 5-6 cones per run in lap 1 with a 1.5 m
-minimum lookahead, all at walking pace in tight corners; the 2 m minimum ("Pure pursuit") brings
-that to under one.
+the oracles; its lap 1 is 1.5-1.7 s slower on average than Stanley's (it brakes for the end of
+each short path the planner hands it; 0.2-0.3 s of that came with the steered rollout). Pure
+pursuit knocked 5-6 cones per run in lap 1 with a 1.5 m minimum lookahead, all at walking pace
+in tight corners; the 2 m minimum ("Pure pursuit") brings that to under one.
+
+## The stop and the switch at speed
+
+The integration's runs found two more MPC failures, both where the car works an axle near its
+limit right after the reference changes:
+
+- **The stop after the last lap.** Stopping hands over the shortest stop the raceline's
+  envelope allows (planning's speed profile at 70 % of the grip, with downforce). On "flowing"
+  it began at 28 m/s on the start straight, braking at up to 19 m/s² and still at 13 m/s² into
+  the first corner. The MPC drifted out, went to full lock at 16 m/s, slid at 5.4 m/s sideways
+  and spun (6 cones, 2 excursions), then, facing backwards and still rolling, accelerated and
+  drove off: a DNF. With both oracles, generated track 6 (3 cones, an excursion) and "flowing"
+  (2 cones) failed the same way. Stanley tracked the same references within 0.16 m.
+- **The switch to the raceline at speed.** On generated track 7, at the end of lap 1 at
+  12 m/s on the exploration path, about half a metre off the raceline and so outside its
+  bounds, the MPC got a raceline that wanted 28 m/s into a right-hander 20 m on; it steered
+  left to full lock, went 6 m off the path and spun: a DNF. With both oracles, the stop on the
+  same straight went off the track the same way.
+
+Recording the plans around both showed one mechanism. The QP is linearized around the previous
+plan rolled out through the nonlinear model, and that rollout replayed the plan's steering
+rates open loop. When the plan uses most of an axle's grip (braking at 15-19 m/s², which
+unloads the rear axle, or full drive at the driven rear one) the car is unstable in yaw, and
+replayed steering cannot hold it: on track 7's nearly straight braking line the rollout of a
+sane plan (side velocity under 0.3 m/s) reached yaw rates of 5-7 rad/s and 10-14 m/s of side
+velocity within a second. The QP linearized about that planned with the spin's states (side
+velocities up to 18 m/s in its tail), and past the tires' peak slip, where more steering gives
+less force, it steered to full lock the wrong way. The spinning guess also shrank the traction
+limits, whose lateral demand was the guess's own `v_x r`: braking at later stages was limited
+to about -5 m/s² where the reference asked for -10 to -12, the speed target was clamped up, and
+the plan braked short.
+
+The rollout now steers along the path ("Warm start"), the traction limits leave the path's
+`v^2 kappa` ("The QP"), and a car facing away from its path brakes to a stop ("Fallback"). The
+tests reproduce each failure without the stack, and each failed on the old code:
+
+- `ControllerBehaviour.StopsFromRacingSpeedIntoACorner`: the shortest stop of planning's speed
+  profile at 70 % of the grip from 28 m/s, 20 m before a right-hander of 20 m radius. Before,
+  7.6 m off the path; the bound is 0.3 m (the stack's own braking reference on the same
+  geometry: 0.04 m).
+- `ControllerBehaviour.SwitchesOntoAClosedRacelineAtSpeed`: the switch from a replanned
+  exploration path at 12 m/s onto a closed raceline 3 m before its s = 0, 0.5 m outside its
+  bounds (1.1 m of free width), where it wants 30 m/s into a right-hander of 34 m. Before,
+  5.9 m off and out of the track; now 0.04 m a second after the switch. Without the widths the
+  old MPC got through: starting outside the bounds, whose penalty acts from the first stage, is
+  what pushed its plan to full drive and full correction at once.
+- `MpcPlan.RolloutHoldsThePathUnderHardBraking`: braking at the traction limit from 28 m/s,
+  slightly off the line. Open loop the rollout went 2.0 m off with 2.1 rad/s of yaw rate.
+- `Mpc.BrakesWhenFacingAwayFromThePath`.
+
+Over 60 stack runs that end in the stop (three laps of "flowing", generated tracks 1-8 and the
+oval, run seeds 1-3, with and without both oracles):
+
+| | Clean runs | Cones | Off course | DNF | Worst tracking in the stop | Failed solves |
+|---|---|---|---|---|---|---|
+| before | 52/60 | 21 | 7 | 2 | 10.8 m | 65 |
+| after | 60/60 | 0 | 0 | 0 | 0.08 m | 27 |
+
+Each fix alone fell short: with only the steered rollout the runs were clean but failed 37
+solves and lap 1 was 0.7 s slower than with both; with only the traction limits one stop on
+track 7 still hit two cones, and the rollouts still spun. The integration's failing cases
+("flowing", generated tracks 6 and 7, run seeds 1-3, three and ten laps, with and without both
+oracles: 36 runs) are all clean, with at most 0.04 m of tracking error in the stop. The racing
+laps barely move: in the 60 runs 0.01 s slower and 1 mm more tracking RMS, in the stack sweeps
+above the same.
 
 ## Reproducing
 
@@ -508,10 +608,13 @@ The benchmarks and sweeps are deterministic apart from their timings.
 - The evaluation uses the true state. Estimation noise and latency, and the 100 ms replanning of
   lap 1, are exercised by the stack's runs ("Lap 1") and by tests with replanned paths.
 - At the switch to the raceline the car can start outside the raceline's bounds, and the
-  lateral bound's stiff penalty is then active from the first stage. Before the estimator's
-  yaw-rate bias state reached main, that cost one generated track 4 cones within a second of
-  the switch, without oracles; it no longer shows, but widening the bounds to include the car's
-  position at the start would remove the mechanism.
+  lateral bound's stiff penalty is then active from the first stage. With the open-loop
+  rollout that cost generated track 7 a DNF ("The stop and the switch at speed"); the steered
+  rollout handles it (`ControllerBehaviour.SwitchesOntoAClosedRacelineAtSpeed`), but widening
+  the bounds to include the car's position at the start would remove the mechanism.
+- The rollout steers by Stanley's law, so the QP is linearized near the path rather than on
+  its own plan: 0.7 cm more tracking RMS in the evaluation than a rollout that follows the
+  plan's steering, the price of never linearizing around a plan gone wrong.
 - Pure pursuit still knocks a cone every two or three runs in the stack's lap 1, at walking
   pace in tight corners; Stanley, which steers on the front axle's errors rather than a point
   ahead, is the safer geometric controller there.

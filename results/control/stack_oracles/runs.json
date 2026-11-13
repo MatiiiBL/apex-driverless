@@ -2,68 +2,68 @@
  {
   "result": {
    "association": {
-    "correct": 24426,
-    "matchable": 24426,
-    "matched": 24426,
-    "observations": 24832,
+    "correct": 24523,
+    "matchable": 24523,
+    "matched": 24523,
+    "observations": 24929,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 6677,
-     "max_us": 930.333,
-     "mean_us": 305.60886550846294,
-     "p50_us": 299.0,
-     "p90_us": 346.583,
-     "p99_us": 395.04200000000003,
+     "count": 6698,
+     "max_us": 1362.084,
+     "mean_us": 348.5831052552997,
+     "p50_us": 354.125,
+     "p90_us": 406.125,
+     "p99_us": 433.084,
      "solver_failures": 0
     },
     "exploration": {
-     "count": 484,
+     "count": 486,
      "failures": 1,
-     "max_us": 132.708,
-     "mean_us": 63.115349173553724,
-     "p50_us": 61.208,
-     "p90_us": 83.833,
-     "p99_us": 113.125
+     "max_us": 141.417,
+     "mean_us": 68.95525720164608,
+     "p50_us": 66.334,
+     "p90_us": 91.541,
+     "p99_us": 127.50000000000001
     },
     "raceline": {
-     "optimize_s": 0.034065917,
-     "predicted_lap_s": 27.863063874758076
+     "optimize_s": 0.042048667,
+     "predicted_lap_s": 27.86429927688446
     },
-    "realtime_factor": 43.350215757297406,
+    "realtime_factor": 38.02010808492218,
     "sim_tick": {
-     "count": 134027,
-     "mean_us": 6.999058562825074
+     "count": 134441,
+     "mean_us": 7.955582538062997
     },
     "stack_control": {
-     "count": 6701,
-     "max_us": 42414.666,
-     "mean_us": 311.00561274436706,
-     "p50_us": 298.834,
-     "p90_us": 346.583,
-     "p99_us": 395.75
+     "count": 6722,
+     "max_us": 51612.709,
+     "mean_us": 355.21155429931554,
+     "p50_us": 354.16700000000003,
+     "p90_us": 406.208,
+     "p99_us": 433.125
     },
     "stack_scan": {
-     "count": 1339,
-     "max_us": 140.459,
-     "mean_us": 29.182347274085185,
-     "p50_us": 7.333,
-     "p90_us": 78.375,
-     "p99_us": 108.125
+     "count": 1343,
+     "max_us": 152.5,
+     "mean_us": 32.57683544303802,
+     "p50_us": 8.709000000000001,
+     "p90_us": 87.042,
+     "p99_us": 130.334
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 45.603853292977405,
+   "lap1": 45.85255699155141,
    "laps": [
-    45.603853292977405,
-    28.27727957814733,
-    27.866064391053925,
-    27.865585231489632
+    45.85255699155141,
+    28.29234480619055,
+    27.89152567146631,
+    27.891511736833607
    ],
    "laps_target": 4,
    "map": {
@@ -76,13 +76,13 @@
     "landmarks": 203,
     "matched": 203,
     "position": {
-     "max": 0.005219365678747173,
-     "rms": 0.001654161393422652,
+     "max": 0.0038185893127085273,
+     "rms": 0.0016296462619370346,
      "samples": 203
     },
-    "time": 47.46
+    "time": 47.72
    },
-   "max_lateral_true": 0.6899017588762445,
+   "max_lateral_true": 0.6891843180981858,
    "name": "mpc/gen1/s1",
    "penalties": {
     "cones_hit": 0,
@@ -91,28 +91,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 46.95999999998126,
+     "duration": 47.21999999998065,
      "lateral": {
-      "max": 0.0912423448131041,
-      "rms": 0.02863178029164052,
-      "samples": 2348
+      "max": 0.09394305910238675,
+      "rms": 0.028906307697244022,
+      "samples": 2361
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2348
+      "samples": 2361
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2348
+      "samples": 2361
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.05686818043971453,
-      "rms": 0.018064361678025886,
+      "max": 0.051263159591968914,
+      "rms": 0.017778525644474144,
       "samples": 50
      },
      "position": {
@@ -127,21 +127,21 @@
      }
     },
     "racing": {
-     "duration": 83.02000000003235,
+     "duration": 83.08000000003264,
      "lateral": {
-      "max": 0.38981638830052606,
-      "rms": 0.03325801755268197,
-      "samples": 4151
+      "max": 0.3528523516527968,
+      "rms": 0.032820097031324984,
+      "samples": 4154
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 4151
+      "samples": 4154
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 4151
+      "samples": 4154
      }
     },
     "staged": {
@@ -163,31 +163,31 @@
      }
     },
     "stopping": {
-     "duration": 2.5479999999998304,
+     "duration": 2.64199999999982,
      "lateral": {
-      "max": 0.029979551715348326,
-      "rms": 0.012750058159853086,
-      "samples": 128
+      "max": 0.03102945954835974,
+      "rms": 0.017036086086171135,
+      "samples": 133
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 128
+      "samples": 133
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 128
+      "samples": 133
      }
     }
    },
-   "racing_best": 27.865585231489632,
-   "racing_mean": 28.002976400230295,
-   "score": 129.6127824936683,
+   "racing_best": 27.891511736833607,
+   "racing_mean": 28.025127404830158,
+   "score": 129.92793920604188,
    "seed": 1,
-   "sim_time": 134.02700000000002,
+   "sim_time": 134.441,
    "stopped": true,
-   "total_time": 129.6127824936683,
+   "total_time": 129.92793920604188,
    "track": {
     "length": 431.4782339757064,
     "name": "generated-1",
@@ -203,23 +203,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 47.46,
+     "time": 47.72,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 48.46,
+     "time": 48.72,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 131.48,
+     "time": 131.8,
      "to": "stopping"
     }
    ],
-   "wall_time": 3.09172625
+   "wall_time": 3.536049916
   },
   "seed": 1,
   "track": "gen1",
@@ -228,68 +228,68 @@
  {
   "result": {
    "association": {
-    "correct": 22020,
-    "matchable": 22020,
-    "matched": 22020,
-    "observations": 22380,
+    "correct": 22024,
+    "matchable": 22024,
+    "matched": 22024,
+    "observations": 22384,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 5977,
-     "max_us": 962.6669999999999,
-     "mean_us": 304.3759124979088,
-     "p50_us": 296.042,
-     "p90_us": 347.5,
-     "p99_us": 395.625,
+     "count": 5997,
+     "max_us": 1111.9579999999999,
+     "mean_us": 347.36583641820926,
+     "p50_us": 353.875,
+     "p90_us": 404.791,
+     "p99_us": 451.125,
      "solver_failures": 1
     },
     "exploration": {
-     "count": 437,
+     "count": 440,
      "failures": 1,
-     "max_us": 121.875,
-     "mean_us": 61.719002288329506,
-     "p50_us": 59.667,
-     "p90_us": 83.459,
-     "p99_us": 110.084
+     "max_us": 126.33300000000001,
+     "mean_us": 65.7353318181818,
+     "p50_us": 63.41700000000001,
+     "p90_us": 92.959,
+     "p99_us": 119.417
     },
     "raceline": {
-     "optimize_s": 0.027615958,
-     "predicted_lap_s": 24.750718501582213
+     "optimize_s": 0.032563166,
+     "predicted_lap_s": 24.75050192358533
     },
-    "realtime_factor": 43.60282851150055,
+    "realtime_factor": 38.25010372775581,
     "sim_tick": {
-     "count": 120031,
-     "mean_us": 6.966105864317448
+     "count": 120433,
+     "mean_us": 7.930443981299315
     },
     "stack_control": {
-     "count": 6001,
-     "max_us": 34700.5,
-     "mean_us": 309.12187185469026,
-     "p50_us": 295.95799999999997,
-     "p90_us": 347.541,
-     "p99_us": 396.375
+     "count": 6021,
+     "max_us": 40328.875,
+     "mean_us": 352.9027784421183,
+     "p50_us": 353.916,
+     "p90_us": 404.833,
+     "p99_us": 451.20799999999997
     },
     "stack_scan": {
-     "count": 1199,
-     "max_us": 132.541,
-     "mean_us": 28.541984153461314,
-     "p50_us": 7.0,
-     "p90_us": 74.75,
-     "p99_us": 109.25
+     "count": 1203,
+     "max_us": 138.833,
+     "mean_us": 31.0654621778887,
+     "p50_us": 8.292,
+     "p90_us": 78.0,
+     "p99_us": 118.958
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 40.969012845179655,
+   "lap1": 41.27946424508152,
    "laps": [
-    40.969012845179655,
-    25.154831053119423,
-    24.751210180055153,
-    24.75099089899264
+    41.27946424508152,
+    25.152270250180663,
+    24.767726387769486,
+    24.768853916692066
    ],
    "laps_target": 4,
    "map": {
@@ -302,13 +302,13 @@
     "landmarks": 180,
     "matched": 180,
     "position": {
-     "max": 0.0036379686365165457,
-     "rms": 0.0015742800739446828,
+     "max": 0.00430789760750955,
+     "rms": 0.0017026333986612141,
      "samples": 180
     },
-    "time": 42.84
+    "time": 43.14
    },
-   "max_lateral_true": 0.7363148009739967,
+   "max_lateral_true": 0.7354196482373055,
    "name": "mpc/gen2/s1",
    "penalties": {
     "cones_hit": 0,
@@ -317,28 +317,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 42.339999999992024,
+     "duration": 42.639999999991325,
      "lateral": {
-      "max": 0.09576701236404697,
-      "rms": 0.027825998272444388,
-      "samples": 2117
+      "max": 0.09060609757910255,
+      "rms": 0.027908951639438143,
+      "samples": 2132
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2117
+      "samples": 2132
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2117
+      "samples": 2132
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.04278771037527609,
-      "rms": 0.013491494606008791,
+      "max": 0.039604751868893305,
+      "rms": 0.013073523567422637,
       "samples": 50
      },
      "position": {
@@ -353,21 +353,21 @@
      }
     },
     "racing": {
-     "duration": 73.65999999998766,
+     "duration": 73.69999999998785,
      "lateral": {
-      "max": 0.2930849021345186,
-      "rms": 0.026532695813440282,
-      "samples": 3683
+      "max": 0.3220573191428428,
+      "rms": 0.03117719117125374,
+      "samples": 3685
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 3683
+      "samples": 3685
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 3683
+      "samples": 3685
      }
     },
     "staged": {
@@ -389,31 +389,31 @@
      }
     },
     "stopping": {
-     "duration": 2.531999999999832,
+     "duration": 2.5939999999998253,
      "lateral": {
-      "max": 0.02981711654191722,
-      "rms": 0.012672247138191685,
-      "samples": 127
+      "max": 0.03095477182542602,
+      "rms": 0.01806541014409472,
+      "samples": 130
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 127
+      "samples": 130
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 127
+      "samples": 130
      }
     }
    },
-   "racing_best": 24.75099089899264,
-   "racing_mean": 24.885677377389072,
-   "score": 115.62604497734687,
+   "racing_best": 24.767726387769486,
+   "racing_mean": 24.896283518214073,
+   "score": 115.96831479972374,
    "seed": 1,
-   "sim_time": 120.031,
+   "sim_time": 120.433,
    "stopped": true,
-   "total_time": 115.62604497734687,
+   "total_time": 115.96831479972374,
    "track": {
     "length": 391.3894337024835,
     "name": "generated-2",
@@ -429,23 +429,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 42.84,
+     "time": 43.14,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 43.84,
+     "time": 44.14,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 117.5,
+     "time": 117.84,
      "to": "stopping"
     }
    ],
-   "wall_time": 2.752826
+   "wall_time": 3.148566625
   },
   "seed": 1,
   "track": "gen2",
@@ -454,68 +454,68 @@
  {
   "result": {
    "association": {
-    "correct": 11262,
-    "matchable": 11262,
-    "matched": 11262,
-    "observations": 11480,
+    "correct": 11294,
+    "matchable": 11294,
+    "matched": 11294,
+    "observations": 11512,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 3585,
-     "max_us": 1057.458,
-     "mean_us": 304.59885774058574,
-     "p50_us": 297.166,
-     "p90_us": 352.875,
-     "p99_us": 399.041,
+     "count": 3594,
+     "max_us": 1234.084,
+     "mean_us": 338.2791093489153,
+     "p50_us": 333.0,
+     "p90_us": 394.66700000000003,
+     "p99_us": 449.625,
      "solver_failures": 0
     },
     "exploration": {
-     "count": 267,
+     "count": 269,
      "failures": 1,
-     "max_us": 101.125,
-     "mean_us": 63.078325842696636,
-     "p50_us": 63.083000000000006,
-     "p90_us": 78.292,
-     "p99_us": 99.459
+     "max_us": 111.375,
+     "mean_us": 65.03269516728624,
+     "p50_us": 63.625,
+     "p90_us": 84.042,
+     "p99_us": 108.709
     },
     "raceline": {
-     "optimize_s": 0.008335458,
-     "predicted_lap_s": 14.540571272824788
+     "optimize_s": 0.008615042,
+     "predicted_lap_s": 14.539377637309421
     },
-    "realtime_factor": 44.27899776739425,
+    "realtime_factor": 39.840506937871126,
     "sim_tick": {
-     "count": 72196,
-     "mean_us": 6.805392944207415
+     "count": 72363,
+     "mean_us": 7.593222544674297
     },
     "stack_control": {
-     "count": 3609,
-     "max_us": 12100.375,
-     "mean_us": 306.1329927957884,
-     "p50_us": 297.0,
-     "p90_us": 352.958,
-     "p99_us": 399.16700000000003
+     "count": 3618,
+     "max_us": 12747.375,
+     "mean_us": 339.81850884466536,
+     "p50_us": 332.791,
+     "p90_us": 394.708,
+     "p99_us": 450.208
     },
     "stack_scan": {
-     "count": 721,
-     "max_us": 106.833,
-     "mean_us": 27.332054091539536,
-     "p50_us": 4.25,
-     "p90_us": 74.084,
-     "p99_us": 93.042
+     "count": 723,
+     "max_us": 115.917,
+     "mean_us": 28.898449515905956,
+     "p50_us": 5.292000000000001,
+     "p90_us": 74.167,
+     "p99_us": 101.125
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 23.92717893368616,
+   "lap1": 24.092346990095756,
    "laps": [
-    23.92717893368616,
-    14.910145970026782,
-    14.543566309549263,
-    14.543238850516758
+    24.092346990095756,
+    14.913487168102904,
+    14.55142009259773,
+    14.551883943209376
    ],
    "laps_target": 4,
    "map": {
@@ -528,13 +528,13 @@
     "landmarks": 109,
     "matched": 109,
     "position": {
-     "max": 0.0036560485381600645,
-     "rms": 0.0015299187232501379,
+     "max": 0.0033258112756329446,
+     "rms": 0.0015245904619928463,
      "samples": 109
     },
-    "time": 25.8
+    "time": 25.96
    },
-   "max_lateral_true": 0.764599554263488,
+   "max_lateral_true": 0.7624344996001816,
    "name": "mpc/gen3/s1",
    "penalties": {
     "cones_hit": 0,
@@ -543,28 +543,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 25.300000000007937,
+     "duration": 25.460000000008133,
      "lateral": {
-      "max": 0.08736888397104345,
-      "rms": 0.02688883449716153,
-      "samples": 1265
+      "max": 0.08615611387079776,
+      "rms": 0.027135403651144432,
+      "samples": 1273
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 1265
+      "samples": 1273
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 1265
+      "samples": 1273
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.06753762903864079,
-      "rms": 0.021263762424689765,
+      "max": 0.06124211850248049,
+      "rms": 0.021389564304328985,
       "samples": 50
      },
      "position": {
@@ -579,21 +579,21 @@
      }
     },
     "racing": {
-     "duration": 42.97999999999053,
+     "duration": 43.01999999999044,
      "lateral": {
-      "max": 0.45805745952772114,
-      "rms": 0.045268440890840755,
-      "samples": 2149
+      "max": 0.467736545487534,
+      "rms": 0.05042837553164413,
+      "samples": 2151
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2149
+      "samples": 2151
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2149
+      "samples": 2151
      }
     },
     "staged": {
@@ -615,31 +615,31 @@
      }
     },
     "stopping": {
-     "duration": 2.416999999999845,
+     "duration": 2.3839999999998485,
      "lateral": {
-      "max": 0.028115425557969764,
-      "rms": 0.01209763524016669,
-      "samples": 121
+      "max": 0.02916024292806783,
+      "rms": 0.01383477629090321,
+      "samples": 120
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 121
+      "samples": 120
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 121
+      "samples": 120
      }
     }
    },
-   "racing_best": 14.543238850516758,
-   "racing_mean": 14.6656503766976,
-   "score": 67.92413006377896,
+   "racing_best": 14.55142009259773,
+   "racing_mean": 14.67226373463667,
+   "score": 68.10913819400577,
    "seed": 1,
-   "sim_time": 72.196,
+   "sim_time": 72.363,
    "stopped": true,
-   "total_time": 67.92413006377896,
+   "total_time": 68.10913819400577,
    "track": {
     "length": 231.09807810599398,
     "name": "generated-3",
@@ -655,23 +655,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 25.8,
+     "time": 25.96,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 26.8,
+     "time": 26.96,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 69.78,
+     "time": 69.98,
      "to": "stopping"
     }
    ],
-   "wall_time": 1.630479542
+   "wall_time": 1.81631725
   },
   "seed": 1,
   "track": "gen3",
@@ -680,68 +680,68 @@
  {
   "result": {
    "association": {
-    "correct": 20261,
-    "matchable": 20261,
-    "matched": 20261,
-    "observations": 20633,
+    "correct": 20345,
+    "matchable": 20345,
+    "matched": 20345,
+    "observations": 20717,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 6291,
-     "max_us": 938.5409999999999,
-     "mean_us": 308.91954093148917,
-     "p50_us": 304.25,
-     "p90_us": 352.5,
-     "p99_us": 395.91700000000003,
+     "count": 6303,
+     "max_us": 1084.209,
+     "mean_us": 356.10000713945703,
+     "p50_us": 354.084,
+     "p90_us": 403.084,
+     "p99_us": 456.0,
      "solver_failures": 0
     },
     "exploration": {
-     "count": 452,
+     "count": 454,
      "failures": 1,
-     "max_us": 133.25,
-     "mean_us": 61.87959955752211,
-     "p50_us": 59.833999999999996,
-     "p90_us": 79.20899999999999,
-     "p99_us": 117.0
+     "max_us": 137.375,
+     "mean_us": 72.42301541850217,
+     "p50_us": 70.459,
+     "p90_us": 89.0,
+     "p99_us": 130.83300000000003
     },
     "raceline": {
-     "optimize_s": 0.031483875,
-     "predicted_lap_s": 26.26290389661095
+     "optimize_s": 0.03691625,
+     "predicted_lap_s": 26.260795669490353
     },
-    "realtime_factor": 43.08304687289829,
+    "realtime_factor": 37.24170804752267,
     "sim_tick": {
-     "count": 126317,
-     "mean_us": 7.010338687586343
+     "count": 126551,
+     "mean_us": 8.158383323718622
     },
     "stack_control": {
-     "count": 6315,
-     "max_us": 38874.208,
-     "mean_us": 314.1888166270788,
-     "p50_us": 304.0,
-     "p90_us": 352.584,
-     "p99_us": 396.04100000000005
+     "count": 6327,
+     "max_us": 45682.333,
+     "mean_us": 362.3088865180964,
+     "p50_us": 354.16700000000003,
+     "p90_us": 403.208,
+     "p99_us": 457.292
     },
     "stack_scan": {
-     "count": 1262,
-     "max_us": 140.375,
-     "mean_us": 27.61667987321717,
-     "p50_us": 6.167000000000001,
-     "p90_us": 72.375,
-     "p99_us": 109.0
+     "count": 1265,
+     "max_us": 145.0,
+     "mean_us": 32.55093122529647,
+     "p50_us": 7.417000000000001,
+     "p90_us": 84.125,
+     "p99_us": 128.25
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 42.45969164119406,
+   "lap1": 42.60350145492826,
    "laps": [
-    42.45969164119406,
-    27.022627007410577,
-    26.265792812041553,
-    26.265129981321763
+    42.60350145492826,
+    27.03784563104545,
+    26.283891078789864,
+    26.28433414917437
    ],
    "laps_target": 4,
    "map": {
@@ -754,13 +754,13 @@
     "landmarks": 186,
     "matched": 186,
     "position": {
-     "max": 0.004366303960391921,
-     "rms": 0.0016122836473777393,
+     "max": 0.0039333494555693314,
+     "rms": 0.0015581203835241281,
      "samples": 186
     },
-    "time": 44.32
+    "time": 44.46
    },
-   "max_lateral_true": 0.72730544913971,
+   "max_lateral_true": 0.7278939442505024,
    "name": "mpc/gen4/s1",
    "penalties": {
     "cones_hit": 0,
@@ -769,28 +769,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 43.819999999988575,
+     "duration": 43.95999999998825,
      "lateral": {
-      "max": 0.09213586279043197,
-      "rms": 0.028059660064796956,
-      "samples": 2191
+      "max": 0.0945120362275116,
+      "rms": 0.028381352800003583,
+      "samples": 2198
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2191
+      "samples": 2198
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2191
+      "samples": 2198
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 8.052719735728153e-05,
-      "rms": 3.5017688761421e-05,
+      "max": 0.00012503562872445857,
+      "rms": 6.041078183614021e-05,
       "samples": 50
      },
      "position": {
@@ -805,21 +805,21 @@
      }
     },
     "racing": {
-     "duration": 78.56000000001106,
+     "duration": 78.62000000001134,
      "lateral": {
-      "max": 0.42326640794316256,
-      "rms": 0.032343534168623046,
-      "samples": 3928
+      "max": 0.4211035765084625,
+      "rms": 0.03462953665740081,
+      "samples": 3931
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 3928
+      "samples": 3931
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 3928
+      "samples": 3931
      }
     },
     "staged": {
@@ -841,31 +841,31 @@
      }
     },
     "stopping": {
-     "duration": 2.4379999999998425,
+     "duration": 2.4719999999998388,
      "lateral": {
-      "max": 0.03509983137378441,
-      "rms": 0.016758955164995964,
-      "samples": 122
+      "max": 0.03282482986901819,
+      "rms": 0.017476985284002884,
+      "samples": 124
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 122
+      "samples": 124
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 122
+      "samples": 124
      }
     }
    },
-   "racing_best": 26.265129981321763,
-   "racing_mean": 26.517849933591297,
-   "score": 122.01324144196795,
+   "racing_best": 26.283891078789864,
+   "racing_mean": 26.53535695300323,
+   "score": 122.20957231393794,
    "seed": 1,
-   "sim_time": 126.31700000000001,
+   "sim_time": 126.551,
    "stopped": true,
-   "total_time": 122.01324144196795,
+   "total_time": 122.20957231393794,
    "track": {
     "length": 407.43554687740397,
     "name": "generated-4",
@@ -881,23 +881,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 44.32,
+     "time": 44.46,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 45.32,
+     "time": 45.46,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 123.88000000000001,
+     "time": 124.08,
      "to": "stopping"
     }
    ],
-   "wall_time": 2.931942125
+   "wall_time": 3.398098708
   },
   "seed": 1,
   "track": "gen4",
@@ -906,68 +906,68 @@
  {
   "result": {
    "association": {
-    "correct": 20783,
-    "matchable": 20783,
-    "matched": 20783,
-    "observations": 21149,
+    "correct": 20827,
+    "matchable": 20827,
+    "matched": 20827,
+    "observations": 21193,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 6034,
-     "max_us": 920.708,
-     "mean_us": 309.92268810076285,
-     "p50_us": 306.125,
-     "p90_us": 351.79200000000003,
-     "p99_us": 404.5,
-     "solver_failures": 6
+     "count": 6047,
+     "max_us": 1064.6670000000001,
+     "mean_us": 358.71872267239996,
+     "p50_us": 355.459,
+     "p90_us": 403.583,
+     "p99_us": 455.291,
+     "solver_failures": 0
     },
     "exploration": {
-     "count": 454,
+     "count": 455,
      "failures": 1,
-     "max_us": 129.375,
-     "mean_us": 58.90356828193831,
-     "p50_us": 59.416000000000004,
-     "p90_us": 77.541,
-     "p99_us": 108.5
+     "max_us": 135.042,
+     "mean_us": 67.76170329670329,
+     "p50_us": 68.625,
+     "p90_us": 89.458,
+     "p99_us": 124.70800000000001
     },
     "raceline": {
-     "optimize_s": 0.027392875,
-     "predicted_lap_s": 24.42427979170892
+     "optimize_s": 0.032906333,
+     "predicted_lap_s": 24.42198869643763
     },
-    "realtime_factor": 42.98821439663975,
+    "realtime_factor": 37.159548769038885,
     "sim_tick": {
-     "count": 121164,
-     "mean_us": 7.03215318081175
+     "count": 121431,
+     "mean_us": 8.11935755284849
     },
     "stack_control": {
-     "count": 6058,
-     "max_us": 34420.708,
-     "mean_us": 314.6540960713111,
-     "p50_us": 306.04200000000003,
-     "p90_us": 351.875,
-     "p99_us": 406.625
+     "count": 6071,
+     "max_us": 41035.708,
+     "mean_us": 364.36720523801654,
+     "p50_us": 355.5,
+     "p90_us": 403.625,
+     "p99_us": 456.333
     },
     "stack_scan": {
-     "count": 1211,
-     "max_us": 132.166,
-     "mean_us": 27.730593724194943,
-     "p50_us": 6.5,
-     "p90_us": 72.208,
-     "p99_us": 99.709
+     "count": 1213,
+     "max_us": 138.209,
+     "mean_us": 32.07157708161586,
+     "p50_us": 7.625,
+     "p90_us": 82.542,
+     "p99_us": 113.125
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 42.67996235184882,
+   "lap1": 42.76523637728182,
    "laps": [
-    42.67996235184882,
-    25.020906361034683,
-    24.421151573892615,
-    24.421255183475807
+    42.76523637728182,
+    25.048908624773098,
+    24.445837507583576,
+    24.44606940371827
    ],
    "laps_target": 4,
    "map": {
@@ -980,13 +980,13 @@
     "landmarks": 183,
     "matched": 183,
     "position": {
-     "max": 0.003982451638837362,
-     "rms": 0.0015784856905515614,
+     "max": 0.004578325999608395,
+     "rms": 0.0016581065229569248,
      "samples": 183
     },
-    "time": 44.54
+    "time": 44.64
    },
-   "max_lateral_true": 0.6866834119212787,
+   "max_lateral_true": 0.6775406422419958,
    "name": "mpc/gen5/s1",
    "penalties": {
     "cones_hit": 0,
@@ -995,28 +995,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 44.03999999998806,
+     "duration": 44.13999999998783,
      "lateral": {
-      "max": 0.09046354874554645,
-      "rms": 0.028445158625402304,
-      "samples": 2202
+      "max": 0.08777832853200536,
+      "rms": 0.028794726880290337,
+      "samples": 2207
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2202
+      "samples": 2207
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2202
+      "samples": 2207
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.0007870655664879353,
-      "rms": 0.00020642874457424268,
+      "max": 0.0007076586806710508,
+      "rms": 0.00019306725348961938,
       "samples": 50
      },
      "position": {
@@ -1031,21 +1031,21 @@
      }
     },
     "racing": {
-     "duration": 72.85999999998384,
+     "duration": 72.93999999998422,
      "lateral": {
-      "max": 0.5167283576325133,
-      "rms": 0.04097549782998946,
-      "samples": 3643
+      "max": 0.520778383725446,
+      "rms": 0.043690170842626004,
+      "samples": 3647
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 3643
+      "samples": 3647
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 3643
+      "samples": 3647
      }
     },
     "staged": {
@@ -1067,31 +1067,31 @@
      }
     },
     "stopping": {
-     "duration": 2.7649999999998065,
+     "duration": 2.851999999999797,
      "lateral": {
-      "max": 0.02282853109827805,
-      "rms": 0.010147298525600179,
-      "samples": 139
+      "max": 0.06828954756232128,
+      "rms": 0.027809806509021925,
+      "samples": 143
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 139
+      "samples": 143
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 139
+      "samples": 143
      }
     }
    },
-   "racing_best": 24.421151573892615,
-   "racing_mean": 24.62110437280104,
-   "score": 116.54327547025193,
+   "racing_best": 24.445837507583576,
+   "racing_mean": 24.646938512024985,
+   "score": 116.70605191335676,
    "seed": 1,
-   "sim_time": 121.164,
+   "sim_time": 121.431,
    "stopped": true,
-   "total_time": 116.54327547025193,
+   "total_time": 116.70605191335676,
    "track": {
     "length": 394.5551480479347,
     "name": "generated-5",
@@ -1107,23 +1107,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 44.54,
+     "time": 44.64,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 45.54,
+     "time": 45.64,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 118.4,
+     "time": 118.58,
      "to": "stopping"
     }
    ],
-   "wall_time": 2.818539958
+   "wall_time": 3.267827625
   },
   "seed": 1,
   "track": "gen5",
@@ -1132,68 +1132,68 @@
  {
   "result": {
    "association": {
-    "correct": 19058,
-    "matchable": 19058,
-    "matched": 19058,
-    "observations": 19490,
+    "correct": 19086,
+    "matchable": 19086,
+    "matched": 19086,
+    "observations": 19518,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 6769,
-     "max_us": 1083.084,
-     "mean_us": 311.1203841040038,
-     "p50_us": 306.25,
-     "p90_us": 356.83299999999997,
-     "p99_us": 415.25,
+     "count": 6784,
+     "max_us": 1271.6660000000002,
+     "mean_us": 359.1363497936339,
+     "p50_us": 354.417,
+     "p90_us": 410.25,
+     "p99_us": 460.667,
      "solver_failures": 0
     },
     "exploration": {
-     "count": 502,
+     "count": 506,
      "failures": 1,
-     "max_us": 100.45800000000001,
-     "mean_us": 60.55420119521916,
-     "p50_us": 58.667,
-     "p90_us": 78.166,
-     "p99_us": 94.791
+     "max_us": 135.916,
+     "mean_us": 71.77386166007905,
+     "p50_us": 69.708,
+     "p90_us": 89.875,
+     "p99_us": 113.625
     },
     "raceline": {
-     "optimize_s": 0.053960708,
-     "predicted_lap_s": 27.826167345282595
+     "optimize_s": 0.065251542,
+     "predicted_lap_s": 27.82218457777546
     },
-    "realtime_factor": 42.53453512372621,
+    "realtime_factor": 36.78180417626229,
     "sim_tick": {
-     "count": 135868,
-     "mean_us": 7.055919480670226
+     "count": 136170,
+     "mean_us": 8.15767605933365
     },
     "stack_control": {
-     "count": 6793,
-     "max_us": 62510.334,
-     "mean_us": 319.4383134108651,
-     "p50_us": 306.166,
-     "p90_us": 356.916,
-     "p99_us": 416.125
+     "count": 6808,
+     "max_us": 75956.209,
+     "mean_us": 369.2330302585199,
+     "p50_us": 354.5,
+     "p90_us": 410.208,
+     "p99_us": 461.125
     },
     "stack_scan": {
-     "count": 1358,
-     "max_us": 109.459,
-     "mean_us": 27.886480854197355,
-     "p50_us": 6.125,
-     "p90_us": 72.542,
-     "p99_us": 93.292
+     "count": 1361,
+     "max_us": 154.084,
+     "mean_us": 33.2256377663484,
+     "p50_us": 7.083,
+     "p90_us": 85.5,
+     "p99_us": 110.29199999999999
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 47.47182607468605,
+   "lap1": 47.78669942551637,
    "laps": [
-    47.47182607468605,
-    28.57070025267621,
-    27.834200946443232,
-    27.833406686741
+    47.78669942551637,
+    28.584457246050448,
+    27.84521391223305,
+    27.84515983746084
    ],
    "laps_target": 4,
    "map": {
@@ -1206,13 +1206,13 @@
     "landmarks": 216,
     "matched": 216,
     "position": {
-     "max": 0.0040997385604116185,
-     "rms": 0.0017514996340361794,
+     "max": 0.004040152386836619,
+     "rms": 0.0017959703049166727,
      "samples": 216
     },
-    "time": 49.34
+    "time": 49.660000000000004
    },
-   "max_lateral_true": 0.7097393891901994,
+   "max_lateral_true": 0.7031766913309033,
    "name": "mpc/gen6/s1",
    "penalties": {
     "cones_hit": 0,
@@ -1221,28 +1221,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 48.839999999976875,
+     "duration": 49.15999999997613,
      "lateral": {
-      "max": 0.08927023460374646,
-      "rms": 0.024007220360016394,
-      "samples": 2442
+      "max": 0.08669455096350609,
+      "rms": 0.024282309379365163,
+      "samples": 2458
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2442
+      "samples": 2458
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2442
+      "samples": 2458
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.01761140464813507,
-      "rms": 0.006021168176188979,
+      "max": 0.02009514469660961,
+      "rms": 0.006273099480231457,
       "samples": 50
      },
      "position": {
@@ -1257,21 +1257,21 @@
      }
     },
     "racing": {
-     "duration": 83.2400000000334,
+     "duration": 83.2600000000335,
      "lateral": {
-      "max": 0.11881678252313635,
-      "rms": 0.01773429105590129,
-      "samples": 4162
+      "max": 0.12138309543922687,
+      "rms": 0.021353329624361445,
+      "samples": 4163
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 4162
+      "samples": 4163
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 4162
+      "samples": 4163
      }
     },
     "staged": {
@@ -1293,31 +1293,31 @@
      }
     },
     "stopping": {
-     "duration": 2.288999999999859,
+     "duration": 2.250999999999863,
      "lateral": {
-      "max": 0.13862132595296703,
-      "rms": 0.055235009174779116,
-      "samples": 115
+      "max": 0.02460467680021517,
+      "rms": 0.012825862372524009,
+      "samples": 113
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 115
+      "samples": 113
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 115
+      "samples": 113
      }
     }
    },
-   "racing_best": 27.833406686741,
-   "racing_mean": 28.079435961953482,
-   "score": 131.7101339605465,
+   "racing_best": 27.84515983746084,
+   "racing_mean": 28.09161033191478,
+   "score": 132.0615304212607,
    "seed": 1,
-   "sim_time": 135.868,
+   "sim_time": 136.17000000000002,
    "stopped": true,
-   "total_time": 131.7101339605465,
+   "total_time": 132.0615304212607,
    "track": {
     "length": 486.88187953833074,
     "name": "generated-6",
@@ -1333,23 +1333,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 49.34,
+     "time": 49.660000000000004,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 50.34,
+     "time": 50.660000000000004,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 133.58,
+     "time": 133.92000000000002,
      "to": "stopping"
     }
    ],
-   "wall_time": 3.194298459
+   "wall_time": 3.70210225
   },
   "seed": 1,
   "track": "gen6",
@@ -1358,68 +1358,68 @@
  {
   "result": {
    "association": {
-    "correct": 23521,
-    "matchable": 23521,
-    "matched": 23521,
-    "observations": 23911,
+    "correct": 23661,
+    "matchable": 23661,
+    "matched": 23661,
+    "observations": 24051,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 6744,
-     "max_us": 1170.167,
-     "mean_us": 313.53784564056957,
-     "p50_us": 306.875,
-     "p90_us": 356.166,
-     "p99_us": 445.875,
+     "count": 6767,
+     "max_us": 1216.959,
+     "mean_us": 356.0297594207167,
+     "p50_us": 354.583,
+     "p90_us": 403.583,
+     "p99_us": 460.75,
      "solver_failures": 0
     },
     "exploration": {
-     "count": 490,
+     "count": 496,
      "failures": 1,
-     "max_us": 134.20899999999997,
-     "mean_us": 63.11725714285719,
-     "p50_us": 60.25,
-     "p90_us": 90.375,
-     "p99_us": 121.625
+     "max_us": 151.25,
+     "mean_us": 72.71758870967741,
+     "p50_us": 69.75,
+     "p90_us": 103.20899999999999,
+     "p99_us": 132.166
     },
     "raceline": {
-     "optimize_s": 0.030754333,
-     "predicted_lap_s": 27.901514865688444
+     "optimize_s": 0.035071958,
+     "predicted_lap_s": 27.905998333069522
     },
-    "realtime_factor": 42.45582924923004,
+    "realtime_factor": 37.32983564208692,
     "sim_tick": {
-     "count": 135362,
-     "mean_us": 7.122805809604809
+     "count": 135833,
+     "mean_us": 8.122284952845327
     },
     "stack_control": {
-     "count": 6768,
-     "max_us": 38503.792,
-     "mean_us": 318.3483414598116,
-     "p50_us": 306.79200000000003,
-     "p90_us": 356.208,
-     "p99_us": 447.5
+     "count": 6791,
+     "max_us": 43996.833999999995,
+     "mean_us": 361.5069368281543,
+     "p50_us": 354.584,
+     "p90_us": 403.625,
+     "p99_us": 461.875
     },
     "stack_scan": {
-     "count": 1353,
-     "max_us": 137.667,
-     "mean_us": 28.763456023651173,
-     "p50_us": 6.875,
-     "p90_us": 77.292,
-     "p99_us": 110.584
+     "count": 1357,
+     "max_us": 154.916,
+     "mean_us": 33.54762564480472,
+     "p50_us": 7.917000000000001,
+     "p90_us": 89.5,
+     "p99_us": 124.0
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 46.21315018458519,
+   "lap1": 46.82310220376459,
    "laps": [
-    46.21315018458519,
-    28.877164098967803,
-    27.903097137602757,
-    27.903162815985198
+    46.82310220376459,
+    28.848037785954716,
+    27.93991035852244,
+    27.939924277414136
    ],
    "laps_target": 4,
    "map": {
@@ -1432,13 +1432,13 @@
     "landmarks": 195,
     "matched": 195,
     "position": {
-     "max": 0.0044149581513659285,
-     "rms": 0.001560046069871302,
+     "max": 0.004612814267522921,
+     "rms": 0.0016333456974561016,
      "samples": 195
     },
-    "time": 48.08
+    "time": 48.68
    },
-   "max_lateral_true": 0.7063933745847446,
+   "max_lateral_true": 0.70487613977476,
    "name": "mpc/gen7/s1",
    "penalties": {
     "cones_hit": 0,
@@ -1447,28 +1447,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 47.57999999997981,
+     "duration": 48.17999999997841,
      "lateral": {
-      "max": 0.09188263800059565,
-      "rms": 0.031262197355969475,
-      "samples": 2379
+      "max": 0.09050545867804166,
+      "rms": 0.03150792564294989,
+      "samples": 2409
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2379
+      "samples": 2409
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2379
+      "samples": 2409
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.00024615704117332185,
-      "rms": 6.81222313512631e-05,
+      "max": 0.00025350971610559465,
+      "rms": 8.053543079564513e-05,
       "samples": 50
      },
      "position": {
@@ -1483,21 +1483,21 @@
      }
     },
     "racing": {
-     "duration": 83.6800000000355,
+     "duration": 83.74000000003579,
      "lateral": {
-      "max": 0.535989969781757,
-      "rms": 0.04153000967136077,
-      "samples": 4184
+      "max": 0.5334458133724381,
+      "rms": 0.04353231701685739,
+      "samples": 4187
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 4184
+      "samples": 4187
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 4184
+      "samples": 4187
      }
     },
     "staged": {
@@ -1519,31 +1519,31 @@
      }
     },
     "stopping": {
-     "duration": 2.6029999999998243,
+     "duration": 2.413999999999845,
      "lateral": {
-      "max": 0.21358453056736684,
-      "rms": 0.09078674710852422,
-      "samples": 131
+      "max": 0.016486480907998834,
+      "rms": 0.008849609772516708,
+      "samples": 121
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 131
+      "samples": 121
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 131
+      "samples": 121
      }
     }
    },
-   "racing_best": 27.903097137602757,
-   "racing_mean": 28.227808017518583,
-   "score": 130.89657423714095,
+   "racing_best": 27.93991035852244,
+   "racing_mean": 28.24262414063043,
+   "score": 131.5509746256559,
    "seed": 1,
-   "sim_time": 135.362,
+   "sim_time": 135.833,
    "stopped": true,
-   "total_time": 130.89657423714095,
+   "total_time": 131.5509746256559,
    "track": {
     "length": 405.2352633764238,
     "name": "generated-7",
@@ -1559,23 +1559,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 48.08,
+     "time": 48.68,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 49.08,
+     "time": 49.68,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 132.76,
+     "time": 133.42000000000002,
      "to": "stopping"
     }
    ],
-   "wall_time": 3.188301875
+   "wall_time": 3.638724834
   },
   "seed": 1,
   "track": "gen7",
@@ -1584,68 +1584,68 @@
  {
   "result": {
    "association": {
-    "correct": 16799,
-    "matchable": 16799,
-    "matched": 16799,
-    "observations": 17041,
+    "correct": 16797,
+    "matchable": 16797,
+    "matched": 16797,
+    "observations": 17039,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 4133,
-     "max_us": 942.542,
-     "mean_us": 309.53623566416604,
-     "p50_us": 305.334,
-     "p90_us": 353.917,
-     "p99_us": 396.417,
+     "count": 4137,
+     "max_us": 1013.375,
+     "mean_us": 354.31324437998484,
+     "p50_us": 352.541,
+     "p90_us": 400.458,
+     "p99_us": 456.625,
      "solver_failures": 0
     },
     "exploration": {
      "count": 308,
      "failures": 1,
-     "max_us": 128.5,
-     "mean_us": 61.133003246753304,
-     "p50_us": 59.666000000000004,
-     "p90_us": 90.417,
-     "p99_us": 112.333
+     "max_us": 149.25,
+     "mean_us": 72.23431168831164,
+     "p50_us": 69.584,
+     "p90_us": 104.625,
+     "p99_us": 139.083
     },
     "raceline": {
-     "optimize_s": 0.01027375,
-     "predicted_lap_s": 16.64812385723331
+     "optimize_s": 0.011502709,
+     "predicted_lap_s": 16.64718733439911
     },
-    "realtime_factor": 43.411561815144076,
+    "realtime_factor": 37.85685609403764,
     "sim_tick": {
-     "count": 83160,
-     "mean_us": 6.97016595719112
+     "count": 83228,
+     "mean_us": 8.012500780987677
     },
     "stack_control": {
-     "count": 4158,
-     "max_us": 14348.833999999999,
-     "mean_us": 311.35646296296335,
-     "p50_us": 305.084,
-     "p90_us": 354.0,
-     "p99_us": 396.58299999999997
+     "count": 4161,
+     "max_us": 16383.083999999999,
+     "mean_us": 356.475271569335,
+     "p50_us": 352.5,
+     "p90_us": 400.58299999999997,
+     "p99_us": 459.25
     },
     "stack_scan": {
      "count": 831,
-     "max_us": 132.708,
-     "mean_us": 27.674276774969893,
-     "p50_us": 5.417,
-     "p90_us": 75.16699999999999,
-     "p99_us": 111.25
+     "max_us": 152.458,
+     "mean_us": 32.69398676293621,
+     "p50_us": 6.292,
+     "p90_us": 87.459,
+     "p99_us": 132.083
     }
    },
    "dnf_reason": "",
    "error": "",
-   "final_state": "finished",
-   "lap1": 27.99523747418924,
+   "final_state": "stopping",
+   "lap1": 28.0499744697244,
    "laps": [
-    27.99523747418924,
-    17.039987915441603,
-    16.650328164488634,
-    16.651025335764125
+    28.0499744697244,
+    17.05605646528852,
+    16.66136625648131,
+    16.66126421093667
    ],
    "laps_target": 4,
    "map": {
@@ -1658,13 +1658,13 @@
     "landmarks": 121,
     "matched": 121,
     "position": {
-     "max": 0.004144126550712043,
-     "rms": 0.0015712463120859529,
+     "max": 0.004664282601731322,
+     "rms": 0.0017145897057214189,
      "samples": 121
     },
-    "time": 29.86
+    "time": 29.92
    },
-   "max_lateral_true": 0.6501163176917027,
+   "max_lateral_true": 0.6517674776123429,
    "name": "mpc/gen8/s1",
    "penalties": {
     "cones_hit": 0,
@@ -1673,46 +1673,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 29.3600000000129,
+     "duration": 29.420000000012973,
      "lateral": {
-      "max": 0.09087270304633052,
-      "rms": 0.02881642623036506,
-      "samples": 1468
+      "max": 0.08623187221860606,
+      "rms": 0.02921592416984021,
+      "samples": 1471
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 1468
+      "samples": 1471
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 1468
-     }
-    },
-    "finished": {
-     "duration": 0.001,
-     "lateral": {
-      "max": 0.017886733123908295,
-      "rms": 0.017886733123908295,
-      "samples": 1
-     },
-     "position": {
-      "max": 0.0,
-      "rms": 0.0,
-      "samples": 1
-     },
-     "yaw": {
-      "max": 0.0,
-      "rms": 0.0,
-      "samples": 1
+      "samples": 1471
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.03906780367284113,
-      "rms": 0.011843352295126314,
+      "max": 0.031044395331028554,
+      "rms": 0.01152733573979822,
       "samples": 50
      },
      "position": {
@@ -1727,21 +1709,21 @@
      }
     },
     "racing": {
-     "duration": 49.33999999997571,
+     "duration": 49.37999999997562,
      "lateral": {
-      "max": 0.45897057633257754,
-      "rms": 0.03998352931183398,
-      "samples": 2467
+      "max": 0.45220559129204185,
+      "rms": 0.040947908487950734,
+      "samples": 2469
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2467
+      "samples": 2469
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 2467
+      "samples": 2469
      }
     },
     "staged": {
@@ -1763,31 +1745,31 @@
      }
     },
     "stopping": {
-     "duration": 2.959999999999785,
+     "duration": 2.9289999999997884,
      "lateral": {
-      "max": 0.022921576687431222,
-      "rms": 0.011928702279996463,
-      "samples": 148
+      "max": 0.07209230412607072,
+      "rms": 0.03181927138264335,
+      "samples": 147
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 148
+      "samples": 147
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 148
+      "samples": 147
      }
     }
    },
-   "racing_best": 16.650328164488634,
-   "racing_mean": 16.78044713856479,
-   "score": 78.3365788898836,
+   "racing_best": 16.66126421093667,
+   "racing_mean": 16.7928956442355,
+   "score": 78.4286614024309,
    "seed": 1,
-   "sim_time": 83.16,
+   "sim_time": 83.22800000000001,
    "stopped": true,
-   "total_time": 78.3365788898836,
+   "total_time": 78.4286614024309,
    "track": {
     "length": 253.37329879515966,
     "name": "generated-8",
@@ -1803,29 +1785,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 29.86,
+     "time": 29.92,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 30.86,
+     "time": 30.92,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 80.2,
+     "time": 80.3,
      "to": "stopping"
-    },
-    {
-     "from": "stopping",
-     "reason": "stopped",
-     "time": 83.16,
-     "to": "finished"
     }
    ],
-   "wall_time": 1.915618709
+   "wall_time": 2.198492125
   },
   "seed": 1,
   "track": "gen8",
@@ -1834,68 +1810,68 @@
  {
   "result": {
    "association": {
-    "correct": 9489,
-    "matchable": 9489,
-    "matched": 9489,
-    "observations": 9635,
+    "correct": 9595,
+    "matchable": 9595,
+    "matched": 9595,
+    "observations": 9741,
     "precision": 1.0,
     "recall": 1.0
    },
    "completed": true,
    "compute": {
     "controller": {
-     "count": 2591,
-     "max_us": 908.791,
-     "mean_us": 306.90289463527665,
-     "p50_us": 298.291,
-     "p90_us": 345.625,
-     "p99_us": 431.209,
-     "solver_failures": 1
+     "count": 2629,
+     "max_us": 1106.2920000000001,
+     "mean_us": 349.38822556105004,
+     "p50_us": 350.0,
+     "p90_us": 389.875,
+     "p99_us": 463.70899999999995,
+     "solver_failures": 0
     },
     "exploration": {
-     "count": 196,
+     "count": 204,
      "failures": 1,
-     "max_us": 127.12499999999999,
-     "mean_us": 73.4660204081633,
-     "p50_us": 65.792,
-     "p90_us": 105.5,
-     "p99_us": 126.70800000000001
+     "max_us": 138.667,
+     "mean_us": 83.98265196078434,
+     "p50_us": 76.208,
+     "p90_us": 122.125,
+     "p99_us": 133.667
     },
     "raceline": {
-     "optimize_s": 0.003198166,
-     "predicted_lap_s": 10.235606891931818
+     "optimize_s": 0.003623125,
+     "predicted_lap_s": 10.235145705385
     },
-    "realtime_factor": 44.07009972645237,
+    "realtime_factor": 38.62722832210829,
     "sim_tick": {
-     "count": 52305,
-     "mean_us": 6.837991473090984
+     "count": 53071,
+     "mean_us": 7.833573514725694
     },
     "stack_control": {
-     "count": 2615,
-     "max_us": 5812.084000000001,
-     "mean_us": 306.6545426386235,
-     "p50_us": 298.125,
-     "p90_us": 345.584,
-     "p99_us": 431.709
+     "count": 2653,
+     "max_us": 6537.583,
+     "mean_us": 349.0673437617786,
+     "p50_us": 348.79200000000003,
+     "p90_us": 389.20799999999997,
+     "p99_us": 464.459
     },
     "stack_scan": {
-     "count": 522,
-     "max_us": 130.542,
-     "mean_us": 31.24215134099614,
-     "p50_us": 3.917,
-     "p90_us": 91.792,
-     "p99_us": 121.417
+     "count": 530,
+     "max_us": 143.542,
+     "mean_us": 36.5937471698113,
+     "p50_us": 4.625,
+     "p90_us": 102.542,
+     "p99_us": 136.209
     }
    },
    "dnf_reason": "",
    "error": "",
    "final_state": "stopping",
-   "lap1": 16.844751352050206,
+   "lap1": 17.58838031955863,
    "laps": [
-    16.844751352050206,
-    10.888167884123238,
-    10.235105153721921,
-    10.235239433124782
+    17.58838031955863,
+    10.894125539058269,
+    10.236504004509818,
+    10.236527085458818
    ],
    "laps_target": 4,
    "map": {
@@ -1908,13 +1884,13 @@
     "landmarks": 73,
     "matched": 73,
     "position": {
-     "max": 0.002688493112908195,
-     "rms": 0.0013830674217917875,
+     "max": 0.0038713487128089834,
+     "rms": 0.0015299574588981582,
      "samples": 73
     },
-    "time": 18.7
+    "time": 19.46
    },
-   "max_lateral_true": 0.554228827058057,
+   "max_lateral_true": 0.555584296664341,
    "name": "mpc/oval/s1",
    "penalties": {
     "cones_hit": 0,
@@ -1923,28 +1899,28 @@
    },
    "phases": {
     "exploring": {
-     "duration": 18.19999999999926,
+     "duration": 18.96000000000019,
      "lateral": {
-      "max": 0.07104813610554286,
-      "rms": 0.027655242830881003,
-      "samples": 910
+      "max": 0.0694183966053621,
+      "rms": 0.027995837228837386,
+      "samples": 948
      },
      "position": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 910
+      "samples": 948
      },
      "yaw": {
       "max": 0.0,
       "rms": 0.0,
-      "samples": 910
+      "samples": 948
      }
     },
     "map_finalized": {
      "duration": 1.0000000000000007,
      "lateral": {
-      "max": 0.0005975039429893256,
-      "rms": 0.00017563225495461303,
+      "max": 0.0009794293936644214,
+      "rms": 0.00023949510743877903,
       "samples": 50
      },
      "position": {
@@ -1961,8 +1937,8 @@
     "racing": {
      "duration": 30.36000000001412,
      "lateral": {
-      "max": 0.5533513286195505,
-      "rms": 0.061440359362687394,
+      "max": 0.5541536496620336,
+      "rms": 0.06195815529764081,
       "samples": 1518
      },
      "position": {
@@ -1995,10 +1971,10 @@
      }
     },
     "stopping": {
-     "duration": 2.2459999999998637,
+     "duration": 2.251999999999863,
      "lateral": {
-      "max": 0.02372719577552559,
-      "rms": 0.011065779029643754,
+      "max": 0.025299646137650005,
+      "rms": 0.012996304688840395,
       "samples": 113
      },
      "position": {
@@ -2013,13 +1989,13 @@
      }
     }
    },
-   "racing_best": 10.235105153721921,
-   "racing_mean": 10.452837490323313,
-   "score": 48.203263823020144,
+   "racing_best": 10.236504004509818,
+   "racing_mean": 10.455718876342301,
+   "score": 48.95553694858553,
    "seed": 1,
-   "sim_time": 52.305,
+   "sim_time": 53.071,
    "stopped": true,
-   "total_time": 48.203263823020144,
+   "total_time": 48.95553694858553,
    "track": {
     "length": 155.39094628522705,
     "name": "oval",
@@ -2035,23 +2011,23 @@
     {
      "from": "exploring",
      "reason": "lap 1 closed, track model built",
-     "time": 18.7,
+     "time": 19.46,
      "to": "map_finalized"
     },
     {
      "from": "map_finalized",
      "reason": "raceline ready",
-     "time": 19.7,
+     "time": 20.46,
      "to": "racing"
     },
     {
      "from": "racing",
      "reason": "4 laps completed",
-     "time": 50.06,
+     "time": 50.82,
      "to": "stopping"
     }
    ],
-   "wall_time": 1.186859125
+   "wall_time": 1.373927209
   },
   "seed": 1,
   "track": "oval",
@@ -2071,46 +2047,46 @@
    "compute": {
     "controller": {
      "count": 6620,
-     "max_us": 22.209,
-     "mean_us": 8.629320996978807,
-     "p50_us": 8.125,
-     "p90_us": 11.292,
-     "p99_us": 12.791,
+     "max_us": 19.709,
+     "mean_us": 9.484404984894145,
+     "p50_us": 9.5,
+     "p90_us": 9.833,
+     "p99_us": 10.709,
      "solver_failures": 0
     },
     "exploration": {
      "count": 472,
      "failures": 1,
-     "max_us": 154.083,
-     "mean_us": 67.4749258474576,
-     "p50_us": 66.125,
-     "p90_us": 92.792,
-     "p99_us": 144.167
+     "max_us": 152.125,
+     "mean_us": 72.70083474576276,
+     "p50_us": 70.584,
+     "p90_us": 95.75,
+     "p99_us": 137.25
     },
     "raceline": {
-     "optimize_s": 0.037119625,
+     "optimize_s": 0.039548709,
      "predicted_lap_s": 27.865525986904483
     },
-    "realtime_factor": 113.0961495316691,
+    "realtime_factor": 102.90737279358198,
     "sim_tick": {
      "count": 132892,
-     "mean_us": 7.517603392228571
+     "mean_us": 8.275828138635521
     },
     "stack_control": {
      "count": 6644,
-     "max_us": 45294.583,
-     "mean_us": 15.627513997591448,
-     "p50_us": 8.208,
-     "p90_us": 11.375,
-     "p99_us": 12.916
+     "max_us": 48122.333000000006,
+     "mean_us": 16.930510535822027,
+     "p50_us": 9.583,
+     "p90_us": 9.917,
+     "p99_us": 10.833
     },
     "stack_scan": {
      "count": 1328,
-     "max_us": 163.791,
-     "mean_us": 30.686098644578383,
-     "p50_us": 7.667,
-     "p90_us": 83.375,
-     "p99_us": 117.375
+     "max_us": 161.542,
+     "mean_us": 33.46574096385544,
+     "p50_us": 8.625,
+     "p90_us": 91.375,
+     "p99_us": 124.166
     }
    },
    "dnf_reason": "",
@@ -2277,7 +2253,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.175035583
+   "wall_time": 1.291374917
   },
   "seed": 1,
   "track": "gen1",
@@ -2297,46 +2273,46 @@
    "compute": {
     "controller": {
      "count": 5880,
-     "max_us": 15.625,
-     "mean_us": 8.649681122448918,
-     "p50_us": 8.165999999999999,
-     "p90_us": 11.417,
-     "p99_us": 12.917,
+     "max_us": 23.0,
+     "mean_us": 9.440979761904625,
+     "p50_us": 9.458,
+     "p90_us": 9.791,
+     "p99_us": 10.708,
      "solver_failures": 0
     },
     "exploration": {
      "count": 417,
      "failures": 1,
-     "max_us": 127.0,
-     "mean_us": 66.12719664268582,
-     "p50_us": 64.625,
-     "p90_us": 90.75,
-     "p99_us": 117.875
+     "max_us": 139.209,
+     "mean_us": 71.22923501199047,
+     "p50_us": 69.25,
+     "p90_us": 96.333,
+     "p99_us": 127.042
     },
     "raceline": {
-     "optimize_s": 0.02962625,
+     "optimize_s": 0.032493458,
      "predicted_lap_s": 24.74887103515596
     },
-    "realtime_factor": 113.34266146361267,
+    "realtime_factor": 103.70201784804335,
     "sim_tick": {
      "count": 118094,
-     "mean_us": 7.529729732249214
+     "mean_us": 8.229632775583605
     },
     "stack_control": {
      "count": 5904,
-     "max_us": 36964.292,
-     "mean_us": 15.133812330623098,
-     "p50_us": 8.209,
-     "p90_us": 11.5,
-     "p99_us": 13.291
+     "max_us": 40448.291999999994,
+     "mean_us": 16.57022544037956,
+     "p50_us": 9.541,
+     "p90_us": 9.875,
+     "p99_us": 10.792
     },
     "stack_scan": {
      "count": 1180,
-     "max_us": 138.167,
-     "mean_us": 29.88742542372883,
-     "p50_us": 7.292,
-     "p90_us": 80.375,
-     "p99_us": 120.166
+     "max_us": 152.958,
+     "mean_us": 32.526454237288135,
+     "p50_us": 8.375,
+     "p90_us": 85.25,
+     "p99_us": 125.70800000000001
     }
    },
    "dnf_reason": "",
@@ -2503,7 +2479,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.041920125
+   "wall_time": 1.138782084
   },
   "seed": 1,
   "track": "gen2",
@@ -2523,46 +2499,46 @@
    "compute": {
     "controller": {
      "count": 3497,
-     "max_us": 19.542,
-     "mean_us": 8.746277094652744,
-     "p50_us": 7.75,
-     "p90_us": 11.75,
-     "p99_us": 14.75,
+     "max_us": 21.166999999999998,
+     "mean_us": 9.36349356591361,
+     "p50_us": 9.417,
+     "p90_us": 9.707999999999998,
+     "p99_us": 9.959000000000001,
      "solver_failures": 0
     },
     "exploration": {
      "count": 251,
      "failures": 1,
-     "max_us": 122.667,
-     "mean_us": 67.93143426294822,
-     "p50_us": 66.45899999999999,
-     "p90_us": 90.458,
-     "p99_us": 117.54199999999999
+     "max_us": 118.875,
+     "mean_us": 73.14343426294826,
+     "p50_us": 73.5,
+     "p90_us": 92.625,
+     "p99_us": 118.333
     },
     "raceline": {
-     "optimize_s": 0.008145875,
+     "optimize_s": 0.009252042,
      "predicted_lap_s": 14.539471218393965
     },
-    "realtime_factor": 115.86450154476653,
+    "realtime_factor": 108.47912396049152,
     "sim_tick": {
      "count": 70429,
-     "mean_us": 7.513818072099276
+     "mean_us": 8.00827278536281
     },
     "stack_control": {
      "count": 3521,
-     "max_us": 11904.542000000001,
-     "mean_us": 12.34823629650677,
-     "p50_us": 7.791999999999999,
-     "p90_us": 11.833,
-     "p99_us": 14.875
+     "max_us": 13296.25,
+     "mean_us": 13.430103663731751,
+     "p50_us": 9.5,
+     "p90_us": 9.75,
+     "p99_us": 10.083
     },
     "stack_scan": {
      "count": 703,
-     "max_us": 127.70899999999999,
-     "mean_us": 28.573119487909008,
-     "p50_us": 5.167,
-     "p90_us": 81.167,
-     "p99_us": 106.917
+     "max_us": 124.542,
+     "mean_us": 30.912529160739616,
+     "p50_us": 4.917,
+     "p90_us": 87.292,
+     "p99_us": 109.458
     }
    },
    "dnf_reason": "",
@@ -2729,7 +2705,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 0.607856583
+   "wall_time": 0.649240125
   },
   "seed": 1,
   "track": "gen3",
@@ -2749,46 +2725,46 @@
    "compute": {
     "controller": {
      "count": 6187,
-     "max_us": 14.25,
-     "mean_us": 8.490057863261606,
-     "p50_us": 8.417,
-     "p90_us": 9.5,
-     "p99_us": 10.584000000000001,
+     "max_us": 20.5,
+     "mean_us": 9.594318409568256,
+     "p50_us": 9.584,
+     "p90_us": 9.875,
+     "p99_us": 11.125,
      "solver_failures": 0
     },
     "exploration": {
      "count": 430,
      "failures": 1,
-     "max_us": 139.541,
-     "mean_us": 63.30727906976741,
-     "p50_us": 61.50000000000001,
-     "p90_us": 81.75,
-     "p99_us": 120.584
+     "max_us": 159.167,
+     "mean_us": 75.78868604651167,
+     "p50_us": 72.958,
+     "p90_us": 103.5,
+     "p99_us": 145.0
     },
     "raceline": {
-     "optimize_s": 0.032656083,
+     "optimize_s": 0.037200708,
      "predicted_lap_s": 26.262429612286855
     },
-    "realtime_factor": 115.96462494243667,
+    "realtime_factor": 102.16235468619826,
     "sim_tick": {
      "count": 124236,
-     "mean_us": 7.367036672138099
+     "mean_us": 8.343775016899645
     },
     "stack_control": {
      "count": 6211,
-     "max_us": 39739.667,
-     "mean_us": 15.180670745451419,
-     "p50_us": 8.459,
-     "p90_us": 9.583,
-     "p99_us": 10.667
+     "max_us": 45519.125,
+     "mean_us": 17.28006955401732,
+     "p50_us": 9.667000000000002,
+     "p90_us": 9.958,
+     "p99_us": 11.292
     },
     "stack_scan": {
      "count": 1241,
-     "max_us": 150.084,
-     "mean_us": 27.618489927477917,
-     "p50_us": 6.375,
-     "p90_us": 74.083,
-     "p99_us": 115.375
+     "max_us": 175.417,
+     "mean_us": 32.92586946011291,
+     "p50_us": 7.333,
+     "p90_us": 87.958,
+     "p99_us": 142.75
     }
    },
    "dnf_reason": "",
@@ -2955,7 +2931,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.071326709
+   "wall_time": 1.216064375
   },
   "seed": 1,
   "track": "gen4",
@@ -2975,46 +2951,46 @@
    "compute": {
     "controller": {
      "count": 5991,
-     "max_us": 36.5,
-     "mean_us": 8.491442663995944,
-     "p50_us": 8.417,
-     "p90_us": 9.459,
-     "p99_us": 10.625,
+     "max_us": 22.041,
+     "mean_us": 9.521290268736196,
+     "p50_us": 9.5,
+     "p90_us": 9.709,
+     "p99_us": 10.166,
      "solver_failures": 0
     },
     "exploration": {
      "count": 442,
      "failures": 1,
-     "max_us": 143.083,
-     "mean_us": 60.105871040723954,
-     "p50_us": 60.25,
-     "p90_us": 79.25,
-     "p99_us": 108.25
+     "max_us": 144.583,
+     "mean_us": 68.23009728506786,
+     "p50_us": 69.5,
+     "p90_us": 91.75,
+     "p99_us": 124.292
     },
     "raceline": {
-     "optimize_s": 0.02936525,
+     "optimize_s": 0.031932875,
      "predicted_lap_s": 24.422829998441266
     },
-    "realtime_factor": 116.34744434405977,
+    "realtime_factor": 103.77859783690715,
     "sim_tick": {
      "count": 120307,
-     "mean_us": 7.348404332248105
+     "mean_us": 8.24385580223619
     },
     "stack_control": {
      "count": 6015,
-     "max_us": 36730.583999999995,
-     "mean_us": 14.88772169576053,
-     "p50_us": 8.459,
-     "p90_us": 9.542,
-     "p99_us": 10.708
+     "max_us": 40012.833,
+     "mean_us": 16.508248545303534,
+     "p50_us": 9.584,
+     "p90_us": 9.792,
+     "p99_us": 10.209
     },
     "stack_scan": {
      "count": 1202,
-     "max_us": 146.042,
-     "mean_us": 27.9695898502496,
-     "p50_us": 6.75,
-     "p90_us": 74.416,
-     "p99_us": 104.459
+     "max_us": 147.625,
+     "mean_us": 31.772866888519147,
+     "p50_us": 7.541,
+     "p90_us": 82.875,
+     "p99_us": 117.792
     }
    },
    "dnf_reason": "",
@@ -3181,7 +3157,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.034032167
+   "wall_time": 1.159266
   },
   "seed": 1,
   "track": "gen5",
@@ -3201,46 +3177,46 @@
    "compute": {
     "controller": {
      "count": 6675,
-     "max_us": 18.834,
-     "mean_us": 8.494261722846424,
-     "p50_us": 8.375,
-     "p90_us": 9.625,
-     "p99_us": 10.625,
+     "max_us": 21.375,
+     "mean_us": 9.532597303370514,
+     "p50_us": 9.542,
+     "p90_us": 9.75,
+     "p99_us": 10.166,
      "solver_failures": 0
     },
     "exploration": {
      "count": 485,
      "failures": 1,
-     "max_us": 110.583,
-     "mean_us": 63.21986185567013,
-     "p50_us": 61.583999999999996,
-     "p90_us": 79.917,
-     "p99_us": 102.542
+     "max_us": 121.708,
+     "mean_us": 70.62380618556699,
+     "p50_us": 67.958,
+     "p90_us": 89.375,
+     "p99_us": 115.791
     },
     "raceline": {
-     "optimize_s": 0.057485042,
+     "optimize_s": 0.064100625,
      "predicted_lap_s": 27.82390465644568
     },
-    "realtime_factor": 113.90646009250453,
+    "realtime_factor": 101.56783298684218,
     "sim_tick": {
      "count": 133986,
-     "mean_us": 7.355027584969221
+     "mean_us": 8.251757765731233
     },
     "stack_control": {
      "count": 6699,
-     "max_us": 66777.0,
-     "mean_us": 18.671166442752387,
-     "p50_us": 8.417,
-     "p90_us": 9.707999999999998,
-     "p99_us": 10.667
+     "max_us": 74322.833,
+     "mean_us": 20.875394685774115,
+     "p50_us": 9.625,
+     "p90_us": 9.792,
+     "p99_us": 10.25
     },
     "stack_scan": {
      "count": 1339,
-     "max_us": 119.125,
-     "mean_us": 28.490344286781163,
-     "p50_us": 6.2090000000000005,
-     "p90_us": 75.333,
-     "p99_us": 99.75
+     "max_us": 131.417,
+     "mean_us": 32.01946153846158,
+     "p50_us": 6.959,
+     "p90_us": 83.334,
+     "p99_us": 113.708
     }
    },
    "dnf_reason": "",
@@ -3407,7 +3383,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.176280958
+   "wall_time": 1.3191775
   },
   "seed": 1,
   "track": "gen6",
@@ -3427,46 +3403,46 @@
    "compute": {
     "controller": {
      "count": 6643,
-     "max_us": 14.542,
-     "mean_us": 8.437944001204325,
-     "p50_us": 8.167,
-     "p90_us": 9.666,
-     "p99_us": 11.792,
+     "max_us": 29.084,
+     "mean_us": 9.599592352852385,
+     "p50_us": 9.541,
+     "p90_us": 10.084,
+     "p99_us": 11.083,
      "solver_failures": 0
     },
     "exploration": {
      "count": 475,
      "failures": 1,
-     "max_us": 132.084,
-     "mean_us": 63.16541263157898,
-     "p50_us": 61.50000000000001,
-     "p90_us": 93.959,
-     "p99_us": 119.875
+     "max_us": 149.917,
+     "mean_us": 72.0527978947369,
+     "p50_us": 69.75,
+     "p90_us": 103.917,
+     "p99_us": 133.208
     },
     "raceline": {
-     "optimize_s": 0.030310833,
+     "optimize_s": 0.03494275,
      "predicted_lap_s": 27.90711297666143
     },
-    "realtime_factor": 116.75320609172476,
+    "realtime_factor": 102.29027958228593,
     "sim_tick": {
      "count": 133359,
-     "mean_us": 7.338546112372265
+     "mean_us": 8.372089825205205
     },
     "stack_control": {
      "count": 6667,
-     "max_us": 37528.667,
-     "mean_us": 14.311920953952164,
-     "p50_us": 8.209,
-     "p90_us": 9.709,
-     "p99_us": 11.916
+     "max_us": 43408.666,
+     "mean_us": 16.390039298035354,
+     "p50_us": 9.625,
+     "p90_us": 10.167,
+     "p99_us": 11.167
     },
     "stack_scan": {
      "count": 1333,
-     "max_us": 138.333,
-     "mean_us": 28.553849212303096,
-     "p50_us": 7.208,
-     "p90_us": 77.833,
-     "p99_us": 113.166
+     "max_us": 153.5,
+     "mean_us": 32.74359039759952,
+     "p50_us": 8.083,
+     "p90_us": 87.667,
+     "p99_us": 125.08300000000001
     }
    },
    "dnf_reason": "",
@@ -3633,7 +3609,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.142229875
+   "wall_time": 1.303730917
   },
   "seed": 1,
   "track": "gen7",
@@ -3653,46 +3629,46 @@
    "compute": {
     "controller": {
      "count": 4075,
-     "max_us": 20.333,
-     "mean_us": 8.433197546012256,
-     "p50_us": 8.083,
-     "p90_us": 9.625,
-     "p99_us": 11.833,
+     "max_us": 24.125,
+     "mean_us": 9.604915582822015,
+     "p50_us": 9.542,
+     "p90_us": 10.5,
+     "p99_us": 10.708,
      "solver_failures": 0
     },
     "exploration": {
      "count": 296,
      "failures": 1,
-     "max_us": 125.833,
-     "mean_us": 61.60008108108109,
-     "p50_us": 61.16700000000001,
-     "p90_us": 93.20899999999999,
-     "p99_us": 117.916
+     "max_us": 142.083,
+     "mean_us": 70.64722972972977,
+     "p50_us": 69.541,
+     "p90_us": 103.792,
+     "p99_us": 136.958
     },
     "raceline": {
-     "optimize_s": 0.0103315,
+     "optimize_s": 0.011777542,
      "predicted_lap_s": 16.64964691613155
     },
-    "realtime_factor": 119.8767004483056,
+    "realtime_factor": 105.00574807502323,
     "sim_tick": {
      "count": 81989,
-     "mean_us": 7.238536413422093
+     "mean_us": 8.260325897378618
     },
     "stack_control": {
      "count": 4099,
-     "max_us": 14183.5,
-     "mean_us": 12.160149792632469,
-     "p50_us": 8.125,
-     "p90_us": 9.707999999999998,
-     "p99_us": 11.917
+     "max_us": 16291.125,
+     "mean_us": 13.867068797267386,
+     "p50_us": 9.625,
+     "p90_us": 10.583,
+     "p99_us": 10.792
     },
     "stack_scan": {
      "count": 819,
-     "max_us": 131.041,
-     "mean_us": 27.341551892551923,
-     "p50_us": 5.6659999999999995,
-     "p90_us": 75.125,
-     "p99_us": 113.5
+     "max_us": 144.917,
+     "mean_us": 31.532813186813183,
+     "p50_us": 6.584,
+     "p90_us": 86.166,
+     "p99_us": 129.25
     }
    },
    "dnf_reason": "",
@@ -3859,7 +3835,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 0.683944417
+   "wall_time": 0.780804875
   },
   "seed": 1,
   "track": "gen8",
@@ -3879,46 +3855,46 @@
    "compute": {
     "controller": {
      "count": 2520,
-     "max_us": 14.25,
-     "mean_us": 8.462525793650801,
-     "p50_us": 8.084,
-     "p90_us": 9.709,
-     "p99_us": 12.0,
+     "max_us": 17.625,
+     "mean_us": 9.708386507936485,
+     "p50_us": 9.584,
+     "p90_us": 10.542,
+     "p99_us": 10.875,
      "solver_failures": 0
     },
     "exploration": {
      "count": 182,
      "failures": 1,
-     "max_us": 125.583,
-     "mean_us": 73.04970329670329,
-     "p50_us": 67.334,
-     "p90_us": 104.792,
-     "p99_us": 120.791
+     "max_us": 160.25,
+     "mean_us": 87.6345989010989,
+     "p50_us": 78.75,
+     "p90_us": 126.83400000000002,
+     "p99_us": 152.125
     },
     "raceline": {
-     "optimize_s": 0.003331708,
+     "optimize_s": 0.003934917,
      "predicted_lap_s": 10.235153327829341
     },
-    "realtime_factor": 121.53609009359677,
+    "realtime_factor": 105.67029238925265,
     "sim_tick": {
      "count": 50895,
-     "mean_us": 7.164873641812166
+     "mean_us": 8.226176932900856
     },
     "stack_control": {
      "count": 2544,
-     "max_us": 5506.458,
-     "mean_us": 11.052073506289322,
-     "p50_us": 8.165999999999999,
-     "p90_us": 9.792,
-     "p99_us": 12.5
+     "max_us": 6461.625,
+     "mean_us": 12.707937500000089,
+     "p50_us": 9.667000000000002,
+     "p90_us": 10.625,
+     "p99_us": 11.0
     },
     "stack_scan": {
      "count": 508,
-     "max_us": 130.291,
-     "mean_us": 29.870074803149585,
-     "p50_us": 4.125,
-     "p90_us": 90.042,
-     "p99_us": 121.0
+     "max_us": 173.333,
+     "mean_us": 35.89360039370086,
+     "p50_us": 4.625,
+     "p90_us": 108.208,
+     "p99_us": 145.208
     }
    },
    "dnf_reason": "",
@@ -4085,7 +4061,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 0.4187645
+   "wall_time": 0.481639625
   },
   "seed": 1,
   "track": "oval",
@@ -4105,46 +4081,46 @@
    "compute": {
     "controller": {
      "count": 6804,
-     "max_us": 40.0,
-     "mean_us": 16.599766166960656,
-     "p50_us": 16.333000000000002,
-     "p90_us": 18.375,
-     "p99_us": 20.5,
+     "max_us": 38.334,
+     "mean_us": 18.957430335097012,
+     "p50_us": 18.541999999999998,
+     "p90_us": 20.417,
+     "p99_us": 24.042,
      "solver_failures": 0
     },
     "exploration": {
      "count": 507,
      "failures": 1,
-     "max_us": 134.5,
-     "mean_us": 66.55499802761337,
-     "p50_us": 65.625,
-     "p90_us": 86.833,
-     "p99_us": 123.75
+     "max_us": 149.042,
+     "mean_us": 75.28196844181457,
+     "p50_us": 73.416,
+     "p90_us": 98.666,
+     "p99_us": 134.041
     },
     "raceline": {
-     "optimize_s": 0.033788,
+     "optimize_s": 0.040637459,
      "predicted_lap_s": 27.860512974001914
     },
-    "realtime_factor": 109.15851654506316,
+    "realtime_factor": 95.16346727584386,
     "sim_tick": {
      "count": 136580,
-     "mean_us": 7.468435773902922
+     "mean_us": 8.557037106449705
     },
     "stack_control": {
      "count": 6829,
-     "max_us": 41583.375,
-     "mean_us": 22.834137501830213,
-     "p50_us": 16.375,
-     "p90_us": 18.458,
-     "p99_us": 20.625
+     "max_us": 49689.5,
+     "mean_us": 26.410438424367204,
+     "p50_us": 18.625,
+     "p90_us": 20.5,
+     "p99_us": 24.416
     },
     "stack_scan": {
      "count": 1365,
-     "max_us": 142.75,
-     "mean_us": 31.43287765567779,
-     "p50_us": 7.875,
-     "p90_us": 83.167,
-     "p99_us": 117.625
+     "max_us": 158.334,
+     "mean_us": 35.921595604395556,
+     "p50_us": 9.415999999999999,
+     "p90_us": 93.792,
+     "p99_us": 130.583
     }
    },
    "dnf_reason": "",
@@ -4335,7 +4311,7 @@
      "to": "finished"
     }
    ],
-   "wall_time": 1.251207916
+   "wall_time": 1.435214625
   },
   "seed": 1,
   "track": "gen1",
@@ -4355,46 +4331,46 @@
    "compute": {
     "controller": {
      "count": 6022,
-     "max_us": 56.125,
-     "mean_us": 16.54309764197944,
-     "p50_us": 16.25,
-     "p90_us": 18.334,
-     "p99_us": 20.5,
+     "max_us": 41.583,
+     "mean_us": 18.821804882098938,
+     "p50_us": 18.5,
+     "p90_us": 20.334,
+     "p99_us": 24.459,
      "solver_failures": 0
     },
     "exploration": {
      "count": 444,
      "failures": 1,
-     "max_us": 155.75,
-     "mean_us": 65.52667567567572,
-     "p50_us": 63.667,
-     "p90_us": 88.0,
-     "p99_us": 121.833
+     "max_us": 141.958,
+     "mean_us": 73.3746936936937,
+     "p50_us": 70.95899999999999,
+     "p90_us": 99.291,
+     "p99_us": 128.667
     },
     "raceline": {
-     "optimize_s": 0.029610583,
+     "optimize_s": 0.033550583,
      "predicted_lap_s": 24.749981970460013
     },
-    "realtime_factor": 109.9263996101978,
+    "realtime_factor": 95.96414557823738,
     "sim_tick": {
      "count": 120924,
-     "mean_us": 7.4133116833700665
+     "mean_us": 8.5047335185723
     },
     "stack_control": {
      "count": 6046,
-     "max_us": 37141.375,
-     "mean_us": 22.87139199470709,
-     "p50_us": 16.333000000000002,
-     "p90_us": 18.417,
-     "p99_us": 20.583
+     "max_us": 41479.666,
+     "mean_us": 25.96898809130039,
+     "p50_us": 18.541999999999998,
+     "p90_us": 20.417,
+     "p99_us": 24.833000000000002
     },
     "stack_scan": {
      "count": 1208,
-     "max_us": 170.209,
-     "mean_us": 30.443174668874178,
-     "p50_us": 7.208,
-     "p90_us": 80.208,
-     "p99_us": 115.917
+     "max_us": 154.75,
+     "mean_us": 34.4938261589404,
+     "p50_us": 8.833,
+     "p90_us": 90.334,
+     "p99_us": 128.583
     }
    },
    "dnf_reason": "",
@@ -4561,7 +4537,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.100045125
+   "wall_time": 1.260095625
   },
   "seed": 1,
   "track": "gen2",
@@ -4581,46 +4557,46 @@
    "compute": {
     "controller": {
      "count": 3566,
-     "max_us": 36.5,
-     "mean_us": 16.418097588334188,
-     "p50_us": 16.166999999999998,
-     "p90_us": 18.333,
-     "p99_us": 20.709,
+     "max_us": 27.625,
+     "mean_us": 18.377540100953645,
+     "p50_us": 18.375,
+     "p90_us": 18.75,
+     "p99_us": 19.417,
      "solver_failures": 0
     },
     "exploration": {
      "count": 265,
      "failures": 1,
-     "max_us": 103.916,
-     "mean_us": 65.03946415094342,
-     "p50_us": 65.33300000000001,
-     "p90_us": 85.167,
-     "p99_us": 95.125
+     "max_us": 120.875,
+     "mean_us": 74.58289433962263,
+     "p50_us": 74.375,
+     "p90_us": 93.5,
+     "p99_us": 117.54199999999999
     },
     "raceline": {
-     "optimize_s": 0.008006792,
+     "optimize_s": 0.009194125,
      "predicted_lap_s": 14.540658013522965
     },
-    "realtime_factor": 114.54865385758795,
+    "realtime_factor": 102.32235276987716,
     "sim_tick": {
      "count": 71809,
-     "mean_us": 7.249437605314918
+     "mean_us": 8.102555933103844
     },
     "stack_control": {
      "count": 3590,
-     "max_us": 11229.125,
-     "mean_us": 19.741484958217388,
-     "p50_us": 16.25,
-     "p90_us": 18.416,
-     "p99_us": 21.166
+     "max_us": 13252.708,
+     "mean_us": 22.292601114206185,
+     "p50_us": 18.459,
+     "p90_us": 18.833000000000002,
+     "p99_us": 22.041
     },
     "stack_scan": {
      "count": 717,
-     "max_us": 108.667,
-     "mean_us": 28.30928312412832,
-     "p50_us": 4.458,
-     "p90_us": 77.459,
-     "p99_us": 96.083
+     "max_us": 126.625,
+     "mean_us": 32.45281032078104,
+     "p50_us": 4.917,
+     "p90_us": 88.375,
+     "p99_us": 109.75
     }
    },
    "dnf_reason": "",
@@ -4787,7 +4763,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 0.626886459
+   "wall_time": 0.701791916
   },
   "seed": 1,
   "track": "gen3",
@@ -4807,46 +4783,46 @@
    "compute": {
     "controller": {
      "count": 6352,
-     "max_us": 24.334,
-     "mean_us": 16.426542506297285,
-     "p50_us": 16.125,
-     "p90_us": 18.334,
-     "p99_us": 20.084,
+     "max_us": 43.541999999999994,
+     "mean_us": 21.258238664987253,
+     "p50_us": 20.417,
+     "p90_us": 22.875,
+     "p99_us": 29.166,
      "solver_failures": 0
     },
     "exploration": {
      "count": 461,
      "failures": 1,
-     "max_us": 158.417,
-     "mean_us": 65.68014316702823,
-     "p50_us": 64.333,
-     "p90_us": 83.5,
-     "p99_us": 126.833
+     "max_us": 155.75,
+     "mean_us": 84.82149674620395,
+     "p50_us": 81.333,
+     "p90_us": 119.334,
+     "p99_us": 150.958
     },
     "raceline": {
-     "optimize_s": 0.031965708,
+     "optimize_s": 0.04606375,
      "predicted_lap_s": 26.262629496905685
     },
-    "realtime_factor": 111.10817481602291,
+    "realtime_factor": 84.45669108701351,
     "sim_tick": {
      "count": 127532,
-     "mean_us": 7.343490496501368
+     "mean_us": 9.642174089635423
     },
     "stack_control": {
      "count": 6376,
-     "max_us": 39325.333,
-     "mean_us": 22.8660459535759,
-     "p50_us": 16.208000000000002,
-     "p90_us": 18.417,
-     "p99_us": 20.208000000000002
+     "max_us": 55446.625,
+     "mean_us": 30.305120922208378,
+     "p50_us": 20.5,
+     "p90_us": 23.0,
+     "p99_us": 29.458000000000002
     },
     "stack_scan": {
      "count": 1274,
-     "max_us": 171.084,
-     "mean_us": 29.42425745682898,
-     "p50_us": 6.416,
-     "p90_us": 77.291,
-     "p99_us": 111.58300000000001
+     "max_us": 189.667,
+     "mean_us": 38.66613108320264,
+     "p50_us": 9.084,
+     "p90_us": 99.33300000000001,
+     "p99_us": 153.375
     }
    },
    "dnf_reason": "",
@@ -5013,7 +4989,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.147818333
+   "wall_time": 1.510028375
   },
   "seed": 1,
   "track": "gen4",
@@ -5033,46 +5009,46 @@
    "compute": {
     "controller": {
      "count": 6178,
-     "max_us": 25.791,
-     "mean_us": 16.316477338944544,
-     "p50_us": 16.166,
-     "p90_us": 18.291,
-     "p99_us": 20.0,
+     "max_us": 53.875,
+     "mean_us": 21.418388960828636,
+     "p50_us": 20.625,
+     "p90_us": 23.042,
+     "p99_us": 29.459,
      "solver_failures": 0
     },
     "exploration": {
      "count": 475,
      "failures": 1,
-     "max_us": 134.75,
-     "mean_us": 61.06317263157895,
-     "p50_us": 62.29200000000001,
-     "p90_us": 79.792,
-     "p99_us": 110.042
+     "max_us": 179.33399999999997,
+     "mean_us": 85.44831157894738,
+     "p50_us": 83.416,
+     "p90_us": 125.084,
+     "p99_us": 159.625
     },
     "raceline": {
-     "optimize_s": 0.029747,
+     "optimize_s": 0.044092667,
      "predicted_lap_s": 24.425392524613873
     },
-    "realtime_factor": 111.89387071158565,
+    "realtime_factor": 83.72432519409065,
     "sim_tick": {
      "count": 124053,
-     "mean_us": 7.297962556325539
+     "mean_us": 9.70699824268437
     },
     "stack_control": {
      "count": 6202,
-     "max_us": 37040.708999999995,
-     "mean_us": 22.54806836504344,
-     "p50_us": 16.208000000000002,
-     "p90_us": 18.334,
-     "p99_us": 20.084
+     "max_us": 53958.875,
+     "mean_us": 30.531135601419006,
+     "p50_us": 20.708,
+     "p90_us": 23.166,
+     "p99_us": 30.292
     },
     "stack_scan": {
      "count": 1240,
-     "max_us": 137.542,
-     "mean_us": 29.08835887096787,
-     "p50_us": 6.667,
-     "p90_us": 74.5,
-     "p99_us": 102.875
+     "max_us": 186.667,
+     "mean_us": 40.933765322580584,
+     "p50_us": 9.125,
+     "p90_us": 105.167,
+     "p99_us": 164.916
     }
    },
    "dnf_reason": "",
@@ -5239,7 +5215,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.108666625
+   "wall_time": 1.481684083
   },
   "seed": 1,
   "track": "gen5",
@@ -5259,46 +5235,46 @@
    "compute": {
     "controller": {
      "count": 7035,
-     "max_us": 27.667,
-     "mean_us": 16.35432636815924,
-     "p50_us": 16.166,
-     "p90_us": 18.292,
-     "p99_us": 20.125,
+     "max_us": 40.625,
+     "mean_us": 21.09962700781797,
+     "p50_us": 20.5,
+     "p90_us": 22.666,
+     "p99_us": 24.375,
      "solver_failures": 0
     },
     "exploration": {
      "count": 509,
      "failures": 1,
-     "max_us": 107.083,
-     "mean_us": 62.549457760314354,
-     "p50_us": 61.208,
-     "p90_us": 80.125,
-     "p99_us": 95.584
+     "max_us": 545.5,
+     "mean_us": 88.3909489194498,
+     "p50_us": 84.5,
+     "p90_us": 114.625,
+     "p99_us": 160.041
     },
     "raceline": {
-     "optimize_s": 0.055499792,
+     "optimize_s": 0.07414725,
      "predicted_lap_s": 27.82460837206666
     },
-    "realtime_factor": 110.15056276725302,
+    "realtime_factor": 84.16076501993535,
     "sim_tick": {
      "count": 141190,
-     "mean_us": 7.308601281958111
+     "mean_us": 9.545735618658286
     },
     "stack_control": {
      "count": 7059,
-     "max_us": 64593.0,
-     "mean_us": 25.710083722906358,
-     "p50_us": 16.209,
-     "p90_us": 18.375,
-     "p99_us": 20.208000000000002
+     "max_us": 85617.708,
+     "mean_us": 33.45662289276142,
+     "p50_us": 20.583,
+     "p90_us": 22.75,
+     "p99_us": 24.625
     },
     "stack_scan": {
      "count": 1411,
-     "max_us": 115.167,
-     "mean_us": 28.079701630049723,
-     "p50_us": 6.2090000000000005,
-     "p90_us": 74.5,
-     "p99_us": 95.875
+     "max_us": 564.7080000000001,
+     "mean_us": 39.510998582565556,
+     "p50_us": 8.0,
+     "p90_us": 102.792,
+     "p99_us": 154.125
     }
    },
    "dnf_reason": "",
@@ -5465,7 +5441,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.281791
+   "wall_time": 1.677622583
   },
   "seed": 1,
   "track": "gen6",
@@ -5485,46 +5461,46 @@
    "compute": {
     "controller": {
      "count": 6896,
-     "max_us": 28.0,
-     "mean_us": 15.658441560324775,
-     "p50_us": 15.834000000000001,
-     "p90_us": 17.291999999999998,
-     "p99_us": 20.208000000000002,
+     "max_us": 37.375,
+     "mean_us": 18.678118329466365,
+     "p50_us": 18.666,
+     "p90_us": 20.375,
+     "p99_us": 23.125,
      "solver_failures": 0
     },
     "exploration": {
      "count": 522,
      "failures": 1,
-     "max_us": 131.792,
-     "mean_us": 65.43303831417617,
-     "p50_us": 63.541999999999994,
-     "p90_us": 94.16600000000001,
-     "p99_us": 121.459
+     "max_us": 193.417,
+     "mean_us": 83.64112643678169,
+     "p50_us": 79.459,
+     "p90_us": 118.792,
+     "p99_us": 165.208
     },
     "raceline": {
-     "optimize_s": 0.031314708,
+     "optimize_s": 0.038923958,
      "predicted_lap_s": 27.9004762360231
     },
-    "realtime_factor": 116.21221591339943,
+    "realtime_factor": 96.82073129339976,
     "sim_tick": {
      "count": 138419,
-     "mean_us": 7.016020893082357
+     "mean_us": 8.393740584746418
     },
     "stack_control": {
      "count": 6920,
-     "max_us": 38669.25,
-     "mean_us": 21.41931705202288,
-     "p50_us": 15.917,
-     "p90_us": 17.375,
-     "p99_us": 20.292
+     "max_us": 48178.291999999994,
+     "mean_us": 25.83523612716749,
+     "p50_us": 18.709,
+     "p90_us": 20.459,
+     "p99_us": 23.25
     },
     "stack_scan": {
      "count": 1383,
-     "max_us": 134.792,
-     "mean_us": 30.45310484454095,
-     "p50_us": 6.666,
-     "p90_us": 82.208,
-     "p99_us": 116.375
+     "max_us": 208.708,
+     "mean_us": 38.701733911786036,
+     "p50_us": 7.832999999999999,
+     "p90_us": 103.04100000000001,
+     "p99_us": 151.209
     }
    },
    "dnf_reason": "",
@@ -5691,7 +5667,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 1.191088208
+   "wall_time": 1.429642166
   },
   "seed": 1,
   "track": "gen7",
@@ -5711,46 +5687,46 @@
    "compute": {
     "controller": {
      "count": 4197,
-     "max_us": 23.375,
-     "mean_us": 16.268036931141186,
-     "p50_us": 16.125,
-     "p90_us": 17.333000000000002,
-     "p99_us": 20.083000000000002,
+     "max_us": 40.208,
+     "mean_us": 19.329054324517646,
+     "p50_us": 18.834,
+     "p90_us": 20.375,
+     "p99_us": 22.334,
      "solver_failures": 0
     },
     "exploration": {
      "count": 319,
      "failures": 1,
-     "max_us": 120.91699999999999,
-     "mean_us": 63.32501567398116,
-     "p50_us": 62.29200000000001,
-     "p90_us": 94.0,
-     "p99_us": 114.833
+     "max_us": 152.334,
+     "mean_us": 78.76936050156738,
+     "p50_us": 77.458,
+     "p90_us": 113.5,
+     "p99_us": 144.958
     },
     "raceline": {
-     "optimize_s": 0.010884667,
+     "optimize_s": 0.012916916,
      "predicted_lap_s": 16.64832577901805
     },
-    "realtime_factor": 114.95382202112052,
+    "realtime_factor": 96.5790786710939,
     "sim_tick": {
      "count": 84435,
-     "mean_us": 7.193115094451783
+     "mean_us": 8.544489666605683
     },
     "stack_control": {
      "count": 4221,
-     "max_us": 14591.25,
-     "mean_us": 19.92517270788925,
-     "p50_us": 16.166999999999998,
-     "p90_us": 17.375,
-     "p99_us": 20.166999999999998
+     "max_us": 17897.791,
+     "mean_us": 23.797576877517173,
+     "p50_us": 18.875,
+     "p90_us": 20.458,
+     "p99_us": 22.458000000000002
     },
     "stack_scan": {
      "count": 843,
-     "max_us": 123.334,
-     "mean_us": 29.038597864768736,
-     "p50_us": 5.5,
-     "p90_us": 79.0,
-     "p99_us": 113.0
+     "max_us": 155.334,
+     "mean_us": 36.031931198101994,
+     "p50_us": 6.584,
+     "p90_us": 97.292,
+     "p99_us": 139.833
     }
    },
    "dnf_reason": "",
@@ -5917,7 +5893,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 0.734512333
+   "wall_time": 0.874257667
   },
   "seed": 1,
   "track": "gen8",
@@ -5937,46 +5913,46 @@
    "compute": {
     "controller": {
      "count": 2601,
-     "max_us": 25.75,
-     "mean_us": 16.063462129949986,
-     "p50_us": 15.916000000000002,
-     "p90_us": 17.25,
-     "p99_us": 20.125,
+     "max_us": 27.125,
+     "mean_us": 18.719542483660252,
+     "p50_us": 18.541999999999998,
+     "p90_us": 20.041999999999998,
+     "p99_us": 20.667,
      "solver_failures": 0
     },
     "exploration": {
      "count": 197,
      "failures": 1,
-     "max_us": 131.917,
-     "mean_us": 72.90251776649747,
-     "p50_us": 65.667,
-     "p90_us": 104.542,
-     "p99_us": 131.583
+     "max_us": 149.375,
+     "mean_us": 87.68829949238575,
+     "p50_us": 78.292,
+     "p90_us": 126.625,
+     "p99_us": 142.25
     },
     "raceline": {
-     "optimize_s": 0.003567375,
+     "optimize_s": 0.003864125,
      "predicted_lap_s": 10.23507941676079
     },
-    "realtime_factor": 118.15119838381473,
+    "realtime_factor": 101.34243578748686,
     "sim_tick": {
      "count": 52504,
-     "mean_us": 7.019565918787572
+     "mean_us": 8.178110563004939
     },
     "stack_control": {
      "count": 2625,
-     "max_us": 5736.333,
-     "mean_us": 18.546902476190418,
-     "p50_us": 15.959000000000001,
-     "p90_us": 17.291999999999998,
-     "p99_us": 20.208000000000002
+     "max_us": 6409.5,
+     "mean_us": 21.52494552380947,
+     "p50_us": 18.625,
+     "p90_us": 20.125,
+     "p99_us": 20.75
     },
     "stack_scan": {
      "count": 524,
-     "max_us": 135.167,
-     "mean_us": 31.001219465648816,
-     "p50_us": 3.875,
-     "p90_us": 88.833,
-     "p99_us": 123.62500000000001
+     "max_us": 153.584,
+     "mean_us": 37.330715648854984,
+     "p50_us": 4.5,
+     "p90_us": 106.291,
+     "p99_us": 141.29100000000003
     }
    },
    "dnf_reason": "",
@@ -6143,7 +6119,7 @@
      "to": "stopping"
     }
    ],
-   "wall_time": 0.44437975
+   "wall_time": 0.518085041
   },
   "seed": 1,
   "track": "oval",
