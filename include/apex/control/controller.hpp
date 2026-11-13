@@ -33,13 +33,14 @@ struct SpeedLoopConfig {
 
 // Pure pursuit (R. C. Coulter, "Implementation of the pure pursuit path tracking algorithm",
 // CMU-RI-TR-92-01, 1992) from the rear axle, with lookahead lookahead_min + lookahead_time * v
-// clamped to [lookahead_min, lookahead_max].
+// clamped to [lookahead_min, lookahead_max]. Short, because the law cuts corners by about a
+// lookahead's worth of path: docs/control.md has the sweep these values come from.
 struct PurePursuitConfig {
-    double lookahead_min = 3.0;   // m
-    double lookahead_time = 0.4;  // s
-    double lookahead_max = 15.0;  // m
-    // Adds the nominal model's steady-state slip-angle difference (understeer) for the pursued
-    // curvature, which the kinematic law ignores.
+    double lookahead_min = 1.5;    // m
+    double lookahead_time = 0.15;  // s
+    double lookahead_max = 10.0;   // m
+    // Corrects the kinematic law with the nominal model's steady-state slip angles: the frame
+    // turned to the rear axle's velocity, plus the slip-angle difference (understeer).
     bool understeer_compensation = true;
     // Predicts the pose through the steering actuator's dead time and lag before steering.
     bool delay_compensation = true;

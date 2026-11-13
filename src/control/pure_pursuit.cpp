@@ -28,7 +28,18 @@ double PurePursuitController::steer(const Pose2& pose, const StateEstimate& stat
     const double lookahead = std::clamp(config_.lookahead_min + config_.lookahead_time * speed,
                                         config_.lookahead_min, config_.lookahead_max);
     const Vec2 goal = sample_reference(reference, at.s + lookahead).position;
-    const Vec2 local = Pose2{rear.x(), rear.y(), pose.yaw}.to_local(goal);
+    // The arc must be tangent to the rear axle's velocity, which the rear tire's slip angle
+    // turns away from the heading (outwards in a corner): in the heading's frame the goal looks
+    // rotated by that angle and the car settles about slip * lookahead outside the path. The
+    // slip is the nominal model's steady-state one for the path ahead, not the measured one,
+    // which would feed back: sliding more would rotate the frame further and ask for more
+    // steering, and the car spins.
+    double rear_slip = 0.0;
+    if (config_.understeer_compensation) {
+        const double ahead = sample_reference(reference, at.s + 0.5 * lookahead).curvature;
+        rear_slip = model().steady_state_slip(ahead, speed).rear;
+    }
+    const Vec2 local = Pose2{rear.x(), rear.y(), pose.yaw + rear_slip}.to_local(goal);
     const double distance_squared = std::max(local.squaredNorm(), 1e-6);
     const double curvature = 2.0 * local.y() / distance_squared;
     double delta = std::atan(p.wheelbase() * curvature);
