@@ -141,7 +141,7 @@ TEST(TrackModel, PerfectMapsOfGeneratedTracksGiveTheirCenterline) {
 
 TEST(TrackModel, FillsAGapAlongTheTrackShape) {
     // Take out every left cone over 12 m of a curve: the gap's fill follows the curve.
-    const Track& track = reference_track("technical");
+    const Track track = reference_track("technical");
     Lap lap = drive_lap(track, no_errors(), 3);
     double s_curve = 0.0;
     for (const TrajectoryPoint& p : track.centerline.points()) {
@@ -162,7 +162,7 @@ TEST(TrackModel, FillsAGapAlongTheTrackShape) {
 }
 
 TEST(TrackModel, IgnoresTruthIds) {
-    const Track& track = reference_track("mixed");
+    const Track track = reference_track("mixed");
     Lap lap = drive_lap(track, MapErrors{}, 4);
     const std::optional<TrackModel> before = build_track_model(lap.map, lap.drive, {});
     for (std::size_t i = 0; i < lap.map.cones.size(); ++i) {

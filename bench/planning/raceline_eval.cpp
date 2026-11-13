@@ -42,7 +42,7 @@ using nlohmann::json;
 constexpr std::uint64_t kTracks = 20;
 
 struct Summary {
-    std::vector<double> values;
+    std::vector<double> values{};
     void add(double v) { values.push_back(v); }
     [[nodiscard]] json to_json() const {
         if (values.empty()) return nullptr;
@@ -98,13 +98,13 @@ double body_clearance(const Raceline& raceline, const Track& track) {
 }
 
 struct Level {
-    std::string name;
-    MapErrors errors;
+    std::string name{};
+    MapErrors errors{};
     std::size_t built = 0;
-    Summary max_error;
-    Summary rms_error;
-    Summary gain;
-    Summary clearance;
+    Summary max_error{};
+    Summary rms_error{};
+    Summary gain{};
+    Summary clearance{};
 };
 
 std::vector<std::vector<double>> points(const std::vector<apex::Vec2>& line) {

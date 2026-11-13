@@ -2,7 +2,7 @@
 #include <cmath>
 #include <optional>
 #include <stdexcept>
-#include <string>
+#include <string_view>
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -91,7 +91,7 @@ Summary summarize(const Track& track, const MapErrors& errors, std::uint64_t see
 }
 
 TEST(ExplorationPlanner, FollowsGeneratedTracksFromImperfectMaps) {
-    for (const std::string& name : {"technical", "mixed"}) {
+    for (const std::string_view name : {"technical", "mixed"}) {
         const Summary s = summarize(sim::reference_track(name), MapErrors{}, 1);
         EXPECT_GE(s.found, s.plans - s.plans / 20) << name;
         EXPECT_GE(static_cast<double>(s.inside), 0.95 * static_cast<double>(s.found)) << name;

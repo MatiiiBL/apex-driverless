@@ -25,7 +25,7 @@ struct SmoothingOptions {
     // Open polylines only: keep the first point where it is and make the path leave it along
     // this unit direction, as a car leaves its current pose (the second point is moved one
     // spacing along it).
-    std::optional<Vec2> start_direction;
+    std::optional<Vec2> start_direction{};
 };
 
 // The Whittaker smoother (Whittaker, "On a new method of graduation", Proceedings of the

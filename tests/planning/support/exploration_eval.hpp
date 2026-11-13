@@ -16,7 +16,7 @@
 namespace apex::planning::test_support {
 
 struct ExplorationScenario {
-    MapErrors errors;
+    MapErrors errors{};
     std::uint64_t seed = 1;
     double plan_every = 5.0;     // m along the centerline between plans
     double sensor_range = 20.0;  // m, front half-plane
