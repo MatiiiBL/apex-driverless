@@ -5,5 +5,7 @@ apex_module(perception
         camera_fusion.cpp
         clustering.cpp
         cone_model.cpp
+        config.cpp
         ground.cpp
+        perception.cpp
     PUBLIC_DEPS apex::core)
