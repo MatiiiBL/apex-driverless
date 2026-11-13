@@ -21,6 +21,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <map>
@@ -71,6 +72,9 @@ struct Outcome {
     std::size_t off_course = 0;
     double penalty = 0.0;
     ControllerStats stats;
+    // Process CPU time per call: unlike the wall-clock compute time, it does not count the
+    // time the scheduler gives other processes on a loaded machine.
+    LatencyStats cpu_time;
 };
 
 struct TraceRow {
@@ -106,7 +110,10 @@ Outcome run(ControllerKind kind, const Scenario& scenario, std::vector<TraceRow>
             out.dnf = "timeout";
             break;
         }
-        const ControlCommand command = controller->compute(plant.estimate(), reference, now);
+        const StateEstimate estimate = plant.estimate();
+        const std::clock_t cpu_start = std::clock();
+        const ControlCommand command = controller->compute(estimate, reference, now);
+        out.cpu_time.add(static_cast<double>(std::clock() - cpu_start) / CLOCKS_PER_SEC);
         plant.command(command);
         const bool flying = monitor.laps_completed() == kLaps - 1;
         if (flying) {
@@ -166,6 +173,7 @@ json to_json_outcome(ControllerKind kind, const Scenario& s, const Outcome& o) {
     j["solver_failures"] = o.stats.solver_failures;
     j["calls"] = o.stats.calls;
     j["compute"] = o.stats.compute_time.summary();
+    j["compute_cpu"] = o.cpu_time.summary();
     return j;
 }
 
@@ -184,7 +192,7 @@ std::string base_table(const json& runs) {
     std::string md =
         "| track | controller | flying lap (s) | profile (s) | lateral RMS / max (m) | steer "
         "rate RMS (rad/s) | outside bounds (s) | cones | off course | compute p50 / p99 (us) "
-        "| QP failures |\n|---|---|---|---|---|---|---|---|---|---|---|\n";
+        "| CPU p50 / p99 (us) | QP failures |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n";
     for (const json& r : runs) {
         if (r.at("sweep") != "base") continue;
         md += "| " + r.at("track").get<std::string>() + " | " +
@@ -198,6 +206,8 @@ std::string base_table(const json& runs) {
               std::to_string(r.at("off_course").get<int>()) + " | " +
               fmt("%.0f", r.at("compute").at("p50_us").get<double>()) + " / " +
               fmt("%.0f", r.at("compute").at("p99_us").get<double>()) + " | " +
+              fmt("%.0f", r.at("compute_cpu").at("p50_us").get<double>()) + " / " +
+              fmt("%.0f", r.at("compute_cpu").at("p99_us").get<double>()) + " | " +
               std::to_string(r.at("solver_failures").get<int>()) + " |\n";
     }
     return md;
