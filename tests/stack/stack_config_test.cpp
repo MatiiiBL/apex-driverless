@@ -14,6 +14,7 @@ TEST(StackConfig, JsonRoundTripKeepsEveryModule) {
     StackConfig config;
     config.perception.ground.threshold = 0.05;
     config.controller.kind = control::ControllerKind::Stanley;
+    config.estimation.association.gate_probability = 0.99;
     config.mission.laps = 4;
     config.lap_counter.min_lap_distance = 40.0;
     config.known_pose_mapper.gate = 0.6;
@@ -21,6 +22,7 @@ TEST(StackConfig, JsonRoundTripKeepsEveryModule) {
     const StackConfig back = json(config).get<StackConfig>();
     EXPECT_DOUBLE_EQ(back.perception.ground.threshold, 0.05);
     EXPECT_EQ(back.controller.kind, control::ControllerKind::Stanley);
+    EXPECT_DOUBLE_EQ(back.estimation.association.gate_probability, 0.99);
     EXPECT_EQ(back.mission.laps, 4);
     EXPECT_DOUBLE_EQ(back.lap_counter.min_lap_distance, 40.0);
     EXPECT_DOUBLE_EQ(back.known_pose_mapper.gate, 0.6);
