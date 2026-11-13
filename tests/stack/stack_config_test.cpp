@@ -20,7 +20,7 @@ TEST(StackConfig, JsonRoundTripKeepsEveryModule) {
     config.mission.laps = 4;
     config.lap_counter.min_lap_distance = 40.0;
     config.known_pose_mapper.gate = 0.6;
-    config.stop_decel = 4.0;
+    config.hold_brake = 3.0;
     const StackConfig back = json(config).get<StackConfig>();
     EXPECT_DOUBLE_EQ(back.perception.ground.threshold, 0.05);
     EXPECT_EQ(back.controller.kind, control::ControllerKind::Stanley);
@@ -30,7 +30,7 @@ TEST(StackConfig, JsonRoundTripKeepsEveryModule) {
     EXPECT_EQ(back.mission.laps, 4);
     EXPECT_DOUBLE_EQ(back.lap_counter.min_lap_distance, 40.0);
     EXPECT_DOUBLE_EQ(back.known_pose_mapper.gate, 0.6);
-    EXPECT_DOUBLE_EQ(back.stop_decel, 4.0);
+    EXPECT_DOUBLE_EQ(back.hold_brake, 3.0);
 }
 
 TEST(StackConfig, MissingKeysKeepDefaultsAndUnknownKeysThrow) {

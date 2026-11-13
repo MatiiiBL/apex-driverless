@@ -65,8 +65,7 @@ std::vector<std::int32_t> mapped_truth_ids(const ConeMap& map) {
 }
 
 const StackConfig& validated(const StackConfig& c) {
-    if (!(c.stop_decel > 0.0) || !(c.hold_brake >= 0.0) || !(c.emergency_brake > 0.0) ||
-        !(c.driven_path_spacing > 0.0)) {
+    if (!(c.hold_brake >= 0.0) || !(c.emergency_brake > 0.0) || !(c.driven_path_spacing > 0.0)) {
         throw std::invalid_argument("stack: decelerations and spacings must be positive");
     }
     return c;
@@ -246,7 +245,7 @@ struct Stack::Impl {
             if (path) {
                 const double s = path->project(estimate.pose.position()).s;
                 const double speed = std::hypot(estimate.vx, estimate.vy);
-                braking = braking_reference(*path, s, speed, config.stop_decel);
+                braking = braking_reference(*path, s, speed, nominal, config.raceline.speed);
             }
         }
     }
