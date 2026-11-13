@@ -56,6 +56,12 @@ const EstimatorConfig& validated(const EstimatorConfig& config) {
     if (c.confirm_detections < 1) {
         throw std::invalid_argument("estimator: slam.confirm_detections must be at least 1");
     }
+    require_positive(c.recovery_position_std, "recovery_position_std");
+    require_positive(c.recovery_yaw_std, "recovery_yaw_std");
+    if (c.recovery_scans < 1 || c.recovery_min_observations < 1) {
+        throw std::invalid_argument(
+            "estimator: slam.recovery_scans and recovery_min_observations must be at least 1");
+    }
     return config;
 }
 
@@ -199,12 +205,50 @@ struct StateEstimator::Impl {
 
         if (mapping) drop_stale_tentatives(observations.stamp);
         if (map_changed) rebuild_map();
+        watch_for_loss(models.size(), updated, observations.stamp);
         if (!slam.finite() && healthy) {
             healthy = false;
             log(LogLevel::Error, "estimator: non-finite filter state at t = {:.3f} s",
                 observations.stamp);
         }
         stats.update_time.add(watch.elapsed_seconds());
+    }
+
+    // Counts the scans in a row whose observations all missed a map that should have been in
+    // view, and after recovery_scans of them widens the pose uncertainty (SlamConfig). Only the
+    // pose block grows: the map is as good as it was, the pose has made an unknown jump.
+    void watch_for_loss(std::size_t usable, bool matched, Time stamp) {
+        const SlamConfig& c = config.slam;
+        if (matched) {
+            lost_scans = 0;
+            return;
+        }
+        if (usable < c.recovery_min_observations ||
+            landmarks_ahead() < c.recovery_min_observations || ++lost_scans < c.recovery_scans) {
+            return;
+        }
+        lost_scans = 0;
+        RelativeMotion jump;
+        const double p = c.recovery_position_std;
+        const double y = c.recovery_yaw_std;
+        jump.covariance = Vec3(p * p, p * p, y * y).asDiagonal();
+        slam.predict(jump);
+        ++stats.recoveries;
+        log(LogLevel::Warn, "estimator: lost the map at t = {:.3f} s, widening the pose gates",
+            stamp);
+    }
+
+    // Landmarks ahead of the car within the range where new ones are made: what a scan from
+    // the current pose should see.
+    [[nodiscard]] std::size_t landmarks_ahead() const {
+        const Pose2 pose = slam.pose();
+        const double range = config.slam.max_new_landmark_range;
+        std::size_t count = 0;
+        for (std::size_t j = 0; j < slam.landmark_count(); ++j) {
+            const Vec2 local = pose.to_local(slam.landmark(j));
+            if (local.x() > 1.0 && local.squaredNorm() < range * range) ++count;
+        }
+        return count;
     }
 
     // A new, unconfirmed landmark from an observation that matched nothing, if it is near
@@ -306,6 +350,7 @@ struct StateEstimator::Impl {
     Associator associator;
     std::vector<LandmarkRecord> records;  // records[i] describes the filter's landmark i
     std::int32_t next_id = 0;
+    std::uint32_t lost_scans = 0;  // in a row, see watch_for_loss
     ConeMap map;
     EstimatorStats stats;
     std::vector<std::int32_t> last_associations;

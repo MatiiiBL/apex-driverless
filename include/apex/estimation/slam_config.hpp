@@ -36,6 +36,16 @@ struct SlamConfig {
     // Observations may be stamped up to this long before the newest IMU sample; older ones are
     // dropped. Odometry is kept for this span.
     double history_duration = 0.5;  // s
+
+    // Recovery from a lost map: when this many scans in a row bring at least
+    // recovery_min_observations usable observations and none of them matches a landmark,
+    // although as many landmarks lie ahead within range, the pose has left its own gates (a
+    // slide the velocity filter misjudged). Its covariance then grows by the stds below, which
+    // lets the joint compatibility search find the map again.
+    std::uint32_t recovery_scans = 3;
+    std::size_t recovery_min_observations = 4;
+    double recovery_position_std = 0.5;  // m
+    double recovery_yaw_std = 0.05;      // rad
 };
 
 void to_json(nlohmann::json& j, const SlamConfig& config);

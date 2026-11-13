@@ -46,6 +46,7 @@ struct EstimatorStats {
     std::size_t search_exhausted = 0;    // scans where the JCBB node budget ran out
     std::size_t wheel_outliers = 0;      // wheel samples down-weighted as slipping
     std::size_t failed_updates = 0;      // updates refused for a singular innovation covariance
+    std::size_t recoveries = 0;          // pose covariance inflated after losing the map
 };
 
 // Velocity estimation and cone SLAM behind one interface.

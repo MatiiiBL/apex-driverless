@@ -21,7 +21,11 @@ namespace apex::estimation {
     X(confirm_detections) \
     X(tentative_timeout) \
     X(max_landmarks) \
-    X(history_duration)
+    X(history_duration) \
+    X(recovery_scans) \
+    X(recovery_min_observations) \
+    X(recovery_position_std) \
+    X(recovery_yaw_std)
 // clang-format on
 
 void to_json(nlohmann::json& j, const SlamConfig& config) {
