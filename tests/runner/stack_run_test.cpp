@@ -59,20 +59,16 @@ bool entered(const RunResult& r, MissionState state) {
     return std::find(states.begin(), states.end(), state) != states.end();
 }
 
-// A one-lap mission: explore an unknown track, map it, stop after the line. The run ends once
-// the car is at rest, which can be a control step before the stack reports Finished.
-void expect_clean_exploration(const RunResult& r) {
+// Finished every lap with no penalty and came to rest. The run ends once the car is at rest,
+// which can be a control step before the stack reports Finished.
+void expect_clean_finish(const RunResult& r, std::size_t laps) {
     EXPECT_TRUE(r.error.empty()) << r.error;
     EXPECT_TRUE(r.completed) << r.dnf_reason;
     EXPECT_TRUE(r.stopped);
     EXPECT_EQ(r.cones_hit, 0U);
     EXPECT_EQ(r.off_course, 0U);
-    const std::vector<MissionState> states = states_entered(r);
-    ASSERT_GE(states.size(), 2U);
-    EXPECT_EQ(states[0], MissionState::Exploring);
-    EXPECT_EQ(states[1], MissionState::Stopping);
     EXPECT_FALSE(entered(r, MissionState::Failed));
-    ASSERT_EQ(r.lap_times.size(), 1U);
+    EXPECT_EQ(r.lap_times.size(), laps);
 
     EXPECT_GT(r.map.coverage, 0.95);
     EXPECT_EQ(r.map.false_landmarks, 0U);
@@ -84,27 +80,53 @@ void expect_clean_exploration(const RunResult& r) {
     EXPECT_LT(exploring.lateral.rms, 0.1);
 }
 
-TEST(FullStack, ExploresAndStopsCleanlyOnTheOval) {
-    expect_clean_exploration(run_stack(mission(oval(), 1)));
+// The whole mission in two laps: explore and map, race on the raceline, stop.
+void expect_clean_mission(const RunResult& r) {
+    expect_clean_finish(r, 2);
+    const std::vector<MissionState> states = states_entered(r);
+    ASSERT_GE(states.size(), 4U);
+    EXPECT_EQ(std::vector<MissionState>(states.begin(), states.begin() + 4),
+              (std::vector<MissionState>{MissionState::Exploring, MissionState::MapFinalized,
+                                         MissionState::Racing, MissionState::Stopping}));
+    EXPECT_TRUE(r.map.finalized);
+    ASSERT_EQ(r.lap_times.size(), 2U);
+    EXPECT_LT(r.lap_times[1], 0.9 * r.lap_times[0]);  // racing beats exploring
+    const PhaseMetrics& racing = r.phases[stack::index_of(MissionState::Racing)];
+    EXPECT_LT(racing.position.rms, 0.15);
 }
 
-TEST(FullStack, ExploresAndStopsCleanlyOnAGeneratedTrack) {
-    expect_clean_exploration(run_stack(mission(generated(3), 1)));
+TEST(FullStack, FinishesTheOvalCleanly) {
+    expect_clean_mission(run_stack(mission(oval(), 2)));
 }
 
-TEST(FullStack, ExploresAndStopsCleanlyWithTheOracles) {
+TEST(FullStack, FinishesAGeneratedTrackCleanly) {
+    expect_clean_mission(run_stack(mission(generated(3), 2)));
+}
+
+TEST(FullStack, FinishesCleanlyWithTheOracles) {
     const std::vector<std::pair<bool, bool>> oracles = {{true, false}, {false, true}, {true, true}};
     for (const auto& [perception, state] : oracles) {
-        RunConfig config = mission(oval(), 1);
+        RunConfig config = mission(oval(), 2);
         config.oracles.perception = perception;
         config.oracles.state = state;
         SCOPED_TRACE(::testing::Message() << "perception " << perception << ", state " << state);
         const RunResult r = run_stack(config);
-        expect_clean_exploration(r);
+        expect_clean_mission(r);
         if (state) {
-            EXPECT_DOUBLE_EQ(r.phases[stack::index_of(MissionState::Exploring)].position.rms, 0.0);
+            EXPECT_DOUBLE_EQ(r.phases[stack::index_of(MissionState::Racing)].position.rms, 0.0);
         }
     }
+}
+
+// A one-lap mission stops straight from the exploration path, with no raceline.
+TEST(FullStack, ExploresAndStopsCleanly) {
+    const RunResult r = run_stack(mission(oval(), 1));
+    expect_clean_finish(r, 1);
+    const std::vector<MissionState> states = states_entered(r);
+    ASSERT_GE(states.size(), 2U);
+    EXPECT_EQ(states[0], MissionState::Exploring);
+    EXPECT_EQ(states[1], MissionState::Stopping);
+    EXPECT_FALSE(entered(r, MissionState::Racing));
 }
 
 // docs/design.md, section 4.3: truth ids are for the evaluation only. Relabelling every one of
@@ -137,7 +159,7 @@ TEST(FullStack, TruthIdsNeverChangeACommand) {
 TEST(FullStack, SweepResultsIndependentOfThreadCount) {
     SweepConfig sweep;
     RunConfig base;
-    base.dnf.time_limit = 6.0;  // staging and the first seconds of exploration
+    base.dnf.time_limit = 3.0;  // staging and the first seconds of exploration
     sweep.base = base;
     sweep.seeds = {1, 2, 3};
     const std::vector<SweepRun> runs = expand_sweep(sweep);
