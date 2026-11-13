@@ -135,7 +135,8 @@ bool MpcController::Impl::solve(const Trajectory& reference, const mpc::State& x
     const int iterations = fresh ? config.initial_sqp_iterations : config.sqp_iterations;
     for (int i = 0; i < iterations; ++i) {
         if (i > 0) mpc::guess_from_solution(model, reference, solution, dt, guess);
-        mpc::build_qp(config, model, guess, dt, problem);
+        mpc::build_qp(config, model, guess, dt, reference.closed() || config.bound_open_references,
+                      problem);
         for (std::size_t k = 0; k < guess.size(); ++k) {
             warm.x[k] = guess[k].x;
             warm.u[k] = guess[k].u;

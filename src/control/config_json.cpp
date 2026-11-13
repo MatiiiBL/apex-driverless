@@ -64,7 +64,7 @@ void from_json(const json& j, ControllerKind& kind) {
 #define APEX_MPC_FIELDS(X) \
     X(horizon) X(step) X(weight_lateral) X(weight_course) X(weight_speed) X(weight_steer_rate) \
     X(weight_accel) X(terminal_scale) X(lateral_margin) X(slack_linear) X(slack_quadratic) \
-    X(grip_fraction) X(compensate_dead_time) X(compensate_lag) X(kinematic_below) X(dynamic_above) \
+    X(bound_open_references) X(grip_fraction) X(compensate_dead_time) X(compensate_lag) X(kinematic_below) X(dynamic_above) \
     X(sqp_iterations) X(initial_sqp_iterations) X(max_qp_iterations) X(qp_tolerance) \
     X(fallback_plan_age) X(fallback_decel)
 #define APEX_CONTROLLER_FIELDS(X) X(kind) X(pure_pursuit) X(stanley) X(mpc)

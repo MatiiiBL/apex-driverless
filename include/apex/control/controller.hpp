@@ -76,6 +76,10 @@ struct MpcConfig {
     double lateral_margin = 0.15;  // m
     double slack_linear = 200.0;
     double slack_quadratic = 2000.0;
+    // Whether open references (lap 1's exploration paths) are bounded by their widths too. Off:
+    // those widths come from a partial map, and near the car a quarter of them say the path
+    // itself is narrower than the car (docs/control.md, "Lap 1").
+    bool bound_open_references = false;
     // Acceleration bounds per stage: each axle's longitudinal force within this share of its
     // grip after the lateral force the plan needs (NominalModel::traction_limits).
     double grip_fraction = 0.9;

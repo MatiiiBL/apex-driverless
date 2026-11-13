@@ -25,7 +25,7 @@ constexpr double kMinCourseSpeed = 1.0;  // m/s
 }  // namespace
 
 void build_qp(const MpcConfig& config, const NominalModel& model,
-              const std::vector<StagePoint>& guess, double dt, Qp& problem) {
+              const std::vector<StagePoint>& guess, double dt, bool lateral_bounds, Qp& problem) {
     const VehicleParams& p = model.params();
     const std::size_t n = guess.size() - 1;
     const double inset = 0.5 * p.body_width + config.lateral_margin;
@@ -93,7 +93,7 @@ void build_qp(const MpcConfig& config, const NominalModel& model,
         steer.upper = p.max_steer;
         stage.constraints.push_back(steer);
         // A reference without widths (both zero) carries no lateral bounds.
-        if (ref.width_left + ref.width_right > 0.0) {
+        if (lateral_bounds && ref.width_left + ref.width_right > 0.0) {
             Row left;
             left.c(kLateral) = 1.0;
             left.d(kSlack) = -1.0;

@@ -27,9 +27,10 @@
 // quadratic one keeps the QP strictly convex in it.
 namespace apex::control::mpc {
 
-// Fills `problem` (horizon guess.size() - 1) linearized along `guess`; guess[0].x is x0.
+// Fills `problem` (horizon guess.size() - 1) linearized along `guess`; guess[0].x is x0. The
+// lateral bounds are left out unless `lateral_bounds`.
 void build_qp(const MpcConfig& config, const NominalModel& model,
-              const std::vector<StagePoint>& guess, double dt, Qp& problem);
+              const std::vector<StagePoint>& guess, double dt, bool lateral_bounds, Qp& problem);
 
 // Moves the linearization point onto a solution: its inputs, rolled out from guess[0]'s state
 // and station (mpc_plan.hpp).

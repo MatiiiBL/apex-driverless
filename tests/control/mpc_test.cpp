@@ -223,6 +223,49 @@ TEST(Mpc, ItsQpsMatchOsqp) {
     EXPECT_EQ(mpc.stats().solver_failures, 0U);
 }
 
+// Lap 1's exploration paths carry widths from a partial map: near the car a quarter of them
+// say the path is closer to a cone line than half the car, which a drivable path cannot be.
+// Bounding the car by them pushed it off a path it could have followed, into the cones on the
+// other side; open references are therefore not bounded unless asked.
+TEST(Mpc, DoesNotBoundOpenReferencesByTheirWidths) {
+    const VehicleParams params;
+    const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 8.0);
+    auto worst_lateral = [&](bool bound_open) {
+        MpcConfig config;
+        config.bound_open_references = bound_open;
+        MpcController mpc(config, params);
+        testing::Plant plant(params, {0.0, 0.0, 0.0}, 8.0);
+        Trajectory window;
+        Time planned = -1.0;
+        auto reference_at = [&](Time now) -> const Trajectory& {
+            if (now >= planned + 0.1 - 1e-9) {
+                const double s = circle.project(plant.truth().pose.position()).s;
+                std::vector<TrajectoryPoint> points;
+                for (double d = 0.0; d <= 25.0; d += 0.5) {
+                    TrajectoryPoint point = circle.at(s + d);
+                    if (d < 4.0) point.width_right = 0.2;  // a chord between sparse cones
+                    points.push_back(point);
+                }
+                window = Trajectory(std::move(points), false);
+                planned = now;
+            }
+            return window;
+        };
+        const std::vector<testing::LoopSample> samples =
+            testing::run_loop(mpc, plant, reference_at, 4.0);
+        double worst = 0.0;
+        for (const testing::LoopSample& sample : samples) {
+            worst = std::max(worst, std::abs(circle.project(sample.truth.pose.position()).lateral));
+        }
+        EXPECT_EQ(mpc.stats().solver_failures, 0U);
+        return worst;
+    };
+    EXPECT_LT(worst_lateral(false), 0.1);
+    // Bounded, the MPC keeps the car's body 0.15 m off the reported cone line: half a metre
+    // off its path.
+    EXPECT_GT(worst_lateral(true), 0.4);
+}
+
 TEST(Mpc, FallsBackSafelyWhenTheSolverFails) {
     const VehicleParams params;
     MpcConfig config;
