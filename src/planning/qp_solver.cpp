@@ -146,23 +146,26 @@ QpResult solve_qp(const QpProblem& problem, const QpSettings& settings) {
     VectorXd s = (C.times(x) - C.d()).cwiseMax(1.0);  // slacks of C x - d >= 0
     VectorXd z = VectorXd::Ones(m);                   // their multipliers
     const double tol = settings.tolerance;
-    const double dual_scale = 1.0 + inf_norm(problem.q);
-    const double primal_scale = 1.0 + inf_norm(C.d());
-    const auto objective = [&problem](const VectorXd& v) {
-        return 0.5 * v.dot(problem.P * v) + problem.q.dot(v);
-    };
 
     MatrixXd K(n, n);
     Eigen::LLT<MatrixXd> llt;
     for (std::size_t iteration = 0;; ++iteration) {
         // KKT residuals: stationarity P x + q - C' z = 0, primal C x - s - d = 0, and the
-        // complementarity gap s' z.
-        const VectorXd r_dual = problem.P * x + problem.q - C.transpose_times(z);
-        const VectorXd r_primal = C.times(x) - s - C.d();
+        // complementarity gap s' z. Each residual is measured against the largest of the terms
+        // it balances, as OSQP's relative tolerance is: rounding in P x and C' z alone leaves a
+        // dual residual proportional to them, and driving it below that only lets the gap
+        // shrink until the Newton systems are too ill-conditioned to make progress.
+        const VectorXd px = problem.P * x;
+        const VectorXd cz = C.transpose_times(z);
+        const VectorXd cx = C.times(x);
+        const VectorXd r_dual = px + problem.q - cz;
+        const VectorXd r_primal = cx - s - C.d();
         const double gap = s.dot(z);
+        const double dual_scale = 1.0 + std::max({inf_norm(problem.q), inf_norm(px), inf_norm(cz)});
+        const double primal_scale = 1.0 + std::max({inf_norm(cx), inf_norm(C.d())});
         result.x = x;
         result.iterations = iteration;
-        result.objective = objective(x);
+        result.objective = 0.5 * x.dot(px) + problem.q.dot(x);
         if (inf_norm(r_dual) <= tol * dual_scale && inf_norm(r_primal) <= tol * primal_scale &&
             gap <= tol * (1.0 + std::abs(result.objective))) {
             result.status = QpStatus::Solved;
@@ -174,13 +177,26 @@ QpResult solve_qp(const QpProblem& problem, const QpSettings& settings) {
         // after the step), with ds and dz eliminated:
         //   (P + C' S^-1 Z C) dx = -r_dual - C' S^-1 (r_c + Z r_primal)
         //   ds = C dx + r_primal,   dz = -S^-1 (r_c + Z ds).
+        // Near the solution z / s spans many orders of magnitude: forming C' W C rounds away
+        // what the small weights contribute, and the solve's error goes straight into the next
+        // dual residual. Two rounds of iterative refinement against the operator applied
+        // without forming it, P dx + C' (w C dx), remove that error (O(n m) each, against the
+        // factorization's O(n^3)).
+        const VectorXd w = z.cwiseQuotient(s);
         K = problem.P;
-        C.add_normal_matrix(z.cwiseQuotient(s), K);
+        C.add_normal_matrix(w, K);
         if (!factor(K, llt)) break;
+        const auto apply = [&](const VectorXd& v) -> VectorXd {
+            return problem.P * v + C.transpose_times(w.cwiseProduct(C.times(v)));
+        };
         const auto solve = [&](const VectorXd& r_c) {
             const VectorXd t = (r_c + z.cwiseProduct(r_primal)).cwiseQuotient(s);
+            const VectorXd rhs = -r_dual - C.transpose_times(t);
             Step step;
-            step.dx = llt.solve(-r_dual - C.transpose_times(t));
+            step.dx = llt.solve(rhs);
+            for (int refinement = 0; refinement < 2; ++refinement) {
+                step.dx += llt.solve(rhs - apply(step.dx));
+            }
             step.ds = C.times(step.dx) + r_primal;
             step.dz = -(r_c + z.cwiseProduct(step.ds)).cwiseQuotient(s);
             return step;

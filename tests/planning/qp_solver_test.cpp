@@ -106,6 +106,38 @@ TEST(QpSolver, DegenerateActiveConstraintKeepsTheObjectivePrecise) {
     EXPECT_NEAR(result.objective, 1.0 - 6.0, 1e-8);  // x^2 + y^2 - 6 x - 4 y at (1, 0)
 }
 
+// A 400-variable dense QP whose dual residual, measured against |q| alone, stalls at rounding
+// level while the gap keeps shrinking until the Newton systems break down.
+TEST(QpSolver, LargeDenseProblemConverges) {
+    Rng rng(11);
+    for (const Eigen::Index n : {25, 50, 100, 200, 400}) {
+        const Eigen::Index m = n / 2;
+        MatrixXd M(n, n);
+        for (Eigen::Index i = 0; i < n; ++i) {
+            for (Eigen::Index j = 0; j < n; ++j) M(i, j) = rng.normal();
+        }
+        QpProblem qp;
+        qp.P = M.transpose() * M + 0.01 * MatrixXd::Identity(n, n);
+        qp.q = VectorXd(n);
+        qp.lower = VectorXd(n);
+        qp.upper = VectorXd(n);
+        for (Eigen::Index i = 0; i < n; ++i) {
+            qp.q[i] = 5.0 * rng.normal();
+            qp.lower[i] = -rng.uniform(0.2, 2.0);
+            qp.upper[i] = rng.uniform(0.2, 2.0);
+        }
+        qp.G = MatrixXd(m, n);
+        qp.h = VectorXd(m);
+        for (Eigen::Index k = 0; k < m; ++k) {
+            for (Eigen::Index j = 0; j < n; ++j) qp.G(k, j) = rng.normal();
+            qp.h[k] = rng.uniform(0.0, 1.0);
+        }
+        const QpResult result = solve_qp(qp);
+        EXPECT_EQ(result.status, QpStatus::Solved) << "n = " << n;
+        EXPECT_LE(result.iterations, 20U) << "n = " << n;
+    }
+}
+
 TEST(QpSolver, InvalidBoundsAreReported) {
     QpProblem qp;
     qp.P = MatrixXd::Identity(2, 2);
