@@ -89,7 +89,9 @@ covariance is still several times conservative over one second, and the test req
 it is never overconfident. The first defaults (τ = 0.2 s, floors twice as large, a start yaw
 uncertainty of 0.002 rad instead of 0.0005) claimed about ten times the real drift in standard
 deviation, and the SLAM leaned on the noisy observations instead: map RMS 0.164 m against 0.122 m
-with the current values on the same synthetic drive (track seed 5).
+with the current values on the same synthetic drive (track seed 5). One part of the yaw-rate
+error is far slower than τ, and white noise cannot describe it at any τ: the SLAM carries it as
+a state (section 3).
 
 **Late observations.** Cone observations are stamped with their LiDAR scan and arrive 50 ms later
 (design 4.4). The estimator keeps the SLAM state behind the odometry: each IMU sample commits to
@@ -106,15 +108,57 @@ late": nothing needs undoing.
 
 ## 3. EKF-SLAM
 
-State (x, y, ψ, l1x, l1y, …) with a dense covariance (Smith, Self and Cheeseman 1990;
-Dissanayake et al. 2001). Prediction moves the pose by a relative motion and touches only the
-3 × 3 pose block and the 3 × n pose-landmark cross-covariance, O(n). The update observes landmark
-positions in the body frame, z = R(ψ)ᵀ(l − p), for all of a scan's pairings at once. H is zero
-outside the pose and the paired landmarks, so W = P Hᵀ is formed from those columns only, and the
-Joseph form P' = (I − KH)P(I − KH)ᵀ + KRKᵀ is evaluated as P − KWᵀ followed by −(MHᵀ − KR)Kᵀ,
-two rank-m products instead of n × n matrix products; P stays symmetric positive definite, which
-the tests check over long runs. The covariance's storage grows by doubling and a removed landmark
-is replaced by the last one, so neither copies the matrix.
+State (x, y, ψ, β, l1x, l1y, …) with a dense covariance (Smith, Self and Cheeseman 1990;
+Dissanayake et al. 2001), β being the slow yaw-rate error below. Prediction moves the pose by a
+relative motion and touches only the 4 × 4 vehicle block and the 4 × n vehicle-landmark
+cross-covariance, O(n). The update observes landmark positions in the body frame,
+z = R(ψ)ᵀ(l − p), for all of a scan's pairings at once. H is zero outside the pose and the paired
+landmarks, so W = P Hᵀ is formed from those columns only, and the Joseph form
+P' = (I − KH)P(I − KH)ᵀ + KRKᵀ = M − (MHᵀ − KR)Kᵀ, M = P − KWᵀ, needs M only in the paired
+columns: the n × n work is the single product P − [K T][W K]ᵀ (T = MHᵀ − KR, inner dimension 2m),
+of which only the lower triangle is formed and then mirrored. P is exactly symmetric and stays
+positive definite, which the tests check over long runs. The covariance's storage grows by
+doubling and a removed landmark is replaced by the last one, so neither copies the matrix.
+
+**The slow yaw-rate error.** The velocity filter's yaw rate is off by a few 1e-4 rad/s for many
+seconds at a time: what its gyro bias estimate and its lateral model leave. Modelled as white
+odometry noise, the yaw error it causes grows like √T; it really grows like T. On World seed 5
+(synthetic observations) that cost the loop closure: the yaw drifted by 0.015 rad over lap 1 while
+the covariance claimed a third of the 0.6 m position error, and at the timing line the first cones
+fell outside even the new-landmark gate and were mapped again, 16 duplicates. β carries it as a
+first-order Gauss-Markov process, the shaping filter for time-correlated noise (Maybeck 1979,
+section 4.11):
+
+    β' = φ β + w,   φ = exp(−T/τ),   var(w) = σ² (1 − φ²),   ψ' = ψ + Δψ − τ (1 − φ) β
+
+with σ = 3·10⁻⁴ rad/s and τ = 10 s. The prediction integrates it into the yaw, so the yaw
+variance grows like T² over seconds; the landmarks observe β through the drift they see; and,
+being stationary, a value learned in one corner fades over τ instead of being extrapolated for a
+lap. Both the decay and the integral compose exactly, so splitting a motion at a scan's stamp
+changes nothing and late scans still equal on-time ones. `yaw_rate_bias_sigma = 0` leaves β out.
+
+Two designs came first and were rejected on the evaluation below (World seed 1, synthetic
+observations, lap-1 pose RMS; 0.099 m without β):
+
+| β model | seed 5 fixed | world seed 1 lap 1 | why |
+|---|---|---|---|
+| random walk on the residual of the filter's gyro bias estimate, prior σ 0.01 rad/s | yes | 0.303 m | β fitted the corner-to-corner yaw-rate errors as a bias and extrapolated them (0.77 m peak error) |
+| the same, shifted by every change of the filter's estimate, fed the filter's bias information, with the gyro minus the filter's bias as the odometry's yaw rate | yes | peak 0.66 m | the SLAM's bias estimate was right to σ = 4·10⁻⁴, but the filter's yaw rate is better than gyro − bias: its lateral model knows the yaw rate while driving, even when its separate bias estimate wanders by 1.5·10⁻³ |
+| Gauss-Markov on the filter's yaw-rate error (kept) | yes | 0.115 m | |
+
+The kept model's parameters, from five neighbouring settings (sums over the 14 runs other than
+world seed 5; without β: map 0.733 m, lap-1 pose 1.605 m, racing pose 0.874 m):
+
+| σ (rad/s), τ (s) | map | lap-1 pose | racing pose | runs with lap-1 pose worse by > 1 cm | world seed 5 racing |
+|---|---|---|---|---|---|
+| 5e-4, 20 | 0.676 | 1.437 | 0.833 | 3 (up to +0.091) | 0.039 |
+| 3e-4, 20 | 0.709 | 1.437 | 0.857 | 2 (up to +0.049) | 0.045 |
+| 5e-4, 10 | 0.666 | 1.413 | 0.826 | 2 (up to +0.067) | 0.033 |
+| 1e-3, 20 | 0.644 | 1.517 | 0.813 | 4, and maps worse on 1 | 0.029 |
+| **3e-4, 10** | 0.694 | 1.443 | 0.846 | 2 (up to +0.038) | 0.037 |
+
+3·10⁻⁴ rad/s is the size of the slow error measured on the World runs (2–9·10⁻⁴ rad/s); 10 s is
+about a sequence of corners.
 
 **Landmarks.** An observation that matches nothing and is outside every landmark's new-landmark
 gate (below) starts a tentative landmark, if it is within 20 m and not within 0.5 m of another.
@@ -133,8 +177,11 @@ during the racing laps would gain little and let a misassociation at speed corru
 
 **Loop closure** needs no special case: when the car returns to the first cones, their landmarks
 are associated through the full covariance, whose cross terms carry the lap's drift, and the
-update pulls the whole map together. On the oval, re-observing the start produces no duplicate
-landmarks (test `ClosesTheLoopOnTheOvalWithoutDuplicates`).
+update pulls the whole map together, provided the covariance has kept up with the lap's drift
+(the yaw-rate bias state above). On the oval, re-observing the start produces no duplicate
+landmarks (test `ClosesTheLoopOnTheOvalWithoutDuplicates`), nor on the drifting World seed 5
+(`TheYawRateBiasStateKeepsADriftingLapFromDoublingTheMap`, which also checks that it does without
+the state).
 
 **Recovery.** A slide the velocity filter misjudges can move the pose outside its own gates; then
 no scan associates and the error never returns. When three scans in a row bring at least four
@@ -207,7 +254,8 @@ uv run --project tools python tools/estimation/plot_latency.py
 ```
 
 Five generated tracks (`generate_track(1..5)`, 109–203 cones), three laps each: lap 1 maps at
-up to 8 m/s, mapping switches off one second into lap 2, laps 2–3 localize. Three setups:
+up to 8 m/s, mapping switches off one second into lap 2, laps 2–3 localize. Each drive is
+estimated twice, with the yaw-rate bias state (the default) and without it. Three setups:
 
 - **world+perception**: the simulator's vehicle model, IMU, wheels and steering, and its LiDAR and
   camera through `ConePerception` (World → ConePerception → StateEstimator). The car is driven by
@@ -216,20 +264,33 @@ up to 8 m/s, mapping switches off one second into lap 2, laps 2–3 localize. Th
   perception model (noise up to 7 cm at range).
 - **synthetic**: the kinematic synthetic drive at full racing speed (22 m/s, 14 m/s²).
 
-Ranges over the five tracks (per-run numbers in `results/estimation/summary.md`):
+Ranges over the five tracks with the default configuration (per-run numbers, with and without
+the bias state, in `results/estimation/summary.md`):
 
 | | world+perception | world | synthetic |
 |---|---|---|---|
-| map RMS by truth id, after lap 1 | 0.010–0.039 m | 0.028–0.105 m (seed 5: 0.94 m) | 0.027–0.122 m |
+| map RMS by truth id, after lap 1 | 0.008–0.037 m | 0.025–0.093 m | 0.025–0.124 m |
 | batch least-squares map RMS | 0.009–0.020 m | 0.032–0.117 m | 0.018–0.047 m |
-| duplicates / missed (of 861 cones) | 0 / 0 | 16 (seed 5) / 0 | 0 / 0 |
-| pose RMS lap 1 | 0.040–0.146 m | 0.058–0.156 m (seed 5: 0.68 m) | 0.043–0.374 m |
-| pose RMS racing laps | 0.015–0.050 m | 0.048–0.118 m (seed 5: 1.13 m) | 0.028–0.122 m |
-| yaw RMS racing laps | 0.02–0.04° | 0.06–0.10° | 0.05–0.12° |
-| association precision / recall | 1.0000 / 0.968–0.994 | 1.0000 / 0.919–0.996 | 1.0000 / 1.000 |
+| duplicates / missed (of 861 cones) | 0 / 0 | 0 / 0 | 0 / 0 |
+| pose RMS lap 1 | 0.023–0.092 m | 0.054–0.126 m (seed 5: 0.39 m) | 0.040–0.350 m |
+| pose RMS racing laps | 0.015–0.051 m | 0.037–0.107 m | 0.027–0.125 m |
+| yaw RMS racing laps | 0.02–0.04° | 0.04–0.10° | 0.05–0.12° |
+| pose NEES lap 1 / racing laps (expected 3) | 0.5–2.1 / 1.0–6.1 | 1.3–5.9 / 2.2–8.8 | 0.8–2.5 / 1.4–2.4 |
+| association precision / recall | 1.0000 / 0.968–0.994 | ≥ 0.9998 / 0.965–0.9998 | ≥ 0.9999 / ≥ 0.9996 |
 | velocity RMS vx, vy, r | 0.02–0.05 m/s, 0.03–0.09 m/s, 0.003 rad/s | same signals | 0.03, 0.04 m/s, 0.002 rad/s |
 | velocity NEES (expected 3, 95 % bounds ≈ 2.4–3.6) | 1.7–2.8 | same signals | 1.3–1.8 |
-| recoveries | 0–4 per run | 0–2 per run | 0 |
+| recoveries | 0–4 per run | 0 | 0 |
+
+**The bias state** fixes world seed 5 (map RMS 0.942 → 0.036 m, 16 duplicates → 0, racing pose
+RMS 1.133 → 0.037 m, no recoveries instead of 2) and is no worse elsewhere on the map and the
+racing laps: over the other 14 runs, map RMS sums to 0.694 m against 0.733 m without it and the
+racing-lap pose RMS to 0.846 m against 0.874 m, with no single run worse by more than 1 cm on
+either. The online pose during lap 1 is better on most runs (sum 1.443 m against 1.605 m;
+world+perception seed 5: 0.146 → 0.066 m) and worse on two: world seed 1 (0.099 → 0.115 m) and
+synthetic seed 1 (0.101 → 0.139 m), whose maps still come out better. It does not bring the
+localization pose NEES closer to 3: in the racing laps it is 1.0–6.1 with the bias state against
+1.0–6.1 without it with the real perception, and 2.2–8.8 against 3.5–9.0 (seed 5 aside) with the
+synthetic observations. That overconfidence has another cause (below).
 
 What the numbers say:
 
@@ -244,50 +305,45 @@ What the numbers say:
   those models treat the odometry between scans as independent, which slip and the gyro bias make
   untrue; on the synthetic drive, whose noise matches the models, the batch map is better on every
   track, by 0.01–0.08 m.
-- **Loop closure failed once, world seed 5**, with the noisier synthetic observations: a gyro bias
-  error of a few 1e-4 rad/s drifted the yaw by 0.015 rad over the lap, the map drifted with it,
-  and the covariance claimed a third of the 0.6 m position error (σ 0.22 m). At the timing line
-  the first cones fell outside even the new-landmark gate and were mapped again: 16 duplicates,
-  and the racing laps localized against a doubled map. The same track with the real perception
-  closes cleanly. Section 7 gives the cause and the fix.
-- **Localization is overconfident** with the synthetic observations (pose NEES 3.5–9 in the
-  racing laps), less so with the real perception (1.0–6.1): the Schmidt update treats the map's
+- **Every loop closes without duplicates,** including world seed 5, whose lap-1 drift (0.39 m RMS
+  of online pose error with the synthetic observations) is the largest here; without the bias
+  state that drift doubled its map (section 3).
+- **Localization is overconfident** with the synthetic observations (pose NEES up to 8.8 in the
+  racing laps), less so with the real perception (up to 6.1): the Schmidt update treats the map's
   error correctly in principle, but the map's own covariance after lap 1 inherits the odometry
-  model's optimism.
+  model's optimism, and the yaw-rate error is not the part that matters there.
 - **The velocity filter is slightly conservative** on the simulator's sensors (NEES 1.7–2.8
   against bounds of about 2.4–3.6), and consistent when its noise model matches the sensors
   (test `VelocityEstimateIsConsistent`, synthetic drives).
 
 **Latency** (Release, Apple M4, one core; `results/estimation/latency.json`, figure below). On
 the generated tracks, with up to 203 landmarks, one cone update (association and EKF update)
-has p99 0.8–2.8 ms over whole runs, against the 5 ms budget at 200 landmarks; one
-IMU prediction p99 1.0–2.1 µs against 0.05 ms. The scaling run maps an oval of 388 cones at
+has p99 0.20–0.77 ms over whole runs, against the 5 ms budget at 200 landmarks; one IMU
+prediction p99 0.17–0.29 µs against 0.05 ms. The scaling run maps an oval of 388 cones at
 10 m/s (about 9 observations per scan):
 
 | landmarks | 50–100 | 150–200 | 200–250 | 300–350 | 350–400 |
 |---|---|---|---|---|---|
-| update p50 / p99 (ms) | 0.20 / 0.59 | 0.69 / 2.34 | 1.13 / 2.79 | 2.08 / 5.07 | 2.90 / 5.50 |
-| IMU prediction p99 (µs) | 2.3 | 3.7 | 4.3 | 5.0 | 5.1 |
+| update p50 / p99 (ms) | 0.06 / 0.10 | 0.18 / 0.25 | 0.27 / 0.39 | 0.56 / 0.76 | 0.74 / 1.04 |
+| IMU prediction p99 (µs) | 0.21 | 0.21 | 0.21 | 0.21 | 0.21 |
 
-The update grows as n²: forming only the lower triangle of the Joseph update (one product of
-inner dimension 2m instead of two full ones) took it at 200–250 landmarks from p50 1.6 ms and p99
-4.9 ms to 1.1 ms and 2.8 ms. All of these were measured on a machine shared with five other
-builds (load average 40–120 on 10 cores), so they are upper bounds; the p50s are the steadier
-figure.
+The update grows as n², and the bias state's one extra row costs nothing measurable. Forming
+only the lower triangle of the Joseph update (one product of inner dimension 2m instead of two
+full ones) took it at 200–250 landmarks from p50 1.6 ms and p99 4.9 ms to 1.1 ms and 2.8 ms in
+runs on a machine shared with five other builds (load average 40–120 on 10 cores); the table
+above was measured with the machine nearly idle (load average 3–8), which is closer to what the
+car's computer gives the estimator.
 
 ![Update and prediction cost against landmark count](img/estimation-latency.png)
 
 ## 7. Limits
 
-- **Yaw drift from the gyro bias error is underestimated over a lap.** The odometry models the
-  yaw-rate error as decorrelating in 50 ms, so its yaw standard deviation grows like √T. The bias
-  error is nearly constant over a lap, so the real yaw error grows like T: a residual bias of
-  3·10⁻⁴ rad/s is 0.02 rad after a minute. That is what broke the loop closure of world seed 5
-  (section 6). A white-noise term sized for the lap (2 τ P_bb with τ = 10 s) was tried and
+- **The yaw-rate bias state is tuned on these five tracks.** σ and τ come from the scan in
+  section 3; a longer track, a worse gyro or a nominal vehicle further from the true one could
+  want other values. It costs two runs a few centimeters of online lap-1 pose error (world and
+  synthetic seed 1). A white-noise term sized for the lap's drift was tried before the state and
   rejected: at the one-second horizon of local tracking it is twenty times too large, and it made
-  every other run worse (racing pose RMS 0.04 → 0.25 m with perception). The right fix is a
-  yaw-rate bias state in the SLAM itself, ψ' = ψ + Δψ − δb Δt, which the landmarks would observe
-  and which would carry the drift's true growth into the loop-closure gates.
+  every other run worse (racing pose RMS 0.04 → 0.25 m with perception).
 - **The cone source matters.** The tuning (gates, confirmation count, noise floors) holds for both
   the real perception and the synthetic stand-in, but the stand-in's 3–7 cm noise at range is
   what exposes the drift above; perception's 1–2 cm centers keep the map tight enough to close
