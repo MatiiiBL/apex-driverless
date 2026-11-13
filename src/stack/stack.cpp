@@ -245,7 +245,7 @@ struct Stack::Impl {
             if (path) {
                 const double s = path->project(estimate.pose.position()).s;
                 const double speed = std::hypot(estimate.vx, estimate.vy);
-                braking = braking_reference(*path, s, speed, nominal, config.raceline.speed);
+                braking = braking_reference(*path, s, speed, nominal, config.stop_profile);
             }
         }
     }
@@ -272,6 +272,11 @@ struct Stack::Impl {
                 } else {
                     mission.fail(now, "non-finite control command");
                     command.accel = -config.emergency_brake;
+                }
+                // Once the last lap is done the car only brakes: a controller that lost the car
+                // (a spin) must not drive it anywhere to recover the reference.
+                if (mission.state() == MissionState::Stopping) {
+                    command.accel = std::min(command.accel, 0.0);
                 }
                 break;
             }

@@ -17,6 +17,7 @@ TEST(StackConfig, JsonRoundTripKeepsEveryModule) {
     config.estimation.association.gate_probability = 0.99;
     config.exploration.cone_range = 20.0;
     config.raceline.step = 2.0;
+    config.stop_profile.grip_factor = 0.4;
     config.mission.laps = 4;
     config.lap_counter.min_lap_distance = 40.0;
     config.known_pose_mapper.gate = 0.6;
@@ -27,6 +28,8 @@ TEST(StackConfig, JsonRoundTripKeepsEveryModule) {
     EXPECT_DOUBLE_EQ(back.estimation.association.gate_probability, 0.99);
     EXPECT_DOUBLE_EQ(back.exploration.cone_range, 20.0);
     EXPECT_DOUBLE_EQ(back.raceline.step, 2.0);
+    EXPECT_DOUBLE_EQ(back.stop_profile.grip_factor, 0.4);
+    EXPECT_DOUBLE_EQ(StackConfig{}.stop_profile.grip_factor, 0.5);
     EXPECT_EQ(back.mission.laps, 4);
     EXPECT_DOUBLE_EQ(back.lap_counter.min_lap_distance, 40.0);
     EXPECT_DOUBLE_EQ(back.known_pose_mapper.gate, 0.6);

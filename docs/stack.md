@@ -59,15 +59,24 @@ wall-clock time keeps runs deterministic: the same config gives the same switch 
 machine and under any load. The measured optimization time is reported in the telemetry.
 
 **Stopping.** After the last lap the reference becomes the current path (raceline or
-exploration path) from the car's position on, with the speed profile of the same g-g-v
-envelope the raceline is planned with (`planning::apply_speed_profile`): from the car's speed
-to rest in the shortest distance the envelope allows, found by bisecting on the stopping
-distance to 5 cm, then held at rest for 5 m. The car crosses the line at racing speed, often
-just before a corner; braking at a fixed deceleration along a curving path would ask the tires
-for more than the friction ellipse leaves while cornering. The first version did that at
-5 m/s² and spun the car on the oval from 25 m/s; along the envelope's profile the stop takes
-2 s and stays on the line. The profile is capped at the car's current speed, so a stop never
-speeds up. The controller tracks it like any other reference.
+exploration path) from the car's position on, with a speed profile from planning's g-g-v
+envelope (`planning::apply_speed_profile`): from the car's speed to rest in the shortest
+distance the envelope allows, found by bisecting on the stopping distance to 5 cm, then held at
+rest for 5 m. The profile is capped at the car's current speed, so a stop never speeds up.
+Two rules make the stop deliberately conservative:
+
+- *It brakes within half the tires' grip* (`stop_profile`, grip factor 0.5, against 0.7 for the
+  raceline). Nothing is scored after the line and the FS rules ask only for a controlled stop,
+  while braking at the limit into a corner is the hardest maneuver of a lap. The car crosses
+  the line at racing speed, up to 28 m/s where the start straight is long, often just before
+  the first corner. Braking there at a fixed 5 m/s² along the curving path spun the car on the
+  oval; braking at the racing envelope's limit made the MPC lose the car into the first corner
+  of the flowing layout and of generated track 6 (it went to full lock at 16 m/s and spun).
+  Within half the grip all of them stop cleanly in about 2.5 s.
+- *It only brakes*: in `Stopping` the commanded acceleration is clamped to zero or less. A
+  controller that has lost the car (after a spin it faces the wrong way and is not yet at
+  rest) would otherwise drive it to recover its reference; the MPC did exactly that before the
+  clamp, back along the track and off it.
 
 ## Counting laps
 

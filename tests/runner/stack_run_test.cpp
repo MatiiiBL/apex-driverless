@@ -42,8 +42,12 @@ TrackSpec generated(std::uint64_t seed) {
 class CommandLog final : public RunObserver {
 public:
     void on_start(const Track& /*track*/) override {}
-    void on_control(const TickView& tick) override { commands.push_back(tick.command); }
+    void on_control(const TickView& tick) override {
+        commands.push_back(tick.command);
+        states.push_back(tick.driver.mission_state());
+    }
     std::vector<ControlCommand> commands;
+    std::vector<MissionState> states;  // the mission's state after each command
 };
 
 std::vector<MissionState> states_entered(const RunResult& r) {
@@ -116,15 +120,24 @@ TEST(FullStack, FinishesCleanlyWithTheOracles) {
     }
 }
 
-// A one-lap mission stops straight from the exploration path, with no raceline.
+// A one-lap mission stops straight from the exploration path, with no raceline, and only
+// brakes once the lap is done.
 TEST(FullStack, ExploresAndStopsCleanly) {
-    const RunResult r = run_stack(mission(oval(), 1));
+    CommandLog log;
+    const RunResult r = run_stack(mission(oval(), 1), &log);
     expect_clean_finish(r, 1);
     const std::vector<MissionState> states = states_entered(r);
     ASSERT_GE(states.size(), 2U);
     EXPECT_EQ(states[0], MissionState::Exploring);
     EXPECT_EQ(states[1], MissionState::Stopping);
     EXPECT_FALSE(entered(r, MissionState::Racing));
+    std::size_t stopping = 0;
+    for (std::size_t i = 0; i < log.commands.size(); ++i) {
+        if (log.states[i] != MissionState::Stopping) continue;
+        ++stopping;
+        EXPECT_LE(log.commands[i].accel, 0.0) << "at t = " << log.commands[i].stamp << " s";
+    }
+    EXPECT_GT(stopping, 10U);
 }
 
 // docs/design.md, section 4.3: truth ids are for the evaluation only. Relabelling every one of

@@ -24,7 +24,11 @@ struct StackConfig {
     LapCounterConfig lap_counter;
     KnownPoseMapperConfig known_pose_mapper;  // the perfect-state oracle's mapper
 
-    // The stop after the last lap follows the raceline's g-g-v envelope (raceline.speed) to rest.
+    // The g-g-v envelope of the stop after the last lap (stack/braking.hpp): within half the
+    // tires' grip, gentler than racing. Nothing is scored after the line, the FS rules ask only
+    // for a controlled stop, and braking at the limit into a corner is the hardest maneuver of a
+    // lap.
+    planning::SpeedProfileConfig stop_profile{.grip_factor = 0.5};
     double hold_brake = 2.0;       // m/s^2 commanded while staged and once finished
     double emergency_brake = 9.0;  // m/s^2 commanded once the mission has failed
     // Spacing of the lap-1 poses recorded for the track model.
