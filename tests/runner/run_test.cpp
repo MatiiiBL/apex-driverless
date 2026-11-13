@@ -183,7 +183,9 @@ INSTANTIATE_TEST_SUITE_P(
                       DnfCase{"NonFinite", Fault::NonFinite, "non-finite control command"},
                       DnfCase{"FinishedEarly", Fault::FinishEarly,
                               "the mission ended after 0 of 1 laps"}),
-    [](const ::testing::TestParamInfo<DnfCase>& info) { return std::string(info.param.name); });
+    [](const ::testing::TestParamInfo<DnfCase>& test_info) {
+        return std::string(test_info.param.name);
+    });
 
 TEST(RunClosedLoop, TimeLimit) {
     RunConfig config = config_for(1);
