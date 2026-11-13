@@ -13,6 +13,7 @@
 #include "apex/core/angles.hpp"
 #include "apex/core/rng.hpp"
 #include "apex/core/track.hpp"
+#include "apex/planning/planning.hpp"
 
 #include "closed_loop.hpp"
 #include "plant.hpp"
@@ -202,6 +203,138 @@ TEST_P(ControllerBehaviour, StopsAtTheEndOfAnOpenReference) {
     EXPECT_LT(end.pose.x, 61.0);
     EXPECT_LT(std::abs(end.pose.y), 0.1);
     EXPECT_LE(samples.back().command.accel, 0.0);
+}
+
+// A path along +x from the origin: `straight` metres, then a right-hand arc of radius `radius`
+// through `turn` radians, then straight on; `length` metres of it.
+Trajectory corner_path(double straight, double radius, double turn, double length) {
+    const double arc = radius * turn;
+    const Vec2 center{straight, -radius};
+    const Vec2 exit = center + radius * Vec2{std::sin(turn), std::cos(turn)};
+    const Vec2 exit_direction{std::cos(turn), -std::sin(turn)};
+    std::vector<Vec2> waypoints;
+    for (double s = 0.0; s <= length + 1e-9; s += 0.5) {
+        if (s <= straight) {
+            waypoints.push_back({s, 0.0});
+        } else if (s <= straight + arc) {
+            const double a = (s - straight) / radius;
+            waypoints.push_back(center + radius * Vec2{std::sin(a), std::cos(a)});
+        } else {
+            waypoints.push_back(exit + (s - straight - arc) * exit_direction);
+        }
+    }
+    return Trajectory::from_waypoints(waypoints, false, 0.5);
+}
+
+// The stack's stop after the last lap: the raceline's envelope (planning's speed profile at 70 %
+// of the grip, with downforce and load transfer) from `speed` to rest, over the shortest stretch
+// of `path_of(length)` whose profile still starts at `speed`.
+template <class PathOf>
+Trajectory shortest_stop(const VehicleParams& nominal, double speed, PathOf path_of) {
+    planning::SpeedProfileConfig envelope;
+    envelope.grip_factor = 0.70;
+    auto stop_within = [&](double length) {
+        Trajectory t = path_of(length);
+        planning::apply_speed_profile(t, nominal, envelope, speed, 0.0);
+        return t;
+    };
+    double lo = 1.0;
+    double hi = 150.0;
+    while (hi - lo > 0.05) {
+        const double mid = 0.5 * (lo + hi);
+        (stop_within(mid)[0].speed >= speed - 0.01 ? hi : lo) = mid;
+    }
+    return stop_within(hi);
+}
+
+// The stop after the last lap from 28 m/s, 20 m before a right-hander of 20 m radius: the
+// profile brakes at up to 19 m/s^2 and is still braking at 13 m/s^2 when the corner starts, near
+// the limits of both axles. The MPC used to lose the car there: rolled out open loop, the
+// inputs of its plan spun the nominal model (braking unloads the rear axle), the QP linearized
+// about the spin planned with the yaw rate of the spin, and the car went to full lock, slid at
+// 5 m/s sideways, spun, and then, facing backwards, drove off.
+TEST_P(ControllerBehaviour, StopsFromRacingSpeedIntoACorner) {
+    const Trajectory stop = shortest_stop(
+        params_, 28.0, [](double length) { return corner_path(20.0, 20.0, 2.0, length); });
+    ASSERT_NEAR(stop[0].speed, 28.0, 0.05);
+    Plant plant(params_, {0.0, 0.0, 0.0}, 28.0);
+    const auto controller = make();
+    const std::vector<LoopSample> samples = testing::run_loop(*controller, plant, stop, 5.0);
+    double slide = 0.0;
+    for (const LoopSample& sample : samples) slide = std::max(slide, std::abs(sample.truth.vy));
+    EXPECT_LT(testing::max_lateral_after(samples, 0.0), 0.3);
+    EXPECT_LT(slide, 1.0);
+    const VehicleState& end = samples.back().truth;
+    EXPECT_LT(end.vx, 0.05);
+    EXPECT_LT((end.pose.position() - stop.points().back().position).norm(), 2.0);
+}
+
+// The switch from lap 1 to racing: at 12 m/s on the exploration path, 0.5 m to the right of the
+// raceline and so outside its lateral bounds (1.1 m of free width less half the car and the
+// margin), the car gets the raceline 3 m before its s = 0, where the raceline's profile wants
+// 30 m/s and brakes for a right-hander 20 m on. The MPC used to plan full drive into the corner
+// while pulling back inside the bounds, roll that out open loop into a spin of the nominal model
+// (the driven rear axle at its limit), plan around the spin, and leave the track on the left.
+TEST_P(ControllerBehaviour, SwitchesOntoAClosedRacelineAtSpeed) {
+    // Clockwise: 20 m to the first right-hander (radius 34 m), 80 m back, the second, and the
+    // 60 m that close the loop at s = 0.
+    constexpr double kRadius = 34.0;
+    std::vector<Vec2> waypoints;
+    for (double x = 0.0; x < 20.0; x += 0.5) waypoints.push_back({x, 0.0});
+    for (double a = 0.0; a < kPi; a += 0.5 / kRadius) {
+        waypoints.push_back(Vec2{20.0, -kRadius} + kRadius * Vec2{std::sin(a), std::cos(a)});
+    }
+    for (double x = 20.0; x > -60.0; x -= 0.5) waypoints.push_back({x, -2.0 * kRadius});
+    for (double a = 0.0; a < kPi; a += 0.5 / kRadius) {
+        waypoints.push_back(Vec2{-60.0, -kRadius} + kRadius * Vec2{-std::sin(a), -std::cos(a)});
+    }
+    for (double x = -60.0; x < 0.0; x += 0.5) waypoints.push_back({x, 0.0});
+    std::vector<TrajectoryPoint> points = Trajectory::from_waypoints(waypoints, true, 0.5).points();
+    for (TrajectoryPoint& point : points) {
+        point.width_left = 1.1;
+        point.width_right = 1.1;
+    }
+    Trajectory raceline(std::move(points), true);
+    planning::SpeedProfileConfig envelope;
+    envelope.grip_factor = 0.70;
+    planning::apply_speed_profile(raceline, params_, envelope);
+    constexpr double kOffset = -0.5;
+    Plant plant(params_, {-40.0, kOffset, 0.0}, 12.0);
+    const auto controller = make();
+    // Lap 1 as the stack drives it: every 100 ms an open path from the car to 25 m ahead, along
+    // the track's middle, whose profile (12 m/s at most) ends at rest there.
+    Trajectory exploration;
+    Time planned = -1.0;
+    Time switched = -1.0;
+    auto reference_at = [&](Time now) -> const Trajectory& {
+        if (switched < 0.0 && plant.truth().pose.x > -3.0) switched = now;
+        if (switched >= 0.0) return raceline;
+        if (now >= planned + 0.1 - 1e-9) {
+            exploration =
+                testing::straight_reference({plant.truth().pose.x - 1.0, kOffset}, 0.0, 25.0, 12.0);
+            testing::SpeedLimits limits;
+            limits.top = 12.0;
+            limits.accel = 11.0;
+            limits.brake = 12.0;
+            limits.lateral = 12.0;
+            limits.start = std::max(plant.truth().vx, 1.0);
+            limits.end = 0.0;
+            testing::apply_speed_limits(exploration, limits);
+            planned = now;
+        }
+        return exploration;
+    };
+    const std::vector<LoopSample> samples =
+        testing::run_loop(*controller, plant, reference_at, 10.0);
+    ASSERT_GT(switched, 0.0);
+    ASSERT_GT(raceline.at(raceline.project(Vec2{0.0, 0.0}).s).speed, 28.0);
+    double slide = 0.0;
+    for (const LoopSample& sample : samples) slide = std::max(slide, std::abs(sample.truth.vy));
+    // From 0.5 m off, through the right-hander and onto the back straight.
+    EXPECT_LT(testing::max_lateral_after(samples, switched), 0.6);
+    EXPECT_LT(testing::max_lateral_after(samples, switched + 1.0), 0.4);
+    EXPECT_LT(slide, 1.0);
+    EXPECT_LT(samples.back().truth.pose.y, -1.5 * kRadius);
 }
 
 TEST_P(ControllerBehaviour, NeverReturnsNonFiniteCommands) {

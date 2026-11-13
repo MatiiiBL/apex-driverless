@@ -32,8 +32,8 @@ namespace apex::control::mpc {
 void build_qp(const MpcConfig& config, const NominalModel& model,
               const std::vector<StagePoint>& guess, double dt, bool lateral_bounds, Qp& problem);
 
-// Moves the linearization point onto a solution: its inputs, rolled out from guess[0]'s state
-// and station (mpc_plan.hpp).
+// Moves the linearization point onto a solution: its accelerations, rolled out from guess[0]'s
+// state and station (mpc_plan.hpp).
 void guess_from_solution(const NominalModel& model, const Trajectory& reference,
                          const Solution& solution, double dt, std::vector<StagePoint>& guess);
 

@@ -10,10 +10,10 @@
 // The MPC's warm start. A solved plan is kept in the world frame (poses, velocities, inputs at
 // absolute times), not in path coordinates or by stage index: during lap 1 the reference is
 // replanned every 100 ms, with a new arc-length origin each time, and only the world-frame plan
-// means the same thing on the new reference. At the next call the plan's inputs, shifted in
-// time, are rolled out through the nonlinear model from the new initial state along the
-// current reference, which gives the stations, error states and inputs that the next QP is
-// linearized around and warm-started from.
+// means the same thing on the new reference. At the next call the plan's accelerations, shifted
+// in time, are rolled out through the nonlinear model from the new initial state along the
+// current reference, steered along it by a path-following law, which gives the stations, error
+// states and inputs that the next QP is linearized around and warm-started from.
 //
 // The rollout, rather than the plan's own states re-projected onto the new reference, is what
 // keeps the linearization physical. A replanned exploration path can move its end (where its
@@ -22,6 +22,16 @@
 // such states the model can be unstable, and the QP's optimum about it was absurd (90 m/s, 10 m
 // off the path), which as the next plan made the next linearization worse. A rollout of
 // bounded inputs through the nonlinear model stays a trajectory the car can drive.
+//
+// It steers in closed loop because open loop it does not stay one the car drives. Near an
+// axle's friction limit (hard braking, which unloads the rear axle, or full drive at the driven
+// rear one) the car is unstable in yaw, and the plan's own steering rates, replayed without
+// feedback from a state slightly off the plan's, spun the model within the horizon: yaw rates of
+// 5 rad/s and 10 m/s of side velocity after a second, on a straight. Linearized around the spin
+// (tires past their peak slip, where more steering gives less force) the QP planned full lock
+// the wrong way. Feedback from the plan's own QP does not cure it, since its gains come from
+// that same linearization; the law here is the MPC's fallback, Stanley's, with its yaw damping,
+// which holds the car on these references with the plant's delays.
 namespace apex::control::mpc {
 
 struct PlanStage {
@@ -60,16 +70,19 @@ struct StagePoint {
     TrajectoryPoint reference;
 };
 
-// Makes `guess` (horizon guess.size() - 1) a trajectory of the nonlinear model: its inputs are
-// kept, clamped to the actuator limits (steering rate and angle, drive and brake), and its
-// states and stations replaced by integrating the model (mpc_model.hpp, RK4) from x0 at
-// station s0, with each stage's curvature from `reference` at its station. The car does not
-// reverse: the speed stops at zero.
+// Makes `guess` (horizon guess.size() - 1) a trajectory of the nonlinear model: its
+// accelerations and slacks are kept, clamped to the drive and brake limits and to zero; its
+// steering rates are replaced by the path-following law's at each stage (the kinematic angle
+// for the reference's curvature plus Stanley's law on the front axle's errors and yaw damping,
+// with StanleyConfig's defaults), within the steering rate and angle limits; and its states and
+// stations by integrating the model (mpc_model.hpp, RK4) from x0 at station s0, with each
+// stage's curvature from `reference` at its station. The car does not reverse: the speed stops
+// at zero.
 void rollout(const NominalModel& model, const Trajectory& reference, const State& x0, double s0,
              double dt, std::vector<StagePoint>& guess);
 
 // Stage points for horizon guess.size() - 1 starting at time t0 from x0 at station s0: the
-// plan's inputs at t0 + k dt, rolled out.
+// plan's accelerations (and slacks) at t0 + k dt, rolled out.
 void guess_from_plan(const NominalModel& model, const Plan& plan, const Trajectory& reference,
                      const State& x0, double s0, Time t0, double dt,
                      std::vector<StagePoint>& guess);

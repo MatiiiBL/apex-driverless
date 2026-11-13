@@ -3,9 +3,12 @@
 #include <algorithm>
 #include <cmath>
 
+#include "apex/control/controller.hpp"
 #include "apex/control/reference.hpp"
 #include "apex/core/angles.hpp"
 #include "apex/core/geometry.hpp"
+
+#include "common.hpp"
 
 namespace apex::control::mpc {
 
@@ -25,6 +28,18 @@ PlanStage blend(const PlanStage& a, const PlanStage& b, double w) {
     out.accel = lerp(a.accel, b.accel);
     out.slack = lerp(a.slack, b.slack);
     return out;
+}
+
+// The rollout's steering angle at error state x on `ref`: the kinematic angle for the path's
+// curvature, Stanley's law on the front axle's errors and the yaw damping of the Stanley
+// controller, all with StanleyConfig's defaults.
+double path_following_steer(const VehicleParams& p, const State& x, const TrajectoryPoint& ref) {
+    static const StanleyConfig stanley;
+    const double speed = std::max(x(kVx), 0.0);
+    const double front_lateral = x(kLateral) + p.lf * std::sin(x(kHeading));
+    return std::atan(p.wheelbase() * ref.curvature) +
+           stanley_law(-x(kHeading), front_lateral, speed, stanley.gain, stanley.softening_speed) +
+           stanley.yaw_damping * (speed * ref.curvature - x(kYawRate));
 }
 
 }  // namespace
@@ -69,10 +84,10 @@ void rollout(const NominalModel& model, const Trajectory& reference, const State
         point.reference = sample_reference(reference, s);
         if (k + 1 == guess.size()) break;
         Input& u = point.u;
-        // The rate that keeps the angle within its limit by the next stage (or brings it back).
-        const double lo = std::max(-p.max_steer_rate, (-p.max_steer - x(kSteer)) / dt);
-        const double hi = std::min(p.max_steer_rate, (p.max_steer - x(kSteer)) / dt);
-        u(kSteerRate) = std::clamp(u(kSteerRate), std::min(lo, hi), std::max(lo, hi));
+        // The rate that reaches the law's angle by the next stage, within the rate limit.
+        const double target =
+            std::clamp(path_following_steer(p, x, point.reference), -p.max_steer, p.max_steer);
+        u(kSteerRate) = std::clamp((target - x(kSteer)) / dt, -p.max_steer_rate, p.max_steer_rate);
         const double speed = std::max(x(kVx), 0.0);
         u(kAccel) = std::clamp(u(kAccel), -model.max_brake_decel(), model.max_drive_accel(speed));
         u(kSlack) = std::max(u(kSlack), 0.0);
@@ -94,7 +109,7 @@ void guess_from_plan(const NominalModel& model, const Plan& plan, const Trajecto
                      std::vector<StagePoint>& guess) {
     for (std::size_t k = 0; k < guess.size(); ++k) {
         const PlanStage stage = plan.at(t0 + static_cast<double>(k) * dt);
-        guess[k].u << stage.steer_rate, stage.accel, stage.slack;
+        guess[k].u << 0.0, stage.accel, stage.slack;  // the rollout sets the steering rate
     }
     rollout(model, reference, x0, s0, dt, guess);
 }

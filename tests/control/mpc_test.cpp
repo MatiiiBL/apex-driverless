@@ -113,8 +113,8 @@ TEST(MpcModel, DiscretizationIsTheLinearizedZeroOrderHold) {
 }
 
 // The warm start is kept in the world frame, so it means the same thing on a reference that
-// was replanned with a different arc-length origin: the plan's inputs at the same times, rolled
-// out from the same state, give the same trajectory.
+// was replanned with a different arc-length origin: the plan's accelerations at the same times,
+// rolled out from the same state along the same path, give the same trajectory.
 TEST(MpcPlan, SurvivesAReplannedReference) {
     const NominalModel model{VehicleParams{}};
     const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 8.0);
@@ -136,7 +136,6 @@ TEST(MpcPlan, SurvivesAReplannedReference) {
         mpc::guess_from_plan(model, plan, reference, states[0], s0, 1.0, kStep, guess);
         for (std::size_t k = 0; k + 1 < kStages; ++k) {
             EXPECT_NEAR(guess[k].u(mpc::kAccel), inputs[k](mpc::kAccel), 1e-9) << k;
-            EXPECT_NEAR(guess[k].u(mpc::kSteerRate), inputs[k](mpc::kSteerRate), 1e-9) << k;
         }
         return guess;
     };
@@ -149,7 +148,40 @@ TEST(MpcPlan, SurvivesAReplannedReference) {
     for (std::size_t k = 0; k < kStages; ++k) {
         EXPECT_NEAR(moved[k].s, same[k].s - 4.0, 5e-3) << k;
         EXPECT_LT((moved[k].x - same[k].x).lpNorm<Eigen::Infinity>(), 5e-3) << k;
+        EXPECT_NEAR(moved[k].u(mpc::kSteerRate), same[k].u(mpc::kSteerRate), 1e-2) << k;
     }
+}
+
+// Rolled out open loop, the inputs of a plan that brakes hard on a straight spun the model
+// within the horizon (the rear axle, unloaded by the braking, has little grip left for the yaw
+// a small error starts), and the QP was linearized around the spin. Steered along the path,
+// the rollout stays on it at the braking the QP allows: the traction limit at each speed.
+TEST(MpcPlan, RolloutHoldsThePathUnderHardBraking) {
+    const VehicleParams params;
+    const NominalModel model(params);
+    const double grip = MpcConfig{}.grip_fraction;
+    const Trajectory line = testing::straight_reference({0.0, 0.0}, 0.0, 80.0, 28.0);
+    // Stage by stage, so that each stage's braking is the limit at the speed it starts from.
+    State x;
+    x << 0.05, 0.01, 28.0, 0.05, 0.05, 0.0;  // a little off the straight line
+    double s = 0.0;
+    double worst_lateral = 0.0;
+    double worst_slide = 0.0;
+    double worst_yaw_rate = 0.0;
+    for (int k = 0; k < 40 && x(mpc::kVx) > 0.0; ++k) {
+        std::vector<mpc::StagePoint> stage(2);
+        stage[0].u << 0.0, model.traction_limits(x(mpc::kVx), 0.0, grip).min, 0.0;
+        mpc::rollout(model, line, x, s, 0.05, stage);
+        x = stage[1].x;
+        s = stage[1].s;
+        worst_lateral = std::max(worst_lateral, std::abs(x(mpc::kLateral)));
+        worst_slide = std::max(worst_slide, std::abs(x(mpc::kVy)));
+        worst_yaw_rate = std::max(worst_yaw_rate, std::abs(x(mpc::kYawRate)));
+    }
+    EXPECT_EQ(x(mpc::kVx), 0.0);  // stopped, in 2 s
+    EXPECT_LT(worst_lateral, 0.1);
+    EXPECT_LT(worst_slide, 1.0);
+    EXPECT_LT(worst_yaw_rate, 0.5);
 }
 
 // The rollout is what the QP is linearized around, so it must be a trajectory the car can
