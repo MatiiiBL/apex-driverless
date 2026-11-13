@@ -127,6 +127,18 @@ TEST(TrackModel, WorstCaseMapsStayCloseOnAverage) {
     }
 }
 
+// With every cone mapped exactly, what is left is the method's own bias. Generated track 18's
+// lap-1 drive passes its start 0.5 m to the side, which once left a 0.7 m kink in the model.
+TEST(TrackModel, PerfectMapsOfGeneratedTracksGiveTheirCenterline) {
+    for (const std::uint64_t seed : {3U, 18U}) {
+        const Track track = sim::generate_track(seed);
+        const Lap lap = drive_lap(track, no_errors(), seed);
+        const std::optional<TrackModel> model = build_track_model(lap.map, lap.drive, {});
+        ASSERT_TRUE(model.has_value()) << "seed " << seed;
+        EXPECT_LT(centerline_error(*model, track), 0.1) << "seed " << seed;
+    }
+}
+
 TEST(TrackModel, FillsAGapAlongTheTrackShape) {
     // Take out every left cone over 12 m of a curve: the gap's fill follows the curve.
     const Track& track = reference_track("technical");

@@ -327,7 +327,14 @@ std::optional<TrackModel> build_track_model(const ConeMap& map, std::span<const 
     check_config(config);
     const std::optional<std::vector<Vec2>> loop = driven_loop(driven_path, config);
     if (!loop) return fail("the driven path does not close a lap");
-    Trajectory reference = Trajectory::from_waypoints(*loop, true, config.reference_spacing);
+    // Smoothed first: where the lap closes, the car passes its start a little to the side, and
+    // the kink that leaves would bend the normals the cones are placed along.
+    SmoothingOptions smoothing;
+    smoothing.spacing = cumulative_length(*loop, true).back() / static_cast<double>(loop->size());
+    smoothing.cutoff_wavelength = config.smoothing_wavelength;
+    smoothing.closed = true;
+    Trajectory reference = Trajectory::from_waypoints(smooth_polyline(*loop, smoothing), true,
+                                                      config.reference_spacing);
 
     Sides sides;
     std::optional<Profile> profile;
