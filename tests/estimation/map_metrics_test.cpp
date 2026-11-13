@@ -56,9 +56,11 @@ ConeObservations observations(std::vector<std::int32_t> truth_ids) {
 
 TEST(AssociationScore, CountsPrecisionAndRecallByTruthId) {
     ConeMap before;
-    before.cones = {landmark(0, 10, {}), landmark(1, 11, {}), landmark(2, 12, {})};
+    // Positions do not matter here; Vec2{} would leave Eigen's coefficients uninitialized.
+    before.cones = {landmark(0, 10, Vec2::Zero()), landmark(1, 11, Vec2::Zero()),
+                    landmark(2, 12, Vec2::Zero())};
     ConeMap after = before;
-    after.cones.push_back(landmark(3, 13, {}));
+    after.cones.push_back(landmark(3, 13, Vec2::Zero()));
     AssociationScore score;
     // Correct, wrong (cone 11 matched to landmark 2 of cone 12), unmatched but mappable,
     // clutter matched, and an observation of a cone with no landmark yet.
