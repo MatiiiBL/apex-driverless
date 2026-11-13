@@ -10,6 +10,9 @@ void to_json(nlohmann::json& j, const StackConfig& c) {
     j = nlohmann::json::object();
     j["perception"] = c.perception;
     j["estimation"] = c.estimation;
+    j["exploration"] = c.exploration;
+    j["track_model"] = c.track_model;
+    j["raceline"] = c.raceline;
     j["controller"] = c.controller;
     j["mission"] = c.mission;
     j["lap_counter"] = c.lap_counter;
@@ -21,13 +24,16 @@ void to_json(nlohmann::json& j, const StackConfig& c) {
 }
 
 void from_json(const nlohmann::json& j, StackConfig& c) {
-    reject_unknown_keys(
-        j,
-        {"perception", "estimation", "controller", "mission", "lap_counter", "known_pose_mapper",
-         "stop_decel", "hold_brake", "emergency_brake", "driven_path_spacing"},
-        "stack");
+    reject_unknown_keys(j,
+                        {"perception", "estimation", "exploration", "track_model", "raceline",
+                         "controller", "mission", "lap_counter", "known_pose_mapper", "stop_decel",
+                         "hold_brake", "emergency_brake", "driven_path_spacing"},
+                        "stack");
     read_optional(j, "perception", c.perception);
     read_optional(j, "estimation", c.estimation);
+    read_optional(j, "exploration", c.exploration);
+    read_optional(j, "track_model", c.track_model);
+    read_optional(j, "raceline", c.raceline);
     read_optional(j, "controller", c.controller);
     read_optional(j, "mission", c.mission);
     read_optional(j, "lap_counter", c.lap_counter);
