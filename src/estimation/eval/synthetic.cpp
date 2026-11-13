@@ -144,7 +144,7 @@ ConeObservations observe_cones(const Track& track, const Pose2& pose, Time stamp
         Mat2 rot;
         rot << c, -s, s, c;
         ConeObservation obs;
-        obs.position = body + rot * Vec2(sr * rng.normal(), st * rng.normal());
+        obs.position = body + rot * Vec2{sr * rng.normal(), st * rng.normal()};
         obs.covariance = sensors.reported_covariance_scale * rot *
                          Vec2(sr * sr, st * st).asDiagonal() * rot.transpose();
         obs.truth_id = truth_id;

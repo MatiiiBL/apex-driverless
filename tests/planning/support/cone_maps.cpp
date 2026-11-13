@@ -66,7 +66,7 @@ ConeMap make_cone_map(const Track& track, const MapErrors& errors, Rng& rng) {
 
     for (const Cone& cone : track.cones) {
         if (rng.bernoulli(errors.miss_probability)) continue;
-        const Vec2 noise(rng.normal(0.0, sigma), rng.normal(0.0, sigma));
+        const Vec2 noise{rng.normal(0.0, sigma), rng.normal(0.0, sigma)};
         const double draw = rng.uniform();
         if (draw < errors.wrong_color_probability) {
             add(cone.position + noise, wrong_color(cone.color, rng), cone.color, 2.0 / 3.0,

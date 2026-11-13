@@ -76,7 +76,7 @@ TEST(SmoothPolyline, ClosedCircleShrinksByThePredictedBias) {
     const double spacing = kTwoPi * kRadius / static_cast<double>(n);
     std::vector<Vec2> noisy = circle(kRadius, n);
     Rng rng(3);
-    for (Vec2& p : noisy) p += Vec2(rng.normal(0.0, 0.1), rng.normal(0.0, 0.1));
+    for (Vec2& p : noisy) p += Vec2{rng.normal(0.0, 0.1), rng.normal(0.0, 0.1)};
     const std::vector<Vec2> result =
         smooth_polyline(noisy, {.spacing = spacing, .cutoff_wavelength = kCutoff, .closed = true});
     const double bias = std::pow(kCutoff / kTwoPi, 4) / std::pow(kRadius, 3);

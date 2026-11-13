@@ -48,7 +48,7 @@ TEST(Nees, AccumulatorOfAConsistentEstimateAveragesTheDimension) {
     Rng rng(7);
     NeesAccumulator accumulator(2);
     for (int i = 0; i < 4000; ++i) {
-        const Eigen::VectorXd e = l * Eigen::Vector2d(rng.normal(), rng.normal());
+        const Eigen::VectorXd e = l * Eigen::Vector2d{rng.normal(), rng.normal()};
         accumulator.add(nees(e, p));
     }
     const NeesSummary s = accumulator.summary();

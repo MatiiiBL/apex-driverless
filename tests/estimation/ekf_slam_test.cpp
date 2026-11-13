@@ -177,7 +177,7 @@ TEST(EkfSlam, TheYawRateBiasDriftsTheYawAndIsLearnedFromTheLandmarks) {
             std::vector<Pairing> pairings;
             for (std::size_t i = 0; i < cones.size(); ++i) {
                 pairings.push_back(
-                    {i, truth.to_local(cones[i]) + 0.02 * Vec2(rng.normal(), rng.normal()), r});
+                    {i, truth.to_local(cones[i]) + 0.02 * Vec2{rng.normal(), rng.normal()}, r});
             }
             EXPECT_TRUE(slam.update(pairings, true));
             yaw_error = angle_diff(slam.pose().yaw, truth.yaw);
@@ -234,7 +234,7 @@ std::vector<Pairing> observe(Rng& rng, const EkfSlam& slam, std::vector<std::siz
         pairing.landmark = i;
         pairing.R = random_covariance(rng, 0.005);
         pairing.z =
-            slam.pose().to_local(slam.landmark(i)) + Vec2(0.1 * rng.normal(), 0.1 * rng.normal());
+            slam.pose().to_local(slam.landmark(i)) + Vec2{0.1 * rng.normal(), 0.1 * rng.normal()};
         pairings.push_back(pairing);
     }
     return pairings;

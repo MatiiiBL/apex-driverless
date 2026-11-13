@@ -90,8 +90,11 @@ TEST(GridClusterer, EveryPointInsideTheGridLandsInExactlyOneCluster) {
     GridClusterer clusterer(ClusterConfig{}, LidarGeometry{});
     Rng rng(4);
     std::vector<ObstaclePoint> points;
-    for (int i = 0; i < 3000; ++i)
-        points.push_back(at(rng.uniform(0.0, 39.0), rng.uniform(-39.0, 39.0)));
+    for (int i = 0; i < 3000; ++i) {
+        const double x = rng.uniform(0.0, 39.0);
+        const double y = rng.uniform(-39.0, 39.0);
+        points.push_back(at(x, y));
+    }
     // Behind a LiDAR that only looks forward: outside the grid, so in no cluster.
     points.push_back(at(-5.0, 0.0));
     points.push_back(at(-0.5, 60.0));
@@ -109,10 +112,16 @@ TEST(GridClusterer, IsDeterministicAndKeepsNoStateBetweenScans) {
     Rng rng(5);
     std::vector<ObstaclePoint> first;
     std::vector<ObstaclePoint> second;
-    for (int i = 0; i < 400; ++i)
-        first.push_back(at(rng.uniform(1.0, 20.0), rng.uniform(-5.0, 5.0)));
-    for (int i = 0; i < 400; ++i)
-        second.push_back(at(rng.uniform(1.0, 20.0), rng.uniform(-5.0, 5.0)));
+    for (int i = 0; i < 400; ++i) {
+        const double x = rng.uniform(1.0, 20.0);
+        const double y = rng.uniform(-5.0, 5.0);
+        first.push_back(at(x, y));
+    }
+    for (int i = 0; i < 400; ++i) {
+        const double x = rng.uniform(1.0, 20.0);
+        const double y = rng.uniform(-5.0, 5.0);
+        second.push_back(at(x, y));
+    }
     Clusters a;
     Clusters b;
     Clusters c;

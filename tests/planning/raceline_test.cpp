@@ -125,7 +125,10 @@ TEST(Raceline, ImprovesOnEveryReferenceTrack) {
         const Raceline raceline = optimize_raceline(model, car, config);
         EXPECT_LT(raceline.predicted_lap_time, 0.98 * centerline_lap_time(model, car, config))
             << name;
+#ifndef APEX_SANITIZE
+        // The 2 s budget is for an optimized build; sanitizers slow the solver several times.
         EXPECT_LT(raceline.optimize_seconds, 2.0) << name;
+#endif
     }
 }
 

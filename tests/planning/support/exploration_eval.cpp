@@ -27,10 +27,9 @@ std::vector<PlanRecord> evaluate_exploration(const Track& track,
         if (driven < next_plan) continue;
         next_plan += scenario.plan_every;
 
-        const Pose2 pose =
-            centerline_pose(track, start + driven,
-                            pose_rng.uniform(-scenario.lateral_error, scenario.lateral_error),
-                            pose_rng.uniform(-scenario.yaw_error, scenario.yaw_error));
+        const double lateral = pose_rng.uniform(-scenario.lateral_error, scenario.lateral_error);
+        const double yaw = pose_rng.uniform(-scenario.yaw_error, scenario.yaw_error);
+        const Pose2 pose = centerline_pose(track, start + driven, lateral, yaw);
         StateEstimate state;
         state.pose = pose;
         state.vx = scenario.speed;

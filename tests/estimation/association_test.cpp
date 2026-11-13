@@ -27,7 +27,7 @@ EkfSlam make_map(const std::vector<Vec2>& landmarks, const Pose2& estimate,
 }
 
 ObservationModel observe(const Pose2& truth, const Vec2& cone, double sigma, Rng& rng) {
-    return {truth.to_local(cone) + Vec2(sigma * rng.normal(), sigma * rng.normal()),
+    return {truth.to_local(cone) + Vec2{sigma * rng.normal(), sigma * rng.normal()},
             sigma * sigma * Mat2::Identity()};
 }
 

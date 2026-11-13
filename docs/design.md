@@ -93,8 +93,12 @@ time is measured only to report compute cost (`Stopwatch`, `LatencyStats`).
 seed and split into one stream per consumer (`Rng::split`), so adding draws in one place never
 shifts another's numbers. No `std::random_device`, no `<random>` distributions (their output
 differs between standard libraries), no unordered containers iterated where order changes
-results, no threads inside one run. The same inputs give bit-identical results on the same
-build; across platforms, libm can change the last bits.
+results, no threads inside one run. Two draws never share the argument list of one call:
+C++ leaves the order of function arguments unspecified, and GCC and Clang evaluate them in
+opposite orders, so `Vec2(rng.normal(), rng.normal())` swaps the draws between compilers. Draw
+into named variables first, or use a braced initializer (`Vec2{rng.normal(), rng.normal()}`),
+whose elements are evaluated left to right. The same inputs give bit-identical results on the
+same build; across platforms, libm can change the last bits.
 
 **Errors.** Bad configuration or arguments throw `std::invalid_argument` at construction. Hot
 paths (per message, per control tick) do not throw: they return `std::optional`, a flag, or a

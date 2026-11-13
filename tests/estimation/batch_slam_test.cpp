@@ -62,7 +62,7 @@ Scenario circle(bool noisy, std::uint64_t seed = 1) {
             o.pose = k;
             o.landmark = static_cast<std::int32_t>(100 + i);  // keys need not be indices
             o.z = z;
-            if (noisy) o.z += observation_std * Vec2(rng.normal(), rng.normal());
+            if (noisy) o.z += observation_std * Vec2{rng.normal(), rng.normal()};
             o.R = observation_std * observation_std * Mat2::Identity();
             s.problem.observations.push_back(o);
         }
