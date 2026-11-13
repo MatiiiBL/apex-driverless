@@ -1,0 +1,175 @@
+{
+  "coast_down": {
+    "max_distance_error_m": 1.7053025658242404e-12,
+    "max_speed_error_mps": 8.526512829121202e-14,
+    "seconds": 40,
+    "v0_mps": 25.0
+  },
+  "kinematic_limit": {
+    "max_curvature_error_pct": 0.07166343565755406,
+    "speeds_mps": [
+      1.0,
+      2.0
+    ],
+    "steer_rad": [
+      0.1,
+      0.2,
+      0.3,
+      0.4
+    ]
+  },
+  "lateral_limit": [
+    {
+      "fraction_of_mu_g_plus_downforce": 0.9016424744353942,
+      "friction_scale": 1.0,
+      "max_lateral_accel_mps2": 15.364884540703262,
+      "speed_mps": 10.0
+    },
+    {
+      "fraction_of_mu_g_plus_downforce": 0.9468100683913746,
+      "friction_scale": 0.5,
+      "max_lateral_accel_mps2": 8.072729920188197,
+      "speed_mps": 10.0
+    },
+    {
+      "fraction_of_mu_g_plus_downforce": 0.9018951849285544,
+      "friction_scale": 1.0,
+      "max_lateral_accel_mps2": 16.896690430126725,
+      "speed_mps": 15.0
+    },
+    {
+      "fraction_of_mu_g_plus_downforce": 0.9293176199928923,
+      "friction_scale": 0.5,
+      "max_lateral_accel_mps2": 8.719828525074881,
+      "speed_mps": 15.0
+    },
+    {
+      "fraction_of_mu_g_plus_downforce": 0.8851615376578704,
+      "friction_scale": 1.0,
+      "max_lateral_accel_mps2": 18.69711991668637,
+      "speed_mps": 20.0
+    },
+    {
+      "fraction_of_mu_g_plus_downforce": 0.9028197858788473,
+      "friction_scale": 0.5,
+      "max_lateral_accel_mps2": 9.568421698905711,
+      "speed_mps": 20.0
+    }
+  ],
+  "linear_cornering": {
+    "cases": [
+      {
+        "car": "default",
+        "error_pct": 0.019579260974733614,
+        "speed_mps": 8.0,
+        "understeer_gradient_rad_per_mps2": 2.5375199870819002e-05,
+        "yaw_rate_linear": 0.25,
+        "yaw_rate_model": 0.25004894815243683
+      },
+      {
+        "car": "default",
+        "error_pct": -0.030737137597958153,
+        "speed_mps": 12.0,
+        "understeer_gradient_rad_per_mps2": 5.0117338769899036e-05,
+        "yaw_rate_linear": 0.16666666666666669,
+        "yaw_rate_model": 0.16661543810400342
+      },
+      {
+        "car": "default",
+        "error_pct": -0.04840243784008935,
+        "speed_mps": 16.0,
+        "understeer_gradient_rad_per_mps2": 7.52257961165451e-05,
+        "yaw_rate_linear": 0.125,
+        "yaw_rate_model": 0.12493949695269989
+      },
+      {
+        "car": "default",
+        "error_pct": -0.06062822383100519,
+        "speed_mps": 20.0,
+        "understeer_gradient_rad_per_mps2": 9.638745418898271e-05,
+        "yaw_rate_linear": 0.09999999999999999,
+        "yaw_rate_model": 0.09993937177616899
+      },
+      {
+        "car": "understeer",
+        "error_pct": -0.0745244434132264,
+        "speed_mps": 8.0,
+        "understeer_gradient_rad_per_mps2": 0.0035023121485955122,
+        "yaw_rate_linear": 0.25,
+        "yaw_rate_model": 0.24981368889146693
+      },
+      {
+        "car": "understeer",
+        "error_pct": -0.15157423563090244,
+        "speed_mps": 12.0,
+        "understeer_gradient_rad_per_mps2": 0.0033209418147105525,
+        "yaw_rate_linear": 0.16666666666666666,
+        "yaw_rate_model": 0.16641404294061515
+      },
+      {
+        "car": "understeer",
+        "error_pct": -0.18202851606399229,
+        "speed_mps": 16.0,
+        "understeer_gradient_rad_per_mps2": 0.003095400368972047,
+        "yaw_rate_linear": 0.125,
+        "yaw_rate_model": 0.12477246435492001
+      },
+      {
+        "car": "understeer",
+        "error_pct": -0.18750250788819312,
+        "speed_mps": 20.0,
+        "understeer_gradient_rad_per_mps2": 0.002845682534930281,
+        "yaw_rate_linear": 0.09999999999999999,
+        "yaw_rate_model": 0.0998124974921118
+      },
+      {
+        "car": "oversteer",
+        "error_pct": 0.0393711672838748,
+        "speed_mps": 8.0,
+        "understeer_gradient_rad_per_mps2": -0.0017004056745561187,
+        "yaw_rate_linear": 0.25,
+        "yaw_rate_model": 0.2500984279182097
+      },
+      {
+        "car": "oversteer",
+        "error_pct": 0.018599572483291027,
+        "speed_mps": 12.0,
+        "understeer_gradient_rad_per_mps2": -0.0015602362298154796,
+        "yaw_rate_linear": 0.16666666666666666,
+        "yaw_rate_model": 0.16669766595413882
+      },
+      {
+        "car": "oversteer",
+        "error_pct": 0.021268007706343184,
+        "speed_mps": 16.0,
+        "understeer_gradient_rad_per_mps2": -0.0013972485922529338,
+        "yaw_rate_linear": 0.125,
+        "yaw_rate_model": 0.12502658500963293
+      },
+      {
+        "car": "oversteer",
+        "error_pct": 0.017796946370851607,
+        "speed_mps": 20.0,
+        "understeer_gradient_rad_per_mps2": -0.0012300663590871757,
+        "yaw_rate_linear": 0.1,
+        "yaw_rate_model": 0.10001779694637086
+      }
+    ],
+    "lateral_accel_mps2": 2.0,
+    "max_error_pct": 0.18750250788819312
+  },
+  "power_limit": {
+    "max_accel_error_mps2": 2.6645352591003757e-15,
+    "max_power_w": 40000.0,
+    "speed_range_mps": [
+      14.0,
+      26.0
+    ]
+  },
+  "step_convergence": {
+    "change_0.5ms_to_0.25ms": 4.885629989125638e-11,
+    "change_1ms_to_0.5ms": 8.017228149338361e-10,
+    "manoeuvre_s": 5.0,
+    "observed_order": 4.036487019115754
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "camera": {
+    "frames": 611,
+    "mean_detections": 9.67430441898527,
+    "time": {
+      "count": 611,
+      "max_us": 437.45799999999997,
+      "mean_us": 17.688055646481175,
+      "p50_us": 14.625,
+      "p90_us": 18.916999999999998,
+      "p99_us": 103.5
+    }
+  },
+  "lidar": {
+    "brute_force": {
+      "count": 14,
+      "max_us": 336188.042,
+      "mean_us": 86891.1577857143,
+      "p50_us": 62360.667,
+      "p90_us": 124776.417,
+      "p99_us": 336188.042
+    },
+    "culled": {
+      "count": 245,
+      "max_us": 81316.916,
+      "mean_us": 2093.0419795918383,
+      "p50_us": 1539.167,
+      "p90_us": 2701.7920000000004,
+      "p99_us": 4918.9580000000005
+    },
+    "mean_cone_returns": 1001.5591836734694,
+    "mean_returns": 41694.49387755102,
+    "rays_per_scan": 57664.0,
+    "scans": 245,
+    "speedup_mean": 41.514292896628305
+  },
+  "track_generation": {
+    "mean_attempts": 14.035,
+    "mean_length_m": 378.9379981779775,
+    "per_track": {
+      "chicanes": 2.015,
+      "corners": 1.93,
+      "hairpins": 1.76,
+      "sweepers": 2.77
+    },
+    "seeds": 200,
+    "time": {
+      "count": 200,
+      "max_us": 232443.5,
+      "mean_us": 27987.66955499997,
+      "p50_us": 18832.75,
+      "p90_us": 52501.25,
+      "p99_us": 170543.125
+    }
+  },
+  "vehicle_step": {
+    "ns_per_step": 1184.6588330000002,
+    "steps": 1000000
+  },
+  "world": {
+    "lap_time_s": 44.493516857197555,
+    "laps": 1,
+    "messages": 19637,
+    "penalty_s": 0.0,
+    "real_time_factor": 42.73104591851996,
+    "simulated_s": 45.67,
+    "tick": {
+      "count": 45670,
+      "max_us": 33866.958000000006,
+      "mean_us": 22.337059951829946,
+      "p50_us": 2.959,
+      "p90_us": 3.709,
+      "p99_us": 1091.75
+    },
+    "track": "generated-1",
+    "wall_s": 1.068777958
+  }
+}

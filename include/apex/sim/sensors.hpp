@@ -119,9 +119,9 @@ struct ImuBias {
 // within [min_range, max_range] is returned, so cones shadow each other and the ground behind
 // them. Each return is then dropped with probability `dropout` or has Gaussian range noise
 // added along its ray. truth_id is the cone's id, -1 for ground. Rays are tested only against
-// the cones whose azimuth and elevation extent they cross, nearest first, which makes a
-// 57,600-ray scan cost about a millisecond; simulate_lidar_brute_force (sim/lidar.hpp) is the
-// reference it is tested against.
+// the cones whose azimuth and elevation extent they cross, nearest first, which makes the
+// default 57,664-ray scan cost about 1.5 ms in Release (docs/sim.md, "Performance");
+// simulate_lidar_brute_force (sim/lidar.hpp) is the reference it is tested against.
 [[nodiscard]] LidarScan simulate_lidar(const LidarGeometry& geometry, const LidarNoise& noise,
                                        const VehicleState& state, std::span<const Cone> cones,
                                        Time stamp, Rng& rng);
