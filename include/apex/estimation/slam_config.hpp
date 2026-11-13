@@ -23,7 +23,8 @@ struct SlamConfig {
     double initial_position_std = 0.005;  // m
     double initial_yaw_std = 0.0005;      // rad
 
-    // Perception's covariances are scaled, then floored, before use.
+    // Perception's covariances are scaled, then given a noise floor, before use
+    // (prepare_observation in observation.hpp).
     double observation_noise_scale = 1.0;
     double min_observation_std = 0.02;     // m
     double max_observation_range = 30.0;   // m, observations beyond are ignored
