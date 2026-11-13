@@ -53,13 +53,9 @@ void EkfSlam::reserve(Eigen::Index size) {
     P_.swap(P);
 }
 
-void EkfSlam::symmetrize() {
-    for (Eigen::Index j = 0; j < n_; ++j) {
-        for (Eigen::Index i = j + 1; i < n_; ++i) {
-            const double mean = 0.5 * (P_(i, j) + P_(j, i));
-            P_(i, j) = mean;
-            P_(j, i) = mean;
-        }
+void EkfSlam::mirror_lower() {
+    for (Eigen::Index j = 1; j < n_; ++j) {
+        for (Eigen::Index i = 0; i < j; ++i) P_(i, j) = P_(j, i);
     }
 }
 
@@ -123,13 +119,19 @@ bool EkfSlam::update(std::span<const Pairing> pairings, bool update_landmarks) {
     if (llt.info() != Eigen::Success) return false;
 
     if (update_landmarks) {
-        const Eigen::MatrixXd gain = llt.solve(w.transpose()).transpose();  // n x m
+        const Eigen::MatrixXd gain = llt.solve(w.transpose()).transpose();  // K, n x m
         x_.head(n_) += gain * nu;
-        P.noalias() -= gain * w.transpose();  // M = (I - K H) P
-        for (Eigen::Index j = 0; j < c; ++j) pc.col(j) = P.col(cols[static_cast<std::size_t>(j)]);
-        const Eigen::MatrixXd t = pc * hc.transpose() - gain * r;  // M H^T - K R
-        P.noalias() -= t * gain.transpose();
-        symmetrize();
+        // M = (I - K H) P = P - K W^T is needed only in the paired columns, for M H^T.
+        const Eigen::MatrixXd mc = pc - gain * wc.transpose();     // n x c
+        const Eigen::MatrixXd t = mc * hc.transpose() - gain * r;  // M H^T - K R, n x m
+        // P' = M - (M H^T - K R) K^T = P - [K T] [W K]^T is symmetric: form its lower triangle
+        // only, as one product of inner dimension 2m, and mirror it.
+        Eigen::MatrixXd left(n_, 2 * m);
+        left << gain, t;
+        Eigen::MatrixXd right(n_, 2 * m);
+        right << w, gain;
+        P.triangularView<Eigen::Lower>() -= left * right.transpose();
+        mirror_lower();
     } else {
         const Eigen::MatrixXd gain = llt.solve(w.topRows<3>().transpose()).transpose();  // 3 x m
         x_.head<3>() += gain * nu;

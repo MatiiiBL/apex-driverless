@@ -63,10 +63,12 @@ public:
     void predict(const RelativeMotion& motion);
 
     // One batch update with every pairing (distinct landmarks), Joseph form:
-    //   P' = (I - K H) P (I - K H)^T + K R K^T,
-    // evaluated as P - K W^T followed by - (M H^T - K R) K^T with W = P H^T, which needs two
-    // rank-m products and keeps P symmetric positive definite where P - K S K^T can lose it to
-    // round-off. With update_landmarks false it is a Schmidt-Kalman update: the landmarks are
+    //   P' = (I - K H) P (I - K H)^T + K R K^T = M - (M H^T - K R) K^T,  M = P - K W^T,
+    // with W = P H^T. M H^T needs M only in the paired columns, so the n x n work is a single
+    // product, P - [K T] [W K]^T with T = M H^T - K R, of which only the lower triangle is
+    // formed and then mirrored: exactly symmetric, and positive definite where P - K S K^T can
+    // lose it to round-off. With update_landmarks false it is a Schmidt-Kalman update: the
+    // landmarks are
     // "consider" states whose estimates and covariance stay fixed while the pose and its
     // cross-covariance are updated consistently (Schmidt, "Application of state-space methods to
     // navigation problems", Advances in Control Systems 3, 1966), at O(n m) cost.
@@ -89,7 +91,7 @@ private:
         return 3 + 2 * static_cast<Eigen::Index>(landmark);
     }
     void reserve(Eigen::Index size);
-    void symmetrize();
+    void mirror_lower();  // copies the lower triangle of the active covariance onto the upper
 
     Eigen::VectorXd x_;
     Eigen::MatrixXd P_;  // capacity x capacity; the active part is the top-left n_ x n_
