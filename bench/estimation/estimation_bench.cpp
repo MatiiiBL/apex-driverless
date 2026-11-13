@@ -211,7 +211,9 @@ eval::DriveProfile three_laps() {
 }
 
 // The simulator, driven by the pure-pursuit test driver at the racing limits it holds.
-json world_run(std::uint64_t seed) {
+// With source Perception, the World's LiDAR and camera through ConePerception feed the
+// estimator; with Synthetic, observations made from the true pose.
+json world_run(std::uint64_t seed, eval::ConeSource source) {
     const Track track = apex::sim::generate_track(seed);
     apex::sim::WorldConfig config;
     config.seed = seed;
@@ -219,8 +221,9 @@ json world_run(std::uint64_t seed) {
     profile.racing_lateral_accel = 10.0;
     profile.max_brake = 8.0;
     profile.max_accel = 6.0;
-    const eval::SyntheticRun run = eval::make_world_run(track, config, profile, {});
-    return evaluate("world", seed, track, run, config.vehicle);
+    const eval::SyntheticRun run = eval::make_world_run(track, config, profile, {}, source);
+    const bool real = source == eval::ConeSource::Perception;
+    return evaluate(real ? "world+perception" : "world", seed, track, run, config.vehicle);
 }
 
 // The kinematic synthetic drive at full racing speed: 22 m/s, 14 m/s^2 in the corners.
@@ -283,10 +286,11 @@ std::string summary_markdown(const json& runs, const json& timing) {
         "# Estimation results\n\n"
         "Produced by `build/release/bench/estimation/apex_estimation_bench` "
         "(docs/estimation.md explains the setup). Lap 1 maps, laps 2-3 localize against the "
-        "frozen map. `world`: the simulator's vehicle and IMU/wheel/steering models with the "
-        "pure-pursuit test driver (racing at 10 m/s^2 lateral); `synthetic`: the kinematic "
-        "drive at full racing speed (22 m/s, 14 m/s^2). Cone observations come from the true "
-        "cones through the synthetic perception model in both.\n\n"
+        "frozen map. `world+perception`: the simulator's vehicle, IMU, wheel and steering "
+        "models, and its LiDAR and camera through ConePerception, with the pure-pursuit test "
+        "driver (racing at 10 m/s^2 lateral); `world`: the same, but cone observations made "
+        "from the true cones by the synthetic perception model; `synthetic`: the kinematic "
+        "drive at full racing speed (22 m/s, 14 m/s^2) with the synthetic perception.\n\n"
         "| source | seed | cones | map RMS (m) | batch RMS (m) | dup | missed | pose RMS lap 1 (m) "
         "| pose RMS racing (m) | yaw RMS racing (deg) | pose NEES lap 1 / racing | assoc. "
         "precision | recall | velocity NEES | recoveries |\n"
@@ -346,7 +350,11 @@ int main(int argc, char** argv) {
         quick ? std::vector<std::uint64_t>{1} : std::vector<std::uint64_t>{1, 2, 3, 4, 5};
     json runs = json::array();
     for (const std::uint64_t seed : seeds) {
-        runs.push_back(world_run(seed));
+        runs.push_back(world_run(seed, eval::ConeSource::Perception));
+        std::fprintf(stderr, "world+perception %llu done\n", static_cast<unsigned long long>(seed));
+    }
+    for (const std::uint64_t seed : seeds) {
+        runs.push_back(world_run(seed, eval::ConeSource::Synthetic));
         std::fprintf(stderr, "world %llu done\n", static_cast<unsigned long long>(seed));
     }
     for (const std::uint64_t seed : seeds) {

@@ -9,8 +9,9 @@ apex_module(estimation_eval
         synthetic.cpp
     PUBLIC_DEPS apex::estimation)
 
-# Drives the real simulator. Kept apart so that only what evaluates against the World links it.
+# Drives the real simulator, optionally with the real perception in the loop. Kept apart so that
+# only what evaluates against the World links them.
 apex_module(estimation_world
     SOURCES
         world_drive.cpp
-    PUBLIC_DEPS apex::estimation_eval apex::sim)
+    PUBLIC_DEPS apex::estimation_eval apex::perception apex::sim)

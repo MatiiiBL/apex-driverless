@@ -9,6 +9,7 @@
 
 #include "apex/core/angles.hpp"
 #include "apex/core/rng.hpp"
+#include "apex/perception/perception.hpp"
 
 namespace apex::estimation::eval {
 
@@ -35,7 +36,8 @@ double reference_speed(const Trajectory& center, double s, double top_speed, dou
 }  // namespace
 
 SyntheticRun make_world_run(const Track& track, const sim::WorldConfig& config,
-                            const DriveProfile& profile, const SyntheticSensors& perception) {
+                            const DriveProfile& profile, const SyntheticSensors& perception,
+                            ConeSource source) {
     if (profile.laps < 1 || !(profile.exploration_speed > 0.0) || !(profile.racing_speed > 0.0) ||
         !(profile.max_accel > 0.0) || !(profile.max_brake > 0.0) ||
         !(profile.exploration_lateral_accel > 0.0) || !(profile.racing_lateral_accel > 0.0) ||
@@ -46,6 +48,8 @@ SyntheticRun make_world_run(const Track& track, const sim::WorldConfig& config,
     const Trajectory& center = world.track().centerline;
     const VehicleParams& car = config.vehicle;
     Rng cone_rng = Rng(config.seed).split(0x0b5e7);
+    apex::perception::ConePerception detector({}, config.rig);
+    double last_gyro = 0.0;
 
     SyntheticRun run;
     run.mappable_since.assign(track.cones.size(), std::numeric_limits<Time>::infinity());
@@ -111,13 +115,18 @@ SyntheticRun make_world_run(const Track& track, const sim::WorldConfig& config,
         for (const SensorMessage& m : messages) {
             if (const auto* imu = std::get_if<ImuSample>(&m)) {
                 run.messages.push_back({now, *imu});
+                last_gyro = imu->yaw_rate;
             } else if (const auto* wheels = std::get_if<WheelSpeeds>(&m)) {
                 run.messages.push_back({now, *wheels});
             } else if (const auto* steering = std::get_if<SteeringSample>(&m)) {
                 run.messages.push_back({now, *steering});
+            } else if (const auto* frame = std::get_if<CameraFrame>(&m)) {
+                if (source == ConeSource::Perception) detector.on_camera(*frame);
             } else if (const auto* scan = std::get_if<LidarScan>(&m)) {
-                ConeObservations cones =
-                    observe_cones(track, world.truth().pose, scan->stamp, perception, cone_rng);
+                ConeObservations cones = source == ConeSource::Perception
+                                             ? detector.on_lidar(*scan, last_gyro)
+                                             : observe_cones(track, world.truth().pose, scan->stamp,
+                                                             perception, cone_rng);
                 note_detections(cones, detections, run.mappable_since);
                 in_flight.emplace_back(scan->stamp + perception.latency, std::move(cones));
             }
