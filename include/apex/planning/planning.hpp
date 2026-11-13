@@ -95,7 +95,7 @@ struct ExplorationConfig {
     double smoothing_wavelength = 8.0;
     double path_spacing = 0.5;
     double stop_margin = 1.0;
-    double stop_reserve = 0.4;
+    double stop_reserve = 0.2;
     double min_path_length = 3.0;
     SpeedProfileConfig speed{.grip_factor = 0.7, .max_speed = 12.0};
 };
