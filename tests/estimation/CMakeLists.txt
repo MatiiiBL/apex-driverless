@@ -2,6 +2,7 @@
 apex_tests(estimation
     SOURCES
         association_test.cpp
+        batch_slam_test.cpp
         chi_square_test.cpp
         consistency_test.cpp
         ekf_slam_test.cpp

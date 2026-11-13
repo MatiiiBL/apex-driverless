@@ -7,6 +7,7 @@ apex_module(estimation
         ekf_slam.cpp
         estimator.cpp
         landmark_records.cpp
+        observation.cpp
         lateral_model.cpp
         odometry.cpp
         slam_config.cpp

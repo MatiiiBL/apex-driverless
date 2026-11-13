@@ -11,6 +11,7 @@
 #include "apex/core/log.hpp"
 #include "apex/estimation/dead_reckoning.hpp"
 #include "apex/estimation/ekf_slam.hpp"
+#include "apex/estimation/observation.hpp"
 #include "apex/estimation/odometry.hpp"
 
 #include "landmark_records.hpp"
@@ -63,10 +64,6 @@ Mat3 start_covariance(const SlamConfig& c) {
     p.diagonal() << c.initial_position_std * c.initial_position_std,
         c.initial_position_std * c.initial_position_std, c.initial_yaw_std * c.initial_yaw_std;
     return p;
-}
-
-bool finite(const ConeObservation& cone) {
-    return cone.position.allFinite() && cone.covariance.allFinite();
 }
 
 }  // namespace
@@ -134,28 +131,15 @@ struct StateEstimator::Impl {
         std::vector<std::size_t> source;  // models[k] is observations.cones[source[k]]
         models.reserve(n);
         source.reserve(n);
-        const double floor = config.slam.min_observation_std * config.slam.min_observation_std;
         for (std::size_t i = 0; i < n; ++i) {
-            const ConeObservation& cone = observations.cones[i];
-            if (!finite(cone)) {
-                ++stats.invalid_inputs;
+            const PreparedObservation prepared =
+                prepare_observation(observations.cones[i], config.slam);
+            if (prepared.status != ObservationStatus::Usable) {
+                if (prepared.status == ObservationStatus::Invalid) ++stats.invalid_inputs;
                 ++stats.rejected;
                 continue;
             }
-            if (cone.position.norm() > config.slam.max_observation_range) {
-                ++stats.rejected;
-                continue;
-            }
-            Mat2 r = config.slam.observation_noise_scale * 0.5 *
-                     (cone.covariance + cone.covariance.transpose());
-            r.diagonal().array() += floor;
-            // Sylvester's criterion for a symmetric 2 x 2.
-            if (!(r(0, 0) > 0.0) || !(r(0, 0) * r(1, 1) - r(0, 1) * r(1, 0) > 0.0)) {
-                ++stats.invalid_inputs;
-                ++stats.rejected;
-                continue;
-            }
-            models.push_back({cone.position, r});
+            models.push_back(prepared.model);
             source.push_back(i);
         }
 

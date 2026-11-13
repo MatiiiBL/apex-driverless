@@ -3,6 +3,7 @@
 # software does not.
 apex_module(estimation_eval
     SOURCES
+        batch_slam.cpp
         consistency.cpp
         map_metrics.cpp
         synthetic.cpp
