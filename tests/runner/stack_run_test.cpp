@@ -19,13 +19,11 @@ namespace {
 
 using stack::MissionState;
 
-// Stanley follows the exploration planner's paths, replanned at every scan, most closely of the
-// three controllers (docs/evaluation.md), so it drives these tests.
+// The default car (the MPC among the controllers), on a mission of `laps` laps.
 RunConfig mission(TrackSpec track, int laps) {
     RunConfig config;
     config.track = std::move(track);
     config.stack.mission.laps = laps;
-    config.stack.controller.kind = control::ControllerKind::Stanley;
     config.dnf.time_limit = 150.0;
     return config;
 }
