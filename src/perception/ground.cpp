@@ -65,12 +65,12 @@ GroundEstimator::GroundEstimator(const GroundConfig& config, const LidarGeometry
 GroundFit GroundEstimator::fit(std::span<const LidarPoint> points) {
     touched_.clear();
     const double inv_cell = 1.0 / config_.seed_cell_size;
+    const auto n = static_cast<double>(cells_per_side_);
     for (std::size_t i = 0; i < points.size(); ++i) {
         const LidarPoint& p = points[i];
         if (!finite(p)) continue;
         const double gx = std::floor((p.x + extent_) * inv_cell);
         const double gy = std::floor((p.y + extent_) * inv_cell);
-        const auto n = static_cast<double>(cells_per_side_);
         if (gx < 0.0 || gy < 0.0 || gx >= n || gy >= n) continue;
         const std::size_t cell =
             static_cast<std::size_t>(gy) * cells_per_side_ + static_cast<std::size_t>(gx);
