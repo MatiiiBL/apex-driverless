@@ -5,4 +5,6 @@ apex_module(runner
         metrics.cpp
         oracle.cpp
         result.cpp
+        run.cpp
+        world_setup.cpp
     PUBLIC_DEPS apex::core apex::sim apex::stack)
