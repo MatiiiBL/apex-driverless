@@ -26,12 +26,13 @@ TEXT_SECONDARY = "#52514e"
 GRID = "#e4e3df"
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a"]  # categorical slots 1-3, in order
 
+# Each ablation, its title, and the variant the others are compared with.
 ABLATIONS = [
-    ("controllers", "Controller"),
-    ("oracles", "Oracles"),
-    ("noise", "Sensor noise scale"),
-    ("latency", "Latency"),
-    ("friction", "Track grip (planner unchanged)"),
+    ("controllers", "Controller", "mpc"),
+    ("oracles", "Oracles", "none"),
+    ("noise", "Sensor noise scale", "noise-1"),
+    ("latency", "Latency", "nominal"),
+    ("friction", "Track grip (planner unchanged)", "grip-100"),
 ]
 
 
@@ -98,39 +99,73 @@ def plot_laps(runs, out):
     plt.close(fig)
 
 
-def racing_speed(run):
-    speeds = lap_speeds(run)[1:]
-    return float(np.mean(speeds)) if speeds else None
+def mean_racing_lap(run):
+    laps = run["result"]["laps"][1:]
+    return float(np.mean(laps)) if laps else None
+
+
+def racing_lap_change(runs, variant, reference):
+    """Mean change (%) of `variant`'s racing lap against `reference`'s, run for run (same track
+    and seed), over the pairs where both completed; None if there are none."""
+    base = {(r["track"], r["seed"]): mean_racing_lap(r) for r in runs
+            if r["variant"] == reference and r["result"]["completed"]}
+    changes = []
+    for r in runs:
+        key = (r["track"], r["seed"])
+        lap = mean_racing_lap(r)
+        if r["variant"] == variant and r["result"]["completed"] and lap and base.get(key):
+            changes.append(100.0 * (lap / base[key] - 1.0))
+    return float(np.mean(changes)) if changes else None
+
+
+def bar_labels(ax, bars, labels):
+    for bar, label in zip(bars, labels):
+        ax.annotate(label, (bar.get_x() + bar.get_width() / 2, max(bar.get_height(), 0.0)),
+                    xytext=(0, 3), textcoords="offset points", ha="center", fontsize=7,
+                    color=TEXT_SECONDARY)
 
 
 def plot_ablations(results, out):
-    present = [(name, title, load_runs(results, name)) for name, title in ABLATIONS]
+    present = [(title, reference, load_runs(results, name))
+               for name, title, reference in ABLATIONS]
     present = [p for p in present if p[2]]
     if not present:
         return False
-    fig, axes = plt.subplots(1, len(present), figsize=(3.2 * len(present), 3.6),
-                             facecolor=SURFACE, sharey=True, squeeze=False)
-    for ax, (_, title, runs) in zip(axes[0], present):
-        style(ax)
+    fig, axes = plt.subplots(2, len(present), figsize=(3.2 * len(present), 5.6),
+                             facecolor=SURFACE, sharey="row", squeeze=False)
+    for column, (title, reference, runs) in enumerate(present):
         names = variants_in_order(runs)
-        means, labels = [], []
+        x = np.arange(len(names))
+        changes, completion, penalties = [], [], []
         for variant in names:
             mine = [r for r in runs if r["variant"] == variant]
-            done = [r for r in mine if r["result"]["completed"]]
-            speeds = [s for s in (racing_speed(r) for r in done) if s is not None]
-            means.append(np.mean(speeds) if speeds else 0.0)
-            labels.append(f"{len(done)}/{len(mine)}")
-        x = np.arange(len(names))
-        bars = ax.bar(x, means, width=0.6, color=SERIES[0])
-        for bar, label in zip(bars, labels):
-            ax.annotate(label, (bar.get_x() + bar.get_width() / 2, bar.get_height()),
-                        xytext=(0, 3), textcoords="offset points", ha="center", fontsize=7,
-                        color=TEXT_SECONDARY)
-        ax.set_xticks(x)
-        ax.set_xticklabels(names, rotation=35, ha="right", fontsize=7)
-        ax.set_title(title, color=TEXT, fontsize=9, loc="left")
-    axes[0][0].set_ylabel("mean racing-lap speed (m/s)", color=TEXT_SECONDARY, fontsize=9)
-    fig.suptitle("Ablations: racing speed over completed runs (label: runs completed)",
+            done = sum(1 for r in mine if r["result"]["completed"])
+            change = racing_lap_change(runs, variant, reference)
+            changes.append(change)
+            completion.append(f"{done}/{len(mine)}" if change is not None else f"{done}/{len(mine)} DNF")
+            penalties.append(np.mean([r["result"]["penalties"]["seconds"] for r in mine]))
+
+        top, bottom = axes[0][column], axes[1][column]
+        style(top)
+        bars = top.bar(x, [c if c is not None else 0.0 for c in changes], width=0.6,
+                       color=SERIES[0])
+        bar_labels(top, bars, completion)
+        top.axhline(0.0, color=TEXT_SECONDARY, linewidth=0.8)
+        top.set_title(title, color=TEXT, fontsize=9, loc="left")
+        top.set_xticks(x)
+        top.set_xticklabels([])
+
+        style(bottom)
+        bars = bottom.bar(x, penalties, width=0.6, color=SERIES[1])
+        bar_labels(bottom, bars, [f"{p:.1f}" for p in penalties])
+        bottom.set_xticks(x)
+        bottom.set_xticklabels(names, rotation=35, ha="right", fontsize=7)
+    axes[0][0].set_ylabel("racing lap vs reference (%)", color=TEXT_SECONDARY, fontsize=9)
+    axes[1][0].set_ylabel("penalties (s per run)", color=TEXT_SECONDARY, fontsize=9)
+    references = ", ".join(reference for _, reference, _ in present)
+    fig.suptitle("Ablations. Top: mean racing lap against each ablation's reference variant "
+                 f"({references}), same track and seed, completed runs (label: runs completed). "
+                 "Bottom: penalty seconds per run.",
                  color=TEXT, fontsize=10, x=0.01, ha="left")
     fig.tight_layout()
     fig.savefig(out, dpi=150, facecolor=SURFACE)
@@ -142,7 +177,8 @@ def plot_noise(results, out):
     path = results / "noise" / "summary.json"
     if not path.exists():
         return False
-    summaries = json.loads(path.read_text())
+    # A noise level whose runs all failed has no meaningful map or localization to show.
+    summaries = [s for s in json.loads(path.read_text()) if s["completed"] > 0]
     scales, series = [], {"map, after lap 1": [], "localization, racing": []}
     for s in summaries:
         scales.append(float(s["variant"].split("-", 1)[1]))

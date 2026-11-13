@@ -123,16 +123,16 @@ def first_racing_lap_end(replay):
     return states[-1][0]
 
 
-def animation(replay, out, fps):
+def animation(replay, out, fps, speedup, dpi):
     frames = [f for f in replay["frames"] if f["t"] <= first_racing_lap_end(replay)]
-    step = max(1, round(1.0 / (fps * 0.05)))  # frames are 50 ms apart
+    step = max(1, round(speedup / (fps * 0.05)))  # recorded frames are 50 ms apart
     frames = frames[::step]
     maps = replay["maps"]
     references = replay["references"]
 
-    fig, ax = plt.subplots(figsize=(6.4, 5.4), facecolor=SURFACE)
-    style_axes(ax)
     true_xy, _ = cone_arrays(replay["track"]["cones"])
+    fig, ax = plt.subplots(figsize=figure_size(true_xy, 6.4), facecolor=SURFACE)
+    style_axes(ax)
     ax.scatter(true_xy[:, 0], true_xy[:, 1], s=10, c="#c3c2b7", linewidths=0, zorder=1)
     pad = 5.0
     ax.set_xlim(true_xy[:, 0].min() - pad, true_xy[:, 0].max() + pad)
@@ -141,6 +141,17 @@ def animation(replay, out, fps):
     (reference_line,) = ax.plot([], [], color="#1baf7a", linewidth=2.0, zorder=3)
     (trail,) = ax.plot([], [], color="#2a78d6", linewidth=1.2, alpha=0.6, zorder=3)
     (car,) = ax.plot([], [], marker="o", markersize=7, color="#0b0b0b", zorder=4)
+    handles = [
+        Line2D([], [], marker="o", linestyle="", markersize=4, markeredgewidth=0,
+               markerfacecolor="#c3c2b7", label="true cones"),
+        Line2D([], [], marker="o", linestyle="", markersize=4, markeredgewidth=0,
+               markerfacecolor=TEXT_SECONDARY, label="the car's map, in cone colors"),
+        Line2D([], [], color="#1baf7a", linewidth=2.0, label="path it tracks"),
+        Line2D([], [], color="#2a78d6", linewidth=1.2, label="path it drove"),
+    ]
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=4,
+              fontsize=7, frameon=False, labelcolor=TEXT_SECONDARY)
+    fig.tight_layout()
     label = ax.text(0.02, 0.97, "", transform=ax.transAxes, va="top", color=TEXT, fontsize=9)
     trail_xy = np.array([[f["x"], f["y"]] for f in frames])
 
@@ -170,7 +181,7 @@ def animation(replay, out, fps):
         return landmarks, reference_line, trail, car, label
 
     anim = FuncAnimation(fig, draw, frames=len(frames), blit=False)
-    anim.save(out, writer=PillowWriter(fps=fps), dpi=80)
+    anim.save(out, writer=PillowWriter(fps=fps), dpi=dpi)
     plt.close(fig)
 
 
@@ -180,6 +191,9 @@ def main():
     parser.add_argument("--out", type=Path, help="static PNG to write")
     parser.add_argument("--gif", type=Path, help="animated GIF to write")
     parser.add_argument("--fps", type=int, default=10, help="GIF frames per second")
+    parser.add_argument("--speedup", type=float, default=1.0,
+                        help="seconds of simulated time per second of animation")
+    parser.add_argument("--dpi", type=int, default=80, help="GIF resolution")
     args = parser.parse_args()
     if not args.out and not args.gif:
         parser.error("give --out, --gif or both")
@@ -187,7 +201,7 @@ def main():
     if args.out:
         static_figure(replay, args.out)
     if args.gif:
-        animation(replay, args.gif, args.fps)
+        animation(replay, args.gif, args.fps, args.speedup, args.dpi)
 
 
 if __name__ == "__main__":
