@@ -7,8 +7,8 @@
 //
 //   apex_perception_eval [--tracks N] [--spacing M] [--seed S] [--out DIR]
 //
-// Scans come from the exact ray caster of the perception tests (tests/perception/scene.hpp),
-// with the sensor noise below, until the simulator's sensor models are available.
+// Scans and camera frames come from the simulator's sensor models (sim::simulate_lidar,
+// sim::simulate_camera) with their default noise (docs/sim.md, "Sensors").
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -28,31 +28,19 @@
 #include "apex/core/angles.hpp"
 #include "apex/core/geometry.hpp"
 #include "apex/core/rng.hpp"
+#include "apex/core/vehicle.hpp"
 #include "apex/perception/calibration.hpp"
 #include "apex/perception/detector.hpp"
 #include "apex/perception/perception.hpp"
+#include "apex/sim/sensors.hpp"
 #include "apex/sim/track_gen.hpp"
 
-#include "scene.hpp"
 #include "scoring.hpp"
 
 namespace apex::perception::eval {
 namespace {
 
 using nlohmann::json;
-
-// LiDAR: 2 cm range noise (1 sigma), the precision of automotive spinning LiDARs, and 2% of
-// rays lost. Camera detector: bearing noise of about 4 pixels of a 1280-pixel, 100-degree image;
-// 7% monocular range error; detection probability falling to 60% and color confusion rising to
-// 10% at the camera's 30 m range; half a false positive per frame.
-constexpr double kLidarRangeSigma = 0.02;
-constexpr double kLidarDropout = 0.02;
-constexpr testing::CameraSimOptions kCameraNoise{.bearing_sigma = 0.005,
-                                                 .range_sigma_fraction = 0.07,
-                                                 .confidence = 0.9,
-                                                 .detect_at_max_range = 0.6,
-                                                 .confusion_at_max_range = 0.10,
-                                                 .false_positives = 0.5};
 
 // The car drives near the centerline (uniform lateral offset, Gaussian heading error) at up to
 // 12 m/s, slowing so its lateral acceleration stays under 10 m/s^2: an exploration lap.
@@ -70,26 +58,37 @@ constexpr double kMatchGate = 0.5;      // m: farther from its cone, an observat
 struct VariantSpec {
     const char* name;
     const char* description;
-    double lag;       // s: the frame's stamp is this much before the scan's
-    bool compensate;  // pass the yaw rate, or 0
-    testing::CameraSimOptions camera;
+    double lag;        // s: the frame's stamp is this much before the scan's
+    bool compensate;   // pass the yaw rate, or 0
+    bool true_colors;  // the detector never confuses colors and reports no false positives
 };
-constexpr testing::CameraSimOptions kPerfectColors{
-    .bearing_sigma = kCameraNoise.bearing_sigma,
-    .range_sigma_fraction = kCameraNoise.range_sigma_fraction,
-    .confidence = kCameraNoise.confidence,
-    .detect_at_max_range = kCameraNoise.detect_at_max_range};
 constexpr std::array<VariantSpec, 6> kVariants = {{
-    {"lag25", "25 ms early, yaw compensated", 0.025, true, kCameraNoise},
-    {"aligned", "at the scan's stamp", 0.0, true, kCameraNoise},
-    {"lag25_uncompensated", "25 ms early, not compensated", 0.025, false, kCameraNoise},
-    {"lag50", "50 ms early, yaw compensated", 0.050, true, kCameraNoise},
-    {"lag50_uncompensated", "50 ms early, not compensated", 0.050, false, kCameraNoise},
+    {"lag25", "25 ms early, yaw compensated", 0.025, true, false},
+    {"aligned", "at the scan's stamp", 0.0, true, false},
+    {"lag25_uncompensated", "25 ms early, not compensated", 0.025, false, false},
+    {"lag50", "50 ms early, yaw compensated", 0.050, true, false},
+    {"lag50_uncompensated", "50 ms early, not compensated", 0.050, false, false},
     {"lag25_true_colors",
-     "25 ms early, compensated; detector never confuses colors, no false "
-     "positives",
-     0.025, true, kPerfectColors},
+     "25 ms early, compensated; detector never confuses colors, no false positives", 0.025, true,
+     true},
 }};
+
+sim::CameraNoise camera_noise(const VariantSpec& spec) {
+    sim::CameraNoise noise;
+    if (spec.true_colors) {
+        noise.confusion_near = 0.0;
+        noise.confusion_far = 0.0;
+        noise.false_positives = 0.0;
+    }
+    return noise;
+}
+
+// The sensor models read only the pose.
+VehicleState state_at(const Pose2& pose) {
+    VehicleState state;
+    state.pose = pose;
+    return state;
+}
 
 struct Settings {
     int tracks = 8;
@@ -265,10 +264,7 @@ int run(const Settings& settings) {
     ConeDetector detector(config.ground, config.clustering, config.cone_check, config.center_fit,
                           rig.lidar);
 
-    testing::LidarSimOptions lidar_noise;
-    lidar_noise.sensor_height = rig.lidar.mount.z();
-    lidar_noise.range_sigma = kLidarRangeSigma;
-    lidar_noise.dropout = kLidarDropout;
+    const sim::SensorNoise noise;
 
     // The task's bins, and 2 m bins for the plots.
     RangeBins bins({10.0, 20.0, 30.0});
@@ -294,9 +290,8 @@ int run(const Settings& settings) {
             const Motion motion(track.centerline, s, pose_rng);
             const Time stamp = kScanPeriod * static_cast<double>(scans);
             const Truth truth{track.cones, motion.pose()};
-            const LidarScan scan =
-                testing::cast_lidar(rig.lidar, testing::lidar_pose(truth.body, rig.lidar),
-                                    track.cones, lidar_noise, lidar_rng, stamp);
+            const LidarScan scan = sim::simulate_lidar(rig.lidar, noise.lidar, state_at(truth.body),
+                                                       track.cones, stamp, lidar_rng);
 
             std::vector<int> matches;
             std::size_t reported = 0;
@@ -305,8 +300,8 @@ int run(const Settings& settings) {
                 const VariantSpec& spec = *variant.spec;
                 const Pose2 camera_body = motion.pose(spec.lag);
                 variant.perception.on_camera(
-                    testing::detect_cones(rig.camera, camera_body, track.cones, spec.camera,
-                                          camera_rngs[v], stamp - spec.lag));
+                    sim::simulate_camera(rig.camera, camera_noise(spec), state_at(camera_body),
+                                         track.cones, stamp - spec.lag, camera_rngs[v]));
                 const double yaw_rate = spec.compensate ? motion.yaw_rate(spec.lag) : 0.0;
                 const ConeObservations observations = variant.perception.on_lidar(scan, yaw_rate);
                 if (v == 0) {
@@ -346,21 +341,29 @@ int run(const Settings& settings) {
     }
     json colors = json::array();
     for (const Variant& v : variants) colors.push_back(color_to_json(v));
-    json camera_noise = {{"bearing_sigma_rad", kCameraNoise.bearing_sigma},
-                         {"range_sigma_fraction", kCameraNoise.range_sigma_fraction},
-                         {"confidence", kCameraNoise.confidence},
-                         {"detect_at_max_range", kCameraNoise.detect_at_max_range},
-                         {"confusion_at_max_range", kCameraNoise.confusion_at_max_range},
-                         {"false_positives_per_frame", kCameraNoise.false_positives}};
+    const sim::CameraNoise& camera = noise.camera;
+    const json camera_noise = {{"min_range_m", camera.min_range},
+                               {"detection_probability", camera.detection_probability},
+                               {"detection_half_range_m", camera.detection_half_range},
+                               {"detection_falloff_m", camera.detection_falloff},
+                               {"bearing_stddev_rad", camera.bearing_stddev},
+                               {"range_stddev_m", camera.range_stddev},
+                               {"range_stddev_quadratic", camera.range_stddev_quadratic},
+                               {"confusion_near", camera.confusion_near},
+                               {"confusion_far", camera.confusion_far},
+                               {"confidence_stddev", camera.confidence_stddev},
+                               {"false_positives_per_frame", camera.false_positives}};
 
     const json result = {
         {"command", settings.command},
         {"sensor_model",
-         std::format("synthetic sensors (exact ray caster, {:.0f} cm range noise, {:.0f}% dropout)",
-                     kLidarRangeSigma * 100.0, kLidarDropout * 100.0)},
+         std::format("sim::simulate_lidar ({:.0f} cm range noise, {:.0f}% dropout) and "
+                     "sim::simulate_camera with their default noise",
+                     noise.lidar.range_stddev * 100.0, noise.lidar.dropout * 100.0)},
         {"tracks", tracks},
         {"scans", scans},
-        {"lidar_noise", {{"range_sigma_m", kLidarRangeSigma}, {"dropout", kLidarDropout}}},
+        {"lidar_noise",
+         {{"range_stddev_m", noise.lidar.range_stddev}, {"dropout", noise.lidar.dropout}}},
         {"camera_noise", camera_noise},
         {"motion",
          {{"max_speed", kMaxSpeed},
