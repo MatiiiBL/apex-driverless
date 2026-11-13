@@ -153,25 +153,26 @@ and averages the difference of their mean racing laps over the pairs where both 
 ## Performance
 
 `bench/runner/apex_runner_bench` races the full stack once on each reference layout and then
-reruns the three as a sweep on 1, 2 and 3 threads (Release build, Apple M4, a machine shared
-with other work while measured):
+reruns the three as a sweep on 1, 2 and 3 threads. Release build at commit f8037da, Apple M4,
+nothing else running (results/runs/compute.md has the machine and every module's benchmark):
 
 ```
 make PRESET=release build
-build/release/bench/runner/apex_runner_bench 1 stanley
+build/release/bench/runner/apex_runner_bench            # 3 laps with the MPC; [laps] [controller]
 ```
 
-| Layout | Real-time factor | Simulator tick (mean) | Perception scan p50 / p99 | Estimator cone update p50 / p99 | Exploration plan p50 / p99 |
-|---|---|---|---|---|---|
-| technical | 93× | 6.0 µs | 204 / 342 µs | 135 / 453 µs | 36 / 78 µs |
-| flowing | 99× | 5.9 µs | 192 / 238 µs | 93 / 415 µs | 29 / 56 µs |
-| mixed | 98× | 5.9 µs | 194 / 243 µs | 91 / 418 µs | 30 / 54 µs |
+| Layout | Real-time factor | Simulator tick (mean) | Perception scan p50 / p99 | Estimator cone update p50 / p99 | Exploration plan p50 / p99 | MPC p50 / p99 |
+|---|---|---|---|---|---|---|
+| technical | 43.6× | 5.8 µs | 202 / 269 µs | 117 / 517 µs | 54 / 90 µs | 252 / 341 µs |
+| flowing | 43.6× | 5.8 µs | 190 / 236 µs | 86 / 457 µs | 47 / 72 µs | 252 / 315 µs |
+| mixed | 43.8× | 5.8 µs | 194 / 238 µs | 89 / 567 µs | 49 / 75 µs | 252 / 328 µs |
 
-One lap with Stanley, whose command costs 7 µs. The simulator's tick includes the LiDAR's
-57 600 rays every 100 ms, amortized; a whole scan through perception, estimation and planning
-costs 0.3-0.4 ms at the median, against a 100 ms period. The sweep pool runs the three layouts
-2.5 times faster on three threads than on one (each run is one thread, and three runs keep
-three threads busy).
+The MPC's command is most of a run's compute: with Stanley (7 µs a command;
+`apex_runner_bench 3 stanley`) the same runs go 97.6 times faster than real time. The
+simulator's tick includes the LiDAR's 57 600 rays every 100 ms, amortized; a whole scan through
+perception, estimation and planning costs 0.3 ms at the median and 0.8 ms at p99, against a
+100 ms period. The sweep pool runs the three layouts 2.8 times faster on three threads than on
+one (each run is one thread, and three runs keep three threads busy).
 
 ## Recording a run
 
