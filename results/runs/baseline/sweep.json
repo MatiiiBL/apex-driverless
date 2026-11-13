@@ -1,0 +1,61 @@
+{
+  "base": {},
+  "name": "Baseline: the full stack against the oracles",
+  "oracle_variant": "oracle",
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 2
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 4
+    },
+    {
+      "seed": 5
+    },
+    {
+      "seed": 6
+    },
+    {
+      "seed": 7
+    },
+    {
+      "seed": 8
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "stack",
+      "patch": {}
+    },
+    {
+      "name": "oracle",
+      "patch": {
+        "oracles": {
+          "perception": true,
+          "state": true
+        }
+      }
+    }
+  ]
+}

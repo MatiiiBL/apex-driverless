@@ -1,0 +1,62 @@
+{
+  "base": {},
+  "name": "Ablation: the path-tracking controller",
+  "oracle_variant": "",
+  "seeds": [
+    1,
+    2
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 5
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "pure_pursuit",
+      "patch": {
+        "stack": {
+          "controller": {
+            "kind": "pure_pursuit"
+          }
+        }
+      }
+    },
+    {
+      "name": "stanley",
+      "patch": {
+        "stack": {
+          "controller": {
+            "kind": "stanley"
+          }
+        }
+      }
+    },
+    {
+      "name": "mpc",
+      "patch": {
+        "stack": {
+          "controller": {
+            "kind": "mpc"
+          }
+        }
+      }
+    }
+  ]
+}

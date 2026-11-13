@@ -1,0 +1,62 @@
+{
+  "base": {},
+  "name": "Ablation: sensor noise",
+  "oracle_variant": "",
+  "seeds": [
+    1,
+    2
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 5
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "noise-0",
+      "patch": {
+        "sensor_noise_scale": 0.0
+      }
+    },
+    {
+      "name": "noise-0.5",
+      "patch": {
+        "sensor_noise_scale": 0.5
+      }
+    },
+    {
+      "name": "noise-1",
+      "patch": {
+        "sensor_noise_scale": 1.0
+      }
+    },
+    {
+      "name": "noise-2",
+      "patch": {
+        "sensor_noise_scale": 2.0
+      }
+    },
+    {
+      "name": "noise-4",
+      "patch": {
+        "sensor_noise_scale": 4.0
+      }
+    }
+  ]
+}

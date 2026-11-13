@@ -1,0 +1,61 @@
+{
+  "base": {},
+  "name": "Ablation: perfect perception and perfect state",
+  "oracle_variant": "both",
+  "seeds": [
+    1,
+    2
+  ],
+  "threads": 3,
+  "tracks": [
+    {
+      "seed": 1
+    },
+    {
+      "seed": 3
+    },
+    {
+      "seed": 5
+    },
+    {
+      "layout": "technical"
+    },
+    {
+      "layout": "flowing"
+    },
+    {
+      "layout": "mixed"
+    }
+  ],
+  "variants": [
+    {
+      "name": "none",
+      "patch": {}
+    },
+    {
+      "name": "perception",
+      "patch": {
+        "oracles": {
+          "perception": true
+        }
+      }
+    },
+    {
+      "name": "state",
+      "patch": {
+        "oracles": {
+          "state": true
+        }
+      }
+    },
+    {
+      "name": "both",
+      "patch": {
+        "oracles": {
+          "perception": true,
+          "state": true
+        }
+      }
+    }
+  ]
+}
