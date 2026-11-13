@@ -126,10 +126,12 @@ struct Kinematics {
     Vec2 position = Vec2::Zero();
 };
 
-void add_cone_observations(const Track& track, const TruthSample& truth,
-                           const SyntheticSensors& sensors, Rng& rng, ConeObservations& out,
-                           std::vector<std::uint32_t>& detections,
-                           std::vector<Time>& mappable_since) {
+}  // namespace
+
+ConeObservations observe_cones(const Track& track, const Pose2& pose, Time stamp,
+                               const SyntheticSensors& sensors, Rng& rng) {
+    ConeObservations out;
+    out.stamp = stamp;
     const Vec2 mount(LidarGeometry{}.mount.x(), LidarGeometry{}.mount.y());
     auto noisy = [&](const Vec2& body, std::int32_t truth_id, ConeColor true_color) {
         const Vec2 ray = body - mount;
@@ -163,7 +165,7 @@ void add_cone_observations(const Track& track, const TruthSample& truth,
         out.cones.push_back(obs);
     };
     for (const Cone& cone : track.cones) {
-        const Vec2 body = truth.pose.to_local(cone.position);
+        const Vec2 body = pose.to_local(cone.position);
         const Vec2 ray = body - mount;
         const double range = ray.norm();
         if (range > sensors.cone_range || range < 0.5) continue;
@@ -173,8 +175,6 @@ void add_cone_observations(const Track& track, const TruthSample& truth,
             sensors.detection_near + (sensors.detection_far - sensors.detection_near) * f * f;
         if (!rng.bernoulli(p_detect)) continue;
         noisy(body, cone.id, cone.color);
-        const auto id = static_cast<std::size_t>(cone.id);
-        if (++detections[id] == 3) mappable_since[id] = truth.stamp;
     }
     const std::uint32_t false_positives = rng.poisson(sensors.false_positive_rate);
     for (std::uint32_t i = 0; i < false_positives; ++i) {
@@ -182,9 +182,17 @@ void add_cone_observations(const Track& track, const TruthSample& truth,
         const double bearing = rng.uniform(-0.5 * sensors.cone_fov, 0.5 * sensors.cone_fov);
         noisy(mount + range * Vec2(std::cos(bearing), std::sin(bearing)), -1, ConeColor::Unknown);
     }
+    return out;
 }
 
-}  // namespace
+void note_detections(const ConeObservations& scan, std::vector<std::uint32_t>& detections,
+                     std::vector<Time>& mappable_since) {
+    for (const ConeObservation& obs : scan.cones) {
+        if (obs.truth_id < 0) continue;
+        const auto id = static_cast<std::size_t>(obs.truth_id);
+        if (++detections[id] == 3) mappable_since[id] = scan.stamp;
+    }
+}
 
 const TruthSample& SyntheticRun::truth_at(Time t) const {
     const auto k = static_cast<std::int64_t>(std::llround(t / kTick));
@@ -363,10 +371,9 @@ SyntheticRun make_synthetic_run(const Track& track, const VehicleParams& vehicle
             pending.push_back({tick, 2, steer});
         }
         if (tick % kScanTicks == 0) {
-            ConeObservations cones;
-            cones.stamp = truth.stamp;
-            add_cone_observations(track, truth, sensors, cone_rng, cones, detections,
-                                  run.mappable_since);
+            ConeObservations cones =
+                observe_cones(track, truth.pose, truth.stamp, sensors, cone_rng);
+            note_detections(cones, detections, run.mappable_since);
             pending.push_back({tick + latency_ticks, 3, std::move(cones)});
         }
     }

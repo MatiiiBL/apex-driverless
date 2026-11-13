@@ -1,5 +1,5 @@
 # Evaluation tools of the estimation module: synthetic drives with ground truth, consistency and
-# map metrics, and the batch least-squares reference. Tests and benchmarks link this; the car's
+# map metrics, and the batch least-squares reference. Tests and benchmarks link these; the car's
 # software does not.
 apex_module(estimation_eval
     SOURCES
@@ -8,3 +8,9 @@ apex_module(estimation_eval
         map_metrics.cpp
         synthetic.cpp
     PUBLIC_DEPS apex::estimation)
+
+# Drives the real simulator. Kept apart so that only what evaluates against the World links it.
+apex_module(estimation_world
+    SOURCES
+        world_drive.cpp
+    PUBLIC_DEPS apex::estimation_eval apex::sim)

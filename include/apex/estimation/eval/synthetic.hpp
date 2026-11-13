@@ -8,6 +8,7 @@
 
 #include "apex/core/angles.hpp"
 #include "apex/core/messages.hpp"
+#include "apex/core/rng.hpp"
 #include "apex/core/track.hpp"
 #include "apex/core/vehicle.hpp"
 
@@ -93,6 +94,18 @@ struct SyntheticRun {
     // The truth at the millisecond tick nearest t (clamped to the run).
     [[nodiscard]] const TruthSample& truth_at(Time t) const;
 };
+
+// One scan of the synthetic perception from `pose`: each true cone within cone_range and
+// cone_fov of the LiDAR mount, detected with the range-dependent probability, its position
+// perturbed by noise along and across the ray from the mount (and reported with that
+// covariance), its color from the camera model; plus Poisson false positives. Stands in for the
+// perception module, from the World's truth as well as from a synthetic drive.
+[[nodiscard]] ConeObservations observe_cones(const Track& track, const Pose2& pose, Time stamp,
+                                             const SyntheticSensors& sensors, Rng& rng);
+
+// Counts each true cone's detections in `scan` and stamps the third one into mappable_since.
+void note_detections(const ConeObservations& scan, std::vector<std::uint32_t>& detections,
+                     std::vector<Time>& mappable_since);
 
 // Throws std::invalid_argument for a profile that cannot be driven.
 [[nodiscard]] SyntheticRun make_synthetic_run(const Track& track, const VehicleParams& vehicle,

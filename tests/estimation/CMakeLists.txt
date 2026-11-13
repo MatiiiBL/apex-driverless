@@ -12,4 +12,5 @@ apex_tests(estimation
         odometry_test.cpp
         synthetic_test.cpp
         velocity_filter_test.cpp
-    DEPS apex::estimation_eval apex::sim)
+        world_drive_test.cpp
+    DEPS apex::estimation_world)
