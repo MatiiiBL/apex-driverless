@@ -9,4 +9,5 @@ apex_module(sim
         track_rules.cpp
         vehicle_model.cpp
         vehicle_sensors.cpp
+        world.cpp
     PUBLIC_DEPS apex::core)

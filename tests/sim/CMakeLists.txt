@@ -5,4 +5,5 @@ apex_tests(sim
         track_gen_test.cpp
         vehicle_model_test.cpp
         vehicle_sensors_test.cpp
+        world_test.cpp
     DEPS apex::sim)
