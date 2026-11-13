@@ -7,7 +7,6 @@
 
 #include <nlohmann/json.hpp>
 
-#include "apex/core/angles.hpp"
 #include "apex/core/json.hpp"
 #include "apex/estimation/lateral_model.hpp"
 
@@ -142,13 +141,9 @@ bool VelocityFilter::predict(const ImuSample& sample) {
 // overcomes, split between the axles as the drivetrain or the brakes split it.
 double VelocityFilter::expected_slip_ratio(bool front) const {
     const double speed = std::max(x_[0], 0.0);
-    const double resistance =
-        nominal_.drag(speed) + nominal_.rolling_resistance * nominal_.mass * kGravity;
-    const double force = nominal_.mass * ax_ + (speed > 0.5 ? resistance : 0.0);
-    const double split = force >= 0.0 ? nominal_.drive_split_front : nominal_.brake_split_front;
+    const AxleForces forces = axle_longitudinal_forces(nominal_, speed, ax_);
     const AxleLoads loads = axle_normal_loads(nominal_, speed, ax_);
-    const double axle_force = force * (front ? split : 1.0 - split);
-    const double coefficient = axle_force / (front ? loads.front : loads.rear);
+    const double coefficient = front ? forces.front / loads.front : forces.rear / loads.rear;
     return coefficient / config_.wheel_slip_stiffness;
 }
 

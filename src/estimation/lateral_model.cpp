@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "apex/core/angles.hpp"
 
@@ -48,10 +49,26 @@ AxleLoads axle_normal_loads(const VehicleParams& vehicle, double speed, double a
     return loads;
 }
 
-SlipAngle slip_angle_for_force(const TireParams& tire, double fz, double fy) {
+AxleForces axle_longitudinal_forces(const VehicleParams& vehicle, double speed, double ax) {
+    const double resistance =
+        speed > 0.5 ? vehicle.drag(speed) + vehicle.rolling_resistance * vehicle.mass * kGravity
+                    : 0.0;
+    const double force = vehicle.mass * ax + resistance;
+    const double split = force >= 0.0 ? vehicle.drive_split_front : vehicle.brake_split_front;
+    return {force * split, force * (1.0 - split)};
+}
+
+SlipAngle slip_angle_for_force(const TireParams& tire, double fz, double fy, double fx) {
     SlipAngle result;
-    const double capacity = tire.mu * fz;
-    if (!(capacity > 0.0) || fy == 0.0) return result;
+    const double full = tire.mu * fz;
+    if (!(full > 0.0) || fy == 0.0) return result;
+    const double longitudinal = std::min(std::abs(fx) / full, 1.0);
+    const double capacity = full * std::sqrt(1.0 - longitudinal * longitudinal);
+    if (!(capacity > 0.0)) {
+        // All the grip goes into the longitudinal force: no lateral force is predictable.
+        result.utilization = std::numeric_limits<double>::infinity();
+        return result;
+    }
     result.utilization = std::abs(fy) / capacity;
     // sin(C atan(phi)) reaches 1 at C atan(phi) = pi / 2 when C > 1; with C <= 1 the curve only
     // tends to sin(C pi / 2), its supremum.
@@ -77,8 +94,9 @@ AxleSlip predict_axle_slip(const VehicleParams& vehicle, double speed, double ax
     const double force_rear =
         (vehicle.mass * ay * vehicle.lf - vehicle.yaw_inertia * yaw_accel) / wheelbase;
     const AxleLoads loads = axle_normal_loads(vehicle, speed, ax);
-    return {slip_angle_for_force(vehicle.front_tire, loads.front, force_front),
-            slip_angle_for_force(vehicle.rear_tire, loads.rear, force_rear)};
+    const AxleForces longitudinal = axle_longitudinal_forces(vehicle, speed, ax);
+    return {slip_angle_for_force(vehicle.front_tire, loads.front, force_front, longitudinal.front),
+            slip_angle_for_force(vehicle.rear_tire, loads.rear, force_rear, longitudinal.rear)};
 }
 
 }  // namespace apex::estimation

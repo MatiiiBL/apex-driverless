@@ -13,15 +13,17 @@
 namespace apex::estimation {
 
 // Noise model of the velocity filter. Process noises are continuous-time densities, so they do
-// not depend on the IMU rate; measurement noises are per sample. docs/estimation.md derives the
-// defaults.
+// not depend on the IMU rate; measurement noises are per sample. The sensor figures are those of
+// the class of sensor the simulator models (docs/sim.md), with margin; docs/estimation.md
+// derives the rest.
 struct VelocityFilterConfig {
-    // Accelerometer noise plus its unmodelled bias and the CoG/IMU offset: (m/s^2)/sqrt(Hz).
-    double accel_noise_density = 0.15;
+    // Accelerometer white noise plus its unmodelled bias (0.02 m/s^2 turn-on, drifting) and the
+    // single-track model's approximations: (m/s^2)/sqrt(Hz).
+    double accel_noise_density = 0.08;
     // Yaw acceleration driving the yaw-rate random walk: (rad/s^2)/sqrt(Hz).
     double yaw_accel_density = 3.0;
-    double gyro_bias_walk = 2e-4;  // gyro bias random walk, (rad/s)/sqrt(s)
-    double gyro_noise = 0.003;     // rad/s per sample
+    double gyro_bias_walk = 1e-4;  // gyro bias random walk, (rad/s)/sqrt(s)
+    double gyro_noise = 0.002;     // rad/s per sample
 
     double wheel_noise = 0.05;  // m/s per sample, either axle
     // Predicted slip ratio = axle force coefficient Fx / Fz divided by this stiffness.
@@ -30,7 +32,7 @@ struct VelocityFilterConfig {
     // Normalized wheel innovation beyond which a sample is down-weighted (Huber).
     double wheel_robust_threshold = 2.5;
 
-    double steering_noise = 0.003;  // rad per sample
+    double steering_noise = 0.002;  // rad per sample
     // The single-track lateral pseudo-measurements: noise floor, growth with speed, and the
     // relative uncertainty of the predicted slip angle.
     double lateral_noise = 0.02;            // m/s
