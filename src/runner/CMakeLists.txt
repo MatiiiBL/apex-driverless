@@ -3,8 +3,10 @@ find_package(Threads REQUIRED)
 apex_module(runner
     SOURCES
         config.cpp
+        csv_log.cpp
         metrics.cpp
         oracle.cpp
+        replay.cpp
         result.cpp
         run.cpp
         summary.cpp
