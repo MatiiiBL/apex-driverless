@@ -39,4 +39,11 @@ if(APEX_WITH_OSQP AND (APEX_BUILD_TESTS OR APEX_BUILD_BENCHMARKS))
     set(OSQP_BUILD_UNITTESTS OFF CACHE BOOL "" FORCE)
     set(OSQP_ALGEBRA_BACKEND "builtin" CACHE STRING "" FORCE)
     FetchContent_MakeAvailable(osqp)
+    # OSQP 1.0.0 calls its linear-system solvers through function pointers of a slightly
+    # different type (osqp_api.c), which Clang's UBSan -fsanitize=function reports. It is the
+    # reference solver, not apex code, so that one check is off for its sources only.
+    if(APEX_SANITIZE)
+        target_compile_options(OSQPLIB PRIVATE
+            $<$<C_COMPILER_ID:Clang,AppleClang>:-fno-sanitize=function>)
+    endif()
 endif()
