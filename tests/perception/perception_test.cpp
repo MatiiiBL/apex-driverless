@@ -10,6 +10,8 @@
 #include <nlohmann/json.hpp>
 
 #include "apex/core/track.hpp"
+#include "apex/core/vehicle.hpp"
+#include "apex/sim/sensors.hpp"
 #include "apex/sim/track_gen.hpp"
 
 #include "scene.hpp"
@@ -134,6 +136,46 @@ TEST(ConePerception, TakesColorsFromTheCamera) {
     }
     EXPECT_GT(colored, 8U);
     EXPECT_EQ(perception.stats().colored_by_camera, colored);
+}
+
+// The simulator's own sensor models with their default noise: what the car sees in a run.
+TEST(ConePerception, WorksOnTheSimulatorsSensors) {
+    const sim::SensorNoise noise;
+    std::size_t colored = 0;
+    std::size_t right = 0;
+    double sum_sq = 0.0;
+    int near = 0;
+    for (const double s : {20.0, 110.0, 200.0}) {
+        const Scene scene = track_scene(s);
+        VehicleState state;
+        state.pose = scene.body;
+        const Rng rng(static_cast<std::uint64_t>(s));
+        Rng lidar_rng = rng.split(0);
+        Rng camera_rng = rng.split(1);
+        ConePerception perception(PerceptionConfig{}, scene.rig);
+        perception.on_camera(sim::simulate_camera(scene.rig.camera, noise.camera, state,
+                                                  scene.cones, 1.0, camera_rng));
+        const LidarScan scan =
+            sim::simulate_lidar(scene.rig.lidar, noise.lidar, state, scene.cones, 1.0, lidar_rng);
+        for (const ConeObservation& cone : perception.on_lidar(scan, 0.0).cones) {
+            ASSERT_GE(cone.truth_id, 0) << "false positive at " << cone.position.transpose();
+            const Vec2 truth = truth_in_body(scene, cone.truth_id);
+            const double error = (cone.position - truth).norm();
+            EXPECT_LT(error, 0.10) << "cone " << cone.truth_id << ", s = " << s;
+            if (truth.norm() < 20.0) {
+                sum_sq += error * error;
+                ++near;
+            }
+            if (cone.color != ConeColor::Unknown) {
+                ++colored;
+                right += cone.color == scene.cones[static_cast<std::size_t>(cone.truth_id)].color;
+            }
+        }
+    }
+    ASSERT_GT(near, 20);
+    EXPECT_LT(std::sqrt(sum_sq / near), 0.03);
+    EXPECT_GT(colored, 20U);
+    EXPECT_GE(right * 10, colored * 9) << right << " of " << colored << " colors right";
 }
 
 TEST(ConePerception, UsesTheClosestFrameAndCopesWithMissingOrLateFrames) {
