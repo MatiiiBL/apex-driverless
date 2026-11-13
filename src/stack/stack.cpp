@@ -420,10 +420,17 @@ nlohmann::json Stack::compute_summary() const {
         j["estimation_update"]["associated"] = e.associated;
         j["estimation_update"]["new_landmarks"] = e.new_landmarks;
         j["estimation_update"]["rejected"] = e.rejected;
+        j["estimation_update"]["tentative_matches"] = e.tentative_matches;
+        j["estimation_update"]["unpaired_in_gate"] = e.unpaired_in_gate;
+        j["estimation_update"]["ambiguous"] = e.ambiguous;
+        j["estimation_update"]["too_far_to_map"] = e.too_far_to_map;
+        j["estimation_update"]["too_close_to_map"] = e.too_close_to_map;
         j["estimation_update"]["tentatives_started"] = e.tentatives_started;
         j["estimation_update"]["tentatives_dropped"] = e.tentatives_dropped;
         j["estimation_update"]["late_dropped"] = e.late_dropped;
         j["estimation_update"]["invalid_inputs"] = e.invalid_inputs;
+        j["estimation_update"]["failed_updates"] = e.failed_updates;
+        j["estimation_update"]["recoveries"] = e.recoveries;
     }
     j["exploration"] = s.explorer.stats().plan_time.summary();
     j["exploration"]["failures"] = s.explorer.stats().failures;
