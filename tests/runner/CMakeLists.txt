@@ -8,6 +8,8 @@ apex_tests(runner
         oracle_test.cpp
         result_test.cpp
         run_test.cpp
+        shuffled_truth_ids.cpp
+        stack_run_test.cpp
         summary_test.cpp
         sweep_test.cpp
         world_setup_test.cpp
