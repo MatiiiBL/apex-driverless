@@ -127,6 +127,13 @@ TEST(SummaryMarkdown, TablesAndFailures) {
     EXPECT_NE(md.find("| controller | 120 / 480 | – |"), std::string::npos) << md;
     EXPECT_NE(md.find("- stanley: stalled for 10 s (1 run)"), std::string::npos) << md;
 
+    // A gap that rounds to zero reads 0.00, never -0.00.
+    const std::vector<SweepRun> paired = {sweep_run("a", "t", 1), sweep_run("o", "t", 1)};
+    const std::vector<RunResult> same = {finished({40.0, 21.5}), finished({40.0, 21.501})};
+    const std::string tied = summary_markdown(summarize(paired, same, "o"), "Tie");
+    EXPECT_NE(tied.find("| 0.00 |"), std::string::npos) << tied;
+    EXPECT_EQ(tied.find("-0.00"), std::string::npos) << tied;
+
     const nlohmann::json j = summarize(runs, results, "")[0];
     EXPECT_EQ(j["completed"], 1);
     EXPECT_TRUE(j["gap_to_oracle"].is_null());

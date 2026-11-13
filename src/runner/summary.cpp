@@ -49,7 +49,12 @@ json optional_json(const std::optional<double>& value) {
 
 std::string number(const std::optional<double>& value, int decimals) {
     if (!value) return "–";
-    return std::format("{:.{}f}", *value, decimals);
+    const std::string text = std::format("{:.{}f}", *value, decimals);
+    // A value that rounds to zero is shown as zero, not as "-0.00".
+    if (text.starts_with('-') && text.find_first_not_of("-0.") == std::string::npos) {
+        return text.substr(1);
+    }
+    return text;
 }
 
 std::string ratio(std::size_t part, std::size_t whole) {
