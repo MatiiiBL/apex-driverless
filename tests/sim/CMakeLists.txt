@@ -2,6 +2,7 @@
 apex_tests(sim
     SOURCES
         camera_test.cpp
+        config_json_test.cpp
         lidar_test.cpp
         race_test.cpp
         track_gen_test.cpp

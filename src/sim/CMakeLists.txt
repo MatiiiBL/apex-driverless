@@ -2,6 +2,7 @@
 apex_module(sim
     SOURCES
         camera.cpp
+        config_json.cpp
         lidar.cpp
         race.cpp
         reference_tracks.cpp
