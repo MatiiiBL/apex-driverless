@@ -2,3 +2,4 @@
 add_subdirectory(sim)
 add_subdirectory(perception)
 add_subdirectory(control)
+add_subdirectory(estimation)
