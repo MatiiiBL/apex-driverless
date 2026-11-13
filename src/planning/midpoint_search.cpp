@@ -26,6 +26,14 @@ double square(double x) {
     return x * x;
 }
 
+// An edge to cross and what it says about the track there.
+struct Crossing {
+    Index left;  // the cone that ends up on the path's left
+    Index right;
+    double width;    // of the track at this edge (m)
+    double spacing;  // length of the cone-line segment beside the triangle crossed (m), 0 first
+};
+
 // A candidate path, as its last crossed edge and a link to the rest.
 struct Node {
     Index triangle = -1;  // entered by crossing the edge; -1 beyond the convex hull
@@ -102,12 +110,14 @@ private:
                 const Vec2 local = car_.to_local(middle);
                 if (local.x() <= 0.0 || local.norm() > config_.start_radius) continue;
                 const int side = orientation(cone(u), cone(w), car_.position());
+                // No cone line yet: the width is the edge's extent across the car's heading.
+                const double width = std::abs(cross(from.direction, cone(u) - cone(w)));
                 const auto ti = static_cast<Index>(t);
                 const auto ii = static_cast<Index>(i);
                 if (side < 0) {
-                    add(from, -1, u, w, 0.0, ti, ii, created);
+                    add(from, -1, {u, w, width, 0.0}, ti, ii, created);
                 } else if (side > 0 && mesh_.neighbors[t][i] < 0) {
-                    add(from, -1, w, u, 0.0, -1, -1, created);
+                    add(from, -1, {w, u, width, 0.0}, -1, -1, created);
                 }
             }
         }
@@ -126,16 +136,26 @@ private:
             const Index beyond = neighbors[exit];
             if (beyond >= 0 && visited(n, beyond)) continue;
             // Leaving through the edge opposite vertex `exit`: v[exit + 2] is on the left. The
-            // edge not crossed joins the vertex opposite the entry to the one opposite the exit.
-            const double spacing = (cone(v[entry]) - cone(v[exit])).norm();
+            // edge not crossed, from the vertex opposite the entry to the one opposite the exit,
+            // is a segment of one cone line; the third vertex, shared by both crossed edges, is
+            // on the other line, and its distance to that segment is the track's width there,
+            // whatever the direction of travel and however long the crossed diagonals. (It
+            // overestimates in the fan of triangles on the outside of a tight hairpin, where the
+            // inner cone faces several outer ones; the edge's extent across the direction of
+            // travel overestimates on long diagonals, which are far more common.)
+            const Vec2& line_from = cone(v[entry]);
+            const Vec2& line_to = cone(v[exit]);
+            const Vec2& opposite = cone(v[3 - entry - exit]);
+            const Crossing crossing{v[(exit + 2) % 3], v[(exit + 1) % 3],
+                                    project_on_segment(opposite, line_from, line_to).distance,
+                                    (line_to - line_from).norm()};
             Index beyond_entry = -1;
             if (beyond >= 0) {
                 const auto& back = mesh_.neighbors[static_cast<std::size_t>(beyond)];
                 beyond_entry = static_cast<Index>(std::distance(
                     back.begin(), std::find(back.begin(), back.end(), from.triangle)));
             }
-            add(from, n, v[(exit + 2) % 3], v[(exit + 1) % 3], spacing, beyond, beyond_entry,
-                created);
+            add(from, n, crossing, beyond, beyond_entry, created);
         }
     }
 
@@ -146,40 +166,40 @@ private:
         return false;
     }
 
-    // Scores crossing the edge (left, right) after `from`, and records it unless a hard limit
-    // or a cheaper path into the same triangle edge rules it out.
-    void add(const Node& from, Index parent, Index left, Index right, double spacing,
-             Index triangle, Index entry, std::vector<Index>& created) {
+    // Scores crossing an edge after `from`, and records it unless a hard limit or a cheaper
+    // path into the same triangle edge rules it out.
+    void add(const Node& from, Index parent, const Crossing& crossing, Index triangle, Index entry,
+             std::vector<Index>& created) {
         Node child;
         child.triangle = triangle;
         child.entry = entry;
         child.parent = parent;
-        child.left = left;
-        child.right = right;
-        child.point = 0.5 * (cone(left) + cone(right));
+        child.left = crossing.left;
+        child.right = crossing.right;
+        child.point = 0.5 * (cone(crossing.left) + cone(crossing.right));
         const Vec2 delta = child.point - from.point;
         child.step = delta.norm();
         child.direction = child.step >= kMinStep ? Vec2(delta / child.step) : from.direction;
         child.length = from.length + child.step;
 
-        // Width across the direction the path arrives from: the direction to this edge's own
-        // midpoint would make an edge out to a stray cone look narrower than it is.
-        const Vec2 across = cone(left) - cone(right);
-        const double width = std::abs(cross(from.direction, across));
-        if (across.norm() > config_.max_edge_length || width < config_.min_width ||
-            width > config_.max_width) {
+        const double width = crossing.width;
+        if ((cone(crossing.left) - cone(crossing.right)).norm() > config_.max_edge_length ||
+            width < config_.min_width || width > config_.max_width) {
             return;
         }
         const bool first = parent < 0;
-        if (!first && spacing > config_.max_cone_spacing) return;
+        if (!first && crossing.spacing > config_.max_cone_spacing) return;
         double cost = from.cost - config_.length_reward * child.step;
         cost += config_.width_weight * square((width - config_.track_width) / config_.track_width);
-        const double wrong_left = std::max(0.0, -cones_[static_cast<std::size_t>(left)].side);
-        const double wrong_right = std::max(0.0, cones_[static_cast<std::size_t>(right)].side);
+        const double wrong_left =
+            std::max(0.0, -cones_[static_cast<std::size_t>(crossing.left)].side);
+        const double wrong_right =
+            std::max(0.0, cones_[static_cast<std::size_t>(crossing.right)].side);
         cost += config_.color_weight * (wrong_left + wrong_right);
         if (!first) {
             cost += config_.spacing_weight *
-                    square(std::max(0.0, spacing - config_.cone_spacing) / config_.cone_spacing);
+                    square(std::max(0.0, crossing.spacing - config_.cone_spacing) /
+                           config_.cone_spacing);
         }
         if (child.step >= kMinStep) {
             const double turn = std::abs(std::atan2(cross(from.direction, child.direction),

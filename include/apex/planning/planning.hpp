@@ -55,26 +55,31 @@ struct ExplorationConfig {
     double max_path_length = 30.0;  // m along the midpoints
     double start_radius = 6.0;
 
-    // Hard limits: an edge the path crosses spans the track, min_width to max_width (m)
-    // measured across the direction the path arrives from, and at most max_edge_length long; the
-    // cone line between two crossed edges is at most max_cone_spacing long; the path turns at most
-    // max_turn_deg between consecutive midpoints (and from the car's heading at the start).
+    // Hard limits: the track is min_width to max_width (m) wide where the path crosses an edge
+    // (midpoint_search.hpp says how it is measured), and the edge at most max_edge_length long;
+    // the cone line between two crossed edges is at most max_cone_spacing long (three missing
+    // cones); the path turns at most max_turn_deg between consecutive midpoints (and from the
+    // car's heading at the start).
     double min_width = 2.0;
-    double max_width = 6.5;
-    double max_edge_length = 10.5;
-    double max_cone_spacing = 11.0;
-    double max_turn_deg = 45.0;
+    double max_width = 5.5;
+    double max_edge_length = 12.0;
+    double max_cone_spacing = 15.0;
+    double max_turn_deg = 50.0;
 
     // Scores, per crossed edge, all dimensionless; the path with the lowest total wins.
-    double track_width = 3.5;  // m: width = width_weight ((w - track_width) / track_width)^2
-    double width_weight = 2.0;
-    double curvature_scale = 0.15;  // 1/m: curvature = curvature_weight (kappa / scale)^2
-    double curvature_weight = 0.5;
-    double color_weight = 2.5;  // per cone on the wrong side, times its color confidence
-    double cone_spacing =
-        5.0;  // m: spacing = spacing_weight ((l - cone_spacing)+ / cone_spacing)^2
+    // width = width_weight ((w - track_width) / track_width)^2
+    // curvature = curvature_weight (kappa / curvature_scale)^2
+    // color = color_weight per cone on the wrong side, times its share of the color votes
+    // spacing = spacing_weight ((l - cone_spacing)+ / cone_spacing)^2
+    // heading = heading_weight (turn from the car's heading / heading_scale)^2
+    double track_width = 3.5;  // m
+    double width_weight = 6.0;
+    double curvature_scale = 0.15;  // 1/m
+    double curvature_weight = 3.0;
+    double color_weight = 4.0;
+    double cone_spacing = 5.0;  // m
     double spacing_weight = 1.0;
-    double heading_scale_deg = 30.0;  // heading = heading_weight (turn from the car / scale)^2
+    double heading_scale_deg = 30.0;
     double heading_weight = 1.0;
     double length_reward = 1.0;  // subtracted per meter of path
 

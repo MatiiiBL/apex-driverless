@@ -29,7 +29,8 @@ const Track& reference_track(const std::string& name) {
 MapErrors no_errors() {
     return {.position_rms = 0.0,
             .miss_probability = 0.0,
-            .color_error_probability = 0.0,
+            .wrong_color_probability = 0.0,
+            .unknown_color_probability = 0.0,
             .false_positives_per_100m = 0.0};
 }
 

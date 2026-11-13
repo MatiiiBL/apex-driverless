@@ -12,10 +12,8 @@ namespace apex::planning::test_support {
 
 namespace {
 
-// A color the camera might have voted for instead: Unknown half the time, otherwise one of the
-// other small-cone colors.
+// A color the camera might have voted for instead: one of the other small-cone colors.
 ConeColor wrong_color(ConeColor truth, Rng& rng) {
-    if (rng.bernoulli(0.5)) return ConeColor::Unknown;
     std::array<ConeColor, 3> others{};
     std::size_t count = 0;
     for (const ConeColor c : {ConeColor::Blue, ConeColor::Yellow, ConeColor::Orange}) {
@@ -37,7 +35,8 @@ MapErrors worst_case_errors() {
     MapErrors errors;
     errors.position_rms = 0.15;
     errors.miss_probability = 0.20;
-    errors.color_error_probability = 0.10;
+    errors.wrong_color_probability = 0.10;
+    errors.unknown_color_probability = 0.50;
     errors.false_positives_per_100m = 4.0;
     return errors;
 }
@@ -46,14 +45,21 @@ ConeMap make_cone_map(const Track& track, const MapErrors& errors, Rng& rng) {
     ConeMap map;
     const double sigma = errors.position_rms / std::sqrt(2.0);  // per axis
     const double variance = std::max(sigma * sigma, 1e-6);
-    const auto add = [&](const Vec2& position, ConeColor color, std::int32_t truth_id) {
+    // A landmark with `color` winning `share` of its observations' votes and `other` the rest.
+    const auto add = [&](const Vec2& position, ConeColor color, ConeColor other, double share,
+                         std::int32_t truth_id) {
         MapCone cone;
         cone.id = static_cast<std::int32_t>(map.cones.size());
         cone.position = position;
         cone.covariance = variance * Mat2::Identity();
         cone.color = color;
         cone.observations = 4 + static_cast<std::uint32_t>(rng.index(12));
-        if (color != ConeColor::Unknown) cone.color_votes[index_of(color)] = cone.observations;
+        if (color != ConeColor::Unknown) {
+            const auto won = static_cast<std::uint32_t>(
+                std::ceil(share * static_cast<double>(cone.observations)));
+            cone.color_votes[index_of(color)] = won;
+            cone.color_votes[index_of(other)] += cone.observations - won;
+        }
         cone.truth_id = truth_id;
         map.cones.push_back(cone);
     };
@@ -61,10 +67,15 @@ ConeMap make_cone_map(const Track& track, const MapErrors& errors, Rng& rng) {
     for (const Cone& cone : track.cones) {
         if (rng.bernoulli(errors.miss_probability)) continue;
         const Vec2 noise(rng.normal(0.0, sigma), rng.normal(0.0, sigma));
-        const ConeColor color = rng.bernoulli(errors.color_error_probability)
-                                    ? wrong_color(cone.color, rng)
-                                    : cone.color;
-        add(cone.position + noise, color, cone.id);
+        const double draw = rng.uniform();
+        if (draw < errors.wrong_color_probability) {
+            add(cone.position + noise, wrong_color(cone.color, rng), cone.color, 2.0 / 3.0,
+                cone.id);
+        } else if (draw < errors.wrong_color_probability + errors.unknown_color_probability) {
+            add(cone.position + noise, ConeColor::Unknown, ConeColor::Unknown, 0.0, cone.id);
+        } else {
+            add(cone.position + noise, cone.color, cone.color, 1.0, cone.id);
+        }
     }
 
     // Clutter, drawn per 100 m (the Poisson sampler is meant for small rates). A point that
@@ -90,7 +101,7 @@ ConeMap make_cone_map(const Track& track, const MapErrors& errors, Rng& rng) {
                 const ConeColor color = rng.bernoulli(0.7)   ? ConeColor::Unknown
                                         : rng.bernoulli(0.5) ? ConeColor::Blue
                                                              : ConeColor::Yellow;
-                add(p, color, -1);
+                add(p, color, color, 1.0, -1);
                 break;
             }
         }

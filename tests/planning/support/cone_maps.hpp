@@ -14,8 +14,13 @@ namespace apex::planning::test_support {
 struct MapErrors {
     // RMS of a landmark's 2D position error (m): isotropic Gaussian, rms / sqrt(2) per axis.
     double position_rms = 0.10;
-    double miss_probability = 0.10;         // a cone never mapped
-    double color_error_probability = 0.05;  // mapped with a wrong color or as Unknown, 50/50
+    double miss_probability = 0.10;  // a cone never mapped
+    // Colors: a landmark keeps its cone's color, is mapped with another color, or has none
+    // (Unknown, no votes): perception leaves about a third of its detections uncolored. A
+    // wrong color wins two thirds of the landmark's votes, the true one the rest, as a wrong
+    // majority over several camera detections is a narrow one.
+    double wrong_color_probability = 0.05;
+    double unknown_color_probability = 0.33;
     // Landmarks where there is no cone (clutter that survived SLAM's tentative stage), placed
     // outside the track, between these distances beyond a cone line.
     double false_positives_per_100m = 2.0;
@@ -24,7 +29,8 @@ struct MapErrors {
 };
 
 // The worst map the planning module is required to cope with: 15 cm RMS position error, 20% of
-// the cones missing, 10% with a wrong or unknown color, and twice the default clutter.
+// the cones missing, 10% with a wrong color and half without one, and twice the default
+// clutter.
 [[nodiscard]] MapErrors worst_case_errors();
 
 // The map of the whole track, as after lap 1. Landmark ids are their index; truth_id is the

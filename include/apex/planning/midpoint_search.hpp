@@ -37,7 +37,9 @@ struct MidpointPath {
 // edges it crosses are the rungs and diagonals of a ladder between the two cone lines, and the
 // third edge of each triangle it traverses is a segment of one cone line. Each crossed edge
 // adds to the cost (ExplorationConfig, "Scores"):
-//   - width: the edge's extent across the direction of travel against the nominal width,
+//   - width: the track's width there against the nominal one: the distance from the cone the
+//     two crossed edges share to the cone-line segment opposite it (for the first edge, the
+//     edge's extent across the car's heading),
 //   - curvature: the turn between consecutive midpoints over the distance between them, or,
 //     for the first edge, the turn from the car's heading,
 //   - color: a cone whose color puts it on the other side of the path,
