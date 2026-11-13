@@ -2,8 +2,10 @@
 apex_module(sim
     SOURCES
         reference_tracks.cpp
+        sensor_noise.cpp
         track_gen.cpp
         track_layout.cpp
         track_rules.cpp
         vehicle_model.cpp
+        vehicle_sensors.cpp
     PUBLIC_DEPS apex::core)

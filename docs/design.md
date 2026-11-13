@@ -217,7 +217,9 @@ an IMU would measure.
   circumferential speed with noise and longitudinal slip under drive and braking. Steering angle
   with noise.
 All noise parameters live in `SensorNoise`, documented with defaults that are realistic for the
-class of sensor (docs/sim.md cites the datasheet-level figures used).
+class of sensor (docs/sim.md cites the datasheet-level figures used). `scale_noise(noise,
+factor)` multiplies every noise standard deviation and bias magnitude by `factor` and leaves
+probabilities and rates unchanged (0 gives noiseless measurements), for the sensor-noise ablation.
 
 **World** steps the vehicle, fires the sensors on their ticks, and updates the **RaceMonitor**
 (lap timing on timeline crossings, cone hits with the body footprint, off-course detection with
