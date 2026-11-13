@@ -9,6 +9,7 @@ apex_module(runner
         replay.cpp
         result.cpp
         run.cpp
+        run_stack.cpp
         summary.cpp
         sweep.cpp
         world_setup.cpp
