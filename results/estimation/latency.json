@@ -1,0 +1,174 @@
+{
+  "bins": [
+    {
+      "landmarks_from": 0,
+      "landmarks_to": 50,
+      "observations_per_scan": 9.180327868852459,
+      "predict": {
+        "count": 2450,
+        "max_us": 40.542,
+        "mean_us": 0.45353551020407684,
+        "p50_us": 0.41600000000000004,
+        "p90_us": 0.459,
+        "p99_us": 1.292
+      },
+      "update": {
+        "count": 122,
+        "max_us": 850.5,
+        "mean_us": 74.65334426229506,
+        "p50_us": 55.75,
+        "p90_us": 135.0,
+        "p99_us": 245.58400000000003
+      }
+    },
+    {
+      "landmarks_from": 50,
+      "landmarks_to": 100,
+      "observations_per_scan": 8.92,
+      "predict": {
+        "count": 2500,
+        "max_us": 11.917,
+        "mean_us": 0.47149119999999384,
+        "p50_us": 0.417,
+        "p90_us": 0.459,
+        "p99_us": 2.292
+      },
+      "update": {
+        "count": 125,
+        "max_us": 1123.9589999999998,
+        "mean_us": 215.87500799999992,
+        "p50_us": 197.917,
+        "p90_us": 341.875,
+        "p99_us": 589.167
+      }
+    },
+    {
+      "landmarks_from": 100,
+      "landmarks_to": 150,
+      "observations_per_scan": 8.844262295081966,
+      "predict": {
+        "count": 2440,
+        "max_us": 118.167,
+        "mean_us": 0.590668852459016,
+        "p50_us": 0.417,
+        "p90_us": 0.459,
+        "p99_us": 3.125
+      },
+      "update": {
+        "count": 122,
+        "max_us": 2102.625,
+        "mean_us": 483.65299180327867,
+        "p50_us": 361.0,
+        "p90_us": 929.25,
+        "p99_us": 1917.0
+      }
+    },
+    {
+      "landmarks_from": 150,
+      "landmarks_to": 200,
+      "observations_per_scan": 8.841269841269842,
+      "predict": {
+        "count": 2520,
+        "max_us": 11.5,
+        "mean_us": 0.5153559523809497,
+        "p50_us": 0.417,
+        "p90_us": 0.459,
+        "p99_us": 3.7079999999999997
+      },
+      "update": {
+        "count": 126,
+        "max_us": 4314.083,
+        "mean_us": 797.6878571428571,
+        "p50_us": 686.917,
+        "p90_us": 1225.8329999999999,
+        "p99_us": 2336.416
+      }
+    },
+    {
+      "landmarks_from": 200,
+      "landmarks_to": 250,
+      "observations_per_scan": 8.682926829268293,
+      "predict": {
+        "count": 2460,
+        "max_us": 19.459,
+        "mean_us": 0.5807191056910461,
+        "p50_us": 0.417,
+        "p90_us": 0.5,
+        "p99_us": 4.25
+      },
+      "update": {
+        "count": 123,
+        "max_us": 5600.917,
+        "mean_us": 1206.5924796747972,
+        "p50_us": 1131.0420000000001,
+        "p90_us": 1681.709,
+        "p99_us": 2792.667
+      }
+    },
+    {
+      "landmarks_from": 250,
+      "landmarks_to": 300,
+      "observations_per_scan": 8.796875,
+      "predict": {
+        "count": 2560,
+        "max_us": 93.791,
+        "mean_us": 0.634070703124997,
+        "p50_us": 0.417,
+        "p90_us": 0.5,
+        "p99_us": 4.375
+      },
+      "update": {
+        "count": 128,
+        "max_us": 5691.8330000000005,
+        "mean_us": 1714.8079140625007,
+        "p50_us": 1660.916,
+        "p90_us": 2410.125,
+        "p99_us": 3609.375
+      }
+    },
+    {
+      "landmarks_from": 300,
+      "landmarks_to": 350,
+      "observations_per_scan": 8.851239669421487,
+      "predict": {
+        "count": 2420,
+        "max_us": 365.584,
+        "mean_us": 0.8241347107437914,
+        "p50_us": 0.417,
+        "p90_us": 0.5,
+        "p99_us": 4.9590000000000005
+      },
+      "update": {
+        "count": 121,
+        "max_us": 6396.75,
+        "mean_us": 2279.4593388429753,
+        "p50_us": 2078.833,
+        "p90_us": 3333.042,
+        "p99_us": 5068.0
+      }
+    },
+    {
+      "landmarks_from": 350,
+      "landmarks_to": 400,
+      "observations_per_scan": 9.042735042735043,
+      "predict": {
+        "count": 2349,
+        "max_us": 1393.8329999999999,
+        "mean_us": 1.2225295870583168,
+        "p50_us": 0.417,
+        "p90_us": 0.5,
+        "p99_us": 5.084
+      },
+      "update": {
+        "count": 117,
+        "max_us": 6000.416,
+        "mean_us": 2956.4134529914536,
+        "p50_us": 2899.9579999999996,
+        "p90_us": 4008.334,
+        "p99_us": 5497.5
+      }
+    }
+  ],
+  "final_landmarks": 396,
+  "track_cones": 388
+}

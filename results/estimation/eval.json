@@ -1,0 +1,1082 @@
+[
+  {
+    "association": {
+      "matches": 18281,
+      "precision": 1.0,
+      "recall": 0.9863494118916586
+    },
+    "batch_map_rms_m": 0.019904622943428773,
+    "cones": 203,
+    "duration_s": 125.673,
+    "lap1": {
+      "pose_nees_mean": 1.1054381449223902,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.11423504858718181,
+      "position_rms_m": 0.04157342020873439,
+      "yaw_rms_deg": 0.07072477518971056
+    },
+    "lap1_end_s": 57.342,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 203,
+      "matched_cones": 203,
+      "max_error_m": 0.05865882883486634,
+      "missed": 0,
+      "rms_error_m": 0.030011544077961565,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 25134,
+      "max_us": 316.583,
+      "mean_us": 0.4695156361900979,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 2.041
+    },
+    "racing": {
+      "pose_nees_mean": 2.7227069926931953,
+      "pose_nees_samples": 67,
+      "position_max_m": 0.19639097309734005,
+      "position_rms_m": 0.03811273466546448,
+      "yaw_rms_deg": 0.02027656342273276
+    },
+    "seed": 1,
+    "source": "world+perception",
+    "stats": {
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "recoveries": 2,
+      "search_exhausted": 0,
+      "tentatives_dropped": 5,
+      "wheel_outliers": 29
+    },
+    "track_length_m": 431.4782339757064,
+    "update_time": {
+      "count": 1256,
+      "max_us": 4015.167,
+      "mean_us": 596.8256464968159,
+      "p50_us": 416.584,
+      "p90_us": 1211.541,
+      "p99_us": 2757.25
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.421387184620958,
+        3.639672032312138
+      ],
+      "nees_mean": 2.8216690961031885,
+      "nees_samples": 62,
+      "vx_rms": 0.032497537171967135,
+      "vy_rms": 0.05394099204532351,
+      "yaw_rate_rms": 0.0028280710393868507
+    }
+  },
+  {
+    "association": {
+      "matches": 16534,
+      "precision": 1.0,
+      "recall": 0.9749395601155728
+    },
+    "batch_map_rms_m": 0.015536907083441045,
+    "cones": 180,
+    "duration_s": 112.126,
+    "lap1": {
+      "pose_nees_mean": 0.6322857010933131,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.10364179739046146,
+      "position_rms_m": 0.040352945376164503,
+      "yaw_rms_deg": 0.04882552916283786
+    },
+    "lap1_end_s": 52.248,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.024214883305443455,
+      "missed": 0,
+      "rms_error_m": 0.010381856944514593,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 22425,
+      "max_us": 222.708,
+      "mean_us": 0.43479603121525157,
+      "p50_us": 0.334,
+      "p90_us": 0.41600000000000004,
+      "p99_us": 1.875
+    },
+    "racing": {
+      "pose_nees_mean": 6.108083870230069,
+      "pose_nees_samples": 59,
+      "position_max_m": 0.31143323713004034,
+      "position_rms_m": 0.03793154344964059,
+      "yaw_rms_deg": 0.019102917485598163
+    },
+    "seed": 2,
+    "source": "world+perception",
+    "stats": {
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "recoveries": 4,
+      "search_exhausted": 0,
+      "tentatives_dropped": 4,
+      "wheel_outliers": 30
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1120,
+      "max_us": 3750.833,
+      "mean_us": 557.5412803571425,
+      "p50_us": 356.16700000000003,
+      "p90_us": 1259.958,
+      "p99_us": 2590.625
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3929174907066546,
+        3.6746781356166345
+      ],
+      "nees_mean": 1.7190912456620868,
+      "nees_samples": 56,
+      "vx_rms": 0.037750077956446415,
+      "vy_rms": 0.08469030179062195,
+      "yaw_rate_rms": 0.0021703658056484052
+    }
+  },
+  {
+    "association": {
+      "matches": 8396,
+      "precision": 1.0,
+      "recall": 0.9683967704728951
+    },
+    "batch_map_rms_m": 0.013760520185870068,
+    "cones": 109,
+    "duration_s": 68.311,
+    "lap1": {
+      "pose_nees_mean": 2.1618526200833155,
+      "pose_nees_samples": 32,
+      "position_max_m": 0.1782383284004667,
+      "position_rms_m": 0.09123627914406578,
+      "yaw_rms_deg": 0.15185889154500015
+    },
+    "lap1_end_s": 31.803,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 109,
+      "matched_cones": 109,
+      "max_error_m": 0.047406896358113626,
+      "missed": 0,
+      "rms_error_m": 0.028015465679167004,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 13662,
+      "max_us": 53.583,
+      "mean_us": 0.34698902064116993,
+      "p50_us": 0.29200000000000004,
+      "p90_us": 0.375,
+      "p99_us": 1.0410000000000001
+    },
+    "racing": {
+      "pose_nees_mean": 3.3451566842053513,
+      "pose_nees_samples": 36,
+      "position_max_m": 0.34303311183407714,
+      "position_rms_m": 0.05047487477334559,
+      "yaw_rms_deg": 0.04006861437372563
+    },
+    "seed": 3,
+    "source": "world+perception",
+    "stats": {
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "recoveries": 2,
+      "search_exhausted": 0,
+      "tentatives_dropped": 0,
+      "wheel_outliers": 22
+    },
+    "track_length_m": 231.09807810599398,
+    "update_time": {
+      "count": 682,
+      "max_us": 1218.083,
+      "mean_us": 187.74805571847517,
+      "p50_us": 129.25,
+      "p90_us": 391.833,
+      "p99_us": 814.25
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.233697049311221,
+        3.8775745096668537
+      ],
+      "nees_mean": 1.7071902617955255,
+      "nees_samples": 34,
+      "vx_rms": 0.04529151809339471,
+      "vy_rms": 0.09344694936099193,
+      "yaw_rate_rms": 0.002338742775802617
+    }
+  },
+  {
+    "association": {
+      "matches": 14535,
+      "precision": 1.0,
+      "recall": 0.9797775530839231
+    },
+    "batch_map_rms_m": 0.009184975272863905,
+    "cones": 186,
+    "duration_s": 115.7,
+    "lap1": {
+      "pose_nees_mean": 1.216119326613111,
+      "pose_nees_samples": 55,
+      "position_max_m": 0.2356935418613878,
+      "position_rms_m": 0.08632037184810959,
+      "yaw_rms_deg": 0.1086715271842247
+    },
+    "lap1_end_s": 54.174,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 186,
+      "matched_cones": 186,
+      "max_error_m": 0.07573087679021397,
+      "missed": 0,
+      "rms_error_m": 0.03922724709854655,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 23140,
+      "max_us": 59.292,
+      "mean_us": 0.36403824546245417,
+      "p50_us": 0.29200000000000004,
+      "p90_us": 0.375,
+      "p99_us": 1.458
+    },
+    "racing": {
+      "pose_nees_mean": 1.225079924530843,
+      "pose_nees_samples": 60,
+      "position_max_m": 0.3501284866613364,
+      "position_rms_m": 0.04135514009798864,
+      "yaw_rms_deg": 0.024846076021397497
+    },
+    "seed": 4,
+    "source": "world+perception",
+    "stats": {
+      "ambiguous_scans": 1,
+      "failed_updates": 0,
+      "recoveries": 1,
+      "search_exhausted": 0,
+      "tentatives_dropped": 1,
+      "wheel_outliers": 41
+    },
+    "track_length_m": 407.43554687740397,
+    "update_time": {
+      "count": 1156,
+      "max_us": 3435.75,
+      "mean_us": 353.92545847750864,
+      "p50_us": 261.70799999999997,
+      "p90_us": 671.875,
+      "p99_us": 1746.75
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3979600857127643,
+        3.668450658990462
+      ],
+      "nees_mean": 2.0849635005454465,
+      "nees_samples": 57,
+      "vx_rms": 0.028713418313760973,
+      "vy_rms": 0.05433497990356828,
+      "yaw_rate_rms": 0.0023822919514201435
+    }
+  },
+  {
+    "association": {
+      "matches": 15485,
+      "precision": 1.0,
+      "recall": 0.9939662366005521
+    },
+    "batch_map_rms_m": 0.014010365085004804,
+    "cones": 183,
+    "duration_s": 114.24900000000001,
+    "lap1": {
+      "pose_nees_mean": 3.2930169405930028,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.38946920528071605,
+      "position_rms_m": 0.14593921443057262,
+      "yaw_rms_deg": 0.22188737709111214
+    },
+    "lap1_end_s": 52.764,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 183,
+      "matched_cones": 183,
+      "max_error_m": 0.03205515097975096,
+      "missed": 0,
+      "rms_error_m": 0.016123088049776052,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 22849,
+      "max_us": 54.75,
+      "mean_us": 0.3579713335376205,
+      "p50_us": 0.29200000000000004,
+      "p90_us": 0.375,
+      "p99_us": 1.291
+    },
+    "racing": {
+      "pose_nees_mean": 1.00043662195737,
+      "pose_nees_samples": 61,
+      "position_max_m": 0.03174035006670512,
+      "position_rms_m": 0.015116246142636238,
+      "yaw_rms_deg": 0.019735723232882953
+    },
+    "seed": 5,
+    "source": "world+perception",
+    "stats": {
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 1,
+      "wheel_outliers": 42
+    },
+    "track_length_m": 394.5551480479347,
+    "update_time": {
+      "count": 1141,
+      "max_us": 2674.0829999999996,
+      "mean_us": 363.47105258545196,
+      "p50_us": 257.75,
+      "p90_us": 763.125,
+      "p99_us": 1722.2920000000001
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3979600857127643,
+        3.668450658990462
+      ],
+      "nees_mean": 2.288743844438556,
+      "nees_samples": 57,
+      "vx_rms": 0.019824338513203928,
+      "vy_rms": 0.02749615987305163,
+      "yaw_rate_rms": 0.0028058614993001513
+    }
+  },
+  {
+    "association": {
+      "matches": 13431,
+      "precision": 1.0,
+      "recall": 0.9956263899184581
+    },
+    "batch_map_rms_m": 0.11657323899783195,
+    "cones": 203,
+    "duration_s": 125.673,
+    "lap1": {
+      "pose_nees_mean": 2.0602843810276634,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.18381826312247665,
+      "position_rms_m": 0.09902805985892107,
+      "yaw_rms_deg": 0.0956731854964845
+    },
+    "lap1_end_s": 57.342,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 203,
+      "matched_cones": 203,
+      "max_error_m": 0.19503842689716872,
+      "missed": 0,
+      "rms_error_m": 0.09582960971853519,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 25134,
+      "max_us": 286.75,
+      "mean_us": 0.4838954404393783,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 2.125
+    },
+    "racing": {
+      "pose_nees_mean": 3.54825725042054,
+      "pose_nees_samples": 67,
+      "position_max_m": 0.19608379764105333,
+      "position_rms_m": 0.09735265789955613,
+      "yaw_rms_deg": 0.06155622647294751
+    },
+    "seed": 1,
+    "source": "world",
+    "stats": {
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 132,
+      "wheel_outliers": 29
+    },
+    "track_length_m": 431.4782339757064,
+    "update_time": {
+      "count": 1256,
+      "max_us": 3603.375,
+      "mean_us": 533.8976250000009,
+      "p50_us": 368.292,
+      "p90_us": 1151.166,
+      "p99_us": 2285.416
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.421387184620958,
+        3.639672032312138
+      ],
+      "nees_mean": 2.8216690961031885,
+      "nees_samples": 62,
+      "vx_rms": 0.032497537171967135,
+      "vy_rms": 0.05394099204532351,
+      "yaw_rate_rms": 0.0028280710393868507
+    }
+  },
+  {
+    "association": {
+      "matches": 12210,
+      "precision": 1.0,
+      "recall": 0.9804866297277764
+    },
+    "batch_map_rms_m": 0.03278359776248509,
+    "cones": 180,
+    "duration_s": 112.126,
+    "lap1": {
+      "pose_nees_mean": 2.100571823519386,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.23455378086204945,
+      "position_rms_m": 0.1225449369701685,
+      "yaw_rms_deg": 0.11967264856370613
+    },
+    "lap1_end_s": 52.248,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.17656483210674417,
+      "missed": 0,
+      "rms_error_m": 0.10508378078197686,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 22425,
+      "max_us": 2145.75,
+      "mean_us": 0.5990187290971596,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 2.0829999999999997
+    },
+    "racing": {
+      "pose_nees_mean": 7.553417048817627,
+      "pose_nees_samples": 59,
+      "position_max_m": 0.29374004470327697,
+      "position_rms_m": 0.11775380108441108,
+      "yaw_rms_deg": 0.1034726994655254
+    },
+    "seed": 2,
+    "source": "world",
+    "stats": {
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 139,
+      "wheel_outliers": 30
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1120,
+      "max_us": 4386.542,
+      "mean_us": 523.4365187500005,
+      "p50_us": 317.666,
+      "p90_us": 1245.9579999999999,
+      "p99_us": 2662.7090000000003
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3929174907066546,
+        3.6746781356166345
+      ],
+      "nees_mean": 1.7190912456620868,
+      "nees_samples": 56,
+      "vx_rms": 0.037750077956446415,
+      "vy_rms": 0.08469030179062195,
+      "yaw_rate_rms": 0.0021703658056484052
+    }
+  },
+  {
+    "association": {
+      "matches": 6299,
+      "precision": 0.9998412446420066,
+      "recall": 0.9649149685920024
+    },
+    "batch_map_rms_m": 0.03241664085682196,
+    "cones": 109,
+    "duration_s": 68.311,
+    "lap1": {
+      "pose_nees_mean": 1.3175107235563537,
+      "pose_nees_samples": 32,
+      "position_max_m": 0.10593761735415305,
+      "position_rms_m": 0.057863883162741554,
+      "yaw_rms_deg": 0.10218664693152645
+    },
+    "lap1_end_s": 31.803,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 109,
+      "matched_cones": 109,
+      "max_error_m": 0.073983386057644,
+      "missed": 0,
+      "rms_error_m": 0.039124270063806164,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 13662,
+      "max_us": 935.25,
+      "mean_us": 0.5030995461865807,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 1.625
+    },
+    "racing": {
+      "pose_nees_mean": 9.044106842482725,
+      "pose_nees_samples": 36,
+      "position_max_m": 0.3055895613672799,
+      "position_rms_m": 0.07524122330672041,
+      "yaw_rms_deg": 0.09677977289136454
+    },
+    "seed": 3,
+    "source": "world",
+    "stats": {
+      "ambiguous_scans": 1,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 75,
+      "wheel_outliers": 22
+    },
+    "track_length_m": 231.09807810599398,
+    "update_time": {
+      "count": 682,
+      "max_us": 1412.2920000000001,
+      "mean_us": 215.92477419354836,
+      "p50_us": 150.709,
+      "p90_us": 446.209,
+      "p99_us": 1059.875
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.233697049311221,
+        3.8775745096668537
+      ],
+      "nees_mean": 1.7071902617955255,
+      "nees_samples": 34,
+      "vx_rms": 0.04529151809339471,
+      "vy_rms": 0.09344694936099193,
+      "yaw_rate_rms": 0.002338742775802617
+    }
+  },
+  {
+    "association": {
+      "matches": 10999,
+      "precision": 1.0,
+      "recall": 0.9846911369740377
+    },
+    "batch_map_rms_m": 0.03642225160530431,
+    "cones": 186,
+    "duration_s": 115.7,
+    "lap1": {
+      "pose_nees_mean": 2.4415378610260037,
+      "pose_nees_samples": 55,
+      "position_max_m": 0.4147949914356912,
+      "position_rms_m": 0.15552012151349281,
+      "yaw_rms_deg": 0.2965103959619759
+    },
+    "lap1_end_s": 54.174,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 186,
+      "matched_cones": 186,
+      "max_error_m": 0.054620288618435896,
+      "missed": 0,
+      "rms_error_m": 0.028114371096678307,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 23140,
+      "max_us": 546.583,
+      "mean_us": 0.49983284356102137,
+      "p50_us": 0.375,
+      "p90_us": 0.41600000000000004,
+      "p99_us": 1.875
+    },
+    "racing": {
+      "pose_nees_mean": 7.354585979707265,
+      "pose_nees_samples": 60,
+      "position_max_m": 0.28519325723620526,
+      "position_rms_m": 0.04813669114859144,
+      "yaw_rms_deg": 0.06049230256983416
+    },
+    "seed": 4,
+    "source": "world",
+    "stats": {
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 106,
+      "wheel_outliers": 41
+    },
+    "track_length_m": 407.43554687740397,
+    "update_time": {
+      "count": 1156,
+      "max_us": 2168.25,
+      "mean_us": 386.39786591695463,
+      "p50_us": 283.33299999999997,
+      "p90_us": 780.792,
+      "p99_us": 1737.0
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3979600857127643,
+        3.668450658990462
+      ],
+      "nees_mean": 2.0849635005454465,
+      "nees_samples": 57,
+      "vx_rms": 0.028713418313760973,
+      "vy_rms": 0.05433497990356828,
+      "yaw_rate_rms": 0.0023822919514201435
+    }
+  },
+  {
+    "association": {
+      "matches": 10725,
+      "precision": 0.9999067599067599,
+      "recall": 0.9188587096221403
+    },
+    "batch_map_rms_m": 0.05147745635438043,
+    "cones": 183,
+    "duration_s": 114.24900000000001,
+    "lap1": {
+      "pose_nees_mean": 62.02247404368374,
+      "pose_nees_samples": 53,
+      "position_max_m": 2.0256845785262843,
+      "position_rms_m": 0.681391496474522,
+      "yaw_rms_deg": 0.8821851848173968
+    },
+    "lap1_end_s": 52.764,
+    "map": {
+      "duplicates": 16,
+      "landmarks": 199,
+      "matched_cones": 183,
+      "max_error_m": 2.550043436489047,
+      "missed": 0,
+      "rms_error_m": 0.941800403823578,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 22849,
+      "max_us": 56.875,
+      "mean_us": 0.40840264344181554,
+      "p50_us": 0.334,
+      "p90_us": 0.41600000000000004,
+      "p99_us": 1.917
+    },
+    "racing": {
+      "pose_nees_mean": 414.6525757479593,
+      "pose_nees_samples": 61,
+      "position_max_m": 2.66943845011275,
+      "position_rms_m": 1.133394484067035,
+      "yaw_rms_deg": 1.2989798159721089
+    },
+    "seed": 5,
+    "source": "world",
+    "stats": {
+      "ambiguous_scans": 3,
+      "failed_updates": 0,
+      "recoveries": 2,
+      "search_exhausted": 0,
+      "tentatives_dropped": 134,
+      "wheel_outliers": 42
+    },
+    "track_length_m": 394.5551480479347,
+    "update_time": {
+      "count": 1141,
+      "max_us": 3530.292,
+      "mean_us": 409.08210078878164,
+      "p50_us": 290.91700000000003,
+      "p90_us": 818.542,
+      "p99_us": 1788.083
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3979600857127643,
+        3.668450658990462
+      ],
+      "nees_mean": 2.288743844438556,
+      "nees_samples": 57,
+      "vx_rms": 0.019824338513203928,
+      "vy_rms": 0.02749615987305163,
+      "yaw_rate_rms": 0.0028058614993001513
+    }
+  },
+  {
+    "association": {
+      "matches": 12370,
+      "precision": 1.0,
+      "recall": 0.9997575365715671
+    },
+    "batch_map_rms_m": 0.04691129099905929,
+    "cones": 203,
+    "duration_s": 116.82300000000001,
+    "lap1": {
+      "pose_nees_mean": 0.7482991897051077,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.2457780937628877,
+      "position_rms_m": 0.10096418133551835,
+      "yaw_rms_deg": 0.09504090938258783
+    },
+    "lap1_end_s": 57.505,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 203,
+      "matched_cones": 203,
+      "max_error_m": 0.13161035226265133,
+      "missed": 0,
+      "rms_error_m": 0.05660354207838475,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 23364,
+      "max_us": 693.417,
+      "mean_us": 0.543797936997202,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 2.0829999999999997
+    },
+    "racing": {
+      "pose_nees_mean": 1.435786209306261,
+      "pose_nees_samples": 58,
+      "position_max_m": 0.12695962925766469,
+      "position_rms_m": 0.05964977033165708,
+      "yaw_rms_deg": 0.0727345944282691
+    },
+    "seed": 1,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous_scans": 1,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 129,
+      "wheel_outliers": 5
+    },
+    "track_length_m": 431.4782339757064,
+    "update_time": {
+      "count": 1168,
+      "max_us": 4802.5,
+      "mean_us": 516.3209306506845,
+      "p50_us": 364.75,
+      "p90_us": 1057.5,
+      "p99_us": 2519.042
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.4028770184765555,
+        3.662389668343
+      ],
+      "nees_mean": 1.8010303553482432,
+      "nees_samples": 58,
+      "vx_rms": 0.02712781644905969,
+      "vy_rms": 0.03873075957147706,
+      "yaw_rate_rms": 0.0020161818949352883
+    }
+  },
+  {
+    "association": {
+      "matches": 11329,
+      "precision": 0.9999117309559538,
+      "recall": 0.9995588105532516
+    },
+    "batch_map_rms_m": 0.018289732337494344,
+    "cones": 180,
+    "duration_s": 103.732,
+    "lap1": {
+      "pose_nees_mean": 3.321707422954983,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.8966445840212296,
+      "position_rms_m": 0.37396255446230553,
+      "yaw_rms_deg": 0.3828689194901791
+    },
+    "lap1_end_s": 52.331,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 180,
+      "matched_cones": 180,
+      "max_error_m": 0.0563377035342306,
+      "missed": 0,
+      "rms_error_m": 0.026621031047972327,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 20746,
+      "max_us": 156.042,
+      "mean_us": 0.4751579099586412,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 2.0
+    },
+    "racing": {
+      "pose_nees_mean": 1.4665934700742143,
+      "pose_nees_samples": 50,
+      "position_max_m": 0.0642491268356121,
+      "position_rms_m": 0.028346252811419136,
+      "yaw_rms_deg": 0.047632514846309586
+    },
+    "seed": 2,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous_scans": 2,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 95,
+      "wheel_outliers": 2
+    },
+    "track_length_m": 391.3894337024835,
+    "update_time": {
+      "count": 1037,
+      "max_us": 2829.792,
+      "mean_us": 487.6874908389579,
+      "p50_us": 326.459,
+      "p90_us": 1125.2079999999999,
+      "p99_us": 1988.667
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.365615060903874,
+        3.7086012978672436
+      ],
+      "nees_mean": 1.4907133625839564,
+      "nees_samples": 51,
+      "vx_rms": 0.025106961003568035,
+      "vy_rms": 0.036908644097832115,
+      "yaw_rate_rms": 0.0020596937544613255
+    }
+  },
+  {
+    "association": {
+      "matches": 6019,
+      "precision": 1.0,
+      "recall": 0.9998338870431893
+    },
+    "batch_map_rms_m": 0.0363671865827837,
+    "cones": 109,
+    "duration_s": 62.988,
+    "lap1": {
+      "pose_nees_mean": 1.137407419410005,
+      "pose_nees_samples": 32,
+      "position_max_m": 0.09522625325336358,
+      "position_rms_m": 0.04296424769492336,
+      "yaw_rms_deg": 0.0636284794406507
+    },
+    "lap1_end_s": 31.749000000000002,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 109,
+      "matched_cones": 109,
+      "max_error_m": 0.12403935769166889,
+      "missed": 0,
+      "rms_error_m": 0.07651011428896347,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 12597,
+      "max_us": 56.334,
+      "mean_us": 0.43215003572281896,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 1.666
+    },
+    "racing": {
+      "pose_nees_mean": 2.290498467562587,
+      "pose_nees_samples": 30,
+      "position_max_m": 0.141672092287538,
+      "position_rms_m": 0.07712121313035959,
+      "yaw_rms_deg": 0.11021596032297148
+    },
+    "seed": 3,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 88,
+      "wheel_outliers": 1
+    },
+    "track_length_m": 231.09807810599398,
+    "update_time": {
+      "count": 629,
+      "max_us": 1468.583,
+      "mean_us": 207.72559459459478,
+      "p50_us": 141.625,
+      "p90_us": 448.583,
+      "p99_us": 957.125
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.2003621112421463,
+        3.921660742845372
+      ],
+      "nees_mean": 1.7821722761472043,
+      "nees_samples": 31,
+      "vx_rms": 0.025987164851728,
+      "vy_rms": 0.04154003868006376,
+      "yaw_rate_rms": 0.0020399255455352963
+    }
+  },
+  {
+    "association": {
+      "matches": 10124,
+      "precision": 0.9999012248123271,
+      "recall": 0.999605016293078
+    },
+    "batch_map_rms_m": 0.04323614641596303,
+    "cones": 186,
+    "duration_s": 107.104,
+    "lap1": {
+      "pose_nees_mean": 0.8783986718711785,
+      "pose_nees_samples": 55,
+      "position_max_m": 0.21344278164132505,
+      "position_rms_m": 0.1095161298940581,
+      "yaw_rms_deg": 0.10117215947940306
+    },
+    "lap1_end_s": 54.261,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 186,
+      "matched_cones": 186,
+      "max_error_m": 0.12813140662200773,
+      "missed": 0,
+      "rms_error_m": 0.05991866438445933,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 21420,
+      "max_us": 131.125,
+      "mean_us": 0.4681809056957363,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 1.792
+    },
+    "racing": {
+      "pose_nees_mean": 1.6187644517963766,
+      "pose_nees_samples": 52,
+      "position_max_m": 0.1470365875151886,
+      "position_rms_m": 0.0657234427503137,
+      "yaw_rms_deg": 0.05956736129893604
+    },
+    "seed": 4,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 121,
+      "wheel_outliers": 1
+    },
+    "track_length_m": 407.43554687740397,
+    "update_time": {
+      "count": 1071,
+      "max_us": 2674.0840000000003,
+      "mean_us": 399.1136405228757,
+      "p50_us": 292.667,
+      "p90_us": 816.875,
+      "p99_us": 1925.666
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3769791554502397,
+        3.694439144615931
+      ],
+      "nees_mean": 1.3092641456329088,
+      "nees_samples": 53,
+      "vx_rms": 0.02480089710148966,
+      "vy_rms": 0.03694982527283832,
+      "yaw_rate_rms": 0.002020298758591046
+    }
+  },
+  {
+    "association": {
+      "matches": 10821,
+      "precision": 1.0,
+      "recall": 0.9996304849884526
+    },
+    "batch_map_rms_m": 0.03827167348850534,
+    "cones": 183,
+    "duration_s": 106.311,
+    "lap1": {
+      "pose_nees_mean": 1.1740834397758748,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.2616381972801877,
+      "position_rms_m": 0.13766947512960828,
+      "yaw_rms_deg": 0.1472215175597212
+    },
+    "lap1_end_s": 52.886,
+    "map": {
+      "duplicates": 0,
+      "landmarks": 183,
+      "matched_cones": 183,
+      "max_error_m": 0.20285930930403742,
+      "missed": 0,
+      "rms_error_m": 0.1216648368261023,
+      "spurious": 0
+    },
+    "predict_time": {
+      "count": 21262,
+      "max_us": 399.209,
+      "mean_us": 0.5375887969147749,
+      "p50_us": 0.375,
+      "p90_us": 0.417,
+      "p99_us": 2.0829999999999997
+    },
+    "racing": {
+      "pose_nees_mean": 2.4258996155466996,
+      "pose_nees_samples": 53,
+      "position_max_m": 0.19584347228208526,
+      "position_rms_m": 0.12215805551505013,
+      "yaw_rms_deg": 0.12358421151925843
+    },
+    "seed": 5,
+    "source": "synthetic",
+    "stats": {
+      "ambiguous_scans": 0,
+      "failed_updates": 0,
+      "recoveries": 0,
+      "search_exhausted": 0,
+      "tentatives_dropped": 111,
+      "wheel_outliers": 8
+    },
+    "track_length_m": 394.5551480479347,
+    "update_time": {
+      "count": 1063,
+      "max_us": 3644.0829999999996,
+      "mean_us": 434.7347723424277,
+      "p50_us": 299.083,
+      "p90_us": 925.4590000000001,
+      "p99_us": 1934.25
+    },
+    "velocity": {
+      "nees_bounds": [
+        2.3769791554502397,
+        3.694439144615931
+      ],
+      "nees_mean": 1.8351860638193742,
+      "nees_samples": 53,
+      "vx_rms": 0.02814211133195738,
+      "vy_rms": 0.03470890514250868,
+      "yaw_rate_rms": 0.0020315647202031576
+    }
+  }
+]
