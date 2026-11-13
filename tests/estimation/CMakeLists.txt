@@ -3,6 +3,7 @@ apex_tests(estimation
     SOURCES
         chi_square_test.cpp
         consistency_test.cpp
+        ekf_slam_test.cpp
         lateral_model_test.cpp
         odometry_test.cpp
         synthetic_test.cpp
