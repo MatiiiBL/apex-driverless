@@ -10,6 +10,7 @@
 // Scans come from the exact ray caster of the perception tests (tests/perception/scene.hpp),
 // with the sensor noise below, until the simulator's sensor models are available.
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <exception>
@@ -26,7 +27,6 @@
 
 #include "apex/core/angles.hpp"
 #include "apex/core/geometry.hpp"
-#include "apex/core/json.hpp"
 #include "apex/core/rng.hpp"
 #include "apex/perception/calibration.hpp"
 #include "apex/perception/detector.hpp"
@@ -60,18 +60,43 @@ constexpr double kMaxSpeed = 12.0;
 constexpr double kMaxLateralAccel = 10.0;
 constexpr double kLateralSpread = 0.3;  // m
 constexpr double kYawSpread = 0.03;     // rad
-// The camera frame fused with each scan is stamped this much before it: the worst phase of a
-// 20 Hz camera against a 10 Hz LiDAR. A variant gets frames at the scan's own stamp.
-constexpr double kCameraLag = 0.025;  // s
-constexpr double kScanPeriod = 0.1;   // s
-constexpr double kMatchGate = 0.5;    // m: farther from its cone, an observation is false
+constexpr double kScanPeriod = 0.1;     // s
+constexpr double kMatchGate = 0.5;      // m: farther from its cone, an observation is false
+
+// How the camera frame fused with each scan is produced. The detection metrics and the latency
+// come from the first variant: a frame 25 ms before the scan, the worst phase of a 20 Hz camera
+// against a 10 Hz LiDAR. 50 ms is a dropped frame. The LiDAR pipeline is deterministic, so every
+// variant reports the same cones; only their colors differ.
+struct VariantSpec {
+    const char* name;
+    const char* description;
+    double lag;       // s: the frame's stamp is this much before the scan's
+    bool compensate;  // pass the yaw rate, or 0
+    testing::CameraSimOptions camera;
+};
+constexpr testing::CameraSimOptions kPerfectColors{
+    .bearing_sigma = kCameraNoise.bearing_sigma,
+    .range_sigma_fraction = kCameraNoise.range_sigma_fraction,
+    .confidence = kCameraNoise.confidence,
+    .detect_at_max_range = kCameraNoise.detect_at_max_range};
+constexpr std::array<VariantSpec, 6> kVariants = {{
+    {"lag25", "25 ms early, yaw compensated", 0.025, true, kCameraNoise},
+    {"aligned", "at the scan's stamp", 0.0, true, kCameraNoise},
+    {"lag25_uncompensated", "25 ms early, not compensated", 0.025, false, kCameraNoise},
+    {"lag50", "50 ms early, yaw compensated", 0.050, true, kCameraNoise},
+    {"lag50_uncompensated", "50 ms early, not compensated", 0.050, false, kCameraNoise},
+    {"lag25_true_colors",
+     "25 ms early, compensated; detector never confuses colors, no false "
+     "positives",
+     0.025, true, kPerfectColors},
+}};
 
 struct Settings {
     int tracks = 8;
     double spacing = 2.5;  // m between scans along each centerline
     std::uint64_t seed = 1;
     std::filesystem::path out = "results/perception";
-    std::string command = "apex_perception_eval";
+    std::string command = "build/release/bench/perception/apex_perception_eval";
 };
 
 Settings parse(int argc, char** argv) {
@@ -99,30 +124,42 @@ Settings parse(int argc, char** argv) {
     return s;
 }
 
-struct Motion {
-    Pose2 body;         // at the scan's stamp
-    Pose2 camera_body;  // kCameraLag earlier
-    double yaw_rate;    // mean over the lag, as integrated from a gyro (rad/s)
+// The car at arc length s along the centerline, offset sideways and in heading; at earlier times
+// it was farther back along the centerline, with the same offsets.
+class Motion {
+public:
+    Motion(const Trajectory& centerline, double s, Rng& rng)
+        : centerline_(&centerline),
+          s_(s),
+          offset_(rng.uniform(-kLateralSpread, kLateralSpread)),
+          yaw_error_(rng.normal(0.0, kYawSpread)) {
+        const double curvature = std::abs(centerline.at(s).curvature);
+        speed_ = std::min(kMaxSpeed, std::sqrt(kMaxLateralAccel / std::max(curvature, 1e-6)));
+    }
+
+    // The pose `before` seconds before the scan.
+    [[nodiscard]] Pose2 pose(double before = 0.0) const {
+        const TrajectoryPoint p = centerline_->at(s_ - speed_ * before);
+        const Vec2 position = p.position + offset_ * left_normal(heading_vector(p.yaw));
+        return {position.x(), position.y(), wrap_angle(p.yaw + yaw_error_)};
+    }
+    // The mean yaw rate over the `lag` before the scan, as integrated from a gyro (rad/s).
+    [[nodiscard]] double yaw_rate(double lag) const {
+        if (!(lag > 0.0)) return speed_ * centerline_->at(s_).curvature;
+        return angle_diff(pose().yaw, pose(lag).yaw) / lag;
+    }
+
+private:
+    const Trajectory* centerline_;
+    double s_;
+    double offset_;
+    double yaw_error_;
+    double speed_ = 0.0;
 };
 
-Motion drive(const Trajectory& centerline, double s, Rng& rng) {
-    const double offset = rng.uniform(-kLateralSpread, kLateralSpread);
-    const double yaw_error = rng.normal(0.0, kYawSpread);
-    const TrajectoryPoint now = centerline.at(s);
-    const double speed =
-        std::min(kMaxSpeed, std::sqrt(kMaxLateralAccel / std::max(std::abs(now.curvature), 1e-6)));
-    const TrajectoryPoint before = centerline.at(s - speed * kCameraLag);
-    const auto pose = [&](const TrajectoryPoint& p) {
-        const Vec2 position = p.position + offset * left_normal(heading_vector(p.yaw));
-        return Pose2{position.x(), position.y(), wrap_angle(p.yaw + yaw_error)};
-    };
-    return {pose(now), pose(before), angle_diff(now.yaw, before.yaw) / kCameraLag};
-}
-
-// The same pipeline fed camera frames with different timing, for the color comparison.
+// One camera variant's pipeline and color score.
 struct Variant {
-    std::string name;
-    std::string description;
+    const VariantSpec* spec;
     ConePerception perception;
     ColorScore color;
 };
@@ -146,14 +183,17 @@ json bin_to_json(const DetectionBin& b, std::string label) {
             {"rms_error_m", std::sqrt(ratio(b.error_sq, tp))},
             {"rms_radial_m", std::sqrt(ratio(b.radial_sq, tp))},
             {"rms_tangential_m", std::sqrt(ratio(b.tangential_sq, tp))},
-            {"nees", ratio(b.nees, tp)}};
+            {"nees", ratio(b.nees, tp)},
+            {"nees_above_95", ratio(static_cast<double>(b.nees_above_95), tp)}};
 }
 
 json color_to_json(const Variant& v) {
     const ColorScore& c = v.color;
     return {
-        {"name", v.name},
-        {"description", v.description},
+        {"name", v.spec->name},
+        {"description", v.spec->description},
+        {"lag_s", v.spec->lag},
+        {"yaw_compensated", v.spec->compensate},
         {"visible", c.visible},
         {"colored", c.colored},
         {"correct", c.correct},
@@ -173,20 +213,25 @@ std::string summary_markdown(const json& r) {
         r["sensor_model"].get<std::string>());
     md +=
         "| Range (m) | Cones in view | Recall | Recall of hit cones | Precision | "
-        "Position RMS (cm) | Radial RMS (cm) | Tangential RMS (cm) | NEES |\n";
-    md += "|---|---|---|---|---|---|---|---|---|\n";
+        "Position RMS (cm) | Radial RMS (cm) | Tangential RMS (cm) | NEES | NEES > 5.99 |\n";
+    md += "|---|---|---|---|---|---|---|---|---|---|\n";
     const auto row = [&](const json& b) {
         md += std::format(
-            "| {} | {} | {:.3f} | {:.3f} | {:.4f} | {:.1f} | {:.1f} | {:.1f} | {:.2f} |\n",
+            "| {} | {} | {:.3f} | {:.3f} | {:.4f} | {:.1f} | {:.1f} | {:.1f} | {:.2f} | {:.1f}% "
+            "|\n",
             b["range_m"].get<std::string>(), b["in_view"].get<int>(), b["recall"].get<double>(),
             b["recall_of_hit"].get<double>(), b["precision"].get<double>(),
             100.0 * b["rms_error_m"].get<double>(), 100.0 * b["rms_radial_m"].get<double>(),
-            100.0 * b["rms_tangential_m"].get<double>(), b["nees"].get<double>());
+            100.0 * b["rms_tangential_m"].get<double>(), b["nees"].get<double>(),
+            100.0 * b["nees_above_95"].get<double>());
     };
     for (const json& b : r["by_range"]) row(b);
     row(r["total"]);
-    md += std::format("\nFalse positives per scan: {:.4f}. NEES average: {:.2f} (2 expected).\n\n",
-                      r["false_positives_per_scan"].get<double>(), r["nees_mean"].get<double>());
+    md += std::format(
+        "\nFalse positives per scan: {:.4f}. NEES average: {:.2f} (2 expected), above the "
+        "chi-square 95% bound in {:.1f}% of cases (5% expected).\n\n",
+        r["false_positives_per_scan"].get<double>(), r["nees_mean"].get<double>(),
+        100.0 * r["total"]["nees_above_95"].get<double>());
 
     md += "| Camera frame | Coverage | Accuracy | Mean confidence, right / wrong |\n";
     md += "|---|---|---|---|\n";
@@ -214,15 +259,9 @@ int run(const Settings& settings) {
     const SensorRig rig;
     const PerceptionConfig config;
     std::vector<Variant> variants;
-    variants.push_back({"lag_compensated",
-                        std::format("{:.0f} ms before the scan, yaw compensated", kCameraLag * 1e3),
-                        ConePerception(config, rig),
-                        {}});
-    variants.push_back({"aligned", "at the scan's stamp", ConePerception(config, rig), {}});
-    variants.push_back({"lag_uncompensated",
-                        std::format("{:.0f} ms before the scan, not compensated", kCameraLag * 1e3),
-                        ConePerception(config, rig),
-                        {}});
+    for (const VariantSpec& spec : kVariants) {
+        variants.push_back({&spec, ConePerception(config, rig), {}});
+    }
     ConeDetector detector(config.ground, config.clustering, config.cone_check, config.center_fit,
                           rig.lidar);
 
@@ -231,7 +270,11 @@ int run(const Settings& settings) {
     lidar_noise.range_sigma = kLidarRangeSigma;
     lidar_noise.dropout = kLidarDropout;
 
-    DetectionBins bins{};
+    // The task's bins, and 2 m bins for the plots.
+    RangeBins bins({10.0, 20.0, 30.0});
+    std::vector<double> fine_edges;
+    for (double edge = 2.0; edge <= rig.lidar.max_range; edge += 2.0) fine_edges.push_back(edge);
+    RangeBins fine_bins(fine_edges);
     DetectorScore detector_score;
     json tracks = json::array();
     std::size_t scans = 0;
@@ -242,40 +285,40 @@ int run(const Settings& settings) {
         const Rng track_rng = Rng(settings.seed).split(static_cast<std::uint64_t>(t));
         Rng pose_rng = track_rng.split(0);
         Rng lidar_rng = track_rng.split(1);
-        Rng camera_rng = track_rng.split(2);
+        std::vector<Rng> camera_rngs;
+        for (std::size_t v = 0; v < variants.size(); ++v) {
+            camera_rngs.push_back(track_rng.split(2 + v));
+        }
         std::size_t track_scans = 0;
         for (double s = 0.0; s < track.centerline.length(); s += settings.spacing) {
-            const Motion m = drive(track.centerline, s, pose_rng);
+            const Motion motion(track.centerline, s, pose_rng);
             const Time stamp = kScanPeriod * static_cast<double>(scans);
+            const Truth truth{track.cones, motion.pose()};
             const LidarScan scan =
-                testing::cast_lidar(rig.lidar, testing::lidar_pose(m.body, rig.lidar), track.cones,
-                                    lidar_noise, lidar_rng, stamp);
-            const CameraFrame lagged =
-                testing::detect_cones(rig.camera, m.camera_body, track.cones, kCameraNoise,
-                                      camera_rng, stamp - kCameraLag);
-            const CameraFrame aligned = testing::detect_cones(rig.camera, m.body, track.cones,
-                                                              kCameraNoise, camera_rng, stamp);
-            variants[0].perception.on_camera(lagged);
-            variants[1].perception.on_camera(aligned);
-            variants[2].perception.on_camera(lagged);
+                testing::cast_lidar(rig.lidar, testing::lidar_pose(truth.body, rig.lidar),
+                                    track.cones, lidar_noise, lidar_rng, stamp);
 
-            const Truth truth{track.cones, m.body};
-            const ConeObservations observations = variants[0].perception.on_lidar(scan, m.yaw_rate);
-            const std::vector<int> matches = match_observations(observations, truth, kMatchGate);
-            score_detections(observations, matches, scan, truth, rig.lidar, bins);
-            score_colors(observations, matches, truth, m.camera_body, rig.camera,
-                         variants[0].color);
-            // The LiDAR pipeline is deterministic, so the variants report the same cones in the
-            // same order and share the matches.
-            const ConeObservations at_stamp = variants[1].perception.on_lidar(scan, m.yaw_rate);
-            const ConeObservations uncompensated = variants[2].perception.on_lidar(scan, 0.0);
-            if (at_stamp.cones.size() != observations.cones.size() ||
-                uncompensated.cones.size() != observations.cones.size()) {
-                throw std::logic_error("variants disagree on the cones of a scan");
+            std::vector<int> matches;
+            std::size_t reported = 0;
+            for (std::size_t v = 0; v < variants.size(); ++v) {
+                Variant& variant = variants[v];
+                const VariantSpec& spec = *variant.spec;
+                const Pose2 camera_body = motion.pose(spec.lag);
+                variant.perception.on_camera(
+                    testing::detect_cones(rig.camera, camera_body, track.cones, spec.camera,
+                                          camera_rngs[v], stamp - spec.lag));
+                const double yaw_rate = spec.compensate ? motion.yaw_rate(spec.lag) : 0.0;
+                const ConeObservations observations = variant.perception.on_lidar(scan, yaw_rate);
+                if (v == 0) {
+                    matches = match_observations(observations, truth, kMatchGate);
+                    reported = observations.cones.size();
+                    score_detections(observations, matches, scan, truth, rig.lidar, bins);
+                    score_detections(observations, matches, scan, truth, rig.lidar, fine_bins);
+                } else if (observations.cones.size() != reported) {
+                    throw std::logic_error("camera variants disagree on the cones of a scan");
+                }
+                score_colors(observations, matches, truth, camera_body, rig.camera, variant.color);
             }
-            score_colors(at_stamp, matches, truth, m.body, rig.camera, variants[1].color);
-            score_colors(uncompensated, matches, truth, m.camera_body, rig.camera,
-                         variants[2].color);
 
             (void)detector.detect(scan.points, detected);
             score_detector(detected, truth, rig.lidar, kMatchGate, detector_score);
@@ -290,20 +333,12 @@ int run(const Settings& settings) {
                                  track.centerline.length(), track.cones.size(), track_scans);
     }
 
-    DetectionBin total;
-    json by_range = json::array();
-    for (std::size_t b = 0; b < kBins; ++b) {
-        by_range.push_back(bin_to_json(bins[b], bin_label(b)));
-        total.in_view += bins[b].in_view;
-        total.hit += bins[b].hit;
-        total.detected += bins[b].detected;
-        total.reported += bins[b].reported;
-        total.false_positives += bins[b].false_positives;
-        total.error_sq += bins[b].error_sq;
-        total.radial_sq += bins[b].radial_sq;
-        total.tangential_sq += bins[b].tangential_sq;
-        total.nees += bins[b].nees;
-    }
+    const auto bins_to_json = [](const RangeBins& b) {
+        json out = json::array();
+        for (std::size_t i = 0; i < b.size(); ++i) out.push_back(bin_to_json(b[i], b.label(i)));
+        return out;
+    };
+    const DetectionBin total = bins.total();
     const PerceptionStats& stats = variants[0].perception.stats();
     json checks = json::object();
     for (std::size_t i = 0; i < kConeCheckCount; ++i) {
@@ -331,10 +366,10 @@ int run(const Settings& settings) {
          {{"max_speed", kMaxSpeed},
           {"max_lateral_accel", kMaxLateralAccel},
           {"lateral_spread_m", kLateralSpread},
-          {"yaw_spread_rad", kYawSpread},
-          {"camera_lag_s", kCameraLag}}},
+          {"yaw_spread_rad", kYawSpread}}},
         {"config", config},
-        {"by_range", by_range},
+        {"by_range", bins_to_json(bins)},
+        {"by_range_2m", bins_to_json(fine_bins)},
         {"total", bin_to_json(total, "all")},
         {"false_positives_per_scan",
          ratio(static_cast<double>(total.false_positives), static_cast<double>(scans))},

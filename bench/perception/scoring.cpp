@@ -1,7 +1,10 @@
 #include "scoring.hpp"
 
+#include <algorithm>
 #include <cmath>
+#include <format>
 #include <map>
+#include <utility>
 
 #include <Eigen/Dense>
 
@@ -10,7 +13,7 @@
 namespace apex::perception::eval {
 namespace {
 
-constexpr std::array<double, kBins - 1> kBinEdges = {10.0, 20.0, 30.0};
+constexpr double kChiSquare95 = 5.991;  // 2 degrees of freedom
 
 // A cone's position in the LiDAR frame of a car at `body`.
 Vec2 in_lidar(const Cone& cone, const Pose2& body, const LidarGeometry& lidar) {
@@ -23,17 +26,40 @@ const Cone* cone_at(const Truth& truth, int index) {
 
 }  // namespace
 
-std::size_t bin_of(double range) {
-    std::size_t bin = 0;
-    while (bin < kBinEdges.size() && range >= kBinEdges[bin]) ++bin;
-    return bin;
+DetectionBin& DetectionBin::operator+=(const DetectionBin& other) {
+    in_view += other.in_view;
+    hit += other.hit;
+    detected += other.detected;
+    reported += other.reported;
+    false_positives += other.false_positives;
+    error_sq += other.error_sq;
+    radial_sq += other.radial_sq;
+    tangential_sq += other.tangential_sq;
+    nees += other.nees;
+    nees_above_95 += other.nees_above_95;
+    return *this;
 }
 
-std::string bin_label(std::size_t bin) {
-    const auto edge = [](std::size_t i) { return std::to_string(static_cast<int>(kBinEdges[i])); };
-    if (bin == 0) return "0-" + edge(0);
-    if (bin == kBins - 1) return edge(bin - 1) + "+";
-    return edge(bin - 1) + "-" + edge(bin);
+RangeBins::RangeBins(std::vector<double> edges)
+    : edges_(std::move(edges)), bins_(edges_.size() + 1) {}
+
+DetectionBin& RangeBins::at_range(double range) {
+    const auto above = std::upper_bound(edges_.begin(), edges_.end(), range);
+    return bins_[static_cast<std::size_t>(above - edges_.begin())];
+}
+
+std::string RangeBins::label(std::size_t i) const {
+    const auto edge = [&](std::size_t k) { return std::format("{:g}", edges_[k]); };
+    if (edges_.empty()) return "all";
+    if (i == 0) return "0-" + edge(0);
+    if (i == edges_.size()) return edge(i - 1) + "+";
+    return edge(i - 1) + "-" + edge(i);
+}
+
+DetectionBin RangeBins::total() const {
+    DetectionBin sum;
+    for (const DetectionBin& bin : bins_) sum += bin;
+    return sum;
 }
 
 std::vector<int> match_observations(const ConeObservations& observations, const Truth& truth,
@@ -54,7 +80,7 @@ std::vector<int> match_observations(const ConeObservations& observations, const 
 
 void score_detections(const ConeObservations& observations, std::span<const int> matches,
                       const LidarScan& scan, const Truth& truth, const LidarGeometry& lidar,
-                      DetectionBins& bins) {
+                      RangeBins& bins) {
     std::map<std::int32_t, std::size_t> returns;
     for (const LidarPoint& p : scan.points) {
         if (p.truth_id >= 0) ++returns[p.truth_id];
@@ -71,7 +97,7 @@ void score_detections(const ConeObservations& observations, std::span<const int>
             range > lidar.max_range) {
             continue;
         }
-        DetectionBin& bin = bins[bin_of(range)];
+        DetectionBin& bin = bins.at_range(range);
         ++bin.in_view;
         if (returns.contains(cone.id)) ++bin.hit;
         if (detected[static_cast<std::size_t>(cone.id)] != 0) ++bin.detected;
@@ -80,7 +106,7 @@ void score_detections(const ConeObservations& observations, std::span<const int>
     const Vec2 mount = lidar.mount.head<2>();
     for (std::size_t i = 0; i < observations.cones.size(); ++i) {
         const ConeObservation& o = observations.cones[i];
-        DetectionBin& reported_bin = bins[bin_of((o.position - mount).norm())];
+        DetectionBin& reported_bin = bins.at_range((o.position - mount).norm());
         ++reported_bin.reported;
         const Cone* cone = cone_at(truth, matches[i]);
         if (cone == nullptr) {
@@ -90,11 +116,13 @@ void score_detections(const ConeObservations& observations, std::span<const int>
         const Vec2 truth_body = truth.body.to_local(cone->position);
         const Vec2 radial = (truth_body - mount).normalized();
         const Vec2 error = o.position - truth_body;
-        DetectionBin& bin = bins[bin_of((truth_body - mount).norm())];
+        DetectionBin& bin = bins.at_range((truth_body - mount).norm());
         bin.error_sq += error.squaredNorm();
         bin.radial_sq += std::pow(error.dot(radial), 2);
         bin.tangential_sq += std::pow(cross(radial, error), 2);
-        bin.nees += error.dot(o.covariance.ldlt().solve(error));
+        const double nees = error.dot(o.covariance.ldlt().solve(error));
+        bin.nees += nees;
+        bin.nees_above_95 += nees > kChiSquare95 ? 1 : 0;
     }
 }
 

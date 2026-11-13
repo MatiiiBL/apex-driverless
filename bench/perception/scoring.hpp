@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <cstddef>
 #include <span>
 #include <string>
@@ -16,11 +15,6 @@
 // horizontal distances from the LiDAR; truth ids are read here, and only here.
 namespace apex::perception::eval {
 
-// 0-10, 10-20, 20-30 and 30+ m.
-inline constexpr std::size_t kBins = 4;
-[[nodiscard]] std::size_t bin_of(double range);
-[[nodiscard]] std::string bin_label(std::size_t bin);
-
 struct DetectionBin {
     std::size_t in_view = 0;   // cones in the LiDAR's field of view and range
     std::size_t hit = 0;       // ... with at least one return
@@ -32,8 +26,27 @@ struct DetectionBin {
     double radial_sq = 0.0;
     double tangential_sq = 0.0;
     double nees = 0.0;
+    std::size_t nees_above_95 = 0;  // above the chi-square 95% bound for 2 dof, 5.99
+
+    DetectionBin& operator+=(const DetectionBin& other);
 };
-using DetectionBins = std::array<DetectionBin, kBins>;
+
+// Detection metrics by range: bins [0, e_0), [e_0, e_1), ..., [e_last, infinity) for increasing
+// edges e_i (m).
+class RangeBins {
+public:
+    explicit RangeBins(std::vector<double> edges);
+
+    [[nodiscard]] std::size_t size() const { return bins_.size(); }
+    [[nodiscard]] const DetectionBin& operator[](std::size_t i) const { return bins_[i]; }
+    [[nodiscard]] DetectionBin& at_range(double range);
+    [[nodiscard]] std::string label(std::size_t i) const;  // "10-20", "30+"
+    [[nodiscard]] DetectionBin total() const;
+
+private:
+    std::vector<double> edges_;
+    std::vector<DetectionBin> bins_;
+};
 
 struct ColorScore {
     std::size_t visible = 0;          // true positives in the camera's field of view and range
@@ -66,7 +79,7 @@ struct Truth {
 
 void score_detections(const ConeObservations& observations, std::span<const int> matches,
                       const LidarScan& scan, const Truth& truth, const LidarGeometry& lidar,
-                      DetectionBins& bins);
+                      RangeBins& bins);
 
 // `camera_body` is the car's pose at the camera frame's stamp: what the camera could see.
 void score_colors(const ConeObservations& observations, std::span<const int> matches,
