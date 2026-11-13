@@ -9,6 +9,7 @@ namespace apex::stack {
 void to_json(nlohmann::json& j, const StackConfig& c) {
     j = nlohmann::json::object();
     j["perception"] = c.perception;
+    j["controller"] = c.controller;
     j["mission"] = c.mission;
     j["lap_counter"] = c.lap_counter;
     j["known_pose_mapper"] = c.known_pose_mapper;
@@ -20,10 +21,11 @@ void to_json(nlohmann::json& j, const StackConfig& c) {
 
 void from_json(const nlohmann::json& j, StackConfig& c) {
     reject_unknown_keys(j,
-                        {"perception", "mission", "lap_counter", "known_pose_mapper", "stop_decel",
-                         "hold_brake", "emergency_brake", "driven_path_spacing"},
+                        {"perception", "controller", "mission", "lap_counter", "known_pose_mapper",
+                         "stop_decel", "hold_brake", "emergency_brake", "driven_path_spacing"},
                         "stack");
     read_optional(j, "perception", c.perception);
+    read_optional(j, "controller", c.controller);
     read_optional(j, "mission", c.mission);
     read_optional(j, "lap_counter", c.lap_counter);
     read_optional(j, "known_pose_mapper", c.known_pose_mapper);
