@@ -113,8 +113,10 @@ TEST(MpcModel, DiscretizationIsTheLinearizedZeroOrderHold) {
 }
 
 // The warm start is kept in the world frame, so it means the same thing on a reference that
-// was replanned with a different arc-length origin.
+// was replanned with a different arc-length origin: the plan's inputs at the same times, rolled
+// out from the same state, give the same trajectory.
 TEST(MpcPlan, SurvivesAReplannedReference) {
+    const NominalModel model{VehicleParams{}};
     const Trajectory circle = testing::circle_reference({0.0, 20.0}, 20.0, 8.0);
     constexpr std::size_t kStages = 21;
     constexpr double kStep = 0.05;
@@ -129,24 +131,52 @@ TEST(MpcPlan, SurvivesAReplannedReference) {
     mpc::plan_from_solution(circle, 10.0, states, inputs, 1.0, kStep, plan);
     ASSERT_EQ(plan.stages().size(), kStages);
 
-    auto check = [&](const Trajectory& reference, double s0) {
+    auto guess_on = [&](const Trajectory& reference, double s0) {
         std::vector<mpc::StagePoint> guess(kStages);
-        mpc::guess_from_plan(plan, reference, states[0], s0, 1.0, kStep, guess);
-        for (std::size_t k = 0; k < kStages; ++k) {
-            EXPECT_NEAR(guess[k].x(mpc::kLateral), states[k](mpc::kLateral), 5e-3) << k;
-            EXPECT_NEAR(guess[k].x(mpc::kHeading), states[k](mpc::kHeading), 5e-3) << k;
-            EXPECT_NEAR(guess[k].x(mpc::kVx), states[k](mpc::kVx), 1e-9) << k;
+        mpc::guess_from_plan(model, plan, reference, states[0], s0, 1.0, kStep, guess);
+        for (std::size_t k = 0; k + 1 < kStages; ++k) {
             EXPECT_NEAR(guess[k].u(mpc::kAccel), inputs[k](mpc::kAccel), 1e-9) << k;
+            EXPECT_NEAR(guess[k].u(mpc::kSteerRate), inputs[k](mpc::kSteerRate), 1e-9) << k;
         }
         return guess;
     };
-    const std::vector<mpc::StagePoint> same = check(circle, 10.0);
+    const std::vector<mpc::StagePoint> same = guess_on(circle, 10.0);
     // A window of the circle that starts 6 m behind the car: every station is 4 m less.
     std::vector<TrajectoryPoint> points;
     for (double s = 4.0; s <= 40.0; s += 0.5) points.push_back(circle.at(s));
     const Trajectory window(std::move(points), false);
-    const std::vector<mpc::StagePoint> moved = check(window, 6.0);
-    for (std::size_t k = 0; k < kStages; ++k) EXPECT_NEAR(moved[k].s, same[k].s - 4.0, 5e-3);
+    const std::vector<mpc::StagePoint> moved = guess_on(window, 6.0);
+    for (std::size_t k = 0; k < kStages; ++k) {
+        EXPECT_NEAR(moved[k].s, same[k].s - 4.0, 5e-3) << k;
+        EXPECT_LT((moved[k].x - same[k].x).lpNorm<Eigen::Infinity>(), 5e-3) << k;
+    }
+}
+
+// The rollout is what the QP is linearized around, so it must be a trajectory the car can
+// drive whatever inputs the previous plan left: steering within its angle and rate limits,
+// acceleration within the drive and brake limits, and no reversing.
+TEST(MpcPlan, RolloutStaysWithinTheCarsLimits) {
+    const VehicleParams params;
+    const NominalModel model(params);
+    const Trajectory line = testing::straight_reference({0.0, 0.0}, 0.0, 60.0, 5.0);
+    std::vector<mpc::StagePoint> guess(31);
+    for (mpc::StagePoint& point : guess) point.u << 5.0, -40.0, -1.0;  // all out of range
+    State x0;
+    x0 << 0.0, 0.0, 3.0, 0.0, 0.0, 0.35;
+    mpc::rollout(model, line, x0, 0.0, 0.05, guess);
+    for (std::size_t k = 0; k < guess.size(); ++k) {
+        const mpc::StagePoint& point = guess[k];
+        EXPECT_LE(std::abs(point.x(mpc::kSteer)), params.max_steer + 1e-12) << k;
+        EXPECT_GE(point.x(mpc::kVx), 0.0) << k;
+        if (k + 1 < guess.size()) {
+            EXPECT_LE(std::abs(point.u(mpc::kSteerRate)), params.max_steer_rate) << k;
+            EXPECT_GE(point.u(mpc::kAccel), -model.max_brake_decel()) << k;
+            EXPECT_GE(point.u(mpc::kSlack), 0.0) << k;
+        }
+    }
+    // Full braking from 3 m/s stops the car within the horizon, and it stays stopped.
+    EXPECT_EQ(guess.back().x(mpc::kVx), 0.0);
+    EXPECT_NEAR(guess.back().s, guess[guess.size() - 2].s, 1e-12);
 }
 
 // The controller's own QPs, from a lap of the oval near the grip limit, solved by OSQP.

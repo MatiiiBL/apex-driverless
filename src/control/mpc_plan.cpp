@@ -27,16 +27,6 @@ PlanStage blend(const PlanStage& a, const PlanStage& b, double w) {
     return out;
 }
 
-// The station of p on the reference near `hint`, continuing `previous` without wrapping.
-double locate_near(const Trajectory& reference, const Vec2& p, double previous, double hint,
-                   double window, double& lateral) {
-    const Trajectory::Projection projection = reference.project(p, reference.wrap_s(hint), window);
-    const PathCoordinates coords = extend_projection(reference, p, projection);
-    lateral = coords.lateral;
-    if (!reference.closed()) return coords.s;
-    return previous + reference.delta_s(reference.wrap_s(previous), coords.s);
-}
-
 }  // namespace
 
 PlanStage Plan::at(Time t) const {
@@ -64,27 +54,49 @@ PlanStage Plan::at(Time t) const {
     return blend(a, b, (t - a.time) / (b.time - a.time));
 }
 
-void guess_from_plan(const Plan& plan, const Trajectory& reference, const State& x0, double s0,
-                     Time t0, double dt, std::vector<StagePoint>& guess) {
+void rollout(const NominalModel& model, const Trajectory& reference, const State& x0, double s0,
+             double dt, std::vector<StagePoint>& guess) {
+    // RK4 substeps per stage: 12.5 ms keeps the stiff lateral dynamics at the 4 m/s blend
+    // (time constant ~15 ms) inside RK4's stability region.
+    constexpr int kSubsteps = 4;
+    const VehicleParams& p = model.params();
+    State x = x0;
     double s = s0;
     for (std::size_t k = 0; k < guess.size(); ++k) {
         StagePoint& point = guess[k];
-        const PlanStage stage = plan.at(t0 + static_cast<double>(k) * dt);
-        point.u << stage.steer_rate, stage.accel, stage.slack;
-        if (k == 0) {
-            point.s = s0;
-            point.x = x0;
-        } else {
-            const double hint = s + std::max(stage.vx, 0.0) * dt;
-            double lateral = 0.0;
-            s = locate_near(reference, stage.pose.position(), s, hint, 2.0 + stage.vx * dt,
-                            lateral);
-            point.s = s;
-            point.x << lateral, 0.0, stage.vx, stage.vy, stage.yaw_rate, stage.steer;
+        point.s = s;
+        point.x = x;
+        point.reference = sample_reference(reference, s);
+        if (k + 1 == guess.size()) break;
+        Input& u = point.u;
+        // The rate that keeps the angle within its limit by the next stage (or brings it back).
+        const double lo = std::max(-p.max_steer_rate, (-p.max_steer - x(kSteer)) / dt);
+        const double hi = std::min(p.max_steer_rate, (p.max_steer - x(kSteer)) / dt);
+        u(kSteerRate) = std::clamp(u(kSteerRate), std::min(lo, hi), std::max(lo, hi));
+        const double speed = std::max(x(kVx), 0.0);
+        u(kAccel) = std::clamp(u(kAccel), -model.max_brake_decel(), model.max_drive_accel(speed));
+        u(kSlack) = std::max(u(kSlack), 0.0);
+        const double curvature = point.reference.curvature;
+        State next = simulate(model, x, u, curvature, dt, kSubsteps);
+        if (next(kVx) <= 0.0) {
+            next(kVx) = 0.0;
+            next(kVy) = 0.0;
+            next(kYawRate) = 0.0;
         }
-        point.reference = sample_reference(reference, point.s);
-        if (k > 0) point.x(kHeading) = angle_diff(stage.pose.yaw, point.reference.yaw);
+        s +=
+            0.5 * dt * (path_speed(to_array(x), curvature) + path_speed(to_array(next), curvature));
+        x = next;
     }
+}
+
+void guess_from_plan(const NominalModel& model, const Plan& plan, const Trajectory& reference,
+                     const State& x0, double s0, Time t0, double dt,
+                     std::vector<StagePoint>& guess) {
+    for (std::size_t k = 0; k < guess.size(); ++k) {
+        const PlanStage stage = plan.at(t0 + static_cast<double>(k) * dt);
+        guess[k].u << stage.steer_rate, stage.accel, stage.slack;
+    }
+    rollout(model, reference, x0, s0, dt, guess);
 }
 
 void guess_from_reference(const NominalModel& model, const Trajectory& reference, const State& x0,

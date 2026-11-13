@@ -128,6 +128,62 @@ TEST_P(ControllerBehaviour, FollowsAReferenceReplannedEvery100Ms) {
     EXPECT_NEAR(samples.back().truth.vx, 8.0, 0.4);
 }
 
+// Lap 1 as the stack drives it: every 100 ms the exploration planner hands over a new open
+// path from the car to 25-30 m ahead, whose speed profile ends at rest there (the car must be
+// able to stop within what it has seen). The end moves forward with every replan, so the
+// previous plan's braking for it is always out of date; through the oval's curves the MPC used
+// to stall its QP solver on exactly that, fall back, and then linearize around its own
+// fallback until the commands oscillated between the limits.
+TEST_P(ControllerBehaviour, FollowsAnExplorationPathThatEndsAtRest) {
+    const Trajectory centerline = make_oval_track(40.0, 12.0).centerline;
+    const Pose2 start{centerline[0].position.x(), centerline[0].position.y(), centerline[0].yaw};
+    Plant plant(params_, start, 10.0);
+    const auto controller = make();
+    Trajectory window;
+    Time planned = -1.0;
+    int replans = 0;
+    auto reference_at = [&](Time now) -> const Trajectory& {
+        if (now >= planned + 0.1 - 1e-9) {
+            const double s = centerline.project(plant.truth().pose.position()).s;
+            const double ahead = 25.0 + 2.5 * static_cast<double>(replans % 3);
+            std::vector<TrajectoryPoint> points;
+            for (double d = 0.0; d <= ahead; d += 0.5) points.push_back(centerline.at(s + d));
+            window = Trajectory(std::move(points), false);
+            // As the planner's profile: from the car's speed, 12 m/s at most, braking to rest at
+            // the end as hard as the tires allow.
+            testing::SpeedLimits limits;
+            limits.top = 12.0;
+            limits.accel = 11.0;
+            limits.brake = 12.0;
+            limits.lateral = 12.0;
+            limits.start = std::max(plant.truth().vx, 1.0);
+            limits.end = 0.0;
+            testing::apply_speed_limits(window, limits);
+            planned = now;
+            ++replans;
+        }
+        return window;
+    };
+    // 12 s: a straight, a curve, the other straight and into the second curve.
+    const std::vector<LoopSample> samples =
+        testing::run_loop(*controller, plant, reference_at, 12.0);
+    double worst = 0.0;
+    double slowest = 1e9;
+    double accel_jumps = 0.0;  // squared change of the acceleration command between calls
+    for (std::size_t i = 0; i < samples.size(); ++i) {
+        const LoopSample& sample = samples[i];
+        worst = std::max(worst, std::abs(centerline.project(sample.truth.pose.position()).lateral));
+        if (sample.time > 1.0) slowest = std::min(slowest, sample.truth.vx);
+        if (i > 0) accel_jumps += std::pow(sample.command.accel - samples[i - 1].command.accel, 2);
+    }
+    EXPECT_EQ(controller->stats().solver_failures, 0U);
+    EXPECT_LT(worst, 0.2);
+    // It keeps going at the profile's pace (12 m/s on the straights, 11 m/s in the 12 m curves
+    // at 12 m/s^2) instead of braking for an end it never reaches.
+    EXPECT_GT(slowest, 9.0);
+    EXPECT_LT(std::sqrt(accel_jumps / static_cast<double>(samples.size())), 1.0);
+}
+
 // The exploration path ends where the car must have stopped: a profile down to 0 m/s.
 TEST_P(ControllerBehaviour, StopsAtTheEndOfAnOpenReference) {
     Trajectory line = testing::straight_reference({0.0, 0.0}, 0.0, 60.0, 0.0);

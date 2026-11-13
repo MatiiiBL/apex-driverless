@@ -31,18 +31,23 @@ void build_qp(const MpcConfig& config, const NominalModel& model,
     const double inset = 0.5 * p.body_width + config.lateral_margin;
     problem.stages.resize(n + 1);
     problem.x0 = guess[0].x;
-    // The speed target is the reference's, capped by what the car can reach from its current
-    // speed at the traction limit. A target far out of reach (the full profile, from rest)
-    // would make the QP chase it through the linearization's errors.
-    double reachable = std::max(guess[0].x(kVx), 0.0);
+    // The speed target is the reference's, clamped to what the car can reach from its current
+    // speed at the traction limits, both ways. A target far out of reach (the full profile from
+    // rest, or a raceline braking harder than the tires can) would make the QP chase it through
+    // the linearization's errors, and an unreachable dip (a replanned path's speed profile
+    // reacting to a kink in its first metre) would ask for full braking at one call and none at
+    // the next.
+    double fastest = std::max(guess[0].x(kVx), 0.0);
+    double slowest = fastest;
     for (std::size_t k = 0; k <= n; ++k) {
         const StagePoint& point = guess[k];
         const TrajectoryPoint& ref = point.reference;
         const double speed = std::max(point.x(kVx), 0.0);
         const AccelRange accel =
             model.traction_limits(speed, point.x(kVx) * point.x(kYawRate), config.grip_fraction);
-        const double target_speed = std::min(ref.speed, reachable);
-        reachable += accel.max * dt;
+        const double target_speed = std::clamp(ref.speed, slowest, fastest);
+        fastest += accel.max * dt;
+        slowest = std::max(slowest + accel.min * dt, 0.0);
         qp::OcpStage<kStates, kInputs>& stage = problem.stages[k];
 
         if (k < n) {
@@ -103,22 +108,11 @@ void build_qp(const MpcConfig& config, const NominalModel& model,
     }
 }
 
-void guess_from_solution(const Trajectory& reference, const Solution& solution, double dt,
-                         std::vector<StagePoint>& guess) {
-    double s = guess[0].s;
-    for (std::size_t k = 0; k < guess.size(); ++k) {
-        StagePoint& point = guess[k];
-        if (k > 0) {
-            const double curvature = guess[k - 1].reference.curvature;
-            s += 0.5 * dt *
-                 (path_speed(to_array(solution.x[k - 1]), curvature) +
-                  path_speed(to_array(solution.x[k]), curvature));
-        }
-        point.s = s;
-        point.x = solution.x[k];
-        point.u = solution.u[k];
-        point.reference = sample_reference(reference, s);
-    }
+void guess_from_solution(const NominalModel& model, const Trajectory& reference,
+                         const Solution& solution, double dt, std::vector<StagePoint>& guess) {
+    for (std::size_t k = 0; k < guess.size(); ++k) guess[k].u = solution.u[k];
+    const State x0 = guess[0].x;
+    rollout(model, reference, x0, guess[0].s, dt, guess);
 }
 
 }  // namespace apex::control::mpc
