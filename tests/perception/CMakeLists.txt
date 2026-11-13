@@ -8,4 +8,4 @@ apex_tests(perception
         ground_test.cpp
         perception_test.cpp
         scene.cpp
-    DEPS apex::perception)
+    DEPS apex::perception apex::sim)

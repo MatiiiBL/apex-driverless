@@ -10,6 +10,7 @@
 #include <nlohmann/json.hpp>
 
 #include "apex/core/track.hpp"
+#include "apex/sim/track_gen.hpp"
 
 #include "scene.hpp"
 
@@ -27,11 +28,14 @@ struct Scene {
     Pose2 body;  // car pose in the world
 };
 
-Scene oval_scene() {
+// The car on the centerline of the generator's "technical" layout (hairpins and chicanes, so
+// cones at every range and bearing), `s` meters past the timekeeping line, heading along it.
+Scene track_scene(double s = 30.0) {
+    static const Track track = sim::reference_track("technical");
     Scene scene;
-    const Track track = make_oval_track();
     scene.cones = track.cones;
-    scene.body = track.start_pose;
+    const TrajectoryPoint p = track.centerline.at(s);
+    scene.body = {p.position.x(), p.position.y(), p.yaw};
     return scene;
 }
 
@@ -62,51 +66,63 @@ Vec2 truth_in_body(const Scene& scene, std::int32_t id) {
 }
 
 TEST(ConePerception, FindsTheConesOfATrackWithNoFalsePositives) {
-    const Scene scene = oval_scene();
-    ConePerception perception(PerceptionConfig{}, scene.rig);
-    const LidarScan scan = scan_of(scene, 1);
-    const ConeObservations observations = perception.on_lidar(scan, 0.0);
-
-    std::map<std::int32_t, int> reported;
     double sum_sq = 0.0;
     int near = 0;
-    for (const ConeObservation& cone : observations.cones) {
-        ASSERT_GE(cone.truth_id, 0) << "false positive at " << cone.position.transpose();
-        ++reported[cone.truth_id];
-        const Vec2 truth = truth_in_body(scene, cone.truth_id);
-        const double error = (cone.position - truth).norm();
-        EXPECT_LT(error, 0.10) << "cone " << cone.truth_id;
-        if (truth.norm() < 20.0) {
-            sum_sq += error * error;
-            ++near;
+    for (const double s : {0.0, 45.0, 90.0, 135.0, 180.0, 225.0, 270.0}) {
+        const Scene scene = track_scene(s);
+        ConePerception perception(PerceptionConfig{}, scene.rig);
+        const LidarScan scan = scan_of(scene, static_cast<std::uint64_t>(s) + 1);
+        const ConeObservations observations = perception.on_lidar(scan, 0.0);
+
+        std::map<std::int32_t, int> reported;
+        for (const ConeObservation& cone : observations.cones) {
+            ASSERT_GE(cone.truth_id, 0)
+                << "false positive at " << cone.position.transpose() << ", s = " << s;
+            ++reported[cone.truth_id];
+            const Vec2 truth = truth_in_body(scene, cone.truth_id);
+            const double error = (cone.position - truth).norm();
+            EXPECT_LT(error, 0.10) << "cone " << cone.truth_id << ", s = " << s;
+            if (truth.norm() < 20.0) {
+                sum_sq += error * error;
+                ++near;
+            }
+            EXPECT_GT(cone.covariance.determinant(), 0.0);
+            EXPECT_EQ(cone.color, ConeColor::Unknown);  // no camera frames yet
         }
-        EXPECT_GT(cone.covariance.determinant(), 0.0);
-        EXPECT_EQ(cone.color, ConeColor::Unknown);  // no camera frames yet
-    }
-    for (const auto& [id, count] : reported) EXPECT_EQ(count, 1) << "cone " << id << " twice";
-    // Every cone within 20 m that the LiDAR sees well is found.
-    for (const auto& [id, returns] : returns_per_cone(scan)) {
-        if (truth_in_body(scene, id).norm() < 20.0 && returns >= 8) {
-            EXPECT_TRUE(reported.contains(id)) << "missed cone " << id;
+        for (const auto& [id, count] : reported) {
+            EXPECT_EQ(count, 1) << "cone " << id << " twice, s = " << s;
+        }
+        // Every cone within 20 m that the LiDAR sees well is found.
+        for (const auto& [id, returns] : returns_per_cone(scan)) {
+            if (truth_in_body(scene, id).norm() < 20.0 && returns >= 8) {
+                EXPECT_TRUE(reported.contains(id)) << "missed cone " << id << ", s = " << s;
+            }
+        }
+        for (std::size_t i = 1; i < observations.cones.size(); ++i) {
+            EXPECT_LE(observations.cones[i - 1].position.norm(),
+                      observations.cones[i].position.norm());
         }
     }
-    ASSERT_GE(near, 8);
+    ASSERT_GT(near, 50);
     EXPECT_LT(std::sqrt(sum_sq / near), 0.03);
-    for (std::size_t i = 1; i < observations.cones.size(); ++i) {
-        EXPECT_LE(observations.cones[i - 1].position.norm(), observations.cones[i].position.norm());
-    }
 }
 
 TEST(ConePerception, TakesColorsFromTheCamera) {
-    const Scene scene = oval_scene();
+    const Scene scene = track_scene();
     ConePerception perception(PerceptionConfig{}, scene.rig);
     perception.on_camera(camera_of(scene, 2, 0.0));
     const ConeObservations observations = perception.on_lidar(scan_of(scene, 2), 0.0);
     std::size_t colored = 0;
     for (const ConeObservation& cone : observations.cones) {
         const Cone& truth = scene.cones[static_cast<std::size_t>(cone.truth_id)];
-        if (truth_in_body(scene, cone.truth_id).norm() < 20.0) {
-            EXPECT_EQ(cone.color, truth.color) << "cone " << cone.truth_id;
+        // Cones the camera sees clearly: within 20 m, and a little inside its field of view.
+        const Vec2 from_camera =
+            truth_in_body(scene, cone.truth_id) - scene.rig.camera.mount.head<2>();
+        const double bearing = std::atan2(from_camera.y(), from_camera.x());
+        if (from_camera.norm() < 20.0 &&
+            std::abs(bearing) < 0.5 * scene.rig.camera.horizontal_fov - 0.05) {
+            EXPECT_EQ(cone.color, truth.color) << "cone " << cone.truth_id << ", bearing "
+                                               << bearing << ", range " << from_camera.norm();
         }
         if (cone.color != ConeColor::Unknown) {
             ++colored;
@@ -121,7 +137,7 @@ TEST(ConePerception, TakesColorsFromTheCamera) {
 }
 
 TEST(ConePerception, UsesTheClosestFrameAndCopesWithMissingOrLateFrames) {
-    const Scene scene = oval_scene();
+    const Scene scene = track_scene();
     ConePerception perception(PerceptionConfig{}, scene.rig);
     // Frames arrive out of order; the one at the scan's stamp has the true colors, the others
     // claim every cone is orange.
@@ -221,7 +237,7 @@ TEST(ConePerception, HandlesOccludedAndPartlyVisibleCones) {
 }
 
 TEST(ConePerception, DoesNotNeedTheExactMountHeight) {
-    Scene scene = oval_scene();
+    const Scene scene = track_scene();
     // The rig says 0.20 m; the LiDAR really sits 0.30 m up (a different car, a heavy pitch).
     ConePerception perception(PerceptionConfig{}, scene.rig);
     LidarSimOptions options;
@@ -240,7 +256,7 @@ TEST(ConePerception, DoesNotNeedTheExactMountHeight) {
 }
 
 TEST(ConePerception, IgnoresNonFiniteReturns) {
-    const Scene scene = oval_scene();
+    const Scene scene = track_scene();
     const LidarScan clean = scan_of(scene, 10);
     LidarScan dirty = clean;
     const float nan = std::numeric_limits<float>::quiet_NaN();
@@ -259,7 +275,7 @@ TEST(ConePerception, IgnoresNonFiniteReturns) {
 
 // Equal inputs give bit-identical outputs, across instances and repeated calls.
 TEST(ConePerception, IsDeterministic) {
-    const Scene scene = oval_scene();
+    const Scene scene = track_scene();
     const LidarScan scan = scan_of(scene, 11);
     const CameraFrame frame = camera_of(scene, 11);
     ConePerception a(PerceptionConfig{}, scene.rig);
@@ -281,7 +297,7 @@ TEST(ConePerception, IsDeterministic) {
 
 // Truth ids are for the evaluation only: scrambling them changes nothing else.
 TEST(ConePerception, NeverDecidesOnTruthIds) {
-    const Scene scene = oval_scene();
+    const Scene scene = track_scene();
     const LidarScan scan = scan_of(scene, 12);
     const CameraFrame frame = camera_of(scene, 12);
     LidarScan scrambled_scan = scan;
