@@ -5,7 +5,8 @@
 //       --out results/planning/exploration.json --example results/planning/exploration_example.json
 //
 // On 20 generated tracks, at two levels of map imperfection, the car drives the centerline from
-// its staging pose mapping the cones within 20 m ahead, and plans every 5 m from a pose up to
+// its staging pose mapping the cones within 20 m ahead (also 30 m, the estimator's new-landmark
+// range, for nominal maps), and plans every 5 m from a pose up to
 // 0.4 m and 0.1 rad off the centerline (test_support::evaluate_exploration). Prints JSON (and
 // writes it to --out): how often a path is found, how often it stays between the true cone
 // lines over its whole length, its deviation from the true centerline, its length, and plan()
@@ -52,7 +53,8 @@ double mean(const std::vector<double>& values) {
     return values.empty() ? 0.0 : sum / static_cast<double>(values.size());
 }
 
-json evaluate_level(const MapErrors& errors, const apex::planning::ExplorationConfig& config) {
+json evaluate_level(const MapErrors& errors, const apex::planning::ExplorationConfig& config,
+                    double sensor_range = ExplorationScenario{}.sensor_range) {
     std::size_t plans = 0;
     std::size_t found = 0;
     std::size_t inside = 0;
@@ -64,7 +66,10 @@ json evaluate_level(const MapErrors& errors, const apex::planning::ExplorationCo
     for (std::uint64_t seed = 1; seed <= kTracks; ++seed) {
         const apex::Track track = apex::sim::generate_track(seed);
         const std::vector<PlanRecord> records = apex::planning::test_support::evaluate_exploration(
-            track, ExplorationScenario{.errors = errors, .seed = seed, .plan_every = 5.0}, config);
+            track,
+            ExplorationScenario{
+                .errors = errors, .seed = seed, .plan_every = 5.0, .sensor_range = sensor_range},
+            config);
         std::size_t track_found = 0;
         std::size_t track_inside = 0;
         json failed_at = json::array();
@@ -207,7 +212,8 @@ int main(int argc, char** argv) {
         {"plan_every_m", 5.0},
         {"config", config},
         {"nominal", evaluate_level(MapErrors{}, config)},
-        {"worst", evaluate_level(apex::planning::test_support::worst_case_errors(), config)}};
+        {"worst", evaluate_level(apex::planning::test_support::worst_case_errors(), config)},
+        {"nominal_30m", evaluate_level(MapErrors{}, config, 30.0)}};
     std::cout << result.dump(2) << '\n';
     if (!out_path.empty()) std::ofstream(out_path) << result.dump(1) << '\n';
     if (!example_path.empty()) std::ofstream(example_path) << example(config).dump() << '\n';
