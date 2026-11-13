@@ -121,7 +121,28 @@ struct TrackModel {
 
 // ---- The raceline ----
 
-struct RacelineConfig {};
+struct RacelineConfig {
+    // Arc length between optimization points (m). The QP is dense in their number, so a 500 m
+    // track at 2.5 m has 200 variables.
+    double step = 2.5;
+    // Kept from each cone line on top of half the car's body width (m): the cones' own base
+    // radius (0.11 m) plus room for tracking error.
+    double safety_margin = 0.3;
+    // QPs solved, each linearized around the previous one's solution (Heilmeier et al. report
+    // two or three to be enough).
+    std::size_t iterations = 3;
+    // Bound on the path's curvature (1/m), below the nominal car's kinematic limit
+    // tan(max_steer) / wheelbase = 0.27 1/m.
+    double max_curvature = 0.25;
+    // Weight of the offsets' squares against the curvature term: it makes the QP strictly
+    // convex, so its solution is unique, and keeps the offsets from drifting where the
+    // curvature does not depend on them (constant offsets on straights).
+    double regularization = 1e-6;
+    std::size_t qp_max_iterations = 60;
+    double qp_tolerance = 1e-9;
+    double path_spacing = 0.5;  // m, sampling of Raceline::path
+    SpeedProfileConfig speed;
+};
 
 struct Raceline {
     Trajectory path;  // closed; speed, accel and free-space widths filled
@@ -140,5 +161,7 @@ void to_json(nlohmann::json& j, const SpeedProfileConfig& config);
 void from_json(const nlohmann::json& j, SpeedProfileConfig& config);
 void to_json(nlohmann::json& j, const TrackModelConfig& config);
 void from_json(const nlohmann::json& j, TrackModelConfig& config);
+void to_json(nlohmann::json& j, const RacelineConfig& config);
+void from_json(const nlohmann::json& j, RacelineConfig& config);
 
 }  // namespace apex::planning

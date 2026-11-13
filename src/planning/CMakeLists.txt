@@ -6,6 +6,7 @@ apex_module(planning
         ggv.cpp
         predicates.cpp
         qp_solver.cpp
+        raceline.cpp
         smoothing.cpp
         speed_profile.cpp
         track_model.cpp

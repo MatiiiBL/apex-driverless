@@ -22,6 +22,22 @@ TEST(PlanningConfigJson, SpeedProfileRoundTripAndPartialOverride) {
     EXPECT_THROW(json::parse(R"({"grip": 0.7})").get<SpeedProfileConfig>(), std::invalid_argument);
 }
 
+TEST(PlanningConfigJson, RacelineRoundTripWithNestedSpeedProfile) {
+    RacelineConfig config;
+    config.iterations = 5;
+    config.speed.grip_factor = 0.9;
+    const auto back = json(config).get<RacelineConfig>();
+    EXPECT_EQ(back.iterations, 5U);
+    EXPECT_DOUBLE_EQ(back.speed.grip_factor, 0.9);
+
+    const auto partial = json::parse(R"({"speed": {"max_speed": 20.0}})").get<RacelineConfig>();
+    EXPECT_DOUBLE_EQ(partial.speed.max_speed, 20.0);
+    EXPECT_DOUBLE_EQ(partial.speed.grip_factor, SpeedProfileConfig{}.grip_factor);
+    EXPECT_DOUBLE_EQ(partial.step, RacelineConfig{}.step);
+    EXPECT_THROW(json::parse(R"({"speed": {"grip": 1.0}})").get<RacelineConfig>(),
+                 std::invalid_argument);
+}
+
 TEST(PlanningConfigJson, TrackModelRoundTripAndPartialOverride) {
     TrackModelConfig config;
     config.max_gap = 20.0;

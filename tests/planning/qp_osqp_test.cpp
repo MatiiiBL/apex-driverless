@@ -7,6 +7,11 @@
 #include <gtest/gtest.h>
 
 #include "apex/core/rng.hpp"
+#include "apex/core/track.hpp"
+#include "apex/core/vehicle.hpp"
+#include "apex/planning/planning.hpp"
+#include "apex/planning/raceline.hpp"
+#include "apex/sim/track_gen.hpp"
 
 #include "osqp_reference.hpp"
 
@@ -58,6 +63,30 @@ TEST(QpSolverVsOsqp, RandomStrictlyConvexProblems) {
             << "trial " << trial;
         EXPECT_LT((ours.x - reference.x).lpNorm<Eigen::Infinity>(), 1e-5) << "trial " << trial;
         EXPECT_LE(ours.iterations, 30U) << "trial " << trial;
+    }
+}
+
+// The raceline's own QPs: minimum curvature on the oval and on a generated track, every
+// linearization. They are dense and ill-conditioned (offsets on straights barely change the
+// curvature), and the curvature bound adds 2n inequality rows.
+TEST(QpSolverVsOsqp, RacelineProblems) {
+    for (const Track& track : {make_oval_track(), sim::reference_track("technical")}) {
+        const TrackModel model{track.centerline, track.left_boundary(), track.right_boundary()};
+        RacelineTrace trace;
+        (void)optimize_raceline(model, VehicleParams{}, RacelineConfig{}, &trace);
+        ASSERT_FALSE(trace.problems.empty());
+        for (std::size_t i = 0; i < trace.problems.size(); ++i) {
+            const QpResult& ours = trace.results[i];
+            const test_support::OsqpResult reference =
+                test_support::solve_with_osqp(trace.problems[i].qp);
+            ASSERT_EQ(ours.status, QpStatus::Solved) << track.name << " QP " << i;
+            ASSERT_TRUE(reference.solved) << track.name << " QP " << i;
+            EXPECT_NEAR(ours.objective, reference.objective,
+                        1e-6 * (1.0 + std::abs(reference.objective)))
+                << track.name << " QP " << i;
+            EXPECT_LT((ours.x - reference.x).lpNorm<Eigen::Infinity>(), 1e-4)
+                << track.name << " QP " << i;
+        }
     }
 }
 

@@ -53,6 +53,28 @@ void from_json(const json& j, TrackModelConfig& c) {
     APEX_TRACK_MODEL_FIELDS(APEX_READ)
 }
 
+#define APEX_RACELINE_FIELDS(X) \
+    X(step)                     \
+    X(safety_margin)            \
+    X(iterations)               \
+    X(max_curvature)            \
+    X(regularization)           \
+    X(qp_max_iterations)        \
+    X(qp_tolerance)             \
+    X(path_spacing)             \
+    X(speed)
+
+void to_json(json& j, const RacelineConfig& c) {
+    j = json::object();
+    APEX_RACELINE_FIELDS(APEX_WRITE)
+}
+
+void from_json(const json& j, RacelineConfig& c) {
+    reject_unknown_keys(j, {APEX_RACELINE_FIELDS(APEX_NAME)}, "raceline config");
+    APEX_RACELINE_FIELDS(APEX_READ)
+}
+
+#undef APEX_RACELINE_FIELDS
 #undef APEX_TRACK_MODEL_FIELDS
 #undef APEX_SPEED_FIELDS
 #undef APEX_READ

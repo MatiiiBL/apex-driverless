@@ -11,6 +11,7 @@ set(planning_test_sources
     delaunay_test.cpp
     predicates_test.cpp
     qp_solver_test.cpp
+    raceline_test.cpp
     smoothing_test.cpp
     speed_profile_test.cpp
     track_model_test.cpp)
