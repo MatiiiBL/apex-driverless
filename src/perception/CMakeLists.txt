@@ -6,6 +6,7 @@ apex_module(perception
         clustering.cpp
         cone_model.cpp
         config.cpp
+        detector.cpp
         ground.cpp
         perception.cpp
     PUBLIC_DEPS apex::core)

@@ -1,12 +1,12 @@
 #include "apex/perception/perception.hpp"
 
 #include <algorithm>
-#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "apex/core/log.hpp"
+#include "apex/perception/detector.hpp"
 
 namespace apex::perception {
 namespace {
@@ -21,47 +21,31 @@ void validate(const VarianceModel& model, const char* name) {
     }
 }
 
-bool finite(const LidarPoint& p) {
-    return std::isfinite(p.x) && std::isfinite(p.y) && std::isfinite(p.z);
-}
-
 }  // namespace
 
 struct ConePerception::Impl {
-    Impl(const PerceptionConfig& c, const SensorRig& r)
-        : config(c),
-          rig(r),
-          ground(c.ground, r.lidar),
-          clusterer(c.clustering, r.lidar),
-          validator(c.cone_check, r.lidar, c.ground.threshold),
-          fusion(c.camera, r.camera) {
-        if (!(c.center_fit.range_sigma > 0.0) || c.center_fit.iterations < 0 ||
-            !(c.center_fit.big_cone_height > 0.0) ||
-            !std::isfinite(c.center_fit.big_cone_log_odds)) {
-            throw std::invalid_argument(
-                "CenterFitConfig: range_sigma and big_cone_height must be positive, iterations "
-                ">= 0, big_cone_log_odds finite");
-        }
+    Impl(const PerceptionConfig& c, const SensorRig& rig)
+        : covariance(c.covariance),
+          lidar_mount(rig.lidar.mount.head<2>()),
+          detector(c.ground, c.clustering, c.cone_check, c.center_fit, rig.lidar),
+          fusion(c.camera, rig.camera) {
         validate(c.covariance.radial, "radial");
         validate(c.covariance.tangential, "tangential");
     }
 
     ConeObservations on_lidar(const LidarScan& scan, double yaw_rate);
     void on_camera(const CameraFrame& frame);
+    void count(const DetectionReport& report, std::size_t points);
 
-    PerceptionConfig config;
-    SensorRig rig;
-    GroundEstimator ground;
-    GridClusterer clusterer;
-    ConeValidator validator;
+    CovarianceModel covariance;
+    Vec2 lidar_mount;
+    ConeDetector detector;
     CameraFusion fusion;
     PerceptionStats stats;
     bool ground_ok = true;
 
     // Per-scan scratch, kept to avoid reallocating every scan.
-    std::vector<ObstaclePoint> obstacles;
-    Clusters clusters;
-    std::vector<std::int32_t> truth_scratch;
+    std::vector<DetectedCone> detected;
     std::vector<Vec2> positions;
     std::vector<ColorMatch> colors;
 };
@@ -80,49 +64,40 @@ void ConePerception::Impl::on_camera(const CameraFrame& frame) {
     }
 }
 
+void ConePerception::Impl::count(const DetectionReport& report, std::size_t points) {
+    ++stats.scans;
+    stats.points += points;
+    stats.invalid_points += report.invalid_points;
+    stats.obstacle_points += report.obstacle_points;
+    stats.clusters += report.clusters;
+    for (std::size_t i = 0; i < kConeCheckCount; ++i) stats.cone_checks[i] += report.cone_checks[i];
+    stats.non_finite_estimates += report.non_finite;
+    if (!report.ground.ok) ++stats.ground_fallbacks;
+    if (report.ground.ok == ground_ok) return;
+    ground_ok = report.ground.ok;
+    if (ground_ok) {
+        log(LogLevel::Info, "perception: ground plane fit recovered ({} inliers)",
+            report.ground.inliers);
+    } else {
+        log(LogLevel::Warn,
+            "perception: ground plane fit failed ({} seeds); keeping the previous "
+            "plane",
+            report.ground.seeds);
+    }
+}
+
 ConeObservations ConePerception::Impl::on_lidar(const LidarScan& scan, double yaw_rate) {
     const Stopwatch watch;
     ConeObservations result;
     result.stamp = scan.stamp;
-    ++stats.scans;
-    stats.points += scan.points.size();
-    stats.invalid_points += static_cast<std::size_t>(std::count_if(
-        scan.points.begin(), scan.points.end(), [](const LidarPoint& p) { return !finite(p); }));
+    count(detector.detect(scan.points, detected), scan.points.size());
 
-    const GroundFit fit = ground.fit(scan.points);
-    if (!fit.ok) ++stats.ground_fallbacks;
-    if (fit.ok != ground_ok) {
-        ground_ok = fit.ok;
-        if (fit.ok) {
-            log(LogLevel::Info, "perception: ground plane fit recovered ({} inliers)", fit.inliers);
-        } else {
-            log(LogLevel::Warn,
-                "perception: ground plane fit failed ({} seeds); keeping the "
-                "previous plane",
-                fit.seeds);
-        }
-    }
-    extract_obstacles(scan.points, fit.plane, config.ground.threshold, config.clustering.max_range,
-                      obstacles);
-    stats.obstacle_points += obstacles.size();
-    clusterer.cluster(obstacles, clusters);
-    stats.clusters += clusters.size();
-
-    const double sensor_height = fit.plane.sensor_height();
-    const Vec2 mount = rig.lidar.mount.head<2>();
-    for (std::size_t k = 0; k < clusters.size(); ++k) {
-        const std::span<const std::uint32_t> members = clusters[k];
-        const ClusterSummary summary = summarize_cluster(obstacles, members);
-        const ConeCheck check = validator.check(summary, sensor_height);
-        ++stats.cone_checks[static_cast<std::size_t>(check)];
-        if (check != ConeCheck::Accepted) continue;
-
-        const Vec2 center = fit_cone(obstacles, members, summary, config.center_fit).fit.center;
+    for (const DetectedCone& d : detected) {
         ConeObservation cone;
-        cone.position = center + mount;
-        cone.covariance = observation_covariance(config.covariance, center, members.size());
-        cone.truth_id = majority_truth_id(obstacles, members, truth_scratch);
-        if (!cone.position.allFinite() || !cone.covariance.allFinite()) {
+        cone.position = d.center + lidar_mount;
+        cone.covariance = observation_covariance(covariance, d.center, d.points);
+        cone.truth_id = d.truth_id;
+        if (!cone.covariance.allFinite()) {
             ++stats.non_finite_estimates;
             continue;
         }

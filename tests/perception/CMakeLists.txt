@@ -5,6 +5,7 @@ apex_tests(perception
         camera_fusion_test.cpp
         clustering_test.cpp
         cone_model_test.cpp
+        detector_test.cpp
         ground_test.cpp
         perception_test.cpp
         scene.cpp
