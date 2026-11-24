@@ -524,7 +524,12 @@ The MPC now runs all four laps of every track without a cone or an excursion, wi
 the oracles; its lap 1 is 1.5-1.7 s slower on average than Stanley's (it brakes for the end of
 each short path the planner hands it; 0.2-0.3 s of that came with the steered rollout). Pure
 pursuit knocked 5-6 cones per run in lap 1 with a 1.5 m minimum lookahead, all at walking pace
-in tight corners; the 2 m minimum ("Pure pursuit") brings that to under one.
+in tight corners; the 2 m minimum ("Pure pursuit") brings that to under one. Most of the gap to
+Stanley was the planner's: its paths stopped short of hairpins and began with a kink, and the
+MPC, which brakes ahead for the dips its horizon sees, slowed for both where Stanley, following
+the speed at the car, barely did. With both fixed (docs/planning.md, "Curvature against
+length" and "The free start") the MPC's lap 1 is 0.2 s behind Stanley's in the evaluation's
+controller ablation (35.93 against 35.73 s; docs/evaluation.md).
 
 ## The stop and the switch at speed
 

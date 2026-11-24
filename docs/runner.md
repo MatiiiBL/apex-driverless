@@ -153,7 +153,7 @@ and averages the difference of their mean racing laps over the pairs where both 
 ## Performance
 
 `bench/runner/apex_runner_bench` races the full stack once on each reference layout and then
-reruns the three as a sweep on 1, 2 and 3 threads. Release build at commit f8037da, Apple M4,
+reruns the three as a sweep on 1, 2 and 3 threads. Release build at commit 8e568dc, Apple M4,
 nothing else running (results/runs/compute.md has the machine and every module's benchmark):
 
 ```
@@ -163,14 +163,14 @@ build/release/bench/runner/apex_runner_bench            # 3 laps with the MPC; [
 
 | Layout | Real-time factor | Simulator tick (mean) | Perception scan p50 / p99 | Estimator cone update p50 / p99 | Exploration plan p50 / p99 | MPC p50 / p99 |
 |---|---|---|---|---|---|---|
-| technical | 43.6× | 5.8 µs | 202 / 269 µs | 117 / 517 µs | 54 / 90 µs | 252 / 341 µs |
-| flowing | 43.6× | 5.8 µs | 190 / 236 µs | 86 / 457 µs | 47 / 72 µs | 252 / 315 µs |
-| mixed | 43.8× | 5.8 µs | 194 / 238 µs | 89 / 567 µs | 49 / 75 µs | 252 / 328 µs |
+| technical | 43.0× | 6.0 µs | 204 / 302 µs | 119 / 536 µs | 58 / 107 µs | 254 / 358 µs |
+| flowing | 43.3× | 5.9 µs | 191 / 238 µs | 88 / 429 µs | 48 / 97 µs | 252 / 318 µs |
+| mixed | 43.7× | 5.9 µs | 194 / 239 µs | 89 / 554 µs | 51 / 101 µs | 252 / 325 µs |
 
 The MPC's command is most of a run's compute: with Stanley (7 µs a command;
-`apex_runner_bench 3 stanley`) the same runs go 97.6 times faster than real time. The
+`apex_runner_bench 3 stanley`) the same runs go 94 to 96 times faster than real time. The
 simulator's tick includes the LiDAR's 57 600 rays every 100 ms, amortized; a whole scan through
-perception, estimation and planning costs 0.3 ms at the median and 0.8 ms at p99, against a
+perception, estimation and planning costs 0.3 ms at the median and 0.9 ms at p99, against a
 100 ms period. The sweep pool runs the three layouts 2.8 times faster on three threads than on
 one (each run is one thread, and three runs keep three threads busy).
 

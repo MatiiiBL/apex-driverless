@@ -1,7 +1,10 @@
 # Compute
 
-Measured once at commit f8037da, after the evaluation's sweeps, with nothing else running on the
-machine (load average 1.2 at the start): an Apple M4 (4 performance and 6 efficiency cores,
+Measured at commit f8037da, after the evaluation's sweeps, with nothing else running on the
+machine (load average 1.2 at the start). The full stack (`apex_runner_bench`) and the
+exploration planner were measured again at commit 8e568dc, after the planner's changes, the
+machine otherwise idle (load average 1.6); the other modules' benchmarks are those of f8037da,
+their code unchanged since. The machine is an Apple M4 (4 performance and 6 efficiency cores,
 16 GB), macOS 27.0.1, Apple clang 21.0.0, the Release preset (`-O3 -DNDEBUG`). The programs ran
 one after the other, each once, in 1 min 41 s in all; each is single-threaded except the
 scaling part of `apex_runner_bench`. Times are wall-clock per call (`Stopwatch` and
@@ -27,15 +30,15 @@ unchanged.
 
 | Work | Budget (p99) | Module benchmark, p50 / p99 | Full stack, p50 / p99 |
 |---|---|---|---|
-| Perception, one LiDAR scan | 10 ms | 198 / 244 µs | 202 / 269 µs |
-| Estimation, one cone update (200 landmarks) | 5 ms | 294 / 423 µs | 117 / 567 µs |
-| Estimation, one IMU prediction | 0.05 ms | 0.2 / 0.2 µs | 0.1 / 0.2 µs |
-| Exploration plan | 10 ms | 38 / 83 µs | 54 / 90 µs |
-| Raceline optimization (once) | 2 s | 22 ms (p50), 50 ms (max) | 13 to 38 ms |
-| Controller (MPC), one command | 2 ms | 253 / 325 µs | 252 / 341 µs |
-| Simulator, one tick with sensors | 10× real time over a run | 165× real time | 43.6× real time, stack included |
+| Perception, one LiDAR scan | 10 ms | 198 / 244 µs | 204 / 302 µs |
+| Estimation, one cone update (200 landmarks) | 5 ms | 294 / 423 µs | 119 / 554 µs |
+| Estimation, one IMU prediction | 0.05 ms | 0.2 / 0.2 µs | 0.1 / 0.25 µs |
+| Exploration plan | 10 ms | 40 / 101 µs | 58 / 107 µs |
+| Raceline optimization (once) | 2 s | 22 ms (p50), 50 ms (max) | 14 to 38 ms |
+| Controller (MPC), one command | 2 ms | 253 / 325 µs | 254 / 358 µs |
+| Simulator, one tick with sensors | 10× real time over a run | 165× real time | 43.0× real time, stack included |
 
-Every module is within its budget at p99; the tightest is the MPC, at 341 µs against 2 ms.
+Every module is within its budget at p99; the tightest is the MPC, at 358 µs against 2 ms.
 
 **Module benchmark**, each module's own program:
 
@@ -43,8 +46,8 @@ Every module is within its budget at p99; the tightest is the MPC, at 341 µs ag
 - Estimation: `apex_estimation_bench`'s cone updates while the map holds 200 to 250 landmarks
   (124 updates, 8.7 observations each); the prediction over every map size.
 - Exploration: `plan()` 1 442 times on 20 generated tracks with nominal maps
-  (`apex_planning_exploration_eval`; 34 / 70 µs with the worst maps, 48 / 83 µs mapping out to
-  30 m).
+  (`apex_planning_exploration_eval`; 37 / 92 µs with the worst maps, 51 / 102 µs mapping out to
+  30 m; at f8037da, before the paths grew 2 m longer, 38 / 83 µs nominal).
 - Raceline: 60 optimizations, on 20 tracks with the true track and two map levels
   (`apex_planning_raceline_eval`).
 - Controller: the MPC's eight base runs of `apex_control_closed_loop_eval` (median p50, highest
@@ -59,19 +62,22 @@ once per run.
 
 | Layout | Real-time factor | Simulator tick (mean) | Perception p50 / p99 | Cone update p50 / p99 | Exploration p50 / p99 | MPC p50 / p99 | Whole scan p50 / p99 |
 |---|---|---|---|---|---|---|---|
-| technical | 43.6× | 5.8 µs | 202 / 269 µs | 117 / 517 µs | 54 / 90 µs | 252 / 341 µs | 338 / 789 µs |
-| flowing | 43.6× | 5.8 µs | 190 / 236 µs | 86 / 457 µs | 47 / 72 µs | 252 / 315 µs | 294 / 708 µs |
-| mixed | 43.8× | 5.8 µs | 194 / 238 µs | 89 / 567 µs | 49 / 75 µs | 252 / 328 µs | 306 / 799 µs |
+| technical | 43.0× | 6.0 µs | 204 / 302 µs | 119 / 536 µs | 58 / 107 µs | 254 / 358 µs | 343 / 808 µs |
+| flowing | 43.3× | 5.9 µs | 191 / 238 µs | 88 / 429 µs | 48 / 97 µs | 252 / 318 µs | 295 / 718 µs |
+| mixed | 43.7× | 5.9 µs | 194 / 239 µs | 89 / 554 µs | 51 / 101 µs | 252 / 325 µs | 307 / 863 µs |
 
-A whole scan (perception, estimation and planning together) costs at most 0.8 ms against the
-LiDAR's 100 ms period, and a whole control step 342 µs against 20 ms. In the stack a cone update
-carries about 19 observations (16 203 in 870 scans on technical) against 8.7 in the estimation
+A whole scan (perception, estimation and planning together) costs at most 0.9 ms against the
+LiDAR's 100 ms period, and a whole control step 358 µs against 20 ms. In the stack a cone update
+carries about 19 observations (15 790 in 842 scans on technical) against 8.7 in the estimation
 benchmark: the likely reason its p99 is higher at a similar map size.
-The sweep pool runs the three layouts in 6.45 s on one thread, 4.23 s on two (1.53×, with three
-runs for two threads) and 2.29 s on three (2.82×).
+The sweep pool runs the three layouts in 6.32 s on one thread, 4.14 s on two (1.53×, with three
+runs for two threads) and 2.26 s on three (2.79×). At f8037da, before lap 1 got faster, the
+runs went 43.6 to 43.8 times faster than real time, with every p99 within 10% of these except
+technical's perception (269 µs) and the exploration plan's on every layout (72 to 90 µs, for
+paths 2 m shorter).
 
 The evaluation's sweeps time every module too (results/runs/README.md), but with eight runs at
-once: their p99 are 2.2 to 2.4 times those above, and are not used.
+once: their p99 are 1.8 to 2.2 times those above, and are not used.
 
 ## Against the modules' own results
 
@@ -80,7 +86,7 @@ once: their p99 are 2.2 to 2.4 times those above, and are not used.
 | sim | world 165× real time, tick p99 12 µs; LiDAR scan p50 0.47 ms; vehicle step 0.35 µs; camera frame p50 5 µs | 42.7×, 1.09 ms; 1.54 ms; 1.2 µs; 15 µs (results/sim/bench.json) | 3 to 4 times slower in the file, recorded at a load average of about 130 (results/sim/README.md) |
 | perception | `on_lidar` 198 / 244 µs, max 310 µs | 215 / 484 µs, max 1 154 µs (results/perception/summary.md) | p99 twice as high in the file, recorded with five other workers running (docs/perception.md) |
 | estimation | update at 200-250 landmarks 294 / 423 µs; prediction 0.2 µs | 296 / 426 µs; 0.2 µs (results/estimation/latency.json) | none |
-| planning, exploration | 38 / 83 µs | 38 / 83 µs (results/planning/exploration.json) | none |
+| planning, exploration | 40 / 101 µs | 39 / 97 µs (results/planning/exploration.json) | none |
 | planning, raceline | 22 ms p50, 50 ms max | 32 ms, 97 ms (results/planning/raceline.json) | 1.5 to 2 times slower in the file, measured on a shared machine (results/planning/README.md) |
 | planning, QP | raceline QPs, median: 7.0 ms, OSQP 99 ms | 10.0 ms, 129 ms (results/planning/qp.json) | 1.4 times slower in the file; the same ratio to OSQP |
 | control, closed loop | MPC 253 / 325 µs; Stanley 6.9 / 7.3 µs; pure pursuit 13.2 / 14.5 µs | 263 / 579 µs; 9.9 / 14.0 µs; 22.8 / 34.1 µs (results/control/closed_loop.md) | p99 up to 1.8 times higher in the file, and Stanley's and pure pursuit's p50 1.4 to 1.7 times |

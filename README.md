@@ -30,24 +30,24 @@ seeds each. Every number comes from [`results/runs/`](results/runs/) and is expl
 |---|---|---|
 | Ten-lap runs completed | **33 / 33** | 33 / 33 |
 | Cones knocked, off-course excursions | **0, 0** | 0, 0 |
-| Lap 1, exploring (mean) | 40.06 s | 40.26 s |
+| Lap 1, exploring (mean) | **36.75 s** | 36.91 s |
 | Racing lap, laps 2-10 (mean) | **23.83 s** | 23.79 s |
 | Gap to the oracle per racing lap | **0.04 s (0.18 %)** | |
-| Laps 3-10 against the raceline's predicted lap time | 0.13-0.42 % slower | 0.07-0.15 % slower |
+| Laps 3-10 against the raceline's predicted lap time | 0.14-0.41 % slower | 0.07-0.15 % slower |
 
 | What | Result |
 |---|---|
 | Map after lap 1 | One landmark per cone on every track (109-216 cones), no duplicates, every color right; **1.4 cm** median RMS error |
-| Localization | 2.8 cm RMS while mapping, **1.7 cm** while racing (medians) |
-| Data association | **100 % precision** over 1.34 million matches, 99.3 % recall |
-| Path tracking (MPC) | **2.6 cm** RMS lateral error while racing, against 10.6 cm for Stanley and 11.7 cm for pure pursuit |
-| Compute, one core of an Apple M4 | Every module inside its budget at p99. MPC 341 µs (budget 2 ms), perception 269 µs (10 ms), cone update 567 µs (5 ms), exploration plan 90 µs (10 ms), raceline 13-38 ms (2 s). The whole loop runs 43.6× faster than real time |
-| Robustness | Every run finishes with no penalty from noiseless sensors to **4×** the default noise, with 4× the processing latency, with twice the actuator delay (even when the MPC is not told), and with 20 % less grip than the planner assumes. At 30 % less grip, 6 of 12 runs fail (see Limitations) |
+| Localization | 2.7 cm RMS while mapping, **1.8 cm** while racing (medians) |
+| Data association | **100 % precision** over 1.33 million matches, 99.3 % recall |
+| Path tracking (MPC) | **2.8 cm** RMS lateral error while racing, against 10.5 cm for Stanley and 11.6 cm for pure pursuit |
+| Compute, one core of an Apple M4 | Every module inside its budget at p99. MPC 358 µs (budget 2 ms), perception 302 µs (10 ms), cone update 554 µs (5 ms), exploration plan 107 µs (10 ms), raceline 14-38 ms (2 s). The whole loop runs 43.0× faster than real time |
+| Robustness | Every run finishes with no penalty from noiseless sensors to **2×** the default noise, with 4× the processing latency, with twice the actuator delay (even when the MPC is not told), and with 20 % less grip than the planner assumes. At **4×** the noise every run finishes, with 5 cones in 12 runs, all in racing laps. At 30 % less grip, 6 of 12 runs fail (see Limitations) |
 | Raceline | **9-10 % faster** than the track's centerline, keeping 0.2 m between the car's body and the cones |
 | Own QP solvers against OSQP | Raceline QP **13× faster** (10 ms vs 129 ms at 1e-9). MPC QP, a Riccati interior-point method, **4.7-6.7× faster** at horizons 20-60 |
-| Code | 21k lines of C++ (libraries and CLI), 13k lines of tests (507 tests), CI on GCC 14, Clang 18 and Apple Clang with ASan, UBSan and TSan |
+| Code | 21k lines of C++ (libraries and CLI), 13k lines of tests (510 tests), CI on GCC 14, Clang 18 and Apple Clang with ASan, UBSan and TSan |
 
-![Mean speed per lap: lap 1 explores at 9.5 m/s, laps 2-10 race at 16 m/s](docs/img/evaluation-laps.png)
+![Mean speed per lap: lap 1 explores at 10.4 m/s, laps 2-10 race at 16 m/s](docs/img/evaluation-laps.png)
 
 ## Quick start
 
@@ -57,7 +57,7 @@ downloads the four dependencies, pinned by checksum.
 
 ```sh
 git clone https://github.com/MatiiiBL/apex-driverless.git && cd apex-driverless
-make check                     # format check, dev build, all 507 tests (1.5 min from a fresh clone)
+make check                     # format check, dev build, all 510 tests (1.5 min from a fresh clone)
 make PRESET=release build      # optimized build for runs and benchmarks
 
 # A random trackdrive circuit, and one full ten-lap run on a reference layout
@@ -132,7 +132,7 @@ for the online map's error.
 **Planning** ([docs/planning.md](docs/planning.md)). Lap 1 uses a Delaunay triangulation of
 the mapped cones, built on exact geometric predicates. A beam search over edge midpoints is
 scored on width, curvature, colors and spacing, and the chosen path ends at rest before the
-edge of what has been seen. On nominal maps it finds a path in 99.3 % of plans, and 98.3 % of
+edge of what has been seen. On nominal maps it finds a path in 99.5 % of plans, and 98.5 % of
 all plans stay inside the true cone lines. After lap 1 it orders the cones into two
 boundaries and solves a minimum-curvature raceline as a QP with its own interior-point solver
 (Heilmeier et al., 2020). The speed profile is a forward-backward pass over a g-g-v envelope
@@ -166,6 +166,12 @@ test.
   of its previous plan, which near an axle's grip limit spins the model. The MPC then steered to
   full lock the wrong way. Rollouts are now steered along the path, which fixed both failures
   seen at speed: the switch to the raceline and the stop after the last lap.
+- **Lap 1 crawled through every hairpin.** The exploration planner scores each crossed edge's
+  curvature against a reward for length, and charged per edge, a 6-8 m hairpin cost more than it
+  earned: the best path stopped before the bend although its cones were mapped. Then the
+  straight run from the car to the first midpoint, smoothed as if it were track, kinked every
+  path's first metres, and the speed profile slowed the car to 4-5 m/s for a kink it never
+  drives. Charging curvature per meter and leaving that run free made lap 1 3.3 s faster.
 - **A 20 m mapping horizon on a 30 m sensor.** Observations were fused out to 30 m, but new
   landmarks started only within 20 m. Every cone seen early was discarded, and at three times
   the sensor noise the map stopped growing before the car moved. One constant fixed both that
@@ -193,9 +199,9 @@ test.
 ## Testing
 
 `make check` runs clang-format, the dev build (`-O2`, assertions on, every warning an error) and
-all 507 tests. These cover each module's unit tests, the reference oracles above, and
+all 510 tests. These cover each module's unit tests, the reference oracles above, and
 closed-loop runs of the full stack that must finish two laps with no penalty. The suite runs
-in about 8 s on three cores. CI runs it on Ubuntu with GCC 14 and Clang 18 and on macOS with Apple
+in about 7 s on three cores. CI runs it on Ubuntu with GCC 14 and Clang 18 and on macOS with Apple
 Clang, in release and AddressSanitizer + UBSan builds, and runs the sweep's thread pool under
 ThreadSanitizer with Clang 18 (`ctest --preset tsan -L runner`, the runner's 93 tests).
 

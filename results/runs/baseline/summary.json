@@ -1,58 +1,58 @@
 [
   {
     "association_precision": 1.0,
-    "association_recall": 0.9928585386651507,
+    "association_recall": 0.9927737190744909,
     "completed": 33,
     "compute": {
       "controller": {
-        "p50_us": 379.8852424242425,
-        "p99_us": 750.625
+        "p50_us": 367.80169696969693,
+        "p99_us": 748.0
       },
       "estimation_predict": {
-        "p50_us": 0.20621212121212107,
-        "p99_us": 0.5419999999999999
+        "p50_us": 0.19851515151515145,
+        "p99_us": 0.5
       },
       "estimation_update": {
-        "p50_us": 162.24375757575757,
-        "p99_us": 1241.5
+        "p50_us": 157.33469696969692,
+        "p99_us": 1224.375
       },
       "exploration": {
-        "p50_us": 80.38763636363636,
-        "p99_us": 216.958
+        "p50_us": 89.28675757575755,
+        "p99_us": 229.91600000000003
       },
       "perception": {
-        "p50_us": 289.7322121212121,
-        "p99_us": 595.417
+        "p50_us": 281.7728181818182,
+        "p99_us": 556.5830000000001
       },
       "stack_control": {
-        "p50_us": 379.85109090909106,
-        "p99_us": 751.334
+        "p50_us": 367.76639393939405,
+        "p99_us": 748.5
       },
       "stack_scan": {
-        "p50_us": 478.53533333333337,
-        "p99_us": 1823.375
+        "p50_us": 463.1919696969698,
+        "p99_us": 1882.2089999999998
       }
     },
     "cones_hit": 0.0,
     "dnf_reasons": {},
     "errors": 0,
     "gap_pairs": 33,
-    "gap_to_oracle": 0.04173120974549858,
-    "lap1": 40.05790701424223,
-    "localization_lap1": 0.03996059972029111,
-    "localization_racing": 0.024211539646561874,
+    "gap_to_oracle": 0.04230445718406956,
+    "lap1": 36.74795452249945,
+    "localization_lap1": 0.037857406946832955,
+    "localization_racing": 0.024120581451971806,
     "map_coverage": 1.0,
-    "map_rms": 0.019677587968601053,
-    "max_lateral_true": 0.7820040944371961,
+    "map_rms": 0.018926914493871207,
+    "max_lateral_true": 0.780444650973171,
     "off_course": 0.0,
     "penalty_seconds": 0.0,
-    "racing_best": 14.562293380834987,
-    "racing_mean": 23.827643572246796,
+    "racing_best": 14.557850839787136,
+    "racing_mean": 23.82574461245967,
     "runs": 33,
     "stopped": 33,
-    "tracking_racing": 0.026233190537302484,
+    "tracking_racing": 0.027886037703749613,
     "variant": "stack",
-    "yaw_racing": 0.00040358265878011297
+    "yaw_racing": 0.0004009773148954947
   },
   {
     "association_precision": 1.0,
@@ -60,20 +60,20 @@
     "completed": 33,
     "compute": {
       "controller": {
-        "p50_us": 412.02912121212125,
-        "p99_us": 746.333
+        "p50_us": 408.17424242424255,
+        "p99_us": 748.125
       },
       "exploration": {
-        "p50_us": 90.21851515151515,
-        "p99_us": 203.875
+        "p50_us": 103.8711515151515,
+        "p99_us": 235.75
       },
       "stack_control": {
-        "p50_us": 411.81312121212113,
-        "p99_us": 746.583
+        "p50_us": 407.9521515151516,
+        "p99_us": 748.416
       },
       "stack_scan": {
-        "p50_us": 9.463393939393939,
-        "p99_us": 179.583
+        "p50_us": 9.907848484848484,
+        "p99_us": 208.042
       }
     },
     "cones_hit": 0.0,
@@ -81,19 +81,19 @@
     "errors": 0,
     "gap_pairs": 0,
     "gap_to_oracle": null,
-    "lap1": 40.26089543625022,
+    "lap1": 36.91034461593685,
     "localization_lap1": 0.0,
     "localization_racing": 0.0,
     "map_coverage": 1.0,
-    "map_rms": 0.0016106265805050715,
-    "max_lateral_true": 0.7628992959970565,
+    "map_rms": 0.001701655659197758,
+    "max_lateral_true": 0.7644732853415386,
     "off_course": 0.0,
     "penalty_seconds": 0.0,
-    "racing_best": 14.551426019335764,
-    "racing_mean": 23.7859123625013,
+    "racing_best": 14.551521002184472,
+    "racing_mean": 23.7834401552756,
     "runs": 33,
     "stopped": 33,
-    "tracking_racing": 0.027435240041380895,
+    "tracking_racing": 0.029247661781081645,
     "variant": "oracle",
     "yaw_racing": 0.0
   }

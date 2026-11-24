@@ -430,10 +430,12 @@ car's computer gives the estimator.
   tried before the state and rejected: at the one-second horizon of local tracking it is twenty
   times too large, and it made every other run worse (racing pose RMS 0.04 → 0.25 m with
   perception).
-- **At three times the sensor noise and more the stack still stops at the start** (section 6),
-  though the estimator keeps mapping: the planner's first edge must lie within 6 m, and
-  perception then misses the cones that close. With the planner's start radius at 13 m the stack
-  explores, and at that noise five of twelve runs leave the track or stall.
+- **At three times the sensor noise and more perception misses the cones beside the staged
+  car** (section 6). The stack used to stop there with no path, though the estimator kept
+  mapping, because the planner's first edge had to lie within 6 m. The planner now starts from
+  the nearest usable edge further out when none is that close (docs/planning.md, "Start"), and
+  every run of the evaluation's noise ablation finishes at four times the noise
+  (docs/evaluation.md).
 - **A lap that drifts beyond the new-landmark gate maps its first cones again,** and nothing
   merges them later: the estimator has no loop-closure search beyond the gates. In the stack's 33
   baseline runs at 30 m, the online pose error on lap 1 peaks at 0.34 m (track 6 seed 3, flowing
