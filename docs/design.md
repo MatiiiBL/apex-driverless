@@ -380,4 +380,5 @@ CMake ≥ 3.25 with presets (`dev`, `asan`, `tsan`, `release`) and a Makefile wr
 `make check` = clang-format check + build + all tests, and must pass on every commit.
 Dependencies are fetched pinned by checksum: Eigen 3.4.1, nlohmann_json 3.12.0, GoogleTest 1.17.0,
 and OSQP 1.0.0 (tests and benchmarks only). CI (GitHub Actions) builds and tests on Ubuntu with
-GCC 14 and Clang 18 (ASan + release) and on macOS (Apple Clang, release), and checks formatting.
+GCC 14 and Clang 18 (ASan + release) and on macOS (Apple Clang, ASan + release), runs the
+runner's tests under ThreadSanitizer (Clang 18), and checks formatting.

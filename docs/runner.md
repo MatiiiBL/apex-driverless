@@ -141,8 +141,8 @@ taken from an atomic counter and writing its result into that run's own slot. Ru
 mutable state (each owns its World, Stack and Rng streams; the log level is an atomic), so a
 result never depends on the thread count or on which worker ran it. The tests check exactly
 that, with stub runs (`RunParallel.*`) and with real ones (`FullStack.SweepResultsIndependentOf
-ThreadCount`); under the tsan preset (`make PRESET=tsan test`) the same tests are the data-race
-check. A run that throws becomes a result with `error` set; the sweep goes on.
+ThreadCount`); under the tsan preset (`ctest --preset tsan -L runner`, also a CI job) the same
+tests are the data-race check. A run that throws becomes a result with `error` set; the sweep goes on.
 
 `summarize` groups the results by variant. Means are over the runs that have the value (a run
 that went off on lap 1 has no racing laps), penalties are per run, association is pooled

@@ -196,8 +196,8 @@ test.
 all 507 tests. These cover each module's unit tests, the reference oracles above, and
 closed-loop runs of the full stack that must finish two laps with no penalty. The suite runs
 in about 8 s on three cores. CI runs it on Ubuntu with GCC 14 and Clang 18 and on macOS with Apple
-Clang, in release and AddressSanitizer + UBSan builds. The `tsan` preset runs the sweep's thread
-pool under ThreadSanitizer (`ctest --preset tsan -L runner`).
+Clang, in release and AddressSanitizer + UBSan builds, and runs the sweep's thread pool under
+ThreadSanitizer with Clang 18 (`ctest --preset tsan -L runner`, the runner's 93 tests).
 
 ## Repository layout
 

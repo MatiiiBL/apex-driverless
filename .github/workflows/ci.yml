@@ -47,6 +47,29 @@ jobs:
       - name: Configure, build and test
         run: cmake --workflow --preset ${{ matrix.preset }}
 
+  # A sweep races many runs at once on a thread pool, and ThreadSanitizer checks that they share
+  # nothing (docs/runner.md, "Sweeps"). Only the runner uses threads, so only its tests run.
+  tsan:
+    name: Linux x86-64 · clang++-18 · tsan (runner)
+    runs-on: ubuntu-24.04
+    env:
+      CC: clang-18
+      CXX: clang++-18
+    steps:
+      - uses: actions/checkout@v7
+
+      # The same kernel setting as the asan jobs: ThreadSanitizer maps memory at fixed ranges.
+      - name: Make the kernel sanitizer-compatible
+        run: sudo sysctl vm.mmap_rnd_bits=28
+
+      - name: Configure and build the runner's tests
+        run: |
+          cmake --preset tsan
+          cmake --build --preset tsan --target apex_runner_tests apex
+
+      - name: Test the runner under ThreadSanitizer
+        run: ctest --preset tsan -L runner -j 4
+
   macos:
     name: macOS arm64 · Apple clang · ${{ matrix.preset }}
     runs-on: macos-15
