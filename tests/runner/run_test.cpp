@@ -1,5 +1,6 @@
 #include "apex/runner/run.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <map>
 #include <sstream>
@@ -232,9 +233,21 @@ TEST(RunClosedLoop, DeterministicAndRecorded) {
     std::string header;
     std::getline(lines, header);
     EXPECT_EQ(header.substr(0, 8), "t,state,");
+    EXPECT_TRUE(header.ends_with(",ref_speed,ref_ahead")) << header;
+    const auto fields = [](const std::string& line) { return std::ranges::count(line, ',') + 1; };
     std::size_t rows = 0;
-    for (std::string line; std::getline(lines, line);) ++rows;
+    std::size_t with_reference = 0;
+    for (std::string line; std::getline(lines, line);) {
+        ++rows;
+        EXPECT_EQ(fields(line), fields(header)) << line;
+        // The stand-in driver follows the closed centerline while it drives: a reference speed
+        // (the centerline's own, zero), and nothing "ahead" on a closed reference.
+        const std::string tail = line.substr(line.rfind(',', line.rfind(',') - 1) + 1);
+        EXPECT_TRUE(tail.ends_with(",nan")) << line;
+        if (!tail.starts_with("nan,")) ++with_reference;
+    }
     EXPECT_EQ(rows, log.rows());
+    EXPECT_GT(with_reference, rows / 2);
 
     const nlohmann::json& j = replay.replay();
     EXPECT_EQ(j["track"]["cones"].size(), small_oval().cones.size());

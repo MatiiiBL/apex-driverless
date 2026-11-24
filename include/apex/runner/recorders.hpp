@@ -16,8 +16,10 @@ namespace apex::runner {
 
 // One CSV row every `period` seconds of simulated time (at the first control step at or after
 // it): time, mission state, the true state, the driver's estimate, the command, the officials'
-// centerline position, laps and cone hits, and the size of the driver's map. Units are SI;
-// angles in radians.
+// centerline position, laps and cone hits, the size of the driver's map, and the reference the
+// driver tracks at the point nearest its estimate: the speed it asks for there and, for an open
+// reference (an exploration path), the length of it left ahead (nan without a reference, or
+// for a closed one). Units are SI; angles in radians.
 class CsvLog final : public RunObserver {
 public:
     // Throws std::invalid_argument for a non-positive period.

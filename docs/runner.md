@@ -178,7 +178,10 @@ one (each run is one thread, and three runs keep three threads busy).
 
 `RunObserver`s see the run after every control step and only read. `CsvLog` writes one row per
 `log_period` (0.1 s by default) with the time, the mission state, the true and estimated state,
-the command, the officials' centerline position, laps and cone hits, and the map size.
+the command, the officials' centerline position, laps and cone hits, the map size, and the
+reference at the estimated position: the speed it asks for there (`ref_speed`) and, on an
+exploration path, how much of it is left ahead (`ref_ahead`). Comparing `vx` with `ref_speed`
+and `ref_ahead` shows where lap 1 brakes for the end of what the planner has seen.
 `ReplayRecorder` keeps what an animation needs: the true and estimated pose at 20 Hz, the map
 every second while it is being built and once frozen, and the reference whenever it changes
 (at most every 0.5 s while exploring), with positions rounded to the millimeter.
