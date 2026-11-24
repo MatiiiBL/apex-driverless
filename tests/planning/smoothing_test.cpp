@@ -1,5 +1,6 @@
 #include "apex/planning/smoothing.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <vector>
@@ -112,6 +113,56 @@ TEST(SmoothPolyline, PinnedStartLeavesAlongTheGivenDirection) {
     }
     EXPECT_LT(first_turn, 0.75 * kHeadingError);
     EXPECT_LT(std::abs(result.back().y()), 0.01);
+}
+
+// The exploration planner's case: the car on a 7 m arc, heading along it, the first data point
+// 6 m further along the arc, and a straight run interpolated between them (the chord). Fitted,
+// the chord kinks the path where it leaves the pinned heading, and the path then runs straight
+// along it; left free, the path bends from the pinned start into the arc.
+TEST(SmoothPolyline, FreeStartBendsFromThePinnedStartIntoTheData) {
+    constexpr double kRadius = 7.0;
+    const auto on_arc = [&](double s) {
+        return Vec2{kRadius * std::sin(s / kRadius), kRadius * (1.0 - std::cos(s / kRadius))};
+    };
+    std::vector<Vec2> raw{on_arc(0.0)};
+    for (double s = 6.0; s <= 20.0; s += 2.0) raw.push_back(on_arc(s));
+    const std::vector<Vec2> even = resample_polyline(raw, false, 1.0);
+    const double chord = (raw[1] - raw[0]).norm();
+    const double spacing =
+        cumulative_length(raw, false).back() / static_cast<double>(even.size() - 1);
+    // The largest turn per meter between consecutive points over the first `until` meters.
+    const auto sharpest = [&](const std::vector<Vec2>& p, double until) {
+        double worst = 0.0;
+        for (std::size_t i = 1; i + 1 < p.size() && static_cast<double>(i) * spacing < until; ++i) {
+            const Vec2 before = p[i] - p[i - 1];
+            const Vec2 after = p[i + 1] - p[i];
+            const double turn = std::atan2(cross(before, after), before.dot(after));
+            worst = std::max(worst, std::abs(turn) / spacing);
+        }
+        return worst;
+    };
+    SmoothingOptions options{
+        .spacing = spacing, .cutoff_wavelength = 8.0, .start_direction = Vec2{1.0, 0.0}};
+    const std::vector<Vec2> fitted = smooth_polyline(even, options);
+    options.free_start = chord;
+    const std::vector<Vec2> free = smooth_polyline(even, options);
+
+    EXPECT_GT(sharpest(fitted, chord), 2.5 / kRadius);
+    // The first spacing is still pinned straight, so the path turns harder than the arc right
+    // after it, but less than half as hard as the kink.
+    EXPECT_LT(sharpest(free, chord + 2.0), 0.5 * sharpest(fitted, chord));
+    EXPECT_LT(sharpest(free, chord + 2.0), 1.6 / kRadius);
+    EXPECT_EQ(free.front(), even.front());
+    EXPECT_LT((free[1] - (free[0] + spacing * Vec2{1.0, 0.0})).norm(), 1e-12);
+    // Past the chord it lies on the arc again, as the data does: chords 2 m long, up to
+    // 2^2 / (8 R) = 7 cm inside it.
+    const Vec2 center{0.0, kRadius};
+    for (std::size_t i = 0; i < even.size(); ++i) {
+        const double s = static_cast<double>(i) * spacing;
+        if (s > chord + 2.0 && s < 16.0) {
+            EXPECT_LT(std::abs((free[i] - center).norm() - kRadius), 0.08) << i;
+        }
+    }
 }
 
 TEST(SmoothPolyline, RejectsBadOptionsAndPassesTinyInputsThrough) {

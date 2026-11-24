@@ -58,13 +58,17 @@ std::vector<Vec2> smooth_polyline(std::span<const Vec2> points, const SmoothingO
     const auto unknowns = static_cast<Eigen::Index>(n - first_unknown);
     const auto column = [&](std::size_t i) { return static_cast<Eigen::Index>(i - first_unknown); };
 
-    // Normal equations (I + lambda D'D) p = m - lambda D' k, with k the known part of each
-    // second difference, one row (p_{i-1}, p_i, p_{i+1}) at a time.
+    // Normal equations (W + lambda D'D) p = W m - lambda D' k, with W the data weights (1, or 0
+    // for a free start) and k the known part of each second difference, one row
+    // (p_{i-1}, p_i, p_{i+1}) at a time. With the first two points known, D has full column rank
+    // on the unknowns, so the system stays positive definite however many of them are free.
     std::vector<Eigen::Triplet<double>> entries;
     Eigen::MatrixX2d rhs(unknowns, 2);
     for (std::size_t i = first_unknown; i < n; ++i) {
-        entries.emplace_back(column(i), column(i), 1.0);
-        rhs.row(column(i)) = points[i].transpose();
+        const bool free = pinned && static_cast<double>(i) * options.spacing < options.free_start;
+        const double weight = free ? 0.0 : 1.0;
+        entries.emplace_back(column(i), column(i), weight);
+        rhs.row(column(i)) = weight * points[i].transpose();
     }
     const auto add_row = [&](const std::array<std::size_t, 3>& index) {
         constexpr std::array<double, 3> kWeights = {1.0, -2.0, 1.0};

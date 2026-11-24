@@ -27,18 +27,19 @@ without a color, 2 clutter landmarks per 100 m. Worst case: 15 cm, 20%, 10%, 50%
 | | Nominal | Worst case | Nominal, 30 m |
 |---|---|---|---|
 | Path found | 99.5% | 97.8% | 99.6% |
-| Inside the true cone lines, of the paths found | 98.8% | 95.8% | 98.5% |
-| Inside, of all plans | 98.3% | 93.7% | 98.1% |
+| Inside the true cone lines, of the paths found | 99.0% | 96.1% | 98.7% |
+| Inside, of all plans | 98.5% | 94.0% | 98.3% |
 | Mean distance from the true centerline | 0.11 m | 0.19 m | 0.11 m |
-| A path's largest distance from it, 95th percentile | 0.57 m | 1.60 m | 0.65 m |
+| A path's largest distance from it, 95th percentile | 0.54 m | 1.59 m | 0.65 m |
 | Mean path length | 18.3 m | 16.1 m | 22.4 m |
-| `plan()` latency p50 / p99 / max (budget p99 10 ms) | 40 / 100 / 112 us | 37 / 93 / 114 us | 51 / 100 / 109 us |
+| `plan()` latency p50 / p99 / max (budget p99 10 ms) | 39 / 97 / 111 us | 36 / 93 / 115 us | 51 / 101 / 108 us |
 
 Before the start search beyond 6 m and the 1 m cone clearance, nominal and worst-case maps
 found a path in 98.8% and 93.1% of the plans, 97.6% and 89.9% of all plans inside. Before the
 curvature cost was charged per meter (weight 3 per edge, now 0.6 per meter), the paths were
 16.4, 14.3 and 20.2 m long, 99.3%, 97.4% and 99.4% of the plans found one, and 98.3%, 93.7%
-and 98.3% of all plans were inside.
+and 98.3% of all plans were inside. Charged per meter but with the straight run from the car to
+the first midpoint fitted as data (before the free start), 98.3%, 93.7% and 98.1% were inside.
 
 `per_track` lists where each plan failed or left the track (`failed_at_m`, `outside_at_m`, m
 from the staging pose); `--plan <seed> <s> <level> <file>` exports one for plotting, and

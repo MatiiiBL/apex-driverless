@@ -174,9 +174,38 @@ the simulator computes.
 4. **Path.** The car's position and the midpoints are resampled every 1 m and smoothed with a
    Whittaker smoother (Whittaker 1923, as penalized least squares in Eilers, Analytical
    Chemistry 75(14), 2003; `smoothing.hpp`) with an 8 m cutoff wavelength, whose first two
-   points are pinned to the car's position and heading, then sampled every 0.5 m. The
-   free-space widths are the distances to the two cone lines the search found, extended back
-   past the car and a spacing beyond their last cone.
+   points are pinned to the car's position and heading, then sampled every 0.5 m. The points
+   between the car and the first midpoint are not data (`SmoothingOptions::free_start`): the
+   smoothness term alone places them. The free-space widths are the distances to the two cone
+   lines the search found, extended back past the car and a spacing beyond their last cone.
+
+   **The free start.** The first midpoint may be up to 6 m ahead, and in a curve the straight
+   run to it leaves the car's heading at an angle. Fitted as if it were track, that run kinked
+   the path where it left the pinned heading, and the path then ran straight along it: in the
+   first hairpin of generated track 1 (7 m) a path turned 37 degrees in its first 2 m, up to
+   0.62 1/m, where a circle tangent to the car's heading through the same midpoint has the
+   hairpin's own 0.14 1/m. The speed profile took the kink for a corner and capped the car at
+   4-5 m/s through every hairpin, for a kink the next plan, 100 ms later, never drives. Left
+   free, the run bends from the car into the midpoints; the first meter is still pinned along
+   the car's heading, so the path turns up to twice the hairpin's curvature right after it
+   (`StartsAlongTheCurveItIsIn`: 0.80 1/m fitted, 0.36 free, on a 6 m hairpin). The MPC, which
+   brakes ahead for what its horizon sees, gains most: over the 33 baseline runs its lap 1
+   fell from 37.90 to 36.75 s, faster in every run, with the racing laps unchanged and no
+   penalty, while Stanley's and pure pursuit's lap 1 moved by less than 0.05 s (they follow
+   the speed at the car, not the dip ahead of it); the MPC's lap 1 is now 0.2 s behind
+   Stanley's. On the open-loop evaluation below the paths are as long and slightly more often
+   inside the track. At four times the sensor noise, over 44 ten-lap runs (11 tracks, 4
+   seeds), the mean score fell from 252.31 to 251.29 s; the runs knocked 9 cones, against 4
+   before and 6 with the planner of the previous version, all of them in racing laps, where the
+   map and localization error of that noise (0.1-0.4 m at the hits) decides them, none while
+   exploring.
+
+   Pinning the start's curvature too, to the car's own (yaw rate over speed), removed that
+   residue on the test but failed in closed loop: every path then began turning as the car
+   was, so the controller kept turning, and the car never straightened out of a corner. Over
+   the 33 baseline tracks and seeds, lap 1 alone, the MPC knocked 9.1 cones per run, Stanley
+   finished 1 run of 33 and pure pursuit 22. A path planned from the car's own derivatives
+   closes a loop through the controller that nothing damps.
 5. **Speed.** The exploration speed config (grip factor 0.7, 12 m/s cap) from the car's current
    speed down to 0 m/s a fifth of the path's length (at least 1 m) before its end: the car can
    always stop within the cones it has seen, with room to spare when the next plan's path ends
@@ -214,21 +243,23 @@ is *inside* when every point of it is between the true cone lines. On 20 generat
 | | Nominal | Worst case | Nominal, 30 m |
 |---|---|---|---|
 | Path found | 99.5% | 97.8% | 99.6% |
-| Inside the true cone lines, of the paths found | 98.8% | 95.8% | 98.5% |
-| Inside, of all plans | 98.3% | 93.7% | 98.1% |
+| Inside the true cone lines, of the paths found | 99.0% | 96.1% | 98.7% |
+| Inside, of all plans | 98.5% | 94.0% | 98.3% |
 | Mean distance from the true centerline | 0.11 m | 0.19 m | 0.11 m |
-| A path's largest distance from it, 95th percentile | 0.57 m | 1.60 m | 0.65 m |
+| A path's largest distance from it, 95th percentile | 0.54 m | 1.59 m | 0.65 m |
 | Mean path length | 18.3 m | 16.1 m | 22.4 m |
-| `plan()` latency p50 / p99 / max | 40 / 100 / 112 us | 37 / 93 / 114 us | 51 / 100 / 109 us |
+| `plan()` latency p50 / p99 / max | 39 / 97 / 111 us | 36 / 93 / 115 us | 51 / 101 / 108 us |
 
 Before the wider start and the clearance, 98.8% (nominal) and 93.1% (worst case) of the plans
 found a path, and 97.6% and 89.9% of all plans were inside. The wider start finds paths where
 the car stands next to a gap in the map and the 6 m radius found none; on worst-case maps a few
 of them leave the track, as they start where the map is sparsest. At 30 m the paths are 4 m
-longer, the planner taking cones out to 25 m, and nearly as good (98.1% of all plans inside
-against 98.3%). With the curvature charged per edge (weight 3) the three columns found a path
+longer, the planner taking cones out to 25 m, and nearly as good (98.3% of all plans inside
+against 98.5%). With the curvature charged per edge (weight 3) the three columns found a path
 in 99.3%, 97.4% and 99.4% of the plans, 98.3%, 93.7% and 98.3% of all plans were inside, and
-the paths were 16.4, 14.3 and 20.2 m long.
+the paths were 16.4, 14.3 and 20.2 m long. Charged per meter but with the straight run from
+the car to the first midpoint fitted as data (before the free start), 98.3%, 93.7% and 98.1%
+of all plans were inside.
 
 The latency is well inside the 10 ms budget: p99 under 0.1 ms on this run, 0.2 ms with the
 machine shared with other jobs, 1.0 ms on the busiest. Triangulating 40-80 cones and a beam of

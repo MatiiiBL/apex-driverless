@@ -26,6 +26,12 @@ struct SmoothingOptions {
     // this unit direction, as a car leaves its current pose (the second point is moved one
     // spacing along it).
     std::optional<Vec2> start_direction{};
+    // With a start direction only: the points less than this arc length (m) from the first one
+    // are not data. The smoothness term alone places them, bending the path from its pinned
+    // start into the first point that is data, instead of fitting whatever was interpolated
+    // between the two (the exploration planner's straight run from the car to its first
+    // midpoint).
+    double free_start = 0.0;
 };
 
 // The Whittaker smoother (Whittaker, "On a new method of graduation", Proceedings of the

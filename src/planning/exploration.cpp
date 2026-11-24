@@ -95,6 +95,10 @@ Trajectory smooth_path(const MidpointPath& found, const Pose2& car,
     options.spacing = length / static_cast<double>(even.size() - 1);
     options.cutoff_wavelength = config.smoothing_wavelength;
     options.start_direction = heading_vector(car.yaw);
+    // The straight run from the car to the first midpoint is no measurement of the track: in a
+    // curve it leaves the car's heading at an angle, and fitted, it kinked the path's first
+    // metres (0.6 1/m in a 7 m hairpin), whose speed profile then slowed the car to a crawl.
+    options.free_start = (found.midpoints.front() - car.position()).norm();
     return Trajectory::from_waypoints(smooth_polyline(even, options), false, config.path_spacing);
 }
 

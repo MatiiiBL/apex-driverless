@@ -237,17 +237,18 @@ ConeMap mapped(const Track& track) {
 // 6 m radius whose cones stand 2-3 m apart cost more than it earned, so the cheapest path stopped
 // before the bend (6 m long here) and the car braked for its end in every hairpin; so did a
 // per-edge weight of 1.5 here, with this hairpin's dense cones.
+// Where the first bend of an oval's centerline starts.
+double hairpin_start(const Trajectory& center) {
+    for (const TrajectoryPoint& p : center.points()) {
+        if (p.s > 5.0 && std::abs(p.curvature) > 0.1) return p.s;
+    }
+    return 0.0;
+}
+
 TEST(ExplorationPlanner, PlansAroundAMappedHairpin) {
     const Track track = make_oval_track(40.0, 6.0);
     const Trajectory& center = track.centerline;
-    double bend = 0.0;
-    for (const TrajectoryPoint& p : center.points()) {
-        if (p.s > 5.0 && std::abs(p.curvature) > 0.1) {
-            bend = p.s;
-            break;
-        }
-    }
-    const TrajectoryPoint start = center.at(bend - 4.0);
+    const TrajectoryPoint start = center.at(hairpin_start(center) - 4.0);
     const Pose2 car{start.position.x(), start.position.y(), start.yaw};
     ExplorationPlanner planner({}, VehicleParams{});
     const std::optional<Trajectory> path = planner.plan(mapped(track), state_at(car, 10.0));
@@ -257,6 +258,31 @@ TEST(ExplorationPlanner, PlansAroundAMappedHairpin) {
     for (const TrajectoryPoint& p : path->points()) {
         EXPECT_LT(center.project(p.position).distance, 0.3) << "s = " << p.s;
     }
+}
+
+// Inside the same hairpin, the car on the centerline: the path's first meters must turn about
+// as the hairpin does. The search may start at an edge up to 6 m ahead, and the straight run
+// from the car to it, smoothed as if it were track, kinked the path where it left the car's
+// heading (here up to 0.80 1/m; 0.62 in closed loop on a 7 m hairpin) and then ran straight,
+// and the speed profile slowed the car to a crawl for a kink the next plan never drives. Left
+// free, the run bends into the hairpin; the first meter, pinned along the car's heading, still
+// makes the path turn up to twice the hairpin's curvature right after it (0.36 here).
+TEST(ExplorationPlanner, StartsAlongTheCurveItIsIn) {
+    const Track track = make_oval_track(40.0, 6.0);
+    const Trajectory& center = track.centerline;
+    const ConeMap map = mapped(track);
+    ExplorationPlanner planner({}, VehicleParams{});
+    double worst = 0.0;
+    for (double into = 1.0; into <= 13.0; into += 1.0) {
+        const TrajectoryPoint at = center.at(hairpin_start(center) + into);
+        const Pose2 car{at.position.x(), at.position.y(), at.yaw};
+        const std::optional<Trajectory> path = planner.plan(map, state_at(car, 8.0));
+        ASSERT_TRUE(path.has_value()) << into;
+        for (const TrajectoryPoint& p : path->points()) {
+            if (p.s <= 4.0) worst = std::max(worst, std::abs(p.curvature));
+        }
+    }
+    EXPECT_LT(worst, 0.45);  // the hairpin's own curvature is 1/6 = 0.167
 }
 
 TEST(ExplorationPlanner, RejectsInvalidConfig) {
