@@ -72,14 +72,20 @@ struct ExplorationConfig {
 
     // Scores, per crossed edge, all dimensionless; the path with the lowest total wins.
     // width = width_weight ((w - track_width) / track_width)^2
-    // curvature = curvature_weight (kappa / curvature_scale)^2
+    // curvature = curvature_weight (kappa / curvature_scale)^2 l, over the spacing l (m) the
+    //             turn kappa (1/m) is measured on: bending energy, whatever the cone spacing
     // color = color_weight per cone on the wrong side, times its share of the color votes
     // spacing = spacing_weight ((l - cone_spacing)+ / cone_spacing)^2
     // heading = heading_weight (turn from the car's heading / heading_scale)^2
+    // Each meter also earns length_reward, so a path stops before any corner tighter than
+    // sqrt(curvature_weight / length_reward) / curvature_scale: 5.2 m, below the tightest
+    // corner of a track (6 m, sim::generate_track). Charged per edge with a weight of 3, it was
+    // sqrt(3 / l) / curvature_scale for edges l meters apart (8.2 m for 2 m, more where a
+    // hairpin's cones are denser), and lap 1 braked for a path's end in every hairpin.
     double track_width = 3.5;  // m
     double width_weight = 6.0;
     double curvature_scale = 0.15;  // 1/m
-    double curvature_weight = 3.0;
+    double curvature_weight = 0.6;
     double color_weight = 4.0;
     double cone_spacing = 5.0;  // m
     double spacing_weight = 1.0;

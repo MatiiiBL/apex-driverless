@@ -6,7 +6,7 @@
   "cone_range": 25.0,
   "cone_spacing": 5.0,
   "curvature_scale": 0.15,
-  "curvature_weight": 3.0,
+  "curvature_weight": 0.6,
   "heading_scale_deg": 30.0,
   "heading_weight": 1.0,
   "length_reward": 1.0,
@@ -35,32 +35,30 @@
  },
  "nominal": {
   "deviation_m": {
-   "max": 4.206277349486785,
-   "mean": 0.12032905296013702,
-   "p95_of_max": 0.6119082050582624
+   "max": 3.337687782114028,
+   "mean": 0.11194327808957949,
+   "p95_of_max": 0.572948655103074
   },
-  "found_rate": 0.9930651872399445,
-  "inside_rate_of_all": 0.9826629680998613,
-  "inside_rate_of_found": 0.9895251396648045,
+  "found_rate": 0.9951456310679612,
+  "inside_rate_of_all": 0.9833564493758669,
+  "inside_rate_of_found": 0.9881533101045297,
   "latency": {
    "count": 1442,
-   "max_us": 127.74999999999999,
-   "mean_us": 39.50185922330108,
-   "p50_us": 37.75,
-   "p90_us": 53.792,
-   "p99_us": 82.5
+   "max_us": 111.666,
+   "mean_us": 44.51545977808603,
+   "p50_us": 40.417,
+   "p90_us": 64.20899999999999,
+   "p99_us": 100.208
   },
   "path_length_m": {
-   "mean": 16.361431539267134,
-   "p5": 6.38231551344365
+   "mean": 18.269007675812606,
+   "p5": 10.962634270839564
   },
   "per_track": [
    {
-    "failed_at_m": [
-     80.0
-    ],
-    "found": 86,
-    "inside": 86,
+    "failed_at_m": [],
+    "found": 87,
+    "inside": 87,
     "length_m": 431.4782339757064,
     "outside_at_m": [],
     "plans": 87,
@@ -145,7 +143,7 @@
     "inside": 82,
     "length_m": 424.8161198064916,
     "outside_at_m": [
-     105.0,
+     165.0,
      170.0,
      175.0
     ],
@@ -167,22 +165,18 @@
     "seed": 10
    },
    {
-    "failed_at_m": [
-     265.0
-    ],
-    "found": 78,
-    "inside": 78,
+    "failed_at_m": [],
+    "found": 79,
+    "inside": 79,
     "length_m": 393.7434433599151,
     "outside_at_m": [],
     "plans": 79,
     "seed": 11
    },
    {
-    "failed_at_m": [
-     265.0
-    ],
-    "found": 64,
-    "inside": 60,
+    "failed_at_m": [],
+    "found": 65,
+    "inside": 61,
     "length_m": 322.5959908536225,
     "outside_at_m": [
      55.0,
@@ -240,9 +234,10 @@
      70.0
     ],
     "found": 63,
-    "inside": 61,
+    "inside": 60,
     "length_m": 317.5268751152778,
     "outside_at_m": [
+     80.0,
      95.0,
      160.0
     ],
@@ -261,9 +256,11 @@
    {
     "failed_at_m": [],
     "found": 85,
-    "inside": 85,
+    "inside": 84,
     "length_m": 422.5376414978921,
-    "outside_at_m": [],
+    "outside_at_m": [
+     250.0
+    ],
     "plans": 85,
     "seed": 19
    },
@@ -283,32 +280,30 @@
  },
  "nominal_30m": {
   "deviation_m": {
-   "max": 4.206277349486785,
-   "mean": 0.11649659824245043,
-   "p95_of_max": 0.6549470158183113
+   "max": 4.812864883091212,
+   "mean": 0.11094292671393652,
+   "p95_of_max": 0.6540797868094377
   },
-  "found_rate": 0.9937586685159501,
-  "inside_rate_of_all": 0.9833564493758669,
-  "inside_rate_of_found": 0.9895324494068388,
+  "found_rate": 0.9958391123439667,
+  "inside_rate_of_all": 0.9812760055478502,
+  "inside_rate_of_found": 0.9853760445682451,
   "latency": {
    "count": 1442,
-   "max_us": 100.417,
-   "mean_us": 48.05486407766995,
-   "p50_us": 48.541000000000004,
-   "p90_us": 62.167,
-   "p99_us": 85.0
+   "max_us": 109.083,
+   "mean_us": 54.22078848821084,
+   "p50_us": 51.166,
+   "p90_us": 77.542,
+   "p99_us": 100.0
   },
   "path_length_m": {
-   "mean": 20.161007217323935,
-   "p5": 6.661812541662879
+   "mean": 22.436056019715508,
+   "p5": 12.553920681468256
   },
   "per_track": [
    {
-    "failed_at_m": [
-     80.0
-    ],
-    "found": 86,
-    "inside": 86,
+    "failed_at_m": [],
+    "found": 87,
+    "inside": 87,
     "length_m": 431.4782339757064,
     "outside_at_m": [],
     "plans": 87,
@@ -337,9 +332,11 @@
    {
     "failed_at_m": [],
     "found": 82,
-    "inside": 82,
+    "inside": 81,
     "length_m": 407.43554687740397,
-    "outside_at_m": [],
+    "outside_at_m": [
+     130.0
+    ],
     "plans": 82,
     "seed": 4
    },
@@ -388,10 +385,12 @@
    {
     "failed_at_m": [],
     "found": 85,
-    "inside": 82,
+    "inside": 80,
     "length_m": 424.8161198064916,
     "outside_at_m": [
-     105.0,
+     155.0,
+     160.0,
+     165.0,
      170.0,
      175.0
     ],
@@ -413,22 +412,18 @@
     "seed": 10
    },
    {
-    "failed_at_m": [
-     265.0
-    ],
-    "found": 78,
-    "inside": 78,
+    "failed_at_m": [],
+    "found": 79,
+    "inside": 79,
     "length_m": 393.7434433599151,
     "outside_at_m": [],
     "plans": 79,
     "seed": 11
    },
    {
-    "failed_at_m": [
-     265.0
-    ],
-    "found": 64,
-    "inside": 60,
+    "failed_at_m": [],
+    "found": 65,
+    "inside": 61,
     "length_m": 322.5959908536225,
     "outside_at_m": [
      55.0,
@@ -486,9 +481,11 @@
      70.0
     ],
     "found": 63,
-    "inside": 61,
+    "inside": 59,
     "length_m": 317.5268751152778,
     "outside_at_m": [
+     75.0,
+     80.0,
      95.0,
      160.0
     ],
@@ -507,9 +504,11 @@
    {
     "failed_at_m": [],
     "found": 85,
-    "inside": 85,
+    "inside": 84,
     "length_m": 422.5376414978921,
-    "outside_at_m": [],
+    "outside_at_m": [
+     245.0
+    ],
     "plans": 85,
     "seed": 19
    },
@@ -531,24 +530,24 @@
  "tracks": 20,
  "worst": {
   "deviation_m": {
-   "max": 14.07548300435983,
-   "mean": 0.19554693973650347,
-   "p95_of_max": 1.59688997444483
+   "max": 25.067637996565516,
+   "mean": 0.19362052774396987,
+   "p95_of_max": 1.6029608799294863
   },
-  "found_rate": 0.9743411927877947,
+  "found_rate": 0.9778085991678225,
   "inside_rate_of_all": 0.9368932038834952,
-  "inside_rate_of_found": 0.9615658362989323,
+  "inside_rate_of_found": 0.9581560283687943,
   "latency": {
    "count": 1442,
-   "max_us": 105.875,
-   "mean_us": 33.040821081830785,
-   "p50_us": 33.375,
-   "p90_us": 47.083000000000006,
-   "p99_us": 69.25
+   "max_us": 113.75,
+   "mean_us": 38.978383495145636,
+   "p50_us": 37.375,
+   "p90_us": 57.75,
+   "p99_us": 93.375
   },
   "path_length_m": {
-   "mean": 14.254980885940988,
-   "p5": 4.9869092579648
+   "mean": 16.061090023004965,
+   "p5": 5.522970660042584
   },
   "per_track": [
    {
@@ -560,7 +559,7 @@
     "inside": 84,
     "length_m": 431.4782339757064,
     "outside_at_m": [
-     240.0
+     400.0
     ],
     "plans": 87,
     "seed": 1
@@ -570,14 +569,17 @@
      140.0
     ],
     "found": 78,
-    "inside": 73,
+    "inside": 70,
     "length_m": 391.3894337024835,
     "outside_at_m": [
+     5.0,
      95.0,
      130.0,
      205.0,
      270.0,
-     310.0
+     285.0,
+     310.0,
+     390.0
     ],
     "plans": 79,
     "seed": 2
@@ -599,11 +601,9 @@
      305.0
     ],
     "found": 80,
-    "inside": 79,
+    "inside": 80,
     "length_m": 407.43554687740397,
-    "outside_at_m": [
-     40.0
-    ],
+    "outside_at_m": [],
     "plans": 82,
     "seed": 4
    },
@@ -613,13 +613,14 @@
      120.0
     ],
     "found": 77,
-    "inside": 72,
+    "inside": 71,
     "length_m": 394.5551480479347,
     "outside_at_m": [
-     35.0,
      220.0,
      225.0,
      230.0,
+     255.0,
+     260.0,
      265.0
     ],
     "plans": 79,
@@ -632,12 +633,11 @@
      405.0
     ],
     "found": 95,
-    "inside": 92,
+    "inside": 93,
     "length_m": 486.88187953833074,
     "outside_at_m": [
      350.0,
-     395.0,
-     465.0
+     395.0
     ],
     "plans": 98,
     "seed": 6
@@ -658,10 +658,9 @@
    {
     "failed_at_m": [],
     "found": 51,
-    "inside": 49,
+    "inside": 50,
     "length_m": 253.37329879515966,
     "outside_at_m": [
-     140.0,
      175.0
     ],
     "plans": 51,
@@ -673,9 +672,11 @@
      260.0
     ],
     "found": 83,
-    "inside": 79,
+    "inside": 77,
     "length_m": 424.8161198064916,
     "outside_at_m": [
+     25.0,
+     30.0,
      35.0,
      40.0,
      140.0,
@@ -709,9 +710,11 @@
      315.0
     ],
     "found": 75,
-    "inside": 75,
+    "inside": 74,
     "length_m": 393.7434433599151,
-    "outside_at_m": [],
+    "outside_at_m": [
+     355.0
+    ],
     "plans": 79,
     "seed": 11
    },
@@ -731,10 +734,9 @@
      255.0
     ],
     "found": 73,
-    "inside": 69,
+    "inside": 70,
     "length_m": 366.7888623880068,
     "outside_at_m": [
-     100.0,
      225.0,
      230.0,
      250.0
@@ -756,16 +758,15 @@
     "seed": 14
    },
    {
-    "failed_at_m": [
-     120.0,
-     170.0
-    ],
-    "found": 68,
+    "failed_at_m": [],
+    "found": 70,
     "inside": 65,
     "length_m": 346.33309384833325,
     "outside_at_m": [
      115.0,
+     120.0,
      175.0,
+     245.0,
      250.0
     ],
     "plans": 70,
@@ -785,17 +786,11 @@
     "seed": 16
    },
    {
-    "failed_at_m": [
-     60.0,
-     280.0
-    ],
-    "found": 62,
-    "inside": 56,
+    "failed_at_m": [],
+    "found": 64,
+    "inside": 61,
     "length_m": 317.5268751152778,
     "outside_at_m": [
-     30.0,
-     65.0,
-     185.0,
      240.0,
      245.0,
      255.0
@@ -822,17 +817,19 @@
    },
    {
     "failed_at_m": [
-     235.0,
      270.0,
      290.0
     ],
-    "found": 82,
-    "inside": 79,
+    "found": 83,
+    "inside": 77,
     "length_m": 422.5376414978921,
     "outside_at_m": [
      65.0,
+     235.0,
      240.0,
-     245.0
+     245.0,
+     280.0,
+     285.0
     ],
     "plans": 85,
     "seed": 19

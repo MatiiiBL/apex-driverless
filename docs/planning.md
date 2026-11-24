@@ -103,7 +103,7 @@ the simulator computes.
    | Term | Cost per edge (defaults) | Why |
    |---|---|---|
    | Width | 6 ((w - 3.5) / 3.5)^2, w the track's width there (below) | FS tracks keep their width; an edge out to clutter or across two parts of the track is too wide |
-   | Curvature | 3 (kappa / 0.15)^2, kappa the turn between midpoints over their spacing | the track turns smoothly; a path that cuts out of it turns sharply |
+   | Curvature | 0.6 (kappa / 0.15)^2 per meter, kappa the turn between midpoints over their spacing | the track turns smoothly; a path that cuts out of it turns sharply |
    | Heading | (turn from the car's heading / 30 deg)^2, first edge only | the car cannot turn on the spot |
    | Color | 4 per cone on the wrong side, times its share of the color votes | blue left, yellow right; a confident wrong side outweighs a step's length reward, a narrowly voted one does not |
    | Spacing | ((l - 5) / 5)^2 for a cone-line segment longer than 5 m | FS cones stand at most 5 m apart; longer means missing cones or a wrong turn |
@@ -112,6 +112,27 @@ the simulator computes.
    Hard limits prune outright: a width outside 2-5.5 m, an edge longer than 12 m, a cone-line
    segment longer than 15 m (two missing cones on a straight), a turn above 50 degrees, and a
    midpoint, or the segment between two consecutive ones, closer than 1 m to any mapped cone.
+
+   **Curvature against length.** The best path is the cheapest of all candidates, of any
+   length, so a corner's edges must earn more than they cost or the path stops before it. The
+   curvature term is bending energy, charged per meter, against the length reward's 1 per
+   meter: on an arc of radius R the two balance at R = sqrt(0.6) / 0.15 = 5.2 m, below the
+   tracks' tightest radius (6 m). It used to be charged per edge, with a weight of 3, which
+   balanced at sqrt(3 / l) / 0.15 for edges l meters apart: 8.2 m for 2 m, more where a
+   hairpin's cones stand closer. The tracks' tightest corners are 6.4-8.2 m, and there the
+   path stopped before the bend although its cones were mapped and colored: on generated
+   track 1 the paths shrank from 20 m to 4-6 m into the first hairpin, and the car braked
+   from 12 to 5 m/s for their ends. Per meter, the same corner costs the
+   same whatever its cone spacing; on the oval's 6 m hairpin a per-edge weight of 1.5 still
+   stopped short (`PlansAroundAMappedHairpin`). In closed loop lap 1 is 2.2 s faster (40.06 to
+   37.90 s over the 33 baseline runs, faster in every one, the racing laps unchanged, no
+   penalty), and as much at four times the sensor noise (40.00 to 37.88 s, 44 one-lap runs, no
+   penalty). The faster lap costs the map at that noise on the long sweepers of two layouts:
+   over the noise ablation's 12 runs at four times the noise the map error rose from 8.6 to
+   11.9 cm RMS, one run on "flowing" mapped 8 duplicate landmarks, and every run still finished
+   without a penalty; at the default noise it fell from 2.0 to 1.7 cm. On the evaluation below
+   the paths are 2 m longer, as often inside the track on nominal and worst-case maps and 0.2
+   points less often at 30 m.
 
    **Start.** The first edges are those with their midpoint ahead of the car within 6 m. When
    none of them passes the hard limits, the search starts instead from the nearest edge ahead
@@ -192,19 +213,22 @@ is *inside* when every point of it is between the true cone lines. On 20 generat
 
 | | Nominal | Worst case | Nominal, 30 m |
 |---|---|---|---|
-| Path found | 99.3% | 97.4% | 99.4% |
-| Inside the true cone lines, of the paths found | 99.0% | 96.2% | 99.0% |
-| Inside, of all plans | 98.3% | 93.7% | 98.3% |
-| Mean distance from the true centerline | 0.12 m | 0.20 m | 0.12 m |
-| A path's largest distance from it, 95th percentile | 0.61 m | 1.60 m | 0.65 m |
-| Mean path length | 16.4 m | 14.3 m | 20.2 m |
-| `plan()` latency p50 / p99 / max | 38 / 83 / 128 us | 33 / 69 / 106 us | 49 / 85 / 100 us |
+| Path found | 99.5% | 97.8% | 99.6% |
+| Inside the true cone lines, of the paths found | 98.8% | 95.8% | 98.5% |
+| Inside, of all plans | 98.3% | 93.7% | 98.1% |
+| Mean distance from the true centerline | 0.11 m | 0.19 m | 0.11 m |
+| A path's largest distance from it, 95th percentile | 0.57 m | 1.60 m | 0.65 m |
+| Mean path length | 18.3 m | 16.1 m | 22.4 m |
+| `plan()` latency p50 / p99 / max | 40 / 100 / 112 us | 37 / 93 / 114 us | 51 / 100 / 109 us |
 
 Before the wider start and the clearance, 98.8% (nominal) and 93.1% (worst case) of the plans
 found a path, and 97.6% and 89.9% of all plans were inside. The wider start finds paths where
 the car stands next to a gap in the map and the 6 m radius found none; on worst-case maps a few
 of them leave the track, as they start where the map is sparsest. At 30 m the paths are 4 m
-longer, the planner taking cones out to 25 m, and as good.
+longer, the planner taking cones out to 25 m, and nearly as good (98.1% of all plans inside
+against 98.3%). With the curvature charged per edge (weight 3) the three columns found a path
+in 99.3%, 97.4% and 99.4% of the plans, 98.3%, 93.7% and 98.3% of all plans were inside, and
+the paths were 16.4, 14.3 and 20.2 m long.
 
 The latency is well inside the 10 ms budget: p99 under 0.1 ms on this run, 0.2 ms with the
 machine shared with other jobs, 1.0 ms on the busiest. Triangulating 40-80 cones and a beam of

@@ -260,8 +260,12 @@ private:
             if (first) {
                 cost += config_.heading_weight * square(turn / heading_scale_);
             } else {
-                const double curvature = turn / std::max(kMinStep, 0.5 * (child.step + from.step));
-                cost += config_.curvature_weight * square(curvature / config_.curvature_scale);
+                // Per meter of the turn: a corner costs the same whether its cones are 2 or
+                // 5 m apart, and so does stopping short of it.
+                const double along = std::max(kMinStep, 0.5 * (child.step + from.step));
+                const double curvature = turn / along;
+                cost +=
+                    config_.curvature_weight * square(curvature / config_.curvature_scale) * along;
             }
         }
         child.cost = cost;

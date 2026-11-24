@@ -8,6 +8,7 @@
 
 #include <gtest/gtest.h>
 
+#include "apex/core/angles.hpp"
 #include "apex/core/track.hpp"
 #include "apex/planning/planning.hpp"
 #include "apex/sim/track_gen.hpp"
@@ -213,6 +214,48 @@ TEST(ExplorationPlanner, KeepsClearOfConesItDoesNotCross) {
     EXPECT_GT(path->length(), 20.0);  // around the hairpin, not 12.8 m across it
     for (const TrajectoryPoint& p : path->points()) {
         EXPECT_GT(nearest_cone(p.position, map), 0.9) << "s = " << p.s;
+    }
+}
+
+// Every true cone of a track, mapped exactly, colored and seen often.
+ConeMap mapped(const Track& track) {
+    ConeMap map;
+    for (const Cone& c : track.cones) {
+        MapCone cone;
+        cone.id = static_cast<std::int32_t>(map.cones.size());
+        cone.position = c.position;
+        cone.color = c.color;
+        cone.color_votes[index_of(c.color)] = 5;
+        map.cones.push_back(cone);
+    }
+    return map;
+}
+
+// A hairpin of the tracks' tightest radius (6 m on the centerline, sim::generate_track), every
+// cone mapped and colored, the car on the centerline 4 m before it. The path must go around it.
+// Each crossed edge earns its length and costs its curvature. Charged per edge (weight 3), a
+// 6 m radius whose cones stand 2-3 m apart cost more than it earned, so the cheapest path stopped
+// before the bend (6 m long here) and the car braked for its end in every hairpin; so did a
+// per-edge weight of 1.5 here, with this hairpin's dense cones.
+TEST(ExplorationPlanner, PlansAroundAMappedHairpin) {
+    const Track track = make_oval_track(40.0, 6.0);
+    const Trajectory& center = track.centerline;
+    double bend = 0.0;
+    for (const TrajectoryPoint& p : center.points()) {
+        if (p.s > 5.0 && std::abs(p.curvature) > 0.1) {
+            bend = p.s;
+            break;
+        }
+    }
+    const TrajectoryPoint start = center.at(bend - 4.0);
+    const Pose2 car{start.position.x(), start.position.y(), start.yaw};
+    ExplorationPlanner planner({}, VehicleParams{});
+    const std::optional<Trajectory> path = planner.plan(mapped(track), state_at(car, 10.0));
+    ASSERT_TRUE(path.has_value());
+    EXPECT_GT(std::abs(angle_diff(path->points().back().yaw, car.yaw)), 0.5 * kPi)
+        << "length " << path->length();
+    for (const TrajectoryPoint& p : path->points()) {
+        EXPECT_LT(center.project(p.position).distance, 0.3) << "s = " << p.s;
     }
 }
 
